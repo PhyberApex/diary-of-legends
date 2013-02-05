@@ -82,6 +82,8 @@ public class MainView extends JFrame implements View, Runnable {
 			contentPane.addTab("Games", null);
 			contentPane.addTab("Matchups", null);
 			contentPane.addTab("Stats", null);
+			contentPane.addTab("Champions", null);
+			contentPane.addTab("Items", null);
 		}
 		logger.trace("getMenuBarView() - Returning");
 		logger.debug("Returned {}", contentPane);
