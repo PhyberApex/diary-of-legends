@@ -1,12 +1,15 @@
 package de.phyberapex.diaryoflegends.view;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Observable;
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JTabbedPane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,8 +22,9 @@ public class MainView extends JFrame implements View, Runnable {
 
 	private static MainView instance;
 	private MenuBarView menu;
-	private MainController controller;
+	private JLabel statusLabel;
 	private JTabbedPane contentPane;
+	private MainController controller;
 	private static Logger logger = LogManager.getLogger(MainView.class
 			.getName());
 
@@ -42,7 +46,9 @@ public class MainView extends JFrame implements View, Runnable {
 		this.setTitle(Constants.getAppName() + " - v"
 				+ Constants.getAppVersion());
 		this.setJMenuBar(getMenuBarView());
-		this.setContentPane(getContentPane());
+		this.setLayout(new BorderLayout());
+		this.add(getContentTabbedPane(), BorderLayout.CENTER);
+		this.add(getStatusLabel(), BorderLayout.SOUTH);
 		logger.trace("createGui() - Leaving");
 	}
 
@@ -75,7 +81,7 @@ public class MainView extends JFrame implements View, Runnable {
 		return menu;
 	}
 
-	public JTabbedPane getContentPane() {
+	public JTabbedPane getContentTabbedPane() {
 		logger.trace("getMenuBarView() - Entering");
 		if (contentPane == null) {
 			contentPane = new JTabbedPane();
@@ -90,6 +96,17 @@ public class MainView extends JFrame implements View, Runnable {
 		return contentPane;
 	}
 
+	public JLabel getStatusLabel() {
+		logger.trace("getStatusLabel() - Entering");
+		if (statusLabel == null) {
+			statusLabel = new JLabel("Ready");
+			statusLabel.setBorder(BorderFactory.createBevelBorder(1));
+		}
+		logger.trace("getStatusLabel() - Returning");
+		logger.debug("Returned {}", statusLabel);
+		return statusLabel;
+	}
+
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		// TODO Auto-generated method stub
@@ -98,8 +115,22 @@ public class MainView extends JFrame implements View, Runnable {
 	public void setGamesPanel(Component comp) {
 		logger.trace("setGamesPanel() - Entering");
 		logger.debug("Parameter: {}", comp);
-		getContentPane().setComponentAt(0, comp);
+		getContentTabbedPane().setComponentAt(0, comp);
 		logger.trace("setGamesPanel() - Leaving");
+	}
+	
+	public void setChampPanel(ChampionView comp) {
+		logger.trace("setChampPanel() - Entering");
+		logger.debug("Parameter: {}", comp);
+		getContentTabbedPane().setComponentAt(3, comp);
+		logger.trace("setChampPanel() - Leaving");
+	}
+
+	public void setItemPanel(ItemView comp) {
+		logger.trace("setItemPanel() - Entering");
+		logger.debug("Parameter: {}", comp);
+		getContentTabbedPane().setComponentAt(4, comp);
+		logger.trace("setItemPanel() - Leaving");
 	}
 
 	@Override
@@ -111,4 +142,7 @@ public class MainView extends JFrame implements View, Runnable {
 		this.setVisible(true);
 	}
 
+	public void setStatusText(String text) {
+
+	}
 }
