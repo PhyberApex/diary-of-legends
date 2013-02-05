@@ -15,11 +15,14 @@ import de.phyberapex.diaryoflegends.base.Initializer;
 import de.phyberapex.diaryoflegends.exception.InitializeException;
 import de.phyberapex.diaryoflegends.extra.ImageIconFactory;
 import de.phyberapex.diaryoflegends.extra.Splash;
+import de.phyberapex.diaryoflegends.view.ChampionView;
+import de.phyberapex.diaryoflegends.view.ItemView;
 import de.phyberapex.diaryoflegends.view.MainView;
 
 public class MainController{
 
 	private Splash splash;
+	private MainView mainView;
 	private Logger logger = LogManager
 			.getLogger(MainController.class.getName());
 
@@ -35,6 +38,8 @@ public class MainController{
 					.initializeApp();
 			logger.debug("Value of initAction {}", initAction);
 			splash.showStatus("Preparing controller", 20);
+			ChampionController champController = new ChampionController(this);
+			ItemController itemController = new ItemController(this);
 			// GameViewController gameViewController = new
 			// GameViewController(this);
 			// MatchupViewController matchupViewController = new
@@ -42,7 +47,7 @@ public class MainController{
 			// MenuBarViewController menuBarViewController = new
 			// MenuBarViewController(this);
 			splash.showStatus("Preparing user interface", 30);
-			MainView mainView = MainView.getInstance();
+			mainView = MainView.getInstance();
 			mainView.setMainController(this);
 			// MenuBarView menuBarView = new MenuBarView();
 			// menuBarView.setMenuBarViewController(menuBarViewController);
@@ -57,6 +62,8 @@ public class MainController{
 				Config.getInstance().setProperty("SUMMONER_NAME", name);
 				Config.getInstance().saveChanges();
 			}
+			mainView.setChampPanel((ChampionView)champController.getView());
+			mainView.setItemPanel((ItemView)itemController.getView());
 			SwingUtilities.invokeLater(mainView);
 
 		} catch (InitializeException e) {
@@ -82,6 +89,14 @@ public class MainController{
 		logger.trace("main() - Leaving");
 	}
 
+	
+	public void setStatus(String text){
+		logger.trace("setStatus() - Entering");
+		logger.debug("Parameter {}", text);
+		mainView.setStatusText(text);
+		logger.trace("setStatus() - Leaving");
+	}
+	
 	/**
 	 * Exits the appliaction
 	 */

@@ -23,12 +23,16 @@ public class MenuBarView extends JMenuBar implements View{
 	private JMenuItem editEntryItem;
 	private JMenuItem editChampItem;
 	private JMenuItem editItemItem;
+	private JMenu aboutMenu;
+	private JMenuItem helpItem;
+	private JMenuItem updateItem;
 	private static Logger logger = LogManager.getLogger(MenuBarView.class.getName());
 
 	public MenuBarView(){
 		logger.trace("MenuBarView() - Entering");
 		this.add(getFileMenu());
 		this.add(getEditMenu());
+		this.add(getAboutMenu());
 		logger.trace("MenuBarView() - Leaving");
 	}
 	
@@ -146,6 +150,45 @@ public class MenuBarView extends JMenuBar implements View{
 		logger.trace("getEditItemItem() - Returning");
 		logger.debug("Returned {}", editItemItem);
 		return editItemItem;
+	}
+	
+	private JMenu getAboutMenu() {
+		logger.trace("getAboutMenu() - Entering");
+		logger.debug("aboutMenu currently {}", aboutMenu);
+		if(this.aboutMenu == null){
+			logger.debug("Creating a new JMenu object");
+			this.aboutMenu = new JMenu("?");
+			this.aboutMenu.add(getHelpItem());
+			this.aboutMenu.add(getUpdateItem());
+		}
+		logger.trace("getAboutMenu() - Returning");
+		logger.debug("Returned {}", aboutMenu);
+		return aboutMenu;
+	}
+	
+	private JMenuItem getHelpItem() {
+		logger.trace("getHelpItem() - Entering");
+		logger.debug("helpItem currently {}", helpItem);
+		if(this.helpItem == null){
+			logger.debug("Creating a new JMenuItem object");
+			this.helpItem = new JMenuItem("Help");
+		}
+		logger.trace("getHelpItem() - Returning");
+		logger.debug("Returned {}", helpItem);
+		return helpItem;
+	}
+	
+	private JMenuItem getUpdateItem() {
+		logger.trace("getUpdateItem() - Entering");
+		logger.debug("updateItem currently {}", updateItem);
+		if(this.updateItem == null){
+			logger.debug("Creating a new JMenuItem object");
+			this.updateItem = new JMenuItem("Check for Updates");
+			this.updateItem.setEnabled(false);
+		}
+		logger.trace("getUpdateItem() - Returning");
+		logger.debug("Returned {}", updateItem);
+		return updateItem;
 	}
 	
 	@Override

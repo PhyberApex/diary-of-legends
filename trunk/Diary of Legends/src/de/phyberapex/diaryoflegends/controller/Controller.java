@@ -12,12 +12,13 @@ public abstract class Controller {
 
 	protected List<Model> models = new ArrayList<Model>();
 	protected View view;
+	protected MainController mainController;
 	private static Logger logger = LogManager.getLogger(Controller.class
 			.getName());
 
 	
-	public Controller(View view){
-		this.view = view;
+	public Controller(MainController mainController){
+		this.mainController = mainController;
 	}
 	
 	/**
