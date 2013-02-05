@@ -16,7 +16,6 @@ import de.phyberapex.diaryoflegends.exception.InitializeException;
 import de.phyberapex.diaryoflegends.extra.ImageIconFactory;
 import de.phyberapex.diaryoflegends.extra.Splash;
 import de.phyberapex.diaryoflegends.view.MainView;
-import de.phyberapex.diaryoflegends.view.View;
 
 public class MainController{
 
@@ -43,14 +42,14 @@ public class MainController{
 			// MenuBarViewController menuBarViewController = new
 			// MenuBarViewController(this);
 			splash.showStatus("Preparing user interface", 30);
-			MainView mainView = new MainView(this);
-			// mainView.setMainController(this)
-			// MenuBarView menuBarView = MenuBarView.getInstance();
+			MainView mainView = MainView.getInstance();
+			mainView.setMainController(this);
+			// MenuBarView menuBarView = new MenuBarView();
 			// menuBarView.setMenuBarViewController(menuBarViewController);
 			splash.showStatus("Creating user interface", 40);
 			// mainView.getInstance().setMenuBar(MenuBarView.getInstance());
 			splash.showStatus("Preparing to start", 100);
-			//splash.close();
+			splash.close();
 			if (initAction == InitializeAction.CREATE_SUMMONER) {
 				// TODO design it better
 				String name = JOptionPane.showInputDialog(null);
