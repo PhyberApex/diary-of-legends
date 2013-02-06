@@ -1,7 +1,7 @@
 package de.phyberapex.diaryoflegends.base;
 
 /**
- * This class holds the basic information for this application
+ * Class to hold the basic information for this application
  * @author Janis Walliser <walliser.janis@gmx.de>
  */
 
@@ -29,7 +29,7 @@ public class Constants {
 	public static String getAppName() {
 		logger.trace("getAppName() - Entering");
 		logger.trace("getAppName() - Returning");
-		logger.debug("Returned {}", APP_NAME);
+		logger.debug("getAppName() - Returning: {}", APP_NAME);
 		return APP_NAME;
 	}
 
@@ -40,7 +40,7 @@ public class Constants {
 	public static String getAppVersion() {
 		logger.trace("getAppVersion() - Entering");
 		logger.trace("getAppVersion() - Returning");
-		logger.debug("Returned {}", APP_VERSION);
+		logger.debug("getAppVersion() - Returning {}", APP_VERSION);
 		return APP_VERSION;
 	}
 
@@ -51,7 +51,7 @@ public class Constants {
 	public static String getAppAuthor() {
 		logger.trace("getAppAuthor() - Entering");
 		logger.trace("getAppAuthor() - Returning");
-		logger.debug("Returned {}", APP_AUTHOR);
+		logger.debug("getAppAuthor() - Returning: {}", APP_AUTHOR);
 		return APP_AUTHOR;
 	}
 
@@ -62,7 +62,7 @@ public class Constants {
 	public static String getResourcePath() {
 		logger.trace("getResourcePath() - Entering");
 		logger.trace("getResourcePath() - Returning");
-		logger.debug("Returned {}", RESOURCE_PATH);
+		logger.debug("getResourcePath() - Returning {}", RESOURCE_PATH);
 		return RESOURCE_PATH;
 	}
 
@@ -71,7 +71,7 @@ public class Constants {
 	 * @return {@link String} the current date
 	 */
 	public static String getDate() {
-		logger.trace("getResourcePath() - Entering");
+		logger.trace("getDate() - Entering");
 		Calendar cal = Calendar.getInstance();
 		String year = String.valueOf(cal.get(Calendar.YEAR));
 		logger.debug("Year: {}", year);
@@ -88,8 +88,8 @@ public class Constants {
 			logger.debug("New day: {}", day);
 		}
 		String date = day + "." + month + "." + year;
-		logger.trace("getResourcePath() - Returning");
-		logger.debug("Returned {}", date);
+		logger.trace("getDate() - Returning");
+		logger.debug("getDate() - Returning: {}", date);
 		return date;
 	}
 
@@ -100,7 +100,7 @@ public class Constants {
 	 */
 	public static String readInternTextFileToString(String path) {
 		logger.trace("readInternFileToString() - Entering");
-		logger.debug("Parameter: {}", path);
+		logger.debug("readInternFileToString() - Parameter: {}", path);
 		String toReturn = "";
 		try {
 			File f = new File(Constants.class.getResource(path).toURI());

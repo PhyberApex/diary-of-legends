@@ -82,7 +82,7 @@ public class MainView extends JFrame implements View, Runnable {
 	}
 
 	public JTabbedPane getContentTabbedPane() {
-		logger.trace("getMenuBarView() - Entering");
+		logger.trace("getContentTabbedPane() - Entering");
 		if (contentPane == null) {
 			contentPane = new JTabbedPane();
 			contentPane.addTab("Games", null);
@@ -91,7 +91,7 @@ public class MainView extends JFrame implements View, Runnable {
 			contentPane.addTab("Champions", null);
 			contentPane.addTab("Items", null);
 		}
-		logger.trace("getMenuBarView() - Returning");
+		logger.trace("getContentTabbedPane() - Returning");
 		logger.debug("Returned {}", contentPane);
 		return contentPane;
 	}

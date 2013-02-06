@@ -39,7 +39,7 @@ public class Initializer {
 			instance = new Initializer();
 		}
 		logger.trace("getInstance() - Returning");
-		logger.debug("Returned {}", instance);
+		logger.debug("getInstance() - Returning: {}", instance);
 		return instance;
 	}
 
@@ -57,7 +57,7 @@ public class Initializer {
 			returnValue = InitializeAction.CREATE_SUMMONER;
 		}
 		logger.trace("initializeApp() - Returning");
-		logger.debug("Returned {}", returnValue);
+		logger.debug("initializeApp() - Returning {}", returnValue);
 		return returnValue;
 	}
 
