@@ -16,7 +16,6 @@ import org.apache.logging.log4j.Logger;
 import com.db4o.Db4oEmbedded;
 import com.db4o.ObjectContainer;
 
-
 public class Config {
 
 	private static Config instance;
@@ -39,8 +38,13 @@ public class Config {
 				// Create file and set default values
 				prop.createNewFile();
 				reader = new FileReader("diary.cfg");
-				logger.info("Setting databasename to {}", Constants.getAppName()+Constants.getAppVersion()+".db");
-				this.setProperty("DATABASENAME", "db\\"+Constants.getAppName()+Constants.getAppVersion()+".db");
+				logger.info("Setting databasename to {}",
+						Constants.getAppName() + Constants.getAppVersion()
+								+ ".db");
+				this.setProperty(
+						"DATABASENAME",
+						"db\\" + Constants.getAppName()
+								+ Constants.getAppVersion() + ".db");
 				saveChanges();
 			} catch (IOException e1) {
 				logger.error(e1.getMessage());
@@ -57,24 +61,32 @@ public class Config {
 
 	/**
 	 * Sets a property
-	 * @param key {@link String} unique key for the property
-	 * @param value {@link String} value of the poperty
+	 * 
+	 * @param key
+	 *            {@link String} unique key for the property
+	 * @param value
+	 *            {@link String} value of the poperty
 	 */
 	public void setProperty(String key, String value) {
 		logger.trace("setProperty() - Entering");
+		logger.debug("setProperty() - Parameter: key = {}, value = {}", key,
+				value);
 		prop.setProperty(key, value);
 		logger.trace("setProperty() - Leaving");
 	}
 
 	/**
 	 * Returns the value of the property with the given key
-	 * @param key Unique key to get the value of
+	 * 
+	 * @param key
+	 *            Unique key to get the value of
 	 * @return {@link String} value of the given key
 	 */
 	public String getProperty(String key) {
 		logger.trace("getProperty() - Entering");
 		logger.trace("getProperty() - Returning");
-		logger.debug("Returning: {}", this.prop.getProperty(key));
+		logger.debug("getProperty() - Returning: {}",
+				this.prop.getProperty(key));
 		return this.prop.getProperty(key);
 	}
 
@@ -97,22 +109,24 @@ public class Config {
 	/**
 	 * Returns an instance of this class if the static attribute instance is<br>
 	 * null it will be created.
+	 * 
 	 * @return {@link Config} an instance of this class
 	 */
 	public static synchronized Config getInstance() {
 		logger.trace("getInstance() - Entering");
-		logger.debug("Instance is {}", instance);
+		logger.debug("getInstance() - Instance is {}", instance);
 		if (instance == null) {
 			logger.debug("Creating a new instance of Config");
 			instance = new Config();
 		}
 		logger.trace("getInstance() - Returning");
-		logger.debug("Returned {}", instance);
+		logger.debug("getInstance() - Returning: {}", instance);
 		return instance;
 	}
 
 	/**
 	 * Returns a handle to make queries to the database
+	 * 
 	 * @return {@link ObjectContainer} handle for the database
 	 */
 	public synchronized ObjectContainer getDBHandle() {
@@ -120,11 +134,11 @@ public class Config {
 		logger.debug("Database handle is {}", dbHandle);
 		if (dbHandle == null) {
 			logger.debug("Creating a new instance of Config");
-			dbHandle = Db4oEmbedded.openFile(Db4oEmbedded
-			        .newConfiguration(), prop.getProperty("DATABASENAME"));
+			dbHandle = Db4oEmbedded.openFile(Db4oEmbedded.newConfiguration(),
+					prop.getProperty("DATABASENAME"));
 		}
 		logger.trace("getDBHandle() - Returning");
-		logger.debug("Returned {}", dbHandle);
+		logger.debug("getDBHandle() - Returning: {}", dbHandle);
 		return dbHandle;
 	}
 }

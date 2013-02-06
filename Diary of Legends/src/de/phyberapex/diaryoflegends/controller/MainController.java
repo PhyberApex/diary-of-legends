@@ -16,6 +16,7 @@ import de.phyberapex.diaryoflegends.exception.InitializeException;
 import de.phyberapex.diaryoflegends.extra.ImageIconFactory;
 import de.phyberapex.diaryoflegends.extra.Splash;
 import de.phyberapex.diaryoflegends.view.ChampionView;
+import de.phyberapex.diaryoflegends.view.CurrentSummonerNameView;
 import de.phyberapex.diaryoflegends.view.ItemView;
 import de.phyberapex.diaryoflegends.view.MainView;
 
@@ -55,12 +56,21 @@ public class MainController{
 			// mainView.getInstance().setMenuBar(MenuBarView.getInstance());
 			splash.showStatus("Preparing to start", 100);
 			splash.close();
+			CurrentSummonerNameView currSumView = CurrentSummonerNameView.getInstance();
 			if (initAction == InitializeAction.CREATE_SUMMONER) {
-				// TODO design it better
-				String name = JOptionPane.showInputDialog(null);
-				logger.debug("Entered text was '{}'", name);
-				Config.getInstance().setProperty("SUMMONER_NAME", name);
+				Object[] options = {"OK"};
+				int ok = JOptionPane.showOptionDialog(null, currSumView, "Enter your Summoner name", JOptionPane.WARNING_MESSAGE, JOptionPane.INFORMATION_MESSAGE, ImageIconFactory.createImageIcon("C:\\1.png"), options, "OK");
+				logger.debug("Entered text was '{}'", currSumView.getSummonerName());
+				logger.debug("Button pressed was '{}' ({} = OK, {} = CLOSED)", ok, JOptionPane.OK_OPTION, JOptionPane.CLOSED_OPTION);
+				if(ok == JOptionPane.CLOSED_OPTION){
+					JOptionPane.showMessageDialog(null, "Appliaction can not operate without a summoner name.", "Error",JOptionPane.ERROR_MESSAGE);
+					logger.info("Appliaction can not operate a without summoner name.");
+					exit();
+				}
+				Config.getInstance().setProperty("SUMMONER_NAME", currSumView.getSummonerName());
 				Config.getInstance().saveChanges();
+			} else {
+				currSumView.setSummonerName(Config.getInstance().getProperty("SUMMONER_NAME")); 
 			}
 			mainView.setChampPanel((ChampionView)champController.getView());
 			mainView.setItemPanel((ItemView)itemController.getView());
