@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 
 import de.phyberapex.diaryoflegends.controller.MainController;
 import de.phyberapex.diaryoflegends.exception.InitializeException;
+import de.phyberapex.diaryoflegends.model.Champion;
 
 /**
  * Class to initialize the application on the start

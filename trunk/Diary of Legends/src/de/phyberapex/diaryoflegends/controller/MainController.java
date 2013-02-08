@@ -88,15 +88,6 @@ public class MainController{
 		} finally {
 			logger.trace("MainController() - Leaving");
 		}
-		/**
-		 * TESTCODE
-		 */
-		Champion c = new Champion();
-		c.setName("TESTERT");
-		Config.getInstance().getDBHandle().store(new Constants());
-		/**
-		 * END TESTCODE
-		 */
 	}
 
 	/**
