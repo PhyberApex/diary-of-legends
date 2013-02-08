@@ -44,7 +44,7 @@ public class CurrentSummonerNameView extends JPanel implements View {
 			nameTextfield.setPreferredSize(new Dimension(150, 30));
 		}
 		logger.trace("getNameTextfield() - Returning");
-		logger.debug("Returned {}", nameTextfield);
+		logger.debug("getNameTextfield() - Returning: {}", nameTextfield);
 		return nameTextfield;
 	}
 
@@ -54,7 +54,7 @@ public class CurrentSummonerNameView extends JPanel implements View {
 			nameLabel = new JLabel("Summoner Name:");
 		}
 		logger.trace("getNameLabel() - Returning");
-		logger.debug("Returned {}", nameLabel);
+		logger.debug("getNameLabel() - Returning: {}", nameLabel);
 		return nameLabel;
 	}
 
@@ -72,7 +72,7 @@ public class CurrentSummonerNameView extends JPanel implements View {
 			instance = new CurrentSummonerNameView();
 		}
 		logger.trace("getInstance() - Returning");
-		logger.debug("Returned {}", instance);
+		logger.debug("getInstance() - Returning: {}", instance);
 		return instance;
 	}
 
@@ -90,7 +90,7 @@ public class CurrentSummonerNameView extends JPanel implements View {
 
 	public void setSummonerName(String name) {
 		logger.trace("setSummonerName() - Entering");
-		logger.debug("Parameter {}", name);
+		logger.debug("setSummonerName() - Parameter: {}", name);
 		nameTextfield.setText(name);
 		logger.trace("setSummonerName() - Leaving");
 	}
@@ -102,8 +102,8 @@ public class CurrentSummonerNameView extends JPanel implements View {
 	 */
 	public String getSummonerName() {
 		logger.trace("getSummonerName() - Entering");
-		logger.trace("setSummonerName() - Returning");
-		logger.debug("Returned {}", nameTextfield.getText());
+		logger.trace("getSummonerName() - Returning");
+		logger.debug("getSummonerName() - Returning: {}", nameTextfield.getText());
 		return nameTextfield.getText();
 	}
 
