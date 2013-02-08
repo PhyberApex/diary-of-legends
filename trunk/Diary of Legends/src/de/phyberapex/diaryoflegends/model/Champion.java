@@ -11,4 +11,17 @@ public class Champion extends Model {
 	private ImageIcon icon;
 	private static Logger logger = LogManager.getLogger("");
 
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public ImageIcon getIcon() {
+		return icon;
+	}
+	public void setIcon(ImageIcon icon) {
+		this.icon = icon;
+	}
 }

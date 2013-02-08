@@ -1,6 +1,7 @@
 package de.phyberapex.diaryoflegends.model.util;
 
-import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,9 +31,9 @@ public class ChampionUtil {
 	 * 
 	 * @return {@link Iterator} Iterator for all champions in the database
 	 */
-	public static Iterator<Champion> getAllGames() {
-		logger.trace("getAllGames() - Entering");
-		Iterator<Champion> returnValue;
+	public static List<Champion> getAllChampions() {
+		logger.trace("getAllChampions() - Entering");
+		List<Champion> returnValue = new ArrayList<Champion>();
 		ObjectSet<Champion> set = dbHandle.query(new Predicate<Champion>() {
 
 			private static final long serialVersionUID = -6535736734146443615L;
@@ -42,8 +43,10 @@ public class ChampionUtil {
 				return true;
 			}
 		});
-		returnValue = set.iterator();
-		logger.trace("getAllGames() - Returning");
+		while (set.iterator().hasNext()) {
+			returnValue.add(set.iterator().next());
+		}
+		logger.trace("getAllChampions() - Returning");
 		logger.debug("Return {}", returnValue);
 		return returnValue;
 	}

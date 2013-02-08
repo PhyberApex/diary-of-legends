@@ -10,11 +10,14 @@ import org.apache.logging.log4j.Logger;
 
 import de.phyberapex.diaryoflegends.ExitAction;
 import de.phyberapex.diaryoflegends.base.Config;
+import de.phyberapex.diaryoflegends.base.Constants;
 import de.phyberapex.diaryoflegends.base.InitializeAction;
 import de.phyberapex.diaryoflegends.base.Initializer;
 import de.phyberapex.diaryoflegends.exception.InitializeException;
 import de.phyberapex.diaryoflegends.extra.ImageIconFactory;
 import de.phyberapex.diaryoflegends.extra.Splash;
+import de.phyberapex.diaryoflegends.model.Champion;
+import de.phyberapex.diaryoflegends.model.util.ChampionUtil;
 import de.phyberapex.diaryoflegends.view.ChampionView;
 import de.phyberapex.diaryoflegends.view.CurrentSummonerNameView;
 import de.phyberapex.diaryoflegends.view.ItemView;
@@ -47,13 +50,14 @@ public class MainController{
 			// MatchupViewController(this);
 			// MenuBarViewController menuBarViewController = new
 			// MenuBarViewController(this);
-			splash.showStatus("Preparing user interface", 30);
+			splash.showStatus("Creating user interface", 30);
 			mainView = MainView.getInstance();
 			mainView.setMainController(this);
-			// MenuBarView menuBarView = new MenuBarView();
-			// menuBarView.setMenuBarViewController(menuBarViewController);
-			splash.showStatus("Creating user interface", 40);
-			// mainView.getInstance().setMenuBar(MenuBarView.getInstance());
+			champController.loadGUI();
+			itemController.loadGUI();
+			splash.showStatus("Loading data", 40);
+			champController.addObservers();
+			itemController.addObservers();
 			splash.showStatus("Preparing to start", 100);
 			splash.close();
 			CurrentSummonerNameView currSumView = CurrentSummonerNameView.getInstance();
@@ -84,6 +88,15 @@ public class MainController{
 		} finally {
 			logger.trace("MainController() - Leaving");
 		}
+		/**
+		 * TESTCODE
+		 */
+		Champion c = new Champion();
+		c.setName("TESTERT");
+		Config.getInstance().getDBHandle().store(new Constants());
+		/**
+		 * END TESTCODE
+		 */
 	}
 
 	/**
