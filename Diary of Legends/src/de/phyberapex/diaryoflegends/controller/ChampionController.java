@@ -1,5 +1,6 @@
 package de.phyberapex.diaryoflegends.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -12,17 +13,17 @@ import de.phyberapex.diaryoflegends.view.ChampionView;
 
 public class ChampionController extends Controller {
 
-	private List<Champion> champions;
+	private List<Champion> champions = new ArrayList<Champion>();
 	private static Logger logger = LogManager
 			.getLogger(ChampionController.class.getName());
 
 	public ChampionController(MainController mainController) {
 		super(mainController);
-		logger.trace("MainController() - Entering");
-		logger.debug("MainController() - Parameter: {}", mainController);
+		logger.trace("ChampionController() - Entering");
+		logger.debug("ChampionController() - Parameter: {}", mainController);
 		champions = ChampionUtil.getAllChampions();
 		this.models.addAll(champions);
-		logger.trace("MainController() - Leaving");
+		logger.trace("ChampionController() - Leaving");
 	}
 
 	@Override

@@ -1,16 +1,15 @@
 package de.phyberapex.diaryoflegends.view;
 
-import java.util.Iterator;
 import java.util.List;
-
 import javax.swing.table.AbstractTableModel;
-
 import de.phyberapex.diaryoflegends.model.Champion;
-import de.phyberapex.diaryoflegends.model.Model;
+import de.phyberapex.diaryoflegends.model.util.ChampionUtil;
 
 public class ChampionTableModel extends AbstractTableModel {
 
-	public List<Champion> champs;
+	private static final long serialVersionUID = 6832182630678830128L;
+	private List<Champion> champs;
+	private String[] columnNames = new String[] {"Picture", "Name" };
 
 	public ChampionTableModel(List<Champion> models) {
 		this.champs = models;
@@ -38,4 +37,27 @@ public class ChampionTableModel extends AbstractTableModel {
 		}
 	}
 
+	@Override
+	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+		Champion c = champs.get(rowIndex);
+		switch (columnIndex) {
+		case 1:
+			c.setName((String) aValue);
+			break;
+		}
+		ChampionUtil.saveChampion(c);
+	}
+
+	@Override
+	public boolean isCellEditable(int rowIndex, int columnIndex) {
+		if (columnIndex == 0) {
+			return false;
+		}
+		return true;
+	}
+	
+	@Override
+	public String getColumnName(int column) {
+	    return columnNames[column];
+	}
 }

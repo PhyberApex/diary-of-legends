@@ -1,14 +1,18 @@
 package de.phyberapex.diaryoflegends.model;
 
+import java.io.File;
+
 import javax.swing.ImageIcon;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import de.phyberapex.diaryoflegends.extra.ConvertImage;
+
 public class Champion extends Model {
 
 	private String name;
-	private ImageIcon icon;
+	private byte[] icon;
 	private static Logger logger = LogManager.getLogger("");
 
 	
@@ -19,9 +23,9 @@ public class Champion extends Model {
 		this.name = name;
 	}
 	public ImageIcon getIcon() {
-		return icon;
+		return ConvertImage.convertByteArrayToImageIcon(icon);
 	}
-	public void setIcon(ImageIcon icon) {
-		this.icon = icon;
+	public void setIcon(File file) {
+		this.icon = ConvertImage.convertFileToByteArray(file);
 	}
 }

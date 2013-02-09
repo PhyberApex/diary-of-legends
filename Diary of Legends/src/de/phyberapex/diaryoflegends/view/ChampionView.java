@@ -4,6 +4,10 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -13,7 +17,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import de.phyberapex.diaryoflegends.controller.ChampionController;
+import de.phyberapex.diaryoflegends.extra.ImageIconFactory;
 import de.phyberapex.diaryoflegends.model.Champion;
+import de.phyberapex.diaryoflegends.model.util.ChampionUtil;
 import de.phyberapex.diaryoflegends.observer.Observable;
 
 public class ChampionView extends JPanel implements View {
@@ -46,21 +52,24 @@ public class ChampionView extends JPanel implements View {
 		constraints.weighty = 0;
 		constraints.gridx = 0;
 		constraints.gridy = 0;
-		logger.debug("Adding searchTextfield to panel with constraints: {}", constraints);
+		logger.debug("Adding searchTextfield to panel with constraints: {}",
+				constraints);
 		this.add(getSearchTextfield(), constraints);
 		constraints = new GridBagConstraints();
 		constraints.weightx = 0;
 		constraints.weighty = 0;
 		constraints.gridx = 1;
 		constraints.gridy = 0;
-		logger.debug("Adding searchButton to panel with constraints: {}", constraints);
+		logger.debug("Adding searchButton to panel with constraints: {}",
+				constraints);
 		this.add(getSearchButton(), constraints);
 		constraints = new GridBagConstraints();
 		constraints.weightx = 0;
 		constraints.weighty = 0;
 		constraints.gridx = 2;
 		constraints.gridy = 0;
-		logger.debug("Adding newButton to panel with constraints: {}", constraints);
+		logger.debug("Adding newButton to panel with constraints: {}",
+				constraints);
 		this.add(getNewButton(), constraints);
 		constraints = new GridBagConstraints();
 		constraints.fill = GridBagConstraints.BOTH;
@@ -69,7 +78,8 @@ public class ChampionView extends JPanel implements View {
 		constraints.weighty = 1;
 		constraints.gridx = 0;
 		constraints.gridy = 1;
-		logger.debug("Adding championTable to panel with constraints: {}", constraints);
+		logger.debug("Adding championTable to panel with constraints: {}",
+				constraints);
 		this.add(getChampTablePane(), constraints);
 		logger.trace("createGUI() - Leaving");
 	}
@@ -94,17 +104,28 @@ public class ChampionView extends JPanel implements View {
 		logger.debug("getSearchButton() - Returning: {}", searchButton);
 		return searchButton;
 	}
-	
+
 	private JButton getNewButton() {
 		logger.trace("getNewButton() - Entering");
 		if (newButton == null) {
 			newButton = new JButton("new Champion");
+			newButton.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					Champion c = new Champion();
+					c.setName("test");
+					c.setIcon(new File("C:\\test.png"));
+					ChampionUtil.saveChampion(c);
+
+				}
+			});
 		}
 		logger.trace("getNewButton() - Returning");
 		logger.debug("getNewButton() - Returning: {}", newButton);
 		return newButton;
 	}
-	
+
 	private Component getChampTablePane() {
 		logger.trace("getChampTablePane() - Entering");
 		if (champTablePane == null) {
@@ -114,14 +135,16 @@ public class ChampionView extends JPanel implements View {
 		logger.debug("getChampTablePane() - Returning: {}", champTablePane);
 		return champTablePane;
 	}
-	
+
 	private Component getChampionTable() {
 		logger.trace("getChampionTable() - Entering");
 		if (championTable == null) {
 			championTable = new JTable();
-			ChampionTableModel m = new ChampionTableModel(controller.getChampions());
+			ChampionTableModel m = new ChampionTableModel(
+					controller.getChampions());
 			championTable.setModel(m);
-			championTable.setPreferredSize(new Dimension(200,300));
+			championTable.setDefaultRenderer(Object.class, new Renderer());
+			championTable.setPreferredSize(new Dimension(200, 300));
 		}
 		logger.trace("getChampionTable() - Returning");
 		logger.debug("getChampionTable() - Returning: {}", championTable);

@@ -57,6 +57,7 @@ public class Initializer {
 		if(conf.getProperty("SUMMONER_NAME") == null){
 			returnValue = InitializeAction.CREATE_SUMMONER;
 		}
+		conf.getDBHandle();
 		logger.trace("initializeApp() - Returning");
 		logger.debug("initializeApp() - Returning {}", returnValue);
 		return returnValue;
