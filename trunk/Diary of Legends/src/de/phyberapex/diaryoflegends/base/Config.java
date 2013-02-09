@@ -10,15 +10,12 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.Properties;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import com.db4o.Db4oEmbedded;
 import com.db4o.ObjectContainer;
 import com.db4o.config.EmbeddedConfiguration;
-import com.db4o.config.TNull;
 
 public class Config {
 
@@ -137,11 +134,9 @@ public class Config {
 		logger.trace("getDBHandle() - Entering");
 		logger.debug("Database handle is {}", dbHandle);
 		if (dbHandle == null) {
-			logger.debug("Creating a new instance of Config");
+			logger.debug("Creating a new instance of ObjectContainer");
 			EmbeddedConfiguration configuration = Db4oEmbedded
 					.newConfiguration();
-			configuration.common().objectClass(Observer.class).translate(new TNull());
-			configuration.common().objectClass(Observable.class).translate(new TNull());
 			dbHandle = Db4oEmbedded.openFile(configuration,
 					prop.getProperty("DATABASENAME"));
 		}

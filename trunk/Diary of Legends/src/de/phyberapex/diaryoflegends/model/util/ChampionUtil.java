@@ -1,6 +1,7 @@
 package de.phyberapex.diaryoflegends.model.util;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -43,8 +44,9 @@ public class ChampionUtil {
 				return true;
 			}
 		});
-		while (set.iterator().hasNext()) {
-			returnValue.add(set.iterator().next());
+		Iterator<Champion> i = set.iterator(); 
+		while (i.hasNext()) {
+			returnValue.add(i.next());
 		}
 		logger.trace("getAllChampions() - Returning");
 		logger.debug("Return {}", returnValue);

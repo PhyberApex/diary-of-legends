@@ -5,14 +5,17 @@ import java.util.List;
 
 public class Observable {
 
-	transient public List<Observer> obs = new ArrayList<Observer>();
-	
-	public void addObserver(Observer ob){
+	transient private List<Observer> obs = new ArrayList<Observer>();
+
+	public void addObserver(Observer ob) {
+		if (obs == null) {
+			obs = new ArrayList<Observer>();
+		}
 		obs.add(ob);
 	}
-	
-	public void notifyObservers(Object t){
-		for(Observer ob : obs) {
+
+	public void notifyObservers(Object t) {
+		for (Observer ob : obs) {
 			ob.update(this, t);
 		}
 	}
