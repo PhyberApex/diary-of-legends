@@ -3,8 +3,8 @@ package de.phyberapex.diaryoflegends.view;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import de.phyberapex.diaryoflegends.Observable;
 import de.phyberapex.diaryoflegends.controller.ItemController;
+import de.phyberapex.diaryoflegends.observer.Observable;
 
 public class ItemView extends JPanel implements View{
 

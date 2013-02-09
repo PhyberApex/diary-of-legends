@@ -13,9 +13,9 @@ import javax.swing.JTabbedPane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import de.phyberapex.diaryoflegends.Observable;
 import de.phyberapex.diaryoflegends.base.Constants;
 import de.phyberapex.diaryoflegends.controller.MainController;
+import de.phyberapex.diaryoflegends.observer.Observable;
 
 public class MainView extends JFrame implements View, Runnable {
 

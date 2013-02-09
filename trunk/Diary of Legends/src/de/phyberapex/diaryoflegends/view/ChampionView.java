@@ -12,9 +12,9 @@ import javax.swing.JTextField;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import de.phyberapex.diaryoflegends.Observable;
 import de.phyberapex.diaryoflegends.controller.ChampionController;
 import de.phyberapex.diaryoflegends.model.Champion;
+import de.phyberapex.diaryoflegends.observer.Observable;
 
 public class ChampionView extends JPanel implements View {
 
