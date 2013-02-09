@@ -1,8 +1,9 @@
 package de.phyberapex.diaryoflegends.view;
 
-import java.util.Observable;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import de.phyberapex.diaryoflegends.Observable;
 import de.phyberapex.diaryoflegends.controller.ItemController;
 
 public class ItemView extends JPanel implements View{

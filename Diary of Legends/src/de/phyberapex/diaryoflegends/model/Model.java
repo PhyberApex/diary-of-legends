@@ -1,6 +1,7 @@
 package de.phyberapex.diaryoflegends.model;
 
-import java.util.Observable;
+import de.phyberapex.diaryoflegends.Observable;
+
 
 public abstract class Model extends Observable {
 

@@ -1,6 +1,7 @@
 package de.phyberapex.diaryoflegends.view;
 
-import java.util.Observer;
+import de.phyberapex.diaryoflegends.Observer;
+
 
 public interface View extends Observer {
 

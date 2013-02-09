@@ -2,13 +2,13 @@ package de.phyberapex.diaryoflegends.view;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.util.Observable;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import de.phyberapex.diaryoflegends.Observable;
 import de.phyberapex.diaryoflegends.base.Initializer;
 import de.phyberapex.diaryoflegends.model.Summoner;
 
