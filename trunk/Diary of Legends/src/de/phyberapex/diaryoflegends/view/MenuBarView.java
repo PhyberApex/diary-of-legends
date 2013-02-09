@@ -1,15 +1,13 @@
 package de.phyberapex.diaryoflegends.view;
 
-import java.util.Observable;
-
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import de.phyberapex.diaryoflegends.ExitAction;
+import de.phyberapex.diaryoflegends.Observable;
 
 public class MenuBarView extends JMenuBar implements View{
 

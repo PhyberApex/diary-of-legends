@@ -4,7 +4,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.util.Observable;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -12,6 +11,8 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import de.phyberapex.diaryoflegends.Observable;
 import de.phyberapex.diaryoflegends.controller.ChampionController;
 import de.phyberapex.diaryoflegends.model.Champion;
 

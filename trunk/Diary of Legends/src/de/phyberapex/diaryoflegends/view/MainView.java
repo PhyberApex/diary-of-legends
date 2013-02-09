@@ -6,13 +6,14 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.Observable;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTabbedPane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import de.phyberapex.diaryoflegends.Observable;
 import de.phyberapex.diaryoflegends.base.Constants;
 import de.phyberapex.diaryoflegends.controller.MainController;
 

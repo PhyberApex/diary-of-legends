@@ -140,7 +140,8 @@ public class Config {
 			logger.debug("Creating a new instance of Config");
 			EmbeddedConfiguration configuration = Db4oEmbedded
 					.newConfiguration();
-			configuration.common().add(new UuidSupport());
+			configuration.common().objectClass(Observer.class).translate(new TNull());
+			configuration.common().objectClass(Observable.class).translate(new TNull());
 			dbHandle = Db4oEmbedded.openFile(configuration,
 					prop.getProperty("DATABASENAME"));
 		}
