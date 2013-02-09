@@ -7,7 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import de.phyberapex.diaryoflegends.ExitAction;
-import de.phyberapex.diaryoflegends.Observable;
+import de.phyberapex.diaryoflegends.observer.Observable;
 
 public class MenuBarView extends JMenuBar implements View{
 
