@@ -1,23 +1,20 @@
 package de.phyberapex.diaryoflegends.view;
 
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import de.phyberapex.diaryoflegends.controller.ChampionController;
-import de.phyberapex.diaryoflegends.extra.ImageIconFactory;
 import de.phyberapex.diaryoflegends.model.Champion;
 import de.phyberapex.diaryoflegends.model.util.ChampionUtil;
 import de.phyberapex.diaryoflegends.observer.Observable;
@@ -28,7 +25,9 @@ public class ChampionView extends JPanel implements View {
 	private ChampionController controller;
 	private JTextField searchTextField;
 	private JButton searchButton;
+	private JButton clearSearchButton;
 	private JButton newButton;
+	private JButton deleteButton;
 	private JScrollPane champTablePane;
 	private JTable championTable;
 	private GridBagConstraints constraints;
@@ -47,6 +46,7 @@ public class ChampionView extends JPanel implements View {
 		logger.trace("createGUI() - Entering");
 		this.setLayout(new GridBagLayout());
 		constraints = new GridBagConstraints();
+		constraints.gridwidth = 2;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.weightx = 1;
 		constraints.weighty = 0;
@@ -58,7 +58,7 @@ public class ChampionView extends JPanel implements View {
 		constraints = new GridBagConstraints();
 		constraints.weightx = 0;
 		constraints.weighty = 0;
-		constraints.gridx = 1;
+		constraints.gridx = 2;
 		constraints.gridy = 0;
 		logger.debug("Adding searchButton to panel with constraints: {}",
 				constraints);
@@ -66,18 +66,34 @@ public class ChampionView extends JPanel implements View {
 		constraints = new GridBagConstraints();
 		constraints.weightx = 0;
 		constraints.weighty = 0;
-		constraints.gridx = 2;
+		constraints.gridx = 3;
 		constraints.gridy = 0;
+		logger.debug("Adding clearSearchButton to panel with constraints: {}",
+				constraints);
+		this.add(getClearSearchButton(), constraints);
+		constraints = new GridBagConstraints();
+		constraints.weightx = 0;
+		constraints.weighty = 0;
+		constraints.gridx = 0;
+		constraints.gridy = 1;
 		logger.debug("Adding newButton to panel with constraints: {}",
 				constraints);
 		this.add(getNewButton(), constraints);
 		constraints = new GridBagConstraints();
+		constraints.weightx = 0;
+		constraints.weighty = 0;
+		constraints.gridx = 1;
+		constraints.gridy = 1;
+		logger.debug("Adding deleteButton to panel with constraints: {}",
+				constraints);
+		this.add(getDeleteButton(), constraints);
+		constraints = new GridBagConstraints();
 		constraints.fill = GridBagConstraints.BOTH;
-		constraints.gridwidth = 3;
+		constraints.gridwidth = 4;
 		constraints.weightx = 1;
 		constraints.weighty = 1;
 		constraints.gridx = 0;
-		constraints.gridy = 1;
+		constraints.gridy = 2;
 		logger.debug("Adding championTable to panel with constraints: {}",
 				constraints);
 		this.add(getChampTablePane(), constraints);
@@ -104,6 +120,23 @@ public class ChampionView extends JPanel implements View {
 		logger.debug("getSearchButton() - Returning: {}", searchButton);
 		return searchButton;
 	}
+	
+	private JButton getClearSearchButton() {
+		logger.trace("getClearSearchButton() - Entering");
+		if (clearSearchButton == null) {
+			clearSearchButton = new JButton("Clear Filter");
+			clearSearchButton.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					((Champion)championTable.getValueAt(1, 1)).setName("BLA");
+				}
+			});
+		}
+		logger.trace("getClearSearchButton() - Returning");
+		logger.debug("getClearSearchButton() - Returning: {}", clearSearchButton);
+		return clearSearchButton;
+	}
 
 	private JButton getNewButton() {
 		logger.trace("getNewButton() - Entering");
@@ -117,7 +150,7 @@ public class ChampionView extends JPanel implements View {
 					c.setName("test");
 					c.setIcon(new File("C:\\test.png"));
 					ChampionUtil.saveChampion(c);
-
+					((ChampionTableModel)championTable.getModel()).addChamp(c);
 				}
 			});
 		}
@@ -125,8 +158,33 @@ public class ChampionView extends JPanel implements View {
 		logger.debug("getNewButton() - Returning: {}", newButton);
 		return newButton;
 	}
+	
+	private JButton getDeleteButton() {
+		logger.trace("getDeleteButton() - Entering");
+		if (deleteButton == null) {
+			deleteButton = new JButton("delete Champion");
+			deleteButton.addActionListener(new ActionListener() {
 
-	private Component getChampTablePane() {
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					// TODO yes no option blablabal
+					Champion champ = (Champion)championTable.getValueAt(championTable.getSelectedRow(), 1);
+					String message = "Are you sure to delete: "+champ.getName()+"?";
+					String title = "Information";
+					int ok = JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION);
+					if(ok == JOptionPane.OK_OPTION){
+						ChampionUtil.deleteChampion(champ);
+						((ChampionTableModel)championTable.getModel()).removeChamp(champ);
+					}
+				}
+			});
+		}
+		logger.trace("getDeleteButton() - Returning");
+		logger.debug("getDeleteButton() - Returning: {}", deleteButton);
+		return deleteButton;
+	}
+
+	private JScrollPane getChampTablePane() {
 		logger.trace("getChampTablePane() - Entering");
 		if (champTablePane == null) {
 			champTablePane = new JScrollPane(getChampionTable());
@@ -136,15 +194,14 @@ public class ChampionView extends JPanel implements View {
 		return champTablePane;
 	}
 
-	private Component getChampionTable() {
+	private JTable getChampionTable() {
 		logger.trace("getChampionTable() - Entering");
 		if (championTable == null) {
 			championTable = new JTable();
 			ChampionTableModel m = new ChampionTableModel(
 					controller.getChampions());
 			championTable.setModel(m);
-			championTable.setDefaultRenderer(Object.class, new Renderer());
-			championTable.setPreferredSize(new Dimension(200, 300));
+			championTable.setDefaultRenderer(Object.class, new ChampionTableRenderer());
 		}
 		logger.trace("getChampionTable() - Returning");
 		logger.debug("getChampionTable() - Returning: {}", championTable);
@@ -153,11 +210,7 @@ public class ChampionView extends JPanel implements View {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		if (o instanceof Champion) {
-			// Champ wurde geändert
-		} else {
-			// Champ liste wurde geändert
-		}
+		((ChampionTableModel)championTable.getModel()).fireTableDataChanged();
 	}
 
 }

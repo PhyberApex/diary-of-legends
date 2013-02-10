@@ -14,6 +14,16 @@ public class ChampionTableModel extends AbstractTableModel {
 	public ChampionTableModel(List<Champion> models) {
 		this.champs = models;
 	}
+	
+	public void addChamp(Champion champ){
+		champs.add(champ);
+		fireTableRowsInserted(champs.size()-1, champs.size()-1);
+	}
+	
+	public void removeChamp(Champion champ){
+		champs.remove(champ);
+		fireTableRowsDeleted(1, 1);
+	}
 
 	@Override
 	public int getColumnCount() {
@@ -31,7 +41,7 @@ public class ChampionTableModel extends AbstractTableModel {
 		case 0:
 			return champs.get(rowIndex).getIcon();
 		case 1:
-			return champs.get(rowIndex).getName();
+			return champs.get(rowIndex);
 		default:
 			return null;
 		}
@@ -50,10 +60,10 @@ public class ChampionTableModel extends AbstractTableModel {
 
 	@Override
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
-		if (columnIndex == 0) {
-			return false;
+		if (columnIndex == 1) {
+			return true;
 		}
-		return true;
+		return false;
 	}
 	
 	@Override
