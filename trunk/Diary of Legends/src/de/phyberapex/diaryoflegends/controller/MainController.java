@@ -27,7 +27,7 @@ public class MainController{
 
 	private Splash splash;
 	private MainView mainView;
-	private Logger logger = LogManager
+	transient private Logger logger = LogManager
 			.getLogger(MainController.class.getName());
 
 	public MainController(){

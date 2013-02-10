@@ -23,7 +23,7 @@ public class GameUtil {
 
 	private static ObjectContainer dbHandle = Config.getInstance()
 			.getDBHandle();
-	private static Logger logger = LogManager.getLogger(GameUtil.class
+	transient private static Logger logger = LogManager.getLogger(GameUtil.class
 			.getName());
 
 	/**

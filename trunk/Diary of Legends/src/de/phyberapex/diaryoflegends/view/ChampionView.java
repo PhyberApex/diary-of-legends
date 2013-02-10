@@ -120,21 +120,22 @@ public class ChampionView extends JPanel implements View {
 		logger.debug("getSearchButton() - Returning: {}", searchButton);
 		return searchButton;
 	}
-	
+
 	private JButton getClearSearchButton() {
 		logger.trace("getClearSearchButton() - Entering");
 		if (clearSearchButton == null) {
 			clearSearchButton = new JButton("Clear Filter");
 			clearSearchButton.addActionListener(new ActionListener() {
-				
+
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
-					((Champion)championTable.getValueAt(1, 1)).setName("BLA");
+					((Champion) championTable.getValueAt(1, 1)).setName("BLA");
 				}
 			});
 		}
 		logger.trace("getClearSearchButton() - Returning");
-		logger.debug("getClearSearchButton() - Returning: {}", clearSearchButton);
+		logger.debug("getClearSearchButton() - Returning: {}",
+				clearSearchButton);
 		return clearSearchButton;
 	}
 
@@ -146,11 +147,9 @@ public class ChampionView extends JPanel implements View {
 
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
-					Champion c = new Champion();
-					c.setName("test");
-					c.setIcon(new File("C:\\test.png"));
+					Champion c = new Champion("test", new File("C:\\test.png"));
 					ChampionUtil.saveChampion(c);
-					((ChampionTableModel)championTable.getModel()).addChamp(c);
+					((ChampionTableModel) championTable.getModel()).addChamp(c);
 				}
 			});
 		}
@@ -158,7 +157,7 @@ public class ChampionView extends JPanel implements View {
 		logger.debug("getNewButton() - Returning: {}", newButton);
 		return newButton;
 	}
-	
+
 	private JButton getDeleteButton() {
 		logger.trace("getDeleteButton() - Entering");
 		if (deleteButton == null) {
@@ -168,13 +167,17 @@ public class ChampionView extends JPanel implements View {
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
 					// TODO yes no option blablabal
-					Champion champ = (Champion)championTable.getValueAt(championTable.getSelectedRow(), 1);
-					String message = "Are you sure to delete: "+champ.getName()+"?";
+					Champion champ = (Champion) championTable.getValueAt(
+							championTable.getSelectedRow(), 1);
+					String message = "Are you sure to delete: "
+							+ champ.getName() + "?";
 					String title = "Information";
-					int ok = JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION);
-					if(ok == JOptionPane.OK_OPTION){
+					int ok = JOptionPane.showConfirmDialog(null, message,
+							title, JOptionPane.YES_NO_OPTION);
+					if (ok == JOptionPane.OK_OPTION) {
 						ChampionUtil.deleteChampion(champ);
-						((ChampionTableModel)championTable.getModel()).removeChamp(champ);
+						((ChampionTableModel) championTable.getModel())
+								.removeChamp(champ);
 					}
 				}
 			});
@@ -201,7 +204,8 @@ public class ChampionView extends JPanel implements View {
 			ChampionTableModel m = new ChampionTableModel(
 					controller.getChampions());
 			championTable.setModel(m);
-			championTable.setDefaultRenderer(Object.class, new ChampionTableRenderer());
+			championTable.setDefaultRenderer(Object.class,
+					new ChampionTableRenderer());
 		}
 		logger.trace("getChampionTable() - Returning");
 		logger.debug("getChampionTable() - Returning: {}", championTable);
@@ -210,7 +214,7 @@ public class ChampionView extends JPanel implements View {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		((ChampionTableModel)championTable.getModel()).fireTableDataChanged();
+		((ChampionTableModel) championTable.getModel()).fireTableDataChanged();
 	}
 
 }

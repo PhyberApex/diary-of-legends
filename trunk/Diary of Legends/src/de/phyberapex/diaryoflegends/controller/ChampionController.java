@@ -7,14 +7,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import de.phyberapex.diaryoflegends.model.Champion;
-import de.phyberapex.diaryoflegends.model.Model;
 import de.phyberapex.diaryoflegends.model.util.ChampionUtil;
 import de.phyberapex.diaryoflegends.view.ChampionView;
 
 public class ChampionController extends Controller {
 
 	private List<Champion> champions = new ArrayList<Champion>();
-	private static Logger logger = LogManager
+	transient private static Logger logger = LogManager
 			.getLogger(ChampionController.class.getName());
 
 	public ChampionController(MainController mainController) {

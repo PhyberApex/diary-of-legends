@@ -22,37 +22,34 @@ import de.phyberapex.diaryoflegends.model.util.ChampionUtil;
 
 public class Test {
 
-	public static void main(String[] args){
-		EmbeddedConfiguration configuration = Db4oEmbedded
-				.newConfiguration();
+	public static void main(String[] args) {
+		EmbeddedConfiguration configuration = Db4oEmbedded.newConfiguration();
 		ObjectContainer dbHandle = Db4oEmbedded.openFile(configuration,
 				"db\\test.tb");
-		
-		Champion c = new Champion();
-		c.setName("Hello");
-		c.setIcon(new File("C:\\test.png"));
+
+		Champion c = new Champion("Hallo", new File("C:\\test.png"));
 		dbHandle.store(c);
-		
+
 		Item i = new Item();
 		i.setPrice(200);
 		dbHandle.store(i);
-		
+
 		Summoner s = new Summoner("Hi", null);
 		dbHandle.store(s);
-		
-		ObjectSet<Champion> set = dbHandle.query(new Predicate<Champion>(){
+
+		ObjectSet<Champion> set = dbHandle.query(new Predicate<Champion>() {
 
 			@Override
 			public boolean match(Champion arg0) {
 				return true;
 			}
-			
+
 		});
-		Iterator<Champion> it = set.iterator(); 
+		Iterator<Champion> it = set.iterator();
 		while (it.hasNext()) {
 			System.out.println(it.next().getName());
 		}
-		
+
 		dbHandle.close();
 	}
 }
