@@ -2,6 +2,10 @@ package de.phyberapex.diaryoflegends.view;
 
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import de.phyberapex.diaryoflegends.model.Champion;
 import de.phyberapex.diaryoflegends.model.util.ChampionUtil;
 
@@ -10,7 +14,8 @@ public class ChampionTableModel extends AbstractTableModel {
 	private static final long serialVersionUID = 6832182630678830128L;
 	private List<Champion> champs;
 	private String[] columnNames = new String[] {"Picture", "Name" };
-
+	transient private static Logger logger = LogManager.getLogger(ChampionTableModel.class.getName());
+	
 	public ChampionTableModel(List<Champion> models) {
 		this.champs = models;
 	}

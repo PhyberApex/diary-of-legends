@@ -20,10 +20,12 @@ public class Constants {
 	private static final String APP_VERSION = "0.1";
 	private static final String APP_AUTHOR = "PhyberApex";
 	private static final String RESOURCE_PATH = "/de/phyberapex/diaryoflegends/resource/";
-	private static Logger logger = LogManager.getLogger(Constants.class.getName());
+	transient private static Logger logger = LogManager
+			.getLogger(Constants.class.getName());
 
 	/**
 	 * Returns the name of the application
+	 * 
 	 * @return {@link String} name of the application
 	 */
 	public static String getAppName() {
@@ -35,6 +37,7 @@ public class Constants {
 
 	/**
 	 * Returns the version of the application
+	 * 
 	 * @return {@link String} version of the application
 	 */
 	public static String getAppVersion() {
@@ -46,6 +49,7 @@ public class Constants {
 
 	/**
 	 * Returns the author of the application
+	 * 
 	 * @return {@link String} author of the application
 	 */
 	public static String getAppAuthor() {
@@ -57,6 +61,7 @@ public class Constants {
 
 	/**
 	 * Returns the path for using resource files within the jar
+	 * 
 	 * @return {@link String} path to the resource package
 	 */
 	public static String getResourcePath() {
@@ -68,6 +73,7 @@ public class Constants {
 
 	/**
 	 * Returns the name of the application
+	 * 
 	 * @return {@link String} the current date
 	 */
 	public static String getDate() {
@@ -95,7 +101,9 @@ public class Constants {
 
 	/**
 	 * Returns the content of a textfile within the jar
-	 * @param path {@link String} path to file
+	 * 
+	 * @param path
+	 *            {@link String} path to file
 	 * @return {@link String} content of the file
 	 */
 	public static String readInternTextFileToString(String path) {

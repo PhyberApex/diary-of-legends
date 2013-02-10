@@ -13,7 +13,7 @@ public abstract class Controller {
 	protected List<Model> models = new ArrayList<Model>();
 	protected View view;
 	protected MainController mainController;
-	private static Logger logger = LogManager.getLogger(Controller.class
+	transient private static Logger logger = LogManager.getLogger(Controller.class
 			.getName());
 
 	

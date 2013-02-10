@@ -10,7 +10,7 @@ public class Summoner extends Model {
 
 	private String name;
 	private List<Game> games = new ArrayList<Game>();
-	private static Logger logger = LogManager.getLogger(Summoner.class
+	transient private static Logger logger = LogManager.getLogger(Summoner.class
 			.getName());
 
 	public Summoner(String name, List<Game> games){

@@ -12,7 +12,7 @@ import de.phyberapex.diaryoflegends.base.Constants;
 
 public class ImageIconFactory {
 
-	private static Logger logger = LogManager.getLogger(ImageIconFactory.class
+	transient private static Logger logger = LogManager.getLogger(ImageIconFactory.class
 			.getName());
 
 	/**

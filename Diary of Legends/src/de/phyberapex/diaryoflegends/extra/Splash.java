@@ -13,7 +13,7 @@ public class Splash extends JWindow {
 	private static final long serialVersionUID = 1L;
 	private JProgressBar progress;
 	private Image imageSplash, imageBackground;
-	private static Logger logger = LogManager.getLogger(Splash.class.getName());
+	transient private static Logger logger = LogManager.getLogger(Splash.class.getName());
 
 	private class UpdateStatus implements Runnable {
 		public UpdateStatus(String status, int pc) {

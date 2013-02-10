@@ -22,7 +22,7 @@ public class Config {
 	private static Config instance;
 	private Properties prop;
 	private ObjectContainer dbHandle;
-	private static Logger logger = LogManager.getLogger(Config.class.getName());
+	transient private static Logger logger = LogManager.getLogger(Config.class.getName());
 
 	private Config() {
 		logger.trace("Config() - Entering");

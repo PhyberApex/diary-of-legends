@@ -2,13 +2,10 @@ package de.phyberapex.diaryoflegends.base;
 
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import de.phyberapex.diaryoflegends.controller.MainController;
 import de.phyberapex.diaryoflegends.exception.InitializeException;
-import de.phyberapex.diaryoflegends.model.Champion;
 
 /**
  * Class to initialize the application on the start
@@ -17,7 +14,7 @@ import de.phyberapex.diaryoflegends.model.Champion;
 public class Initializer {
 
 	private static Initializer instance;
-	private static Logger logger = LogManager.getLogger(MainController.class
+	transient private static Logger logger = LogManager.getLogger(MainController.class
 			.getName());
 
 	/**
