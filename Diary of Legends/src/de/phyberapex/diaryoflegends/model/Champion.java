@@ -21,11 +21,18 @@ public class Champion extends Model {
 	}
 	public void setName(String name) {
 		this.name = name;
+		notifyObservers(null);
 	}
 	public ImageIcon getIcon() {
 		return ConvertImage.convertByteArrayToImageIcon(icon);
 	}
 	public void setIcon(File file) {
 		this.icon = ConvertImage.convertFileToByteArray(file);
+		notifyObservers(null);
+	}
+	
+	@Override
+	public String toString(){
+		return this.getName();
 	}
 }

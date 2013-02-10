@@ -44,7 +44,7 @@ public class ChampionUtil {
 				return true;
 			}
 		});
-		Iterator<Champion> i = set.iterator(); 
+		Iterator<Champion> i = set.iterator();
 		while (i.hasNext()) {
 			returnValue.add(i.next());
 		}
@@ -63,6 +63,18 @@ public class ChampionUtil {
 		logger.debug("Parameter {}", champ);
 		dbHandle.store(champ);
 		logger.trace("saveChampion() - Leaving");
+	}
+
+	/**
+	 * Saves the champion given in the database
+	 * 
+	 * @param {@link Champion} champ
+	 */
+	public static void deleteChampion(Champion champ) {
+		logger.trace("deleteChampion() - Entering");
+		logger.debug("Parameter {}", champ);
+		dbHandle.delete(champ);
+		logger.trace("deleteChampion() - Leaving");
 	}
 
 }
