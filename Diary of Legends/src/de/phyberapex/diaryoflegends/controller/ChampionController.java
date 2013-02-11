@@ -38,6 +38,10 @@ public class ChampionController extends Controller {
 		logger.trace("loadData() - Leaving");
 	}
 
+	/**
+	 * Returns all champions
+	 * @return {@link List<Champion>} A list with all champions
+	 */
 	public List<Champion> getChampions() {
 		logger.trace("getChampions() - Entering");
 		logger.trace("getChampions() - Returning");

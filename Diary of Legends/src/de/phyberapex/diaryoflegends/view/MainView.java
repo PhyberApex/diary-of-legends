@@ -55,7 +55,7 @@ public class MainView extends JFrame implements View, Runnable {
 
 	public void setMainController(MainController controller) {
 		logger.trace("setMainController() - Entering");
-		logger.debug("Parameter {}", controller);
+		logger.debug("setMainController() - Parameter {}", controller);
 		this.controller = controller;
 		logger.trace("setMainController() - Leaving");
 	}
@@ -68,7 +68,7 @@ public class MainView extends JFrame implements View, Runnable {
 			instance = new MainView();
 		}
 		logger.trace("getInstance() - Returning");
-		logger.debug("Returned {}", instance);
+		logger.debug("getInstance() - Returning {}", instance);
 		return instance;
 	}
 
@@ -78,7 +78,7 @@ public class MainView extends JFrame implements View, Runnable {
 			menu = new MenuBarView();
 		}
 		logger.trace("getMenuBarView() - Returning");
-		logger.debug("Returned {}", menu);
+		logger.debug("getMenuBarView() - Returning {}", menu);
 		return menu;
 	}
 
@@ -93,7 +93,7 @@ public class MainView extends JFrame implements View, Runnable {
 			contentPane.addTab("Items", null);
 		}
 		logger.trace("getContentTabbedPane() - Returning");
-		logger.debug("Returned {}", contentPane);
+		logger.debug("getContentTabbedPane() - Returning {}", contentPane);
 		return contentPane;
 	}
 
@@ -104,7 +104,7 @@ public class MainView extends JFrame implements View, Runnable {
 			statusLabel.setBorder(BorderFactory.createBevelBorder(1));
 		}
 		logger.trace("getStatusLabel() - Returning");
-		logger.debug("Returned {}", statusLabel);
+		logger.debug("getStatusLabel() - Returning {}", statusLabel);
 		return statusLabel;
 	}
 
@@ -119,17 +119,17 @@ public class MainView extends JFrame implements View, Runnable {
 		getContentTabbedPane().setComponentAt(0, comp);
 		logger.trace("setGamesPanel() - Leaving");
 	}
-	
+
 	public void setChampPanel(ChampionView comp) {
 		logger.trace("setChampPanel() - Entering");
-		logger.debug("Parameter: {}", comp);
+		logger.debug("setChampPanel() - Parameter: {}", comp);
 		getContentTabbedPane().setComponentAt(3, comp);
 		logger.trace("setChampPanel() - Leaving");
 	}
 
 	public void setItemPanel(ItemView comp) {
 		logger.trace("setItemPanel() - Entering");
-		logger.debug("Parameter: {}", comp);
+		logger.debug("setItemPanel() - Parameter: {}", comp);
 		getContentTabbedPane().setComponentAt(4, comp);
 		logger.trace("setItemPanel() - Leaving");
 	}
@@ -144,6 +144,9 @@ public class MainView extends JFrame implements View, Runnable {
 	}
 
 	public void setStatusText(String text) {
-
+		logger.trace("setStatusText() - Entering");
+		logger.debug("setStatusText() - Parameter: {}", text);
+		statusLabel.setText(text);
+		logger.trace("setStatusText() - Leaving");
 	}
 }

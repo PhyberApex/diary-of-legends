@@ -5,7 +5,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
+import java.util.List;
+
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -30,6 +31,7 @@ public class ChampionView extends JPanel implements View {
 	private JButton deleteButton;
 	private JScrollPane champTablePane;
 	private JTable championTable;
+	NewChampionDialoge newChampionDialoge = new NewChampionDialoge(this);
 	private GridBagConstraints constraints;
 	private static Logger logger = LogManager.getLogger(ChampionView.class
 			.getName());
@@ -105,6 +107,13 @@ public class ChampionView extends JPanel implements View {
 		if (searchTextField == null) {
 			searchTextField = new JTextField();
 			searchTextField.setPreferredSize(new Dimension(150, 30));
+			searchTextField.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					getSearchButton().doClick();
+				}
+			});
 		}
 		logger.trace("getSearchTextfield() - Returning");
 		logger.debug("getSearchTextfield() - Returning: {}", searchTextField);
@@ -115,6 +124,18 @@ public class ChampionView extends JPanel implements View {
 		logger.trace("getSearchButton() - Entering");
 		if (searchButton == null) {
 			searchButton = new JButton("Search");
+			searchButton.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					List<Champion> champs = ChampionUtil
+							.searchChampionByName(searchTextField.getText());
+					MainView.getInstance().setStatusText(
+							champs.size() + " Search results");
+					((ChampionTableModel) championTable.getModel())
+							.setChamps(champs);
+				}
+			});
 		}
 		logger.trace("getSearchButton() - Returning");
 		logger.debug("getSearchButton() - Returning: {}", searchButton);
@@ -129,7 +150,8 @@ public class ChampionView extends JPanel implements View {
 
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
-					((Champion) championTable.getValueAt(1, 1)).setName("BLA");
+					((ChampionTableModel) championTable.getModel())
+							.setChamps(controller.getChampions());
 				}
 			});
 		}
@@ -147,9 +169,7 @@ public class ChampionView extends JPanel implements View {
 
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
-					Champion c = new Champion("test", new File("C:\\test.png"));
-					ChampionUtil.saveChampion(c);
-					((ChampionTableModel) championTable.getModel()).addChamp(c);
+					newChampionDialoge.setVisible(true);
 				}
 			});
 		}
@@ -166,18 +186,25 @@ public class ChampionView extends JPanel implements View {
 
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
-					// TODO yes no option blablabal
-					Champion champ = (Champion) championTable.getValueAt(
-							championTable.getSelectedRow(), 1);
-					String message = "Are you sure to delete: "
-							+ champ.getName() + "?";
-					String title = "Information";
-					int ok = JOptionPane.showConfirmDialog(null, message,
-							title, JOptionPane.YES_NO_OPTION);
-					if (ok == JOptionPane.OK_OPTION) {
-						ChampionUtil.deleteChampion(champ);
-						((ChampionTableModel) championTable.getModel())
-								.removeChamp(champ);
+					if (championTable.getSelectedRow() != -1) {
+						Champion champ = (Champion) championTable.getValueAt(
+								championTable.getSelectedRow(), 1);
+						String message = "Are you sure to delete: "
+								+ champ.getName() + "?";
+						String title = "Information";
+						int ok = JOptionPane.showConfirmDialog(null, message,
+								title, JOptionPane.YES_NO_OPTION);
+						if (ok == JOptionPane.OK_OPTION) {
+							ChampionUtil.deleteChampion(champ);
+							((ChampionTableModel) championTable.getModel())
+									.removeChamp(champ);
+							MainView.getInstance().setStatusText(
+									"Champion " + champ + " removed");
+						}
+					} else {
+						// TODO schöner!
+						JOptionPane.showMessageDialog(MainView.getInstance(),
+								"No Champion selected");
 					}
 				}
 			});
@@ -210,6 +237,13 @@ public class ChampionView extends JPanel implements View {
 		logger.trace("getChampionTable() - Returning");
 		logger.debug("getChampionTable() - Returning: {}", championTable);
 		return championTable;
+	}
+
+	public void addChamp(Champion c) {
+		logger.trace("addChamp() - Entering");
+		logger.debug("addChamp() - Parameter: {}", c);
+		((ChampionTableModel) championTable.getModel()).addChamp(c);
+		logger.trace("addChamp() - Leaving");
 	}
 
 	@Override
