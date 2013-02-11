@@ -24,13 +24,14 @@ public class ChampionUtil {
 
 	private static ObjectContainer dbHandle = Config.getInstance()
 			.getDBHandle();
-	transient private static Logger logger = LogManager.getLogger(GameUtil.class
-			.getName());
+	transient private static Logger logger = LogManager
+			.getLogger(GameUtil.class.getName());
 
 	/**
 	 * Return all champions currently stored in the database
 	 * 
-	 * @return {@link Iterator} Iterator for all champions in the database
+	 * @return {@link List<Champion>} A list containing all champions in the
+	 *         database
 	 */
 	public static List<Champion> getAllChampions() {
 		logger.trace("getAllChampions() - Entering");
@@ -49,7 +50,7 @@ public class ChampionUtil {
 			returnValue.add(i.next());
 		}
 		logger.trace("getAllChampions() - Returning");
-		logger.debug("Return {}", returnValue);
+		logger.debug("getAllChampions() - Returning {}", returnValue);
 		return returnValue;
 	}
 
@@ -60,7 +61,7 @@ public class ChampionUtil {
 	 */
 	public static void saveChampion(Champion champ) {
 		logger.trace("saveChampion() - Entering");
-		logger.debug("Parameter {}", champ);
+		logger.debug("saveChampion() - Parameter {}", champ);
 		dbHandle.store(champ);
 		logger.trace("saveChampion() - Leaving");
 	}
@@ -72,9 +73,42 @@ public class ChampionUtil {
 	 */
 	public static void deleteChampion(Champion champ) {
 		logger.trace("deleteChampion() - Entering");
-		logger.debug("Parameter {}", champ);
+		logger.debug("deleteChampion() - Parameter {}", champ);
 		dbHandle.delete(champ);
 		logger.trace("deleteChampion() - Leaving");
 	}
 
+	/**
+	 * Returns a {@link List} with champions that have the given string in their
+	 * name
+	 * 
+	 * @param text
+	 *            {@link String}
+	 * @return {@link List<Champion>}
+	 */
+	public static List<Champion> searchChampionByName(final String text) {
+		logger.trace("searchChampionByName() - Entering");
+		logger.debug("searchChampionByName() - Parameter: {}", text);
+		List<Champion> returnValue = new ArrayList<Champion>();
+		ObjectSet<Champion> set = dbHandle.query(new Predicate<Champion>() {
+
+			private static final long serialVersionUID = -6535736734146443615L;
+
+			@Override
+			public boolean match(Champion arg0) {
+				if (arg0.getName().toLowerCase().contains(text.toLowerCase())) {
+					return true;
+				} else {
+					return false;
+				}
+			}
+		});
+		Iterator<Champion> i = set.iterator();
+		while (i.hasNext()) {
+			returnValue.add(i.next());
+		}
+		logger.trace("searchChampionByName() - Returning");
+		logger.debug("searchChampionByName() - Returning {}", returnValue);
+		return returnValue;
+	}
 }

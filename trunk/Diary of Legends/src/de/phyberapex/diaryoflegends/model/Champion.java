@@ -23,6 +23,9 @@ public class Champion extends Model {
 		logger.trace("Champion() - Leaving");
 	}
 
+	public Champion() {
+	}
+
 	/**
 	 * Returns the name of this champion
 	 * 
@@ -77,7 +80,7 @@ public class Champion extends Model {
 	}
 
 	/**
-	 * Returns a String representation of this Champion
+	 * Returns a string representation of this Champion
 	 * 
 	 * @return {@link String} The string representation
 	 */

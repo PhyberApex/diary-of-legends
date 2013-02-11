@@ -20,6 +20,11 @@ public class ChampionTableModel extends AbstractTableModel {
 		this.champs = models;
 	}
 	
+	public void setChamps(List<Champion> champs){
+		this.champs = champs;
+		fireTableDataChanged();
+	}
+	
 	public void addChamp(Champion champ){
 		champs.add(champ);
 		fireTableRowsInserted(champs.size()-1, champs.size()-1);
