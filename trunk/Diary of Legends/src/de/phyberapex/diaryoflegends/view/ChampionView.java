@@ -44,6 +44,9 @@ public class ChampionView extends JPanel implements View {
 		logger.trace("ChampionView() - Leaving");
 	}
 
+	/**
+	 * Creates the GUI
+	 */
 	private void createGUI() {
 		logger.trace("createGUI() - Entering");
 		this.setLayout(new GridBagLayout());
@@ -102,6 +105,11 @@ public class ChampionView extends JPanel implements View {
 		logger.trace("createGUI() - Leaving");
 	}
 
+	/**
+	 * Returns the searchTextfield
+	 * 
+	 * @return {@link JTextField} The searchTextfield
+	 */
 	private JTextField getSearchTextfield() {
 		logger.trace("getSearchTextfield() - Entering");
 		if (searchTextField == null) {
@@ -120,6 +128,11 @@ public class ChampionView extends JPanel implements View {
 		return searchTextField;
 	}
 
+	/**
+	 * Returns the searchButton
+	 * 
+	 * @return {@link JButton} The searchButton
+	 */
 	private JButton getSearchButton() {
 		logger.trace("getSearchButton() - Entering");
 		if (searchButton == null) {
@@ -128,8 +141,7 @@ public class ChampionView extends JPanel implements View {
 
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
-					List<Champion> champs = ChampionUtil
-							.searchChampionByName(searchTextField.getText());
+					List<Champion> champs = controller.searchChampions(searchTextField.getText());
 					MainView.getInstance().setStatusText(
 							champs.size() + " Search results");
 					((ChampionTableModel) championTable.getModel())
@@ -142,6 +154,11 @@ public class ChampionView extends JPanel implements View {
 		return searchButton;
 	}
 
+	/**
+	 * Returns the clearSearchButton
+	 * 
+	 * @return {@link JButton} The clearSearchButton
+	 */
 	private JButton getClearSearchButton() {
 		logger.trace("getClearSearchButton() - Entering");
 		if (clearSearchButton == null) {
@@ -161,6 +178,11 @@ public class ChampionView extends JPanel implements View {
 		return clearSearchButton;
 	}
 
+	/**
+	 * Returns the newButton
+	 * 
+	 * @return {@link JButton} The newButton
+	 */
 	private JButton getNewButton() {
 		logger.trace("getNewButton() - Entering");
 		if (newButton == null) {
@@ -178,6 +200,11 @@ public class ChampionView extends JPanel implements View {
 		return newButton;
 	}
 
+	/**
+	 * Returns the deleteButton
+	 * 
+	 * @return {@link JButton} The deleteButton
+	 */
 	private JButton getDeleteButton() {
 		logger.trace("getDeleteButton() - Entering");
 		if (deleteButton == null) {
@@ -214,6 +241,11 @@ public class ChampionView extends JPanel implements View {
 		return deleteButton;
 	}
 
+	/**
+	 * Returns the champTablePane
+	 * 
+	 * @return {@link JScrollPane} The champTablePane
+	 */
 	private JScrollPane getChampTablePane() {
 		logger.trace("getChampTablePane() - Entering");
 		if (champTablePane == null) {
@@ -224,6 +256,11 @@ public class ChampionView extends JPanel implements View {
 		return champTablePane;
 	}
 
+	/**
+	 * Returns the championTable
+	 * 
+	 * @return {@link JTable} The championTable
+	 */
 	private JTable getChampionTable() {
 		logger.trace("getChampionTable() - Entering");
 		if (championTable == null) {
@@ -239,10 +276,16 @@ public class ChampionView extends JPanel implements View {
 		return championTable;
 	}
 
-	public void addChamp(Champion c) {
+	/**
+	 * Adds a new champion
+	 * 
+	 * @param champ
+	 *            The {@link Champion champion} to add
+	 */
+	public void addChamp(Champion champ) {
 		logger.trace("addChamp() - Entering");
-		logger.debug("addChamp() - Parameter: {}", c);
-		((ChampionTableModel) championTable.getModel()).addChamp(c);
+		logger.debug("addChamp() - Parameter: {}", champ);
+		((ChampionTableModel) championTable.getModel()).addChamp(champ);
 		logger.trace("addChamp() - Leaving");
 	}
 
@@ -250,5 +293,4 @@ public class ChampionView extends JPanel implements View {
 	public void update(Observable o, Object arg) {
 		((ChampionTableModel) championTable.getModel()).fireTableDataChanged();
 	}
-
 }

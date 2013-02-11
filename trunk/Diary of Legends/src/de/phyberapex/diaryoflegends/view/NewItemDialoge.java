@@ -6,7 +6,6 @@ import java.awt.GridBagLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -16,38 +15,38 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import de.phyberapex.diaryoflegends.extra.ImageIconFactory;
-import de.phyberapex.diaryoflegends.model.Champion;
-import de.phyberapex.diaryoflegends.model.util.ChampionUtil;
+import de.phyberapex.diaryoflegends.model.Item;
+import de.phyberapex.diaryoflegends.model.util.ItemUtil;
 
-public class NewChampionDialoge extends JDialog {
+public class NewItemDialoge extends JDialog {
 
 	private static final long serialVersionUID = -1135250312216796819L;
-	private Champion champ = new Champion();
+	private Item item = new Item();
 	private boolean iconOk = false;
 	private JLabel nameLabel;
-	private JLabel iconLabel;
 	private JTextField nameTextField;
+	private JLabel priceLabel;
+	private JTextField priceTextField;
+	private JLabel iconLabel;
 	private JButton iconFileButton;
 	private JFileChooser iconFileChooser;
 	private JButton okayButton;
 	private JButton cancelButton;
 	private JLabel iconPreviewLabel;
 	private GridBagConstraints constraints;
-	private ChampionView champview;
+	private ItemView itemView;
 	private JPanel contentPanel = new JPanel();
 	private static Logger logger = LogManager
 			.getLogger(NewChampionDialoge.class.getName());
 
-	public NewChampionDialoge(ChampionView champview) {
+	public NewItemDialoge(ItemView itemview) {
 		super(MainView.getInstance());
 		logger.trace("NewChampionDialoge() - Entering");
-		logger.debug("NewChampionDialoge() - Parameter: {}", champview);
-		this.champview = champview;
+		logger.debug("NewChampionDialoge() - Parameter: {}", itemview);
+		this.itemView = itemview;
 		this.setModal(true);
 
 		contentPanel.setLayout(new GridBagLayout());
@@ -62,33 +61,45 @@ public class NewChampionDialoge extends JDialog {
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		contentPanel.add(getNameTextField(), constraints);
 
+		contentPanel.setLayout(new GridBagLayout());
 		constraints = new GridBagConstraints();
-		constraints.anchor = GridBagConstraints.EAST;
 		constraints.gridx = 0;
 		constraints.gridy = 1;
-		contentPanel.add(getIconLabel(), constraints);
+		contentPanel.add(getPriceLabel(), constraints);
 
 		constraints = new GridBagConstraints();
 		constraints.gridx = 1;
 		constraints.gridy = 1;
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		contentPanel.add(getPriceTextField(), constraints);
+
+		constraints = new GridBagConstraints();
+		constraints.anchor = GridBagConstraints.EAST;
+		constraints.gridx = 0;
+		constraints.gridy = 2;
+		contentPanel.add(getIconLabel(), constraints);
+
+		constraints = new GridBagConstraints();
+		constraints.gridx = 1;
+		constraints.gridy = 2;
 		contentPanel.add(getIconFileButton(), constraints);
 
 		constraints = new GridBagConstraints();
 		constraints.gridx = 0;
-		constraints.gridy = 2;
+		constraints.gridy = 3;
 		constraints.gridwidth = 2;
 		contentPanel.add(getIconPreviewLabel(), constraints);
 
 		constraints = new GridBagConstraints();
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridx = 0;
-		constraints.gridy = 3;
+		constraints.gridy = 4;
 		contentPanel.add(getOkayButton(), constraints);
 
 		constraints = new GridBagConstraints();
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridx = 1;
-		constraints.gridy = 3;
+		constraints.gridy = 4;
 		contentPanel.add(getCancelButton(), constraints);
 
 		this.add(contentPanel);
@@ -102,21 +113,11 @@ public class NewChampionDialoge extends JDialog {
 	public JLabel getNameLabel() {
 		logger.trace("getNameLabel() - Entering");
 		if (nameLabel == null) {
-			nameLabel = new JLabel("Champion name:");
+			nameLabel = new JLabel("Item Name:");
 		}
 		logger.trace("getNameLabel() - Returning");
 		logger.debug("getNameLabel() - Returning: {}", nameLabel);
 		return nameLabel;
-	}
-
-	public JLabel getIconLabel() {
-		logger.trace("getIconLabel() - Entering");
-		if (iconLabel == null) {
-			iconLabel = new JLabel("Icon:");
-		}
-		logger.trace("getIconLabel() - Returning");
-		logger.debug("getIconLabel() - Returning: {}", iconLabel);
-		return iconLabel;
 	}
 
 	public JTextField getNameTextField() {
@@ -127,6 +128,36 @@ public class NewChampionDialoge extends JDialog {
 		logger.trace("getNameTextField() - Returning");
 		logger.debug("getNameTextField() - Returning: {}", nameTextField);
 		return nameTextField;
+	}
+
+	public JLabel getPriceLabel() {
+		logger.trace("getPriceLabel() - Entering");
+		if (priceLabel == null) {
+			priceLabel = new JLabel("Item price:");
+		}
+		logger.trace("getPriceLabel() - Returning");
+		logger.debug("getPriceLabel() - Returning: {}", priceLabel);
+		return priceLabel;
+	}
+
+	public JTextField getPriceTextField() {
+		logger.trace("getPriceField() - Entering");
+		if (priceTextField == null) {
+			priceTextField = new JTextField();
+		}
+		logger.trace("getPriceField() - Returning");
+		logger.debug("getPriceField() - Returning: {}", priceTextField);
+		return priceTextField;
+	}
+
+	public JLabel getIconLabel() {
+		logger.trace("getIconLabel() - Entering");
+		if (iconLabel == null) {
+			iconLabel = new JLabel("Icon:");
+		}
+		logger.trace("getIconLabel() - Returning");
+		logger.debug("getIconLabel() - Returning: {}", iconLabel);
+		return iconLabel;
 	}
 
 	public JButton getIconFileButton() {
@@ -146,8 +177,7 @@ public class NewChampionDialoge extends JDialog {
 						if (icon.getIconHeight() <= 60
 								&& icon.getIconWidth() <= 60) {
 							getIconPreviewLabel().setIcon(icon);
-							champ.setIcon(getIconFileChooser()
-									.getSelectedFile());
+							item.setIcon(getIconFileChooser().getSelectedFile());
 							iconOk = true;
 						} else {
 							// TODO SCHÖNER"!
@@ -190,23 +220,30 @@ public class NewChampionDialoge extends JDialog {
 							getIconFileChooser().getSelectedFile(),
 							getNameTextField().getText());
 					if (iconOk) {
-						if (!getNameTextField().getText().equals("")) {
-							champ.setName(getNameTextField().getText());
-							ChampionUtil.saveChampion(champ);
-							champview.addChamp(champ);
-							MainView.getInstance().setStatusText(
-									"Champion " + champ + " saved");
-							dispose();
-						} else {
+						if (getNameTextField().getText().equals("")) {
 							// TODO schöner!
 							JOptionPane.showMessageDialog(
 									MainView.getInstance(),
-									"Please enter a name for the champion");
+									"Please enter a name for the item");
+						} else if (getPriceTextField().getText().equals("")) {
+							// TODO schöner!
+							JOptionPane.showMessageDialog(
+									MainView.getInstance(),
+									"Please enter a price for the item");
+						} else {
+							item.setName(getNameTextField().getText());
+							item.setPrice(Integer.valueOf(getPriceTextField()
+									.getText()));
+							ItemUtil.saveItem(item);
+							itemView.addItem(item);
+							MainView.getInstance().setStatusText(
+									"Item " + item + " saved");
+							dispose();
 						}
 					} else {
 						// TODO schöner!
 						JOptionPane.showMessageDialog(MainView.getInstance(),
-								"Please choose a icon for the champion");
+								"Please choose a icon for the item");
 					}
 				}
 			});

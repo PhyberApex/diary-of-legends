@@ -75,7 +75,7 @@ public class MainView extends JFrame implements View, Runnable {
 	public MenuBarView getMenuBarView() {
 		logger.trace("getMenuBarView() - Entering");
 		if (menu == null) {
-			menu = new MenuBarView();
+			menu = new MenuBarView(this);
 		}
 		logger.trace("getMenuBarView() - Returning");
 		logger.debug("getMenuBarView() - Returning {}", menu);
@@ -125,6 +125,15 @@ public class MainView extends JFrame implements View, Runnable {
 		logger.debug("setChampPanel() - Parameter: {}", comp);
 		getContentTabbedPane().setComponentAt(3, comp);
 		logger.trace("setChampPanel() - Leaving");
+	}
+
+	public ChampionView getChampPanel() {
+		logger.trace("setChampPanel() - Entering");
+		ChampionView returnValue = (ChampionView) getContentTabbedPane()
+				.getComponentAt(3);
+		logger.trace("setChampPanel() - Returning");
+		logger.debug("setChampPanel() - Returning: {}", returnValue);
+		return returnValue;
 	}
 
 	public void setItemPanel(ItemView comp) {
