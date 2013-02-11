@@ -40,6 +40,7 @@ public class ChampionController extends Controller {
 
 	/**
 	 * Returns all champions
+	 * 
 	 * @return {@link List<Champion>} A list with all champions
 	 */
 	public List<Champion> getChampions() {
@@ -47,6 +48,20 @@ public class ChampionController extends Controller {
 		logger.trace("getChampions() - Returning");
 		logger.debug("getChampions() - Returning: {}", champions);
 		return this.champions;
+	}
+
+	/**
+	 * Returns all champions which have the searchString in their name
+	 * @param text {@link String} searchString
+	 * @return {@link List<Champion>} List of champions which have the searchString in their name
+	 */
+	public List<Champion> searchChampions(String text) {
+		logger.trace("searchChampions() - Entering");
+		logger.debug("searchChampions() - Parameter: {}", text);
+		List<Champion> returnValue = ChampionUtil.searchChampionByName(text);
+		logger.trace("searchChampions() - Returning");
+		logger.debug("searchChampions() - Returning: {}", returnValue);
+		return returnValue;
 	}
 
 }

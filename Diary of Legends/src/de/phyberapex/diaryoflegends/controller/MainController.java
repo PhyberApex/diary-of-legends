@@ -118,7 +118,6 @@ public class MainController {
 	/**
 	 * Exits the appliaction
 	 */
-
 	public static void exit() {
 		ExitAction.getInstance().actionPerformed(null);
 	}

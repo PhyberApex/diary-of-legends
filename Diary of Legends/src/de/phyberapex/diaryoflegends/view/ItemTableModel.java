@@ -1,75 +1,74 @@
 package de.phyberapex.diaryoflegends.view;
 
 import java.util.List;
-import javax.swing.table.AbstractTableModel;
 
+import javax.swing.table.AbstractTableModel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import de.phyberapex.diaryoflegends.model.Item;
+import de.phyberapex.diaryoflegends.model.util.ItemUtil;
 
-import de.phyberapex.diaryoflegends.model.Champion;
-import de.phyberapex.diaryoflegends.model.util.ChampionUtil;
+public class ItemTableModel extends AbstractTableModel {
 
-public class ChampionTableModel extends AbstractTableModel {
-
-	private static final long serialVersionUID = 6832182630678830128L;
-	private List<Champion> champs;
-	private String[] columnNames = new String[] { "Picture", "Name" };
+	private static final long serialVersionUID = -7653762677922814674L;
+	private List<Item> items;
+	private String[] columnNames = new String[] { "Picture", "Name", "Price" };
 	transient private static Logger logger = LogManager
-			.getLogger(ChampionTableModel.class.getName());
+			.getLogger(ItemTableModel.class.getName());
 
 	/**
 	 * Constructor for a new tablemodel
 	 * 
 	 * @param models
-	 *            initial list of {@link Champion champions} to view
+	 *            initial list of {@link Item items} to view
 	 */
-	public ChampionTableModel(List<Champion> models) {
-		logger.trace("ChampionTableModel() - Entering");
-		logger.debug("ChampionTableModel() - Parameter: {}", models);
-		this.champs = models;
-		logger.trace("ChampionTableModel() - Leaving");
+	public ItemTableModel(List<Item> models) {
+		logger.trace("ItemTableModel() - Entering");
+		logger.debug("ItemTableModel() - Parameter: {}", models);
+		this.items = models;
+		logger.trace("ItemTableModel() - Leaving");
 	}
 
 	/**
-	 * Set the champs to display in this table model
+	 * Set the items to display in this table model
 	 * 
-	 * @param champs
-	 *            list of {@link Champion champions} to set
+	 * @param items
+	 *            list of {@link Item items} to set
 	 */
-	public void setChamps(List<Champion> champs) {
-		logger.trace("setChamps() - Entering");
-		logger.debug("setChamps() - Parameter: {}", champs);
-		this.champs = champs;
+	public void setItems(List<Item> items) {
+		logger.trace("setItems() - Entering");
+		logger.debug("setItems() - Parameter: {}", items);
+		this.items = items;
 		fireTableDataChanged();
-		logger.trace("setChamps() - Leaving");
+		logger.trace("setItems() - Leaving");
 	}
 
 	/**
-	 * Adds a champion to the list of champions to display
+	 * Adds a item to the list of items to display
 	 * 
-	 * @param champ
+	 * @param item
 	 *            The {@link Champion champion} to add
 	 */
-	public void addChamp(Champion champ) {
-		logger.trace("addChamp() - Entering");
-		logger.debug("addChamp() - Parameter: {}", champ);
-		champs.add(champ);
-		fireTableRowsInserted(champs.size() - 1, champs.size() - 1);
-		logger.trace("addChamp() - Leaving");
+	public void addItem(Item item) {
+		logger.trace("addItem() - Entering");
+		logger.debug("addItem() - Parameter: {}", item);
+		items.add(item);
+		fireTableRowsInserted(items.size() - 1, items.size() - 1);
+		logger.trace("addItem() - Leaving");
 	}
 
 	/**
-	 * Removes a champion from the list of champions to display
+	 * Removes a item from the list of items to display
 	 * 
-	 * @param champ
-	 *            The {@link Champion champion} to remove
+	 * @param item
+	 *            The {@link Item item} to remove
 	 */
-	public void removeChamp(Champion champ) {
-		logger.trace("removeChamp() - Entering");
-		logger.debug("removeChamp() - Parameter: {}", champ);
-		champs.remove(champ);
+	public void removeItem(Item item) {
+		logger.trace("removeItem() - Entering");
+		logger.debug("removeItem() - Parameter: {}", item);
+		items.remove(item);
 		fireTableRowsDeleted(1, 1);
-		logger.trace("removeChamp() - Leaving");
+		logger.trace("removeItem() - Leaving");
 	}
 
 	/**
@@ -79,7 +78,7 @@ public class ChampionTableModel extends AbstractTableModel {
 	 */
 	@Override
 	public int getColumnCount() {
-		int columns = 2;
+		int columns = 3;
 		return columns;
 	}
 
@@ -90,7 +89,7 @@ public class ChampionTableModel extends AbstractTableModel {
 	 */
 	@Override
 	public int getRowCount() {
-		int rows = champs.size();
+		int rows = items.size();
 		return rows;
 	}
 
@@ -108,10 +107,14 @@ public class ChampionTableModel extends AbstractTableModel {
 		Object returnValue = null;
 		switch (columnIndex) {
 		case 0:
-			returnValue = champs.get(rowIndex).getIcon();
+			returnValue = items.get(rowIndex).getIcon();
 			break;
 		case 1:
-			returnValue = champs.get(rowIndex);
+			returnValue = items.get(rowIndex);
+			break;
+		case 2:
+			System.out.println("bla");
+			returnValue = items.get(rowIndex).getPrice();
 			break;
 		}
 		return returnValue;
@@ -129,13 +132,19 @@ public class ChampionTableModel extends AbstractTableModel {
 	 */
 	@Override
 	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-		Champion c = champs.get(rowIndex);
+		Item i = items.get(rowIndex);
 		switch (columnIndex) {
 		case 1:
-			c.setName((String) aValue);
+			i.setName((String) aValue);
+			break;
+		case 2:
+			int price = Integer.getInteger((String) aValue);
+			if (price > 0) {
+				i.setPrice(price);
+			}
 			break;
 		}
-		ChampionUtil.saveChampion(c);
+		ItemUtil.saveItem(i);
 	}
 
 	/**
@@ -150,7 +159,7 @@ public class ChampionTableModel extends AbstractTableModel {
 	@Override
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
 		boolean editable = false;
-		if (columnIndex == 1) {
+		if (columnIndex == 1 || columnIndex == 2) {
 			editable = true;
 		}
 		return editable;
