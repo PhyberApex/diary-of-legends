@@ -59,6 +59,7 @@ public class ItemView extends JPanel implements View {
 		logger.debug("Adding searchTextfield to panel with constraints: {}",
 				constraints);
 		this.add(getSearchTextfield(), constraints);
+		
 		constraints = new GridBagConstraints();
 		constraints.weightx = 0;
 		constraints.weighty = 0;
@@ -67,6 +68,7 @@ public class ItemView extends JPanel implements View {
 		logger.debug("Adding searchButton to panel with constraints: {}",
 				constraints);
 		this.add(getSearchButton(), constraints);
+		
 		constraints = new GridBagConstraints();
 		constraints.weightx = 0;
 		constraints.weighty = 0;
@@ -75,6 +77,7 @@ public class ItemView extends JPanel implements View {
 		logger.debug("Adding clearSearchButton to panel with constraints: {}",
 				constraints);
 		this.add(getClearSearchButton(), constraints);
+		
 		constraints = new GridBagConstraints();
 		constraints.weightx = 0;
 		constraints.weighty = 0;
@@ -83,6 +86,7 @@ public class ItemView extends JPanel implements View {
 		logger.debug("Adding newButton to panel with constraints: {}",
 				constraints);
 		this.add(getNewButton(), constraints);
+		
 		constraints = new GridBagConstraints();
 		constraints.weightx = 0;
 		constraints.weighty = 0;
@@ -91,6 +95,7 @@ public class ItemView extends JPanel implements View {
 		logger.debug("Adding deleteButton to panel with constraints: {}",
 				constraints);
 		this.add(getDeleteButton(), constraints);
+		
 		constraints = new GridBagConstraints();
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridwidth = 4;
@@ -101,6 +106,7 @@ public class ItemView extends JPanel implements View {
 		logger.debug("Adding championTable to panel with constraints: {}",
 				constraints);
 		this.add(getItemTablePane(), constraints);
+		
 		logger.trace("createGUI() - Leaving");
 	}
 
