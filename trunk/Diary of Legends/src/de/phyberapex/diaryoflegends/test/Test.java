@@ -20,6 +20,7 @@ import de.phyberapex.diaryoflegends.model.Champion;
 import de.phyberapex.diaryoflegends.model.Game;
 import de.phyberapex.diaryoflegends.model.Item;
 import de.phyberapex.diaryoflegends.model.Matchup;
+import de.phyberapex.diaryoflegends.model.MatchupResult;
 import de.phyberapex.diaryoflegends.model.Summoner;
 import de.phyberapex.diaryoflegends.model.util.ChampionUtil;
 
@@ -44,16 +45,18 @@ public class Test {
 
 		Champion c1 = new Champion();
 		c1.setName("Akali");
-
+		c1.setIcon(new File("C:\\test.png"));
 		Champion c2 = new Champion();
 		c2.setName("Darius");
-
+		c2.setIcon(new File("C:\\test.png"));
 		Matchup matchup = new Matchup();
 		matchup.setMyChamp(c1);
 		matchup.setEnemyChamp(c2);
-		
+		matchup.setResult(MatchupResult.DRAW);
 		Game g = new Game();
 		g.setMatchup(matchup);
+		matchup.setGame(g);
+		matchup.setNotes("Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.");
 		g.setDate(new Date());
 		dbHandle.store(g);
 		ObjectSet<Champion> set = dbHandle.query(new Predicate<Champion>() {
