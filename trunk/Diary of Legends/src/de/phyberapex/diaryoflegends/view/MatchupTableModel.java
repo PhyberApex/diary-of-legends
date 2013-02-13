@@ -1,18 +1,18 @@
 package de.phyberapex.diaryoflegends.view;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import de.phyberapex.diaryoflegends.model.Item;
-import de.phyberapex.diaryoflegends.model.util.ItemUtil;
+import de.phyberapex.diaryoflegends.model.Matchup;
 
-public class ItemTableModel extends AbstractTableModel {
+public class MatchupTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = -7653762677922814674L;
-	private List<Item> items;
-	private String[] columnNames = new String[] { "Picture", "Name", "Price" };
+	private List<Matchup> matchups;
+	private String[] columnNames = new String[] { "Date", "Champions", "Result" };
 	transient private static Logger logger = LogManager
 			.getLogger(ItemTableModel.class.getName());
 
@@ -22,53 +22,53 @@ public class ItemTableModel extends AbstractTableModel {
 	 * @param models
 	 *            initial list of {@link Item items} to view
 	 */
-	public ItemTableModel(List<Item> models) {
-		logger.trace("ItemTableModel() - Entering");
-		logger.debug("ItemTableModel() - Parameter: {}", models);
-		this.items = models;
-		logger.trace("ItemTableModel() - Leaving");
+	public MatchupTableModel(List<Matchup> models) {
+		logger.trace("MatchupTableModel() - Entering");
+		logger.debug("MatchupTableModel() - Parameter: {}", models);
+		this.matchups = models;
+		logger.trace("MatchupTableModel() - Leaving");
 	}
 
 	/**
-	 * Set the items to display in this table model
+	 * Set the matchups to display in this table model
 	 * 
-	 * @param items
-	 *            list of {@link Item items} to set
+	 * @param matchups
+	 *            list of {@link Matchup matchups} to set
 	 */
-	public void setItems(List<Item> items) {
-		logger.trace("setItems() - Entering");
-		logger.debug("setItems() - Parameter: {}", items);
-		this.items = items;
+	public void setMatchups(List<Matchup> matchups) {
+		logger.trace("setMatchups() - Entering");
+		logger.debug("setMatchups() - Parameter: {}", matchups);
+		this.matchups = matchups;
 		fireTableDataChanged();
-		logger.trace("setItems() - Leaving");
+		logger.trace("setMatchups() - Leaving");
 	}
 
 	/**
-	 * Adds a item to the list of items to display
+	 * Adds a matchup to the list of matchups to display
 	 * 
-	 * @param item
-	 *            The {@link Item item} to add
+	 * @param matchup
+	 *            The {@link Matchup matchup} to add
 	 */
-	public void addItem(Item item) {
-		logger.trace("addItem() - Entering");
-		logger.debug("addItem() - Parameter: {}", item);
-		items.add(item);
-		fireTableRowsInserted(items.size() - 1, items.size() - 1);
-		logger.trace("addItem() - Leaving");
+	public void addMatchup(Matchup matchup) {
+		logger.trace("addMatchup() - Entering");
+		logger.debug("addMatchup() - Parameter: {}", matchup);
+		matchups.add(matchup);
+		fireTableRowsInserted(matchups.size() - 1, matchups.size() - 1);
+		logger.trace("addMatchup() - Leaving");
 	}
 
 	/**
-	 * Removes a item from the list of items to display
+	 * Removes a matchup from the list of matchups to display
 	 * 
-	 * @param item
-	 *            The {@link Item item} to remove
+	 * @param matchup
+	 *            The {@link Matchup matchup} to remove
 	 */
-	public void removeItem(Item item) {
-		logger.trace("removeItem() - Entering");
-		logger.debug("removeItem() - Parameter: {}", item);
-		items.remove(item);
+	public void removeMatchup(Matchup matchup) {
+		logger.trace("removeMatchup() - Entering");
+		logger.debug("removeMatchup() - Parameter: {}", matchup);
+		matchups.remove(matchup);
 		fireTableRowsDeleted(1, 1);
-		logger.trace("removeItem() - Leaving");
+		logger.trace("removeMatchup() - Leaving");
 	}
 
 	/**
@@ -89,7 +89,7 @@ public class ItemTableModel extends AbstractTableModel {
 	 */
 	@Override
 	public int getRowCount() {
-		int rows = items.size();
+		int rows = matchups.size();
 		return rows;
 	}
 
@@ -107,13 +107,15 @@ public class ItemTableModel extends AbstractTableModel {
 		Object returnValue = null;
 		switch (columnIndex) {
 		case 0:
-			returnValue = items.get(rowIndex).getIcon();
+			Date d = matchups.get(rowIndex).getGame().getDate();
+			String str = d.getYear()+"-"+d.getMonth()+"-"+d.getDay()+" "+d.getHours()+":"+d.getMinutes();
+			returnValue = str;
 			break;
 		case 1:
-			returnValue = items.get(rowIndex);
+			returnValue = matchups.get(rowIndex);
 			break;
 		case 2:
-			returnValue = items.get(rowIndex).getPrice();
+			returnValue = matchups.get(rowIndex).getResult().toString();
 			break;
 		}
 		return returnValue;
@@ -131,23 +133,6 @@ public class ItemTableModel extends AbstractTableModel {
 	 */
 	@Override
 	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-		Item i = items.get(rowIndex);
-		switch (columnIndex) {
-		case 1:
-			i.setName((String) aValue);
-			break;
-		case 2:
-			try {
-				int price = Integer.parseInt((String) aValue);
-				if (price > 0) {
-					i.setPrice(price);
-				}
-			} catch (NumberFormatException e) {
-				logger.info("{} is not a Number", aValue);
-			}
-			break;
-		}
-		ItemUtil.saveItem(i);
 	}
 
 	/**
@@ -162,9 +147,6 @@ public class ItemTableModel extends AbstractTableModel {
 	@Override
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
 		boolean editable = false;
-		if (columnIndex == 1 || columnIndex == 2) {
-			editable = true;
-		}
 		return editable;
 	}
 

@@ -17,11 +17,14 @@ import com.db4o.Db4oEmbedded;
 import com.db4o.ObjectContainer;
 import com.db4o.config.EmbeddedConfiguration;
 
+import de.phyberapex.diaryoflegends.model.Summoner;
+
 public class Config {
 
 	private static Config instance;
 	private Properties prop;
 	private ObjectContainer dbHandle;
+	private Summoner currentSummoner;
 	transient private static Logger logger = LogManager.getLogger(Config.class.getName());
 
 	private Config() {
@@ -143,5 +146,19 @@ public class Config {
 		logger.trace("getDBHandle() - Returning");
 		logger.debug("getDBHandle() - Returning: {}", dbHandle);
 		return dbHandle;
+	}
+
+	public Summoner getCurrentSummoner() {
+		logger.trace("getCurrentSummoner() - Entering");
+		logger.trace("getCurrentSummoner() - Returning");
+		logger.debug("getCurrentSummoner() - Returning: {}", currentSummoner);
+		return currentSummoner;
+	}
+
+	public void setCurrentSummoner(Summoner currentSummoner) {
+		logger.trace("setCurrentSummoner() - Entering");
+		logger.debug("setCurrentSummoner() - Parameter: {}", currentSummoner);
+		this.currentSummoner = currentSummoner;
+		logger.trace("setCurrentSummoner() - Leaving");
 	}
 }

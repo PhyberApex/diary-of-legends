@@ -17,7 +17,6 @@ import org.apache.logging.log4j.Logger;
 import de.phyberapex.diaryoflegends.controller.ItemController;
 import de.phyberapex.diaryoflegends.model.Item;
 import de.phyberapex.diaryoflegends.model.util.ItemUtil;
-import de.phyberapex.diaryoflegends.observer.Observable;
 
 public class ItemView extends JPanel implements View {
 
@@ -294,7 +293,7 @@ public class ItemView extends JPanel implements View {
 	}
 
 	@Override
-	public void update(Observable o, Object arg) {
+	public void refresh() {
 		((ItemTableModel) itemTable.getModel()).fireTableDataChanged();
 	}
 }

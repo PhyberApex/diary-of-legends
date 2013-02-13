@@ -1,6 +1,7 @@
 package de.phyberapex.diaryoflegends.test;
 
 import java.io.File;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Observable;
 import java.util.Observer;
@@ -16,7 +17,9 @@ import de.phyberapex.diaryoflegends.base.Config;
 import de.phyberapex.diaryoflegends.base.Constants;
 import de.phyberapex.diaryoflegends.extra.ImageIconFactory;
 import de.phyberapex.diaryoflegends.model.Champion;
+import de.phyberapex.diaryoflegends.model.Game;
 import de.phyberapex.diaryoflegends.model.Item;
+import de.phyberapex.diaryoflegends.model.Matchup;
 import de.phyberapex.diaryoflegends.model.Summoner;
 import de.phyberapex.diaryoflegends.model.util.ChampionUtil;
 
@@ -39,6 +42,20 @@ public class Test {
 		Summoner s = new Summoner("Hi", null);
 		dbHandle.store(s);
 
+		Champion c1 = new Champion();
+		c1.setName("Akali");
+
+		Champion c2 = new Champion();
+		c2.setName("Darius");
+
+		Matchup matchup = new Matchup();
+		matchup.setMyChamp(c1);
+		matchup.setEnemyChamp(c2);
+		
+		Game g = new Game();
+		g.setMatchup(matchup);
+		g.setDate(new Date());
+		dbHandle.store(g);
 		ObjectSet<Champion> set = dbHandle.query(new Predicate<Champion>() {
 
 			@Override
@@ -51,7 +68,7 @@ public class Test {
 		while (it.hasNext()) {
 			System.out.println(it.next().getName());
 		}
-		
+
 		ObjectSet<Item> set2 = dbHandle.query(new Predicate<Item>() {
 
 			@Override
@@ -64,7 +81,6 @@ public class Test {
 		while (it2.hasNext()) {
 			System.out.println(it2.next().getName());
 		}
-
 		dbHandle.close();
 	}
 }

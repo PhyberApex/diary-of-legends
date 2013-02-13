@@ -9,6 +9,7 @@ import com.db4o.ext.DatabaseFileLockedException;
 
 import de.phyberapex.diaryoflegends.controller.MainController;
 import de.phyberapex.diaryoflegends.exception.InitializeException;
+import de.phyberapex.diaryoflegends.model.Summoner;
 
 /**
  * Class to initialize the application on the start
@@ -57,6 +58,8 @@ public class Initializer {
 		Config conf = Config.getInstance();
 		if (conf.getProperty("SUMMONER_NAME") == null) {
 			returnValue = InitializeAction.CREATE_SUMMONER;
+		} else {
+			conf.setCurrentSummoner(new Summoner(conf.getProperty("SUMMONER_NAME"), null));
 		}
 		try {
 			conf.getDBHandle();

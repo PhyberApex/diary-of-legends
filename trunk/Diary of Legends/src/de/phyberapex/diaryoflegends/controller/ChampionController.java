@@ -21,7 +21,6 @@ public class ChampionController extends Controller {
 		logger.trace("ChampionController() - Entering");
 		logger.debug("ChampionController() - Parameter: {}", mainController);
 		champions = ChampionUtil.getAllChampions();
-		this.models.addAll(champions);
 		logger.trace("ChampionController() - Leaving");
 	}
 
@@ -35,6 +34,7 @@ public class ChampionController extends Controller {
 	@Override
 	public void loadData() {
 		logger.trace("loadData() - Entering");
+		view.refresh();
 		logger.trace("loadData() - Leaving");
 	}
 
