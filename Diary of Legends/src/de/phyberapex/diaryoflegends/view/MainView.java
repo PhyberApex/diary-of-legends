@@ -12,10 +12,8 @@ import javax.swing.JLabel;
 import javax.swing.JTabbedPane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import de.phyberapex.diaryoflegends.base.Constants;
 import de.phyberapex.diaryoflegends.controller.MainController;
-import de.phyberapex.diaryoflegends.observer.Observable;
 
 public class MainView extends JFrame implements View, Runnable {
 
@@ -108,11 +106,6 @@ public class MainView extends JFrame implements View, Runnable {
 		return statusLabel;
 	}
 
-	@Override
-	public void update(Observable arg0, Object arg1) {
-		// TODO Auto-generated method stub
-	}
-
 	public void setGamesPanel(Component comp) {
 		logger.trace("setGamesPanel() - Entering");
 		logger.debug("Parameter: {}", comp);
@@ -142,6 +135,13 @@ public class MainView extends JFrame implements View, Runnable {
 		getContentTabbedPane().setComponentAt(4, comp);
 		logger.trace("setItemPanel() - Leaving");
 	}
+	
+	public void setMatchupPanel(MatchupView comp) {
+		logger.trace("setMatchupPanel() - Entering");
+		logger.debug("setMatchupPanel() - Parameter: {}", comp);
+		getContentTabbedPane().setComponentAt(1, comp);
+		logger.trace("setMatchupPanel() - Leaving");
+	}
 
 	@Override
 	public void run() {
@@ -157,5 +157,11 @@ public class MainView extends JFrame implements View, Runnable {
 		logger.debug("setStatusText() - Parameter: {}", text);
 		statusLabel.setText(text);
 		logger.trace("setStatusText() - Leaving");
+	}
+
+	@Override
+	public void refresh() {
+		// TODO Auto-generated method stub
+		
 	}
 }

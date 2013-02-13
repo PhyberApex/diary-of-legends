@@ -2,16 +2,12 @@ package de.phyberapex.diaryoflegends.view;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import de.phyberapex.diaryoflegends.ExitAction;
-import de.phyberapex.diaryoflegends.controller.MainController;
-import de.phyberapex.diaryoflegends.observer.Observable;
 
 public class MenuBarView extends JMenuBar implements View {
 
@@ -206,8 +202,8 @@ public class MenuBarView extends JMenuBar implements View {
 	}
 
 	@Override
-	public void update(Observable arg0, Object arg1) {
+	public void refresh() {
 		// TODO Auto-generated method stub
-
+		
 	}
 }

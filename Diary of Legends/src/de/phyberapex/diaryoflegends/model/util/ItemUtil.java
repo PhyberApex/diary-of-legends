@@ -53,7 +53,7 @@ public class ItemUtil {
 	/**
 	 * Saves the item given in the database
 	 * 
-	 * @param {@link item} time
+	 * @param {@link Item item} 
 	 */
 	public static void saveItem(Item item) {
 		logger.trace("saveItem() - Entering");

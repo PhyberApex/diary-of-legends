@@ -19,6 +19,7 @@ import de.phyberapex.diaryoflegends.view.ChampionView;
 import de.phyberapex.diaryoflegends.view.CurrentSummonerNameView;
 import de.phyberapex.diaryoflegends.view.ItemView;
 import de.phyberapex.diaryoflegends.view.MainView;
+import de.phyberapex.diaryoflegends.view.MatchupView;
 
 public class MainController {
 
@@ -41,14 +42,20 @@ public class MainController {
 			splash.showStatus("Preparing controller", 20);
 			ChampionController champController = new ChampionController(this);
 			ItemController itemController = new ItemController(this);
+			MatchupController matchupController = new MatchupController(this);
 			splash.showStatus("Creating user interface", 30);
 			mainView = MainView.getInstance();
 			mainView.setMainController(this);
 			champController.loadGUI();
 			itemController.loadGUI();
+			matchupController.loadGUI();
 			splash.showStatus("Loading data", 40);
-			champController.addObservers();
-			itemController.addObservers();
+			champController.loadData();
+			itemController.loadData();
+			matchupController.loadData();
+			mainView.setChampPanel((ChampionView) champController.getView());
+			mainView.setItemPanel((ItemView) itemController.getView());
+			mainView.setMatchupPanel((MatchupView) matchupController.getView());
 			splash.showStatus("Preparing to start", 100);
 			splash.close();
 			CurrentSummonerNameView currSumView = CurrentSummonerNameView
@@ -81,8 +88,6 @@ public class MainController {
 				currSumView.setSummonerName(Config.getInstance().getProperty(
 						"SUMMONER_NAME"));
 			}
-			mainView.setChampPanel((ChampionView) champController.getView());
-			mainView.setItemPanel((ItemView) itemController.getView());
 			SwingUtilities.invokeLater(mainView);
 
 		} catch (InitializeException e) {

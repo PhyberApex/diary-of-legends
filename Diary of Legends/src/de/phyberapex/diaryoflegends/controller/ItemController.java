@@ -2,12 +2,10 @@ package de.phyberapex.diaryoflegends.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import de.phyberapex.diaryoflegends.model.Item;
 import de.phyberapex.diaryoflegends.model.util.ItemUtil;
-import de.phyberapex.diaryoflegends.view.ChampionView;
 import de.phyberapex.diaryoflegends.view.ItemView;
 
 public class ItemController extends Controller {
@@ -21,7 +19,6 @@ public class ItemController extends Controller {
 		logger.trace("ItemController() - Entering");
 		logger.debug("ItemController() - Parameter: {}", mainController);
 		items = ItemUtil.getAllItems();
-		this.models.addAll(items);
 		logger.trace("ItemController() - Leaving");
 	}
 
@@ -35,6 +32,7 @@ public class ItemController extends Controller {
 	@Override
 	public void loadData() {
 		logger.trace("loadData() - Entering");
+		view.refresh();
 		logger.trace("loadData() - Leaving");
 	}
 

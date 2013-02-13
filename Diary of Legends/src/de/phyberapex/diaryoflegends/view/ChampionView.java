@@ -18,7 +18,6 @@ import org.apache.logging.log4j.Logger;
 import de.phyberapex.diaryoflegends.controller.ChampionController;
 import de.phyberapex.diaryoflegends.model.Champion;
 import de.phyberapex.diaryoflegends.model.util.ChampionUtil;
-import de.phyberapex.diaryoflegends.observer.Observable;
 
 public class ChampionView extends JPanel implements View {
 
@@ -290,7 +289,7 @@ public class ChampionView extends JPanel implements View {
 	}
 
 	@Override
-	public void update(Observable o, Object arg) {
+	public void refresh() {
 		((ChampionTableModel) championTable.getModel()).fireTableDataChanged();
 	}
 }

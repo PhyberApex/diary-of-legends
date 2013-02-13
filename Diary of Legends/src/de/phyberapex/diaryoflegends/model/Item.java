@@ -52,7 +52,6 @@ public class Item extends Model {
 		logger.trace("setName() - Entering");
 		logger.debug("setName() - Parameter: {}", name);
 		this.name = name;
-		notifyObservers(null);
 		logger.trace("setName() - Leaving");
 	}
 
@@ -104,7 +103,6 @@ public class Item extends Model {
 		logger.trace("setIcon() - Entering");
 		logger.debug("setIcon() - Parameter: {}", file);
 		this.icon = ConvertImage.convertFileToByteArray(file);
-		notifyObservers(null);
 		logger.trace("setIcon() - Leaving");
 	}
 

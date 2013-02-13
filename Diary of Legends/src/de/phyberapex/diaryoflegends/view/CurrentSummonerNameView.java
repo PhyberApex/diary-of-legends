@@ -7,10 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import de.phyberapex.diaryoflegends.base.Initializer;
-import de.phyberapex.diaryoflegends.model.Summoner;
-import de.phyberapex.diaryoflegends.observer.Observable;
 
 public class CurrentSummonerNameView extends JPanel implements View {
 
@@ -76,11 +73,6 @@ public class CurrentSummonerNameView extends JPanel implements View {
 		return instance;
 	}
 
-	@Override
-	public void update(Observable arg0, Object arg1) {
-		this.nameTextfield.setText(((Summoner) arg1).getName());
-	}
-
 	/**
 	 * Sets the current summoners name
 	 * 
@@ -105,6 +97,10 @@ public class CurrentSummonerNameView extends JPanel implements View {
 		logger.trace("getSummonerName() - Returning");
 		logger.debug("getSummonerName() - Returning: {}", nameTextfield.getText());
 		return nameTextfield.getText();
+	}
+
+	@Override
+	public void refresh() {
 	}
 
 }

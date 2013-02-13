@@ -10,17 +10,15 @@ import de.phyberapex.diaryoflegends.view.View;
 
 public abstract class Controller {
 
-	protected List<Model> models = new ArrayList<Model>();
 	protected View view;
 	protected MainController mainController;
-	transient private static Logger logger = LogManager.getLogger(Controller.class
-			.getName());
+	transient private static Logger logger = LogManager
+			.getLogger(Controller.class.getName());
 
-	
-	public Controller(MainController mainController){
+	public Controller(MainController mainController) {
 		this.mainController = mainController;
 	}
-	
+
 	/**
 	 * Loads the GUI elements
 	 */
@@ -30,18 +28,6 @@ public abstract class Controller {
 	 * Loads the model into the view
 	 */
 	public abstract void loadData();
-
-	/**
-	 * Adds all views as observers to all views
-	 */
-	public void addObservers() {
-		logger.trace("addObservers() - Entering");
-		for (Model model : models) {
-			logger.debug("Current model = {}", model);
-			model.addObserver(view);
-		}
-		logger.trace("addObservers() - Leaving");
-	}
 
 	/**
 	 * Returns the view connected to this controller
@@ -55,15 +41,4 @@ public abstract class Controller {
 		return view;
 	}
 
-	/**
-	 * Returns all models currently connected to this controller
-	 * 
-	 * @return {@link Iterator}
-	 */
-	public Iterator<Model> getModels() {
-		logger.trace("getModels() - Entering");
-		logger.trace("getModels() - Returning");
-		logger.debug("Returned {}", models.iterator());
-		return models.iterator();
-	}
 }
