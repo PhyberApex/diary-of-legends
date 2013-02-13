@@ -28,7 +28,7 @@ public class Test {
 	public static void main(String[] args) {
 		EmbeddedConfiguration configuration = Db4oEmbedded.newConfiguration();
 		ObjectContainer dbHandle = Db4oEmbedded.openFile(configuration,
-				"db\\test.tb");
+				"db\\test.db");
 
 		Champion c = new Champion("Hallo", new File("C:\\test.png"));
 		dbHandle.store(c);
