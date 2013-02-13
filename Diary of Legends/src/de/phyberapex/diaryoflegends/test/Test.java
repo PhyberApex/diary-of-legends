@@ -52,7 +52,7 @@ public class Test {
 		Matchup matchup = new Matchup();
 		matchup.setMyChamp(c1);
 		matchup.setEnemyChamp(c2);
-		matchup.setResult(MatchupResult.DRAW);
+		matchup.setResult(MatchupResult.WIN);
 		Game g = new Game();
 		g.setMatchup(matchup);
 		matchup.setGame(g);
