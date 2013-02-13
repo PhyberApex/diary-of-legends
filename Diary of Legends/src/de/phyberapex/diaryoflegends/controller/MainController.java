@@ -86,9 +86,9 @@ public class MainController {
 			SwingUtilities.invokeLater(mainView);
 
 		} catch (InitializeException e) {
-			JOptionPane.showMessageDialog(null, "This should never happen!",
-					"Fatal Error", JOptionPane.ERROR_MESSAGE, null);
-			logger.fatal("error in intialize process");
+			splash.close();
+			JOptionPane.showMessageDialog(null, e.getMessage(),
+					"Exiting application", JOptionPane.ERROR_MESSAGE, null);
 			ExitAction.getInstance().actionPerformed(null);
 		} finally {
 			logger.trace("MainController() - Leaving");

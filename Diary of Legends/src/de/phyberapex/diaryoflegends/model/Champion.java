@@ -13,7 +13,8 @@ public class Champion extends Model {
 
 	private String name;
 	private byte[] icon;
-	transient private static Logger logger = LogManager.getLogger("");
+	transient private static Logger logger = LogManager
+			.getLogger(Champion.class.getName());
 
 	public Champion(String name, File icon) {
 		logger.trace("Champion() - Entering");

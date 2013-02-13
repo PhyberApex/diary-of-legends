@@ -31,7 +31,9 @@ public class Test {
 		dbHandle.store(c);
 
 		Item i = new Item();
+		i.setIcon(new File("C:\\test.png"));
 		i.setPrice(200);
+		i.setName("test");
 		dbHandle.store(i);
 
 		Summoner s = new Summoner("Hi", null);
@@ -48,6 +50,19 @@ public class Test {
 		Iterator<Champion> it = set.iterator();
 		while (it.hasNext()) {
 			System.out.println(it.next().getName());
+		}
+		
+		ObjectSet<Item> set2 = dbHandle.query(new Predicate<Item>() {
+
+			@Override
+			public boolean match(Item arg0) {
+				return true;
+			}
+
+		});
+		Iterator<Item> it2 = set2.iterator();
+		while (it2.hasNext()) {
+			System.out.println(it2.next().getName());
 		}
 
 		dbHandle.close();

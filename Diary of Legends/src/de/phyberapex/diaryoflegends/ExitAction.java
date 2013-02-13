@@ -7,28 +7,34 @@ import javax.swing.AbstractAction;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.db4o.ext.DatabaseFileLockedException;
+
 import de.phyberapex.diaryoflegends.base.Config;
 
-public class ExitAction extends AbstractAction{
+public class ExitAction extends AbstractAction {
 
 	private static final long serialVersionUID = 7802542358898096336L;
 	private static ExitAction instance;
-	private static Logger logger = LogManager.getLogger(ExitAction.class.getName());
-	
-	
-	private ExitAction(){
+	private static Logger logger = LogManager.getLogger(ExitAction.class
+			.getName());
+
+	private ExitAction() {
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		Config.getInstance().getDBHandle().close();
-		
+		try {
+			Config.getInstance().getDBHandle().close();
+		} catch (DatabaseFileLockedException e) {
+			logger.fatal("Databasefile is locked");
+		}
 		System.exit(0);
 	}
-	
+
 	/**
 	 * Returns an instance of this class if the static attribute instance is<br>
 	 * null it will be created.
+	 * 
 	 * @return {@link ExiAction} an instance of this class
 	 */
 	public static synchronized ExitAction getInstance() {
