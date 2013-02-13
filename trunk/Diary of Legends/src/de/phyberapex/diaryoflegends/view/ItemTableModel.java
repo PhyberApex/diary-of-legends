@@ -113,7 +113,6 @@ public class ItemTableModel extends AbstractTableModel {
 			returnValue = items.get(rowIndex);
 			break;
 		case 2:
-			System.out.println("bla");
 			returnValue = items.get(rowIndex).getPrice();
 			break;
 		}
@@ -138,9 +137,13 @@ public class ItemTableModel extends AbstractTableModel {
 			i.setName((String) aValue);
 			break;
 		case 2:
-			int price = Integer.getInteger((String) aValue);
-			if (price > 0) {
-				i.setPrice(price);
+			try {
+				int price = Integer.parseInt((String) aValue);
+				if (price > 0) {
+					i.setPrice(price);
+				}
+			} catch (NumberFormatException e) {
+				logger.info("{} is not a Number", aValue);
 			}
 			break;
 		}

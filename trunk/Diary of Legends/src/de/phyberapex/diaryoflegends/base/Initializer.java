@@ -4,18 +4,22 @@ import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import com.db4o.ext.DatabaseFileLockedException;
+
 import de.phyberapex.diaryoflegends.controller.MainController;
 import de.phyberapex.diaryoflegends.exception.InitializeException;
 
 /**
  * Class to initialize the application on the start
+ * 
  * @author Janis Walliser <walliser.janis@gmx.de>
  */
 public class Initializer {
 
 	private static Initializer instance;
-	transient private static Logger logger = LogManager.getLogger(MainController.class
-			.getName());
+	transient private static Logger logger = LogManager
+			.getLogger(MainController.class.getName());
 
 	/**
 	 * Consturctor of this class
@@ -46,15 +50,20 @@ public class Initializer {
 	 * 
 	 * @return {@link boolean} True if initilizing was successfull false if not
 	 */
-	public InitializeAction initializeApp() throws InitializeException{
+	public InitializeAction initializeApp() throws InitializeException {
 		logger.trace("initializeApp() - Entering");
 		InitializeAction returnValue = InitializeAction.NONE;
 		changeLaF();
 		Config conf = Config.getInstance();
-		if(conf.getProperty("SUMMONER_NAME") == null){
+		if (conf.getProperty("SUMMONER_NAME") == null) {
 			returnValue = InitializeAction.CREATE_SUMMONER;
 		}
-		conf.getDBHandle();
+		try {
+			conf.getDBHandle();
+		} catch (DatabaseFileLockedException e) {
+			logger.fatal("Databasefile is locked");
+			throw new InitializeException("Can't open database. Databasefile is locked.");
+		}
 		logger.trace("initializeApp() - Returning");
 		logger.debug("initializeApp() - Returning {}", returnValue);
 		return returnValue;
@@ -79,4 +88,4 @@ public class Initializer {
 		}
 	}
 
-} 
+}

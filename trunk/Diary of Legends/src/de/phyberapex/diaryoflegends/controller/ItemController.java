@@ -7,6 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import de.phyberapex.diaryoflegends.model.Item;
 import de.phyberapex.diaryoflegends.model.util.ItemUtil;
+import de.phyberapex.diaryoflegends.view.ChampionView;
 import de.phyberapex.diaryoflegends.view.ItemView;
 
 public class ItemController extends Controller {
@@ -19,7 +20,6 @@ public class ItemController extends Controller {
 		super(mainController);
 		logger.trace("ItemController() - Entering");
 		logger.debug("ItemController() - Parameter: {}", mainController);
-		this.view = new ItemView(this);
 		items = ItemUtil.getAllItems();
 		this.models.addAll(items);
 		logger.trace("ItemController() - Leaving");
@@ -27,13 +27,15 @@ public class ItemController extends Controller {
 
 	@Override
 	public void loadGUI() {
-
+		logger.trace("loadGUI() - Entering");
+		this.view = new ItemView(this);
+		logger.trace("loadGUI() - Leaving");
 	}
 
 	@Override
 	public void loadData() {
-		// TODO Auto-generated method stub
-
+		logger.trace("loadData() - Entering");
+		logger.trace("loadData() - Leaving");
 	}
 
 	/**

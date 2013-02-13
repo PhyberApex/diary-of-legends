@@ -267,7 +267,7 @@ public class ItemView extends JPanel implements View {
 			ItemTableModel m = new ItemTableModel(controller.getItems());
 			itemTable.setModel(m);
 			itemTable.setDefaultRenderer(Object.class,
-					new ChampionTableRenderer());
+					new ItemTableRenderer());
 		}
 		logger.trace("getItemTable() - Returning");
 		logger.debug("getItemTable() - Returning: {}", itemTable);
