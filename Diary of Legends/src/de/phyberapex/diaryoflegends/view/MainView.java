@@ -121,11 +121,11 @@ public class MainView extends JFrame implements View, Runnable {
 	}
 
 	public ChampionView getChampPanel() {
-		logger.trace("setChampPanel() - Entering");
+		logger.trace("getChampPanel() - Entering");
 		ChampionView returnValue = (ChampionView) getContentTabbedPane()
 				.getComponentAt(3);
-		logger.trace("setChampPanel() - Returning");
-		logger.debug("setChampPanel() - Returning: {}", returnValue);
+		logger.trace("getChampPanel() - Returning");
+		logger.debug("getChampPanel() - Returning: {}", returnValue);
 		return returnValue;
 	}
 
@@ -135,7 +135,7 @@ public class MainView extends JFrame implements View, Runnable {
 		getContentTabbedPane().setComponentAt(4, comp);
 		logger.trace("setItemPanel() - Leaving");
 	}
-	
+
 	public void setMatchupPanel(MatchupView comp) {
 		logger.trace("setMatchupPanel() - Entering");
 		logger.debug("setMatchupPanel() - Parameter: {}", comp);
@@ -162,6 +162,18 @@ public class MainView extends JFrame implements View, Runnable {
 	@Override
 	public void refresh() {
 		// TODO Auto-generated method stub
-		
+
+	}
+
+	/**
+	 * @return
+	 */
+	public ItemView getItemPanel() {
+		logger.trace("getItemPanel() - Entering");
+		ItemView returnValue = (ItemView) getContentTabbedPane()
+				.getComponentAt(4);
+		logger.trace("getItemPanel() - Returning");
+		logger.debug("getItemPanel() - Returning: {}", returnValue);
+		return returnValue;
 	}
 }

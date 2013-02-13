@@ -1,5 +1,7 @@
 package de.phyberapex.diaryoflegends.view;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -12,7 +14,7 @@ public class MatchupTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = -7653762677922814674L;
 	private List<Matchup> matchups;
-	private String[] columnNames = new String[] { "Date", "Champions", "Result" };
+	private String[] columnNames = new String[] { "Date", "Matchup", "Notes" };
 	transient private static Logger logger = LogManager
 			.getLogger(ItemTableModel.class.getName());
 
@@ -108,14 +110,15 @@ public class MatchupTableModel extends AbstractTableModel {
 		switch (columnIndex) {
 		case 0:
 			Date d = matchups.get(rowIndex).getGame().getDate();
-			String str = d.getYear()+"-"+d.getMonth()+"-"+d.getDay()+" "+d.getHours()+":"+d.getMinutes();
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+			String str = df.format(d);
 			returnValue = str;
 			break;
 		case 1:
 			returnValue = matchups.get(rowIndex);
 			break;
 		case 2:
-			returnValue = matchups.get(rowIndex).getResult().toString();
+			returnValue = matchups.get(rowIndex).getNotes();
 			break;
 		}
 		return returnValue;

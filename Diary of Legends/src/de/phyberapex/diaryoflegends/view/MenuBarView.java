@@ -92,6 +92,14 @@ public class MenuBarView extends JMenuBar implements View {
 		if (this.newItemItem == null) {
 			logger.debug("Creating a new JMenuItem object");
 			this.newItemItem = new JMenuItem("Add a new item");
+			this.newItemItem.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					new NewItemDialoge(view.getItemPanel())
+							.setVisible(true);
+				}
+			});
 		}
 		logger.trace("getNewItemItem() - Returning");
 		logger.debug("Returned {}", newItemItem);
