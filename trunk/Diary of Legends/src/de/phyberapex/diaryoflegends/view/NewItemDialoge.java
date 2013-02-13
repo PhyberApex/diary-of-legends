@@ -61,7 +61,6 @@ public class NewItemDialoge extends JDialog {
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		contentPanel.add(getNameTextField(), constraints);
 
-		contentPanel.setLayout(new GridBagLayout());
 		constraints = new GridBagConstraints();
 		constraints.gridx = 0;
 		constraints.gridy = 1;
@@ -113,7 +112,7 @@ public class NewItemDialoge extends JDialog {
 	public JLabel getNameLabel() {
 		logger.trace("getNameLabel() - Entering");
 		if (nameLabel == null) {
-			nameLabel = new JLabel("Item Name:");
+			nameLabel = new JLabel("Item name:");
 		}
 		logger.trace("getNameLabel() - Returning");
 		logger.debug("getNameLabel() - Returning: {}", nameLabel);
