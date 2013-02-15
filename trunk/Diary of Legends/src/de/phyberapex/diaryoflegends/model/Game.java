@@ -20,6 +20,23 @@ public class Game extends Model {
 	transient private static Logger logger = LogManager.getLogger(Game.class
 			.getName());
 
+	public Game() {
+	}
+
+	public Game(Date date, List<Champion> myTeam, List<Champion> enemyTeam,
+			Matchup matchup, GameResult result, String notes, int ownKills,
+			int ownDeaths, int ownAssists) {
+		this.date = date;
+		this.myTeam = myTeam;
+		this.enemyTeam = enemyTeam;
+		this.matchup = matchup;
+		this.result = result;
+		this.notes = notes;
+		this.ownKills = ownKills;
+		this.ownDeaths = ownDeaths;
+		this.ownAssists = ownAssists;
+	}
+
 	public Date getDate() {
 		logger.trace("getDate() - Entering");
 		logger.trace("getDate() - Returning");

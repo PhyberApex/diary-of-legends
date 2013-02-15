@@ -1,7 +1,6 @@
 package de.phyberapex.diaryoflegends.model;
 
 import java.util.List;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -9,10 +8,12 @@ public class Matchup extends Model {
 
 	private Game game;
 	private Champion myChamp;
-	private List<Item> myStartItems;
+	private List<MatchupItem> myStartItems;
 	private Champion enemyChamp;
-	private List<Item> enemyStartItems;
+	private List<MatchupItem> enemyStartItems;
 	private MatchupResult result;
+	private Role lane;
+	private MatchupDifficulty difficulty;
 	private String notes;
 	transient private static Logger logger = LogManager.getLogger(Matchup.class
 			.getName());
@@ -21,14 +22,17 @@ public class Matchup extends Model {
 	}
 
 	public Matchup(Game game, Champion myChamp, Champion enemyChamp,
-			List<Item> myStartItems, List<Item> enemyStartItems,
-			MatchupResult result, String notes) {
+			List<MatchupItem> myStartItems,
+			List<MatchupItem> enemyStartItems, MatchupResult result,
+			Role role, MatchupDifficulty difficulty, String notes) {
 		this.game = game;
 		this.myChamp = myChamp;
 		this.enemyChamp = enemyChamp;
 		this.myStartItems = myStartItems;
 		this.enemyStartItems = enemyStartItems;
 		this.result = result;
+		this.lane = role;
+		this.difficulty = difficulty;
 		this.notes = notes;
 
 	}
@@ -61,14 +65,14 @@ public class Matchup extends Model {
 		logger.trace("setMyChamp() - Leaving");
 	}
 
-	public List<Item> getMyStartItems() {
+	public List<MatchupItem> getMyStartItems() {
 		logger.trace("getMyStartItems() - Entering");
 		logger.trace("getMyStartItems() - Returning");
 		logger.debug("getMyStartItems() - Returning: {}", myStartItems);
 		return myStartItems;
 	}
 
-	public void setMyStartItems(List<Item> myStartItems) {
+	public void setMyStartItems(List<MatchupItem> myStartItems) {
 		logger.trace("setMyStartItems() - Entering");
 		logger.debug("setMyStartItems() - Parameter: {}", myStartItems);
 		this.myStartItems = myStartItems;
@@ -89,14 +93,14 @@ public class Matchup extends Model {
 		logger.trace("setEnemyChamp() - Leaving");
 	}
 
-	public List<Item> getEnemyStartItems() {
+	public List<MatchupItem> getEnemyStartItems() {
 		logger.trace("getEnemyStartItems() - Entering");
 		logger.trace("getEnemyStartItems() - Returning");
 		logger.debug("getEnemyStartItems() - Returning: {}", enemyStartItems);
 		return enemyStartItems;
 	}
 
-	public void setEnemyStartItems(List<Item> enemyStartItems) {
+	public void setEnemyStartItems(List<MatchupItem> enemyStartItems) {
 		logger.trace("setEnemyStartItems() - Entering");
 		logger.debug("setEnemyStartItems() - Parameter: {}", enemyStartItems);
 		this.enemyStartItems = enemyStartItems;
@@ -115,6 +119,34 @@ public class Matchup extends Model {
 		logger.debug("setResult() - Parameter: {}", result);
 		this.result = result;
 		logger.trace("setResult() - Leaving");
+	}
+
+	public Role getLane() {
+		logger.trace("getLane() - Entering");
+		logger.trace("getLane() - Returning");
+		logger.debug("getLane() - Returning: {}", lane);
+		return lane;
+	}
+
+	public void setLane(Role lane) {
+		logger.trace("setLane() - Entering");
+		logger.debug("setLane() - Parameter: {}", lane);
+		this.lane = lane;
+		logger.trace("setLane() - Leaving");
+	}
+
+	public MatchupDifficulty getDifficulty() {
+		logger.trace("getDifficulty() - Entering");
+		logger.trace("getDifficulty() - Returning");
+		logger.debug("getDifficulty() - Returning: {}", difficulty);
+		return difficulty;
+	}
+
+	public void setDifficulty(MatchupDifficulty difficulty) {
+		logger.trace("setDifficulty() - Entering");
+		logger.debug("setDifficulty() - Parameter: {}", difficulty);
+		this.difficulty = difficulty;
+		logger.trace("setDifficulty() - Leaving");
 	}
 
 	public String getNotes() {
