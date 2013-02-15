@@ -30,6 +30,7 @@ public class Game extends Model {
 		this.myTeam = myTeam;
 		this.enemyTeam = enemyTeam;
 		this.matchup = matchup;
+		this.matchup.setGame(this);
 		this.result = result;
 		this.notes = notes;
 		this.ownKills = ownKills;

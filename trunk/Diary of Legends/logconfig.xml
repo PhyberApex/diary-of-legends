@@ -12,7 +12,7 @@
   	<root level="error">
       <appender-ref ref="STDOUT"/>
     </root>
-    <logger name="de.phyberapex.diaryoflegends" level="debug">
+    <logger name="de.phyberapex.diaryoflegends" level="error">
       <appender-ref ref="logfile"/>
     </logger>
   </loggers>

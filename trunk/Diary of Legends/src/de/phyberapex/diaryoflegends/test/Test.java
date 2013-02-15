@@ -1,6 +1,7 @@
 package de.phyberapex.diaryoflegends.test;
 
 import java.io.File;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -10,7 +11,6 @@ import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
 import com.db4o.config.EmbeddedConfiguration;
 import com.db4o.query.Predicate;
-
 import de.phyberapex.diaryoflegends.model.Champion;
 import de.phyberapex.diaryoflegends.model.Game;
 import de.phyberapex.diaryoflegends.model.GameResult;
@@ -23,18 +23,29 @@ import de.phyberapex.diaryoflegends.model.Role;
 
 public class Test {
 
+	public static File getPic(String str) {
+		File f = null;
+		try {
+
+			f = new File(Test.class.getResource(
+					"/de/phyberapex/diaryoflegends/test/img/" + str).toURI());
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+		return f;
+	}
+
 	public static void main(String[] args) {
 		EmbeddedConfiguration configuration = Db4oEmbedded.newConfiguration();
+
 		ObjectContainer dbHandle = Db4oEmbedded.openFile(configuration,
 				"db\\test.db");
 
-		Champion ahri = new Champion("Ahri", new File("C:\\test\\ahri.png"));
-		Champion akali = new Champion("Akali", new File("C:\\test\\akali.png"));
-		Champion alistar = new Champion("Alistar", new File(
-				"C:\\test\\alistar.png"));
-		Champion amumu = new Champion("Amumu", new File("C:\\test\\amumu.png"));
-		Champion anivia = new Champion("Anivia", new File(
-				"C:\\test\\anivia.png"));
+		Champion ahri = new Champion("Ahri", getPic("ahri.png"));
+		Champion akali = new Champion("Akali", getPic("akali.png"));
+		Champion alistar = new Champion("Alistar", getPic("alistar.png"));
+		Champion amumu = new Champion("Amumu", getPic("amumu.png"));
+		Champion anivia = new Champion("Anivia", getPic("anivia.png"));
 
 		List<Champion> team1 = new ArrayList<Champion>();
 		team1.add(ahri);
@@ -43,13 +54,12 @@ public class Test {
 		team1.add(amumu);
 		team1.add(anivia);
 
-		Champion annie = new Champion("Annie", new File("C:\\test\\annie.png"));
-		Champion ashe = new Champion("Ashe", new File("C:\\test\\ashe.png"));
-		Champion blitzcrank = new Champion("Blitzcrank", new File(
-				"C:\\test\\blitzcrank.png"));
-		Champion brand = new Champion("Brand", new File("C:\\test\\brand.png"));
-		Champion caitlyn = new Champion("Caitlyn", new File(
-				"C:\\test\\caitlyn.png"));
+		Champion annie = new Champion("Annie", getPic("annie.png"));
+		Champion ashe = new Champion("Ashe", getPic("ashe.png"));
+		Champion blitzcrank = new Champion("Blitzcrank",
+				getPic("blitzcrank.png"));
+		Champion brand = new Champion("Brand", getPic("brand.png"));
+		Champion caitlyn = new Champion("Caitlyn", getPic("caitlyn.png"));
 		List<Champion> team2 = new ArrayList<Champion>();
 		team1.add(annie);
 		team1.add(ashe);
@@ -57,12 +67,12 @@ public class Test {
 		team1.add(brand);
 		team1.add(caitlyn);
 
-		Item doransblade = new Item("Dorans blade", 475, new File(
-				"C:\\test\\doransblade.png"));
-		Item healthpotion = new Item("Health potion", 475, new File(
-				"C:\\test\\healthpotion.png"));
-		Item bootsofspeed = new Item("Boots of Speed", 475, new File(
-				"C:\\test\\bootsofspeed.png"));
+		Item doransblade = new Item("Dorans blade", 475,
+				getPic("doransblade.png"));
+		Item healthpotion = new Item("Health potion", 35,
+				getPic("healthpotion.png"));
+		Item bootsofspeed = new Item("Boots of Speed", 350,
+				getPic("bootsofspeed.png"));
 
 		List<MatchupItem> myItems = new ArrayList<>();
 		MatchupItem myItem1 = new MatchupItem(doransblade, 1);
@@ -84,6 +94,8 @@ public class Test {
 		try {
 			ObjectSet<Game> g = dbHandle.query(new Predicate<Game>() {
 
+				private static final long serialVersionUID = -2610096847484155479L;
+
 				@Override
 				public boolean match(Game arg0) {
 					return true;
@@ -94,7 +106,8 @@ public class Test {
 			while (i.hasNext()) {
 				Game gamo = i.next();
 				System.out.println(gamo.getMatchup().getResult());
-				System.out.println(gamo.getMatchup().getMyChamp() + " vs. "+gamo.getMatchup().getEnemyChamp());
+				System.out.println(gamo.getMatchup().getMyChamp() + " vs. "
+						+ gamo.getMatchup().getEnemyChamp());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

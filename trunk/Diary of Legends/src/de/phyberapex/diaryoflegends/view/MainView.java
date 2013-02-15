@@ -60,7 +60,7 @@ public class MainView extends JFrame implements View, Runnable {
 
 	public static synchronized MainView getInstance() {
 		logger.trace("getInstance() - Entering");
-		logger.debug("Instance is {}", instance);
+		logger.debug("getInstance() - Instance is {}", instance);
 		if (instance == null) {
 			logger.debug("Creating a new instance of MainView");
 			instance = new MainView();
