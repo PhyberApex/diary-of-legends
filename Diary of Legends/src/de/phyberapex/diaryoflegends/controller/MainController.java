@@ -115,7 +115,7 @@ public class MainController {
 
 	public void setStatus(String text) {
 		logger.trace("setStatus() - Entering");
-		logger.debug("Parameter {}", text);
+		logger.debug("setStatus() - Parameter: {}", text);
 		mainView.setStatusText(text);
 		logger.trace("setStatus() - Leaving");
 	}

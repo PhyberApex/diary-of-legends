@@ -18,7 +18,6 @@ public class ItemController extends Controller {
 		super(mainController);
 		logger.trace("ItemController() - Entering");
 		logger.debug("ItemController() - Parameter: {}", mainController);
-		items = ItemUtil.getAllItems();
 		logger.trace("ItemController() - Leaving");
 	}
 
@@ -32,6 +31,7 @@ public class ItemController extends Controller {
 	@Override
 	public void loadData() {
 		logger.trace("loadData() - Entering");
+		items.addAll(ItemUtil.getAllItems());
 		view.refresh();
 		logger.trace("loadData() - Leaving");
 	}

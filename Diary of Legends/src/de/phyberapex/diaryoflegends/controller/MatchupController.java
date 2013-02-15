@@ -26,7 +26,6 @@ public class MatchupController extends Controller {
 		super(mainController);
 		logger.trace("ItemController() - Entering");
 		logger.debug("ItemController() - Parameter: {}", mainController);
-		matchups = MatchupUtil.getAllMatchups();
 		logger.trace("ItemController() - Leaving");
 	}
 
@@ -40,6 +39,7 @@ public class MatchupController extends Controller {
 	@Override
 	public void loadData() {
 		logger.trace("loadData() - Entering");
+		matchups.addAll(MatchupUtil.getAllMatchups());
 		view.refresh();
 		logger.trace("loadData() - Leaving");
 	}
