@@ -4,6 +4,9 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -22,7 +25,7 @@ public class MatchupView extends JPanel implements View {
 	private JButton deleteButton;
 	private JScrollPane matchupTablePane;
 	private JTable matchupTable;
-	//NewChampionDialoge newChampionDialoge = new NewChampionDialoge(this);
+	// NewChampionDialoge newChampionDialoge = new NewChampionDialoge(this);
 	private GridBagConstraints constraints;
 	private static Logger logger = LogManager.getLogger(ChampionView.class
 			.getName());
@@ -83,8 +86,8 @@ public class MatchupView extends JPanel implements View {
 
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
-					//TODO
-					//newChampionDialoge.setVisible(true);
+					// TODO
+					// newChampionDialoge.setVisible(true);
 				}
 			});
 		}
@@ -109,8 +112,8 @@ public class MatchupView extends JPanel implements View {
 					if (matchupTable.getSelectedRow() != -1) {
 						Matchup matchup = (Matchup) matchupTable.getValueAt(
 								matchupTable.getSelectedRow(), 1);
-						String message = "Are you sure to delete: "
-								+ matchup + "?";
+						String message = "Are you sure to delete: " + matchup
+								+ "?";
 						String title = "Information";
 						int ok = JOptionPane.showConfirmDialog(null, message,
 								title, JOptionPane.YES_NO_OPTION);
@@ -119,7 +122,7 @@ public class MatchupView extends JPanel implements View {
 							((MatchupTableModel) matchupTable.getModel())
 									.removeMatchup(matchup);
 							MainView.getInstance().setStatusText(
-									"Matchup " + matchup+ " removed");
+									"Matchup " + matchup + " removed");
 						}
 					} else {
 						// TODO schöner!
@@ -163,6 +166,42 @@ public class MatchupView extends JPanel implements View {
 			matchupTable.setModel(m);
 			matchupTable.setDefaultRenderer(Object.class,
 					new MatchupTableRenderer());
+			matchupTable.addMouseListener(new MouseListener() {
+
+				@Override
+				public void mouseReleased(MouseEvent e) {
+					if (e.getClickCount() == 2) {
+						int row = matchupTable.rowAtPoint(e.getPoint());
+
+						MatchupDetailView.getInstance().showDetails(
+								(Matchup) matchupTable.getValueAt(row, 1));
+					}
+				}
+
+				@Override
+				public void mousePressed(MouseEvent e) {
+					// TODO Auto-generated method stub
+
+				}
+
+				@Override
+				public void mouseExited(MouseEvent e) {
+					// TODO Auto-generated method stub
+
+				}
+
+				@Override
+				public void mouseEntered(MouseEvent e) {
+					// TODO Auto-generated method stub
+
+				}
+
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					// TODO Auto-generated method stub
+
+				}
+			});
 		}
 		logger.trace("getMatchupTable() - Returning");
 		logger.debug("getMatchupTable() - Returning: {}", matchupTable);

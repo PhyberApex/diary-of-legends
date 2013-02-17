@@ -61,11 +61,11 @@ public class Test {
 		Champion brand = new Champion("Brand", getPic("brand.png"));
 		Champion caitlyn = new Champion("Caitlyn", getPic("caitlyn.png"));
 		List<Champion> team2 = new ArrayList<Champion>();
-		team1.add(annie);
-		team1.add(ashe);
-		team1.add(blitzcrank);
-		team1.add(brand);
-		team1.add(caitlyn);
+		team2.add(annie);
+		team2.add(ashe);
+		team2.add(blitzcrank);
+		team2.add(brand);
+		team2.add(caitlyn);
 
 		Item doransblade = new Item("Dorans blade", 475,
 				getPic("doransblade.png"));

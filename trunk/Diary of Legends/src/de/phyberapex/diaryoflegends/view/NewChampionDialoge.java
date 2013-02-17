@@ -45,6 +45,7 @@ public class NewChampionDialoge extends JDialog {
 
 	public NewChampionDialoge(ChampionView champview) {
 		super(MainView.getInstance());
+		this.setTitle("New Champion");
 		logger.trace("NewChampionDialoge() - Entering");
 		logger.debug("NewChampionDialoge() - Parameter: {}", champview);
 		this.champview = champview;
@@ -239,7 +240,7 @@ public class NewChampionDialoge extends JDialog {
 			iconPreviewLabel = new JLabel();
 			iconPreviewLabel
 					.setIcon(ImageIconFactory
-							.createImageIconFromResourePath("img/champ_default_60x60.png"));
+							.createImageIconFromResourePath("img/empty_60x60.png"));
 		}
 		logger.trace("getIconPreviewLabel() - Returning");
 		logger.debug("getIconPreviewLabel() - Returning: {}", iconPreviewLabel);
@@ -252,7 +253,7 @@ public class NewChampionDialoge extends JDialog {
 		getIconPreviewLabel()
 				.setIcon(
 						ImageIconFactory
-								.createImageIconFromResourePath("img/champ_default_60x60.png"));
+								.createImageIconFromResourePath("img/emptpy_60x60.png"));
 		iconOk = false;
 		super.dispose();
 	}

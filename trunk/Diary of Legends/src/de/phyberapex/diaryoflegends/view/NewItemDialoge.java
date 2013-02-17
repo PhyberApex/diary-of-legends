@@ -44,6 +44,7 @@ public class NewItemDialoge extends JDialog {
 
 	public NewItemDialoge(ItemView itemview) {
 		super(MainView.getInstance());
+		this.setTitle("New Item");
 		logger.trace("NewChampionDialoge() - Entering");
 		logger.debug("NewChampionDialoge() - Parameter: {}", itemview);
 		this.itemView = itemview;
@@ -275,7 +276,7 @@ public class NewItemDialoge extends JDialog {
 			iconPreviewLabel = new JLabel();
 			iconPreviewLabel
 					.setIcon(ImageIconFactory
-							.createImageIconFromResourePath("img/champ_default_60x60.png"));
+							.createImageIconFromResourePath("img/empty_60x60.png"));
 		}
 		logger.trace("getIconPreviewLabel() - Returning");
 		logger.debug("getIconPreviewLabel() - Returning: {}", iconPreviewLabel);
