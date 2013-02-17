@@ -53,7 +53,7 @@ public class MatchupUtil {
 	/**
 	 * Saves the matchup given in the database
 	 * 
-	 * @param {@link Matchup matchup} 
+	 * @param {@link Matchup matchup}
 	 */
 	public static void saveMatchup(Matchup matchup) {
 		logger.trace("saveMatchup() - Entering");
@@ -65,12 +65,16 @@ public class MatchupUtil {
 	/**
 	 * Saves the item given in the database
 	 * 
-	 * @param {@link Matchup matchup} 
+	 * @param {@link Matchup matchup}
 	 */
 	public static void deleteMatchup(Matchup matchup) {
 		logger.trace("deleteMatchup() - Entering");
 		logger.debug("deleteMatchup() - Parameter {}", matchup);
 		dbHandle.delete(matchup);
+		if (matchup.getGame() != null) {
+			matchup.getGame().setMatchup(null);
+			GameUtil.deleteGame(matchup.getGame());
+		}
 		logger.trace("deleteMatchup() - Leaving");
 	}
 }

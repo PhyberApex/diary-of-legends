@@ -25,17 +25,16 @@ public class MatchupView extends JPanel implements View {
 	private JButton deleteButton;
 	private JScrollPane matchupTablePane;
 	private JTable matchupTable;
-	// NewChampionDialoge newChampionDialoge = new NewChampionDialoge(this);
 	private GridBagConstraints constraints;
 	private static Logger logger = LogManager.getLogger(ChampionView.class
 			.getName());
 
 	public MatchupView(MatchupController controller) {
-		logger.trace("ChampionView() - Entering");
-		logger.debug("ChampionView() - Parameter: {}", controller);
+		logger.trace("MatchupView() - Entering");
+		logger.debug("MatchupView() - Parameter: {}", controller);
 		this.controller = controller;
 		createGUI();
-		logger.trace("ChampionView() - Leaving");
+		logger.trace("MatchupView() - Leaving");
 	}
 
 	/**
@@ -81,7 +80,7 @@ public class MatchupView extends JPanel implements View {
 	private JButton getNewButton() {
 		logger.trace("getNewButton() - Entering");
 		if (newButton == null) {
-			newButton = new JButton("new Champion");
+			newButton = new JButton("new Game & Matchup");
 			newButton.addActionListener(new ActionListener() {
 
 				@Override
@@ -104,7 +103,7 @@ public class MatchupView extends JPanel implements View {
 	private JButton getDeleteButton() {
 		logger.trace("getDeleteButton() - Entering");
 		if (deleteButton == null) {
-			deleteButton = new JButton("delete Champion");
+			deleteButton = new JButton("delete Matchup & Game");
 			deleteButton.addActionListener(new ActionListener() {
 
 				@Override
@@ -122,7 +121,7 @@ public class MatchupView extends JPanel implements View {
 							((MatchupTableModel) matchupTable.getModel())
 									.removeMatchup(matchup);
 							MainView.getInstance().setStatusText(
-									"Matchup " + matchup + " removed");
+									"Matchup and game " + matchup + " removed");
 						}
 					} else {
 						// TODO schöner!
@@ -173,7 +172,7 @@ public class MatchupView extends JPanel implements View {
 					if (e.getClickCount() == 2) {
 						int row = matchupTable.rowAtPoint(e.getPoint());
 
-						MatchupDetailView.getInstance().showDetails(
+						MatchupDetailDialoge.getInstance().showDetails(
 								(Matchup) matchupTable.getValueAt(row, 1));
 					}
 				}

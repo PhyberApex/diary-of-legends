@@ -35,11 +35,11 @@ public class ItemView extends JPanel implements View {
 			.getName());
 
 	public ItemView(ItemController controller) {
-		logger.trace("ChampionView() - Entering");
-		logger.debug("ChampionView() - Parameter: {}", controller);
+		logger.trace("ItemView() - Entering");
+		logger.debug("ItemView() - Parameter: {}", controller);
 		this.controller = controller;
 		createGUI();
-		logger.trace("ChampionView() - Leaving");
+		logger.trace("ItemView() - Leaving");
 	}
 
 	/**
