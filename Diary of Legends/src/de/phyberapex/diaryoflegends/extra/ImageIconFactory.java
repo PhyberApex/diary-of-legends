@@ -1,5 +1,6 @@
 package de.phyberapex.diaryoflegends.extra;
 
+import java.awt.Image;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -23,6 +24,7 @@ public class ImageIconFactory {
 	 */
 	public static ImageIcon createImageIcon(String path) {
 		logger.trace("createImageIcon() - Entering");
+		logger.debug("createImageIcon() - Parameter: {}", path);
 		logger.debug("Trying to create ImageIcon from path {}", path);
 		URL imgURL;
 		ImageIcon icon = null;
@@ -34,7 +36,7 @@ public class ImageIconFactory {
 			logger.error("Errormessage {}", e.getMessage());
 		}
 		logger.trace("createImageIcon() - Returning");
-		logger.debug("Returned {}", icon);
+		logger.debug("createImageIcon() - Returning: {}", icon);
 		return icon;
 	}
 	
@@ -45,11 +47,22 @@ public class ImageIconFactory {
 	 * @return {@link ImageIcon}
 	 */
 	public static ImageIcon createImageIconFromResourePath(String path) {
-		logger.trace("createImageIcon() - Entering");
+		logger.trace("createImageIconFromResourePath() - Entering");
+		logger.debug("createImageIconFromResourePath() - Parameter: {}", path);
 		path = Constants.getResourcePath()+path;
 		ImageIcon icon = createImageIcon(ImageIconFactory.class.getResource(path).getPath());
-		logger.trace("createImageIcon() - Returning");
-		logger.debug("Returned {}", icon);
+		logger.trace("createImageIconFromResourePath() - Returning");
+		logger.debug("createImageIconFromResourePath() - Returning: {}", icon);
 		return icon;
+	}
+	
+	public static ImageIcon resizeImageIcon(ImageIcon icon, int height, int width){
+		logger.trace("createImageIconFromResourePath() - Entering");
+		logger.debug("createImageIconFromResourePath() - Parameter: {}, {}, {}", icon, height, width);
+		Image img = icon.getImage();
+		ImageIcon newIcon = new ImageIcon(img.getScaledInstance(width, height,
+				java.awt.Image.SCALE_SMOOTH));
+		logger.debug(newIcon);
+		return newIcon;
 	}
 }
