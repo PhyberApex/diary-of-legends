@@ -163,4 +163,9 @@ public class Game extends Model {
 		this.ownAssists = ownAssists;
 		logger.trace("setOwnAssists() - Leaving");
 	}
+	
+	@Override
+	public String toString(){
+		return this.notes;
+	}
 }

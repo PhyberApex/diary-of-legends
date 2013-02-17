@@ -82,6 +82,23 @@ public class MatchupTableRenderer implements TableCellRenderer {
 			panel.add(label);
 			returnValue = panel;
 			break;
+		case 3:
+			panel = new JPanel();
+			panel.setLayout(new BorderLayout());
+			label = new JLabel();
+			if (isSelected || hasFocus) {
+				panel.setBackground(Color.ORANGE);
+			} else if (m.getResult() == MatchupResult.WIN) {
+				panel.setBackground(Color.GREEN);
+			} else if (m.getResult() == MatchupResult.LOSS) {
+				panel.setBackground(Color.RED);
+			} else {
+				panel.setBackground(Color.WHITE);
+			}
+			label.setText(value.toString());
+			panel.add(label);
+			returnValue = panel;
+			break;
 		}
 		return returnValue;
 	}
