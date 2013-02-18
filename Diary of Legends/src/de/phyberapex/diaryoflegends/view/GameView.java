@@ -13,7 +13,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import de.phyberapex.diaryoflegends.controller.GameController;
 import de.phyberapex.diaryoflegends.model.Game;
-import de.phyberapex.diaryoflegends.model.util.GameUtil;
 
 public class GameView extends JPanel implements View {
 
@@ -73,7 +72,6 @@ public class GameView extends JPanel implements View {
 		logger.trace("createGUI() - Leaving");
 	}
 
-
 	/**
 	 * Returns the newButton
 	 * 
@@ -118,11 +116,12 @@ public class GameView extends JPanel implements View {
 						int ok = JOptionPane.showConfirmDialog(null, message,
 								title, JOptionPane.YES_NO_OPTION);
 						if (ok == JOptionPane.OK_OPTION) {
-							GameUtil.deleteGame(game);
+							controller.deleteGame(game, true);
 							((GameTableModel) gameTable.getModel())
 									.removeGame(game);
 							MainView.getInstance().setStatusText(
-									"Game and matchup " + game.getMatchup() + " removed");
+									"Game and matchup " + game.getMatchup()
+											+ " removed");
 						}
 					} else {
 						// TODO schöner!
@@ -186,5 +185,15 @@ public class GameView extends JPanel implements View {
 	@Override
 	public void refresh() {
 		((GameTableModel) gameTable.getModel()).fireTableDataChanged();
+	}
+
+	/**
+	 * @param game
+	 */
+	public void removeGame(Game game) {
+		logger.trace("removeGame() - Entering");
+		logger.debug("removeGame() - Parameter: {}", game);
+		((GameTableModel) gameTable.getModel()).removeGame(game);
+		logger.trace("removeGame() - Leaving");
 	}
 }

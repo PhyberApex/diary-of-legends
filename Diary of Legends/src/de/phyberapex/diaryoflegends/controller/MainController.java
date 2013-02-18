@@ -15,6 +15,8 @@ import de.phyberapex.diaryoflegends.base.Initializer;
 import de.phyberapex.diaryoflegends.exception.InitializeException;
 import de.phyberapex.diaryoflegends.extra.ImageIconFactory;
 import de.phyberapex.diaryoflegends.extra.Splash;
+import de.phyberapex.diaryoflegends.model.Game;
+import de.phyberapex.diaryoflegends.model.Matchup;
 import de.phyberapex.diaryoflegends.view.ChampionView;
 import de.phyberapex.diaryoflegends.view.CurrentSummonerNameView;
 import de.phyberapex.diaryoflegends.view.GameView;
@@ -26,6 +28,10 @@ public class MainController {
 
 	private Splash splash;
 	private MainView mainView;
+	private ChampionController champController;
+	private ItemController itemController;
+	private MatchupController matchupController;
+	private GameController gameController;
 	transient private Logger logger = LogManager.getLogger(MainController.class
 			.getName());
 
@@ -41,10 +47,10 @@ public class MainController {
 					.initializeApp();
 			logger.debug("Value of initAction {}", initAction);
 			splash.showStatus("Preparing controller", 20);
-			ChampionController champController = new ChampionController(this);
-			ItemController itemController = new ItemController(this);
-			MatchupController matchupController = new MatchupController(this);
-			GameController gameController = new GameController(this);
+			champController = new ChampionController(this);
+			itemController = new ItemController(this);
+			matchupController = new MatchupController(this);
+			gameController = new GameController(this);
 			splash.showStatus("Creating user interface", 30);
 			mainView = MainView.getInstance();
 			mainView.setMainController(this);
@@ -130,6 +136,26 @@ public class MainController {
 	 */
 	public static void exit() {
 		ExitAction.getInstance().actionPerformed(null);
+	}
+
+	/**
+	 * @param game
+	 */
+	public void deleteGame(Game game) {
+		logger.trace("deleteGame() - Entering");
+		logger.debug("deleteGame() - Parameter: {}", game);
+		gameController.deleteGame(game, false);
+		logger.trace("deleteGame() - Leaving");
+	}
+
+	/**
+	 * @param matchup
+	 */
+	public void deleteMatchup(Matchup matchup) {
+		logger.trace("deleteMatchup() - Entering");
+		logger.debug("deleteMatchup() - Parameter: {}", matchup);
+		matchupController.deleteMatchup(matchup, false);
+		logger.trace("deleteMatchup() - Leaving");
 	}
 
 }

@@ -47,4 +47,20 @@ public class GameController extends Controller {
 		logger.debug("getGames() - Returning: {}", games);
 		return this.games;
 	}
+
+	
+	/**
+	 * @param game
+	 */
+	public void deleteGame(Game game, boolean deleteMatchup) {
+		logger.trace("deleteGame() - Entering");
+		logger.debug("deleteGame() - Parameter: {}", game);
+		if (deleteMatchup) {
+			mainController.deleteMatchup(game.getMatchup());
+		} else {
+			((GameView)view).removeGame(game);
+		}
+		GameUtil.deleteGame(game);
+		logger.trace("deleteGame() - Leaving");
+	}
 }
