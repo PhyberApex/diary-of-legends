@@ -176,4 +176,28 @@ public class MainView extends JFrame implements View, Runnable {
 		logger.debug("getItemPanel() - Returning: {}", returnValue);
 		return returnValue;
 	}
+
+	/**
+	 * @return
+	 */
+	public GameView getGamePanel() {
+		logger.trace("getGamePanel() - Entering");
+		GameView returnValue = (GameView) getContentTabbedPane()
+				.getComponentAt(0);
+		logger.trace("getGamePanel() - Returning");
+		logger.debug("getGamePanel() - Returning: {}", returnValue);
+		return returnValue;
+	}
+
+	/**
+	 * @return
+	 */
+	public MatchupView getMatchupPanel() {
+		logger.trace("getMatchupPanel() - Entering");
+		MatchupView returnValue = (MatchupView) getContentTabbedPane()
+				.getComponentAt(1);
+		logger.trace("getMatchupPanel() - Returning");
+		logger.debug("getMatchupPanel() - Returning: {}", returnValue);
+		return returnValue;
+	}
 }

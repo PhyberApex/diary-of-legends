@@ -39,14 +39,11 @@ public class ExitAction extends AbstractAction {
 	 */
 	public static synchronized ExitAction getInstance() {
 		logger.trace("getInstance() - Entering");
-		logger.debug("Instance is {}", instance);
 		if (instance == null) {
-			logger.debug("Creating a new instance of ExitAction");
 			instance = new ExitAction();
 		}
 		logger.trace("getInstance() - Returning");
-		logger.debug("Returned {}", instance);
+		logger.debug("getInstance() - Returning: {}", instance);
 		return instance;
 	}
-
 }

@@ -1,17 +1,28 @@
 package de.phyberapex.diaryoflegends.view;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+
+import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.filechooser.FileFilter;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import de.phyberapex.diaryoflegends.ExitAction;
+import de.phyberapex.diaryoflegends.model.ExportAction;
+import de.phyberapex.diaryoflegends.model.ImportAction;
 
 public class MenuBarView extends JMenuBar implements View {
 
 	private static final long serialVersionUID = 4015087253364502577L;
 	private JMenu fileMenu;
 	private JMenuItem newEntryItem;
+	private JMenuItem importItem;
+	private JMenuItem exportItem;
 	private JMenuItem exitItem;
 	private JMenu editMenu;
 	private JMenuItem editEntryItem;
@@ -37,6 +48,8 @@ public class MenuBarView extends JMenuBar implements View {
 			logger.debug("Creating a new JMenu object");
 			this.fileMenu = new JMenu("File");
 			this.fileMenu.add(getNewEntryItem());
+			this.fileMenu.add(getImportItem());
+			this.fileMenu.add(getExportItem());
 			this.fileMenu.add(getExitItem());
 		}
 		logger.trace("getFileMenu() - Returning");
@@ -54,6 +67,66 @@ public class MenuBarView extends JMenuBar implements View {
 		logger.trace("getNewEntryItem() - Returning");
 		logger.debug("Returned {}", newEntryItem);
 		return newEntryItem;
+	}
+
+	private JMenuItem getImportItem() {
+		logger.trace("getImportItem() - Entering");
+		if (this.importItem == null) {
+			this.importItem = new JMenuItem("Import...");
+			this.importItem.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					JFileChooser fc = new JFileChooser();
+					fc.setFileFilter(new FileFilter() {
+						
+						@Override
+						public String getDescription() {
+							return "DOLEX files";
+						}
+						
+						@Override
+						public boolean accept(File arg0) {
+							String extension = "";
+
+							int i = arg0.getName().lastIndexOf('.');
+							if (i > 0) {
+							    extension = arg0.getName().substring(i+1);
+							}
+							if(extension.equals("dolex") || arg0.isDirectory()){
+								return true;
+							}else{
+							return false;
+							}
+						}
+					});
+					int ok = fc.showOpenDialog(MainView.getInstance());
+					if(ok == JFileChooser.APPROVE_OPTION){
+					ImportAction.doImport(fc.getSelectedFile());
+					}
+				}
+			});
+		}
+		logger.trace("getImportItem() - Returning");
+		logger.debug("getImportItem() - Returning {}", importItem);
+		return importItem;
+	}
+
+	private JMenuItem getExportItem() {
+		logger.trace("getExportItem() - Entering");
+		if (this.exportItem == null) {
+			this.exportItem = new JMenuItem("Export");
+			this.exportItem.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					ExportAction.doExport();
+				}
+			});
+		}
+		logger.trace("getExportItem() - Returning");
+		logger.debug("getExportItem() - Returning: {}", exportItem);
+		return exportItem;
 	}
 
 	private JMenuItem getExitItem() {

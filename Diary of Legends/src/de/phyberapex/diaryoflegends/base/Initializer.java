@@ -15,7 +15,6 @@ import de.phyberapex.diaryoflegends.controller.MainController;
 import de.phyberapex.diaryoflegends.exception.InitializeException;
 import de.phyberapex.diaryoflegends.model.Champion;
 import de.phyberapex.diaryoflegends.model.Item;
-import de.phyberapex.diaryoflegends.model.Model;
 import de.phyberapex.diaryoflegends.model.Summoner;
 
 /**
@@ -111,10 +110,9 @@ public class Initializer {
 				} catch (Exception e) {// Catch exception if any
 					e.printStackTrace();
 				}
-				try{
+				try {
 					deleteDir(updateFolder);
-				}
-				catch (SecurityException e){
+				} catch (SecurityException e) {
 					e.printStackTrace();
 				}
 			}
@@ -135,135 +133,125 @@ public class Initializer {
 		logger.debug("doUpdate() - entity = {}", entity);
 		first = strLine.indexOf("[", second);
 		second = strLine.indexOf("]", first);
-		final String[] attributes = strLine.substring(first + 1, second).split(
-				",");
+		String[] attributes = strLine.substring(first + 1, second).split(",");
 		logger.debug("doUpdate() - attributes = {}", (Object[]) attributes);
-		Model m = null;
 		switch (work) {
 		case "NEW":
-			switch (entity) {
-			case "CHAMPION":
-				m = new Champion(attributes[0], new File(
-						updateFolder.getAbsolutePath() + "\\" + attributes[1]));
-				break;
-			case "ITEM":
-				m = new Item(attributes[0], Integer.valueOf(attributes[1]),
-						new File(updateFolder.getAbsolutePath() + "\\"
-								+ attributes[2]));
-				break;
-			}
-			Config.getInstance().getDBHandle().store(m);
+			updateNew(entity, attributes);
 			break;
 		case "EDIT":
-			switch (entity) {
-			case "CHAMPION":
-				ObjectSet<Champion> osChamp = Config.getInstance()
-						.getDBHandle().query(new Predicate<Champion>() {
-
-							private static final long serialVersionUID = 1L;
-
-							@Override
-							public boolean match(Champion arg0) {
-								if (arg0.getName().equals(attributes[0])) {
-									return true;
-								} else {
-									return false;
-								}
-							}
-						});
-				Champion champ = osChamp.next();
-				champ.setIcon(new File(updateFolder.getAbsolutePath() + "\\"
-						+ attributes[1]));
-				m = champ;
-				break;
-			case "ITEM":
-				ObjectSet<Item> osItem = Config.getInstance().getDBHandle()
-						.query(new Predicate<Item>() {
-
-							private static final long serialVersionUID = 1L;
-
-							@Override
-							public boolean match(Item arg0) {
-								if (arg0.getName().equals(attributes[0])) {
-									return true;
-								} else {
-									return false;
-								}
-							}
-						});
-				Item item = osItem.next();
-				item.setPrice(Integer.valueOf(attributes[1]));
-				item.setIcon(new File(updateFolder.getAbsolutePath() + "\\"
-						+ attributes[2]));
-				m = item;
-				break;
-			}
-			Config.getInstance().getDBHandle().store(m);
-			break;
-		case "DELETE":
-			switch (entity) {
-			case "CHAMPION":
-				ObjectSet<Champion> osChamp = Config.getInstance()
-						.getDBHandle().query(new Predicate<Champion>() {
-
-							private static final long serialVersionUID = 1L;
-
-							@Override
-							public boolean match(Champion arg0) {
-								if (arg0.getName().equals(attributes[0])) {
-									return true;
-								} else {
-									return false;
-								}
-							}
-						});
-				m = osChamp.next();
-				break;
-			case "ITEM":
-				ObjectSet<Item> osItem = Config.getInstance().getDBHandle()
-						.query(new Predicate<Item>() {
-
-							private static final long serialVersionUID = 1L;
-
-							@Override
-							public boolean match(Item arg0) {
-								if (arg0.getName().equals(attributes[0])) {
-									return true;
-								} else {
-									return false;
-								}
-							}
-						});
-				m = osItem.next();
-				break;
-			}
-			Config.getInstance().getDBHandle().delete(m);
+			updateEdit(entity, attributes);
 			break;
 		}
 		logger.trace("doUpdate() - Leaving");
 	}
 
-	private void deleteDir(File dir){
+	/**
+	 * @param entity
+	 * @param attributes
+	 */
+	private void updateEdit(String entity, String[] attributes) {
+		switch (entity) {
+		case "CHAMPION":
+			editChamp(attributes);
+			break;
+		case "ITEM":
+			editItem(attributes);
+			break;
+		}
+	}
+
+	/**
+	 * @param attributes
+	 */
+	private void editItem(final String[] attributes) {
+		ObjectSet<Item> osItem = Config.getInstance().getDBHandle()
+				.query(new Predicate<Item>() {
+
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public boolean match(Item arg0) {
+						if (arg0.getName().equals(attributes[0])) {
+							return true;
+						} else {
+							return false;
+						}
+					}
+				});
+		Item item = osItem.next();
+		item.setPrice(Integer.valueOf(attributes[1]));
+		item.setIcon(new File(updateFolder.getAbsolutePath() + "\\"
+				+ attributes[2]));
+		Config.getInstance().getDBHandle().store(item);
+	}
+
+	/**
+	 * @param attributes
+	 */
+	private void editChamp(final String[] attributes) {
+		ObjectSet<Champion> osChamp = Config.getInstance().getDBHandle()
+				.query(new Predicate<Champion>() {
+
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public boolean match(Champion arg0) {
+						if (arg0.getName().equals(attributes[0])) {
+							return true;
+						} else {
+							return false;
+						}
+					}
+				});
+		Champion champ = osChamp.next();
+		champ.setIcon(new File(updateFolder.getAbsolutePath() + "\\"
+				+ attributes[1]));
+		Config.getInstance().getDBHandle().store(champ);
+	}
+
+	/**
+	 * @param entity
+	 * @param attributes
+	 */
+	private void updateNew(String entity, String[] attributes) {
+		switch (entity) {
+		case "CHAMPION":
+			Champion champ = new Champion(attributes[0], new File(
+					updateFolder.getAbsolutePath() + "\\" + attributes[1]));
+			Config.getInstance().getDBHandle().store(champ);
+			break;
+		case "ITEM":
+			Item item = new Item(attributes[0], Integer.valueOf(attributes[1]),
+					new File(updateFolder.getAbsolutePath() + "\\"
+							+ attributes[2]));
+			Config.getInstance().getDBHandle().store(item);
+			break;
+		}
+	}
+
+	private void deleteDir(File dir) {
 		// If it is a directory get the child
-		if(dir.isDirectory()) {
+		if (dir.isDirectory()) {
 			// List all the contents of the directory
 			File fileList[] = dir.listFiles();
- 
+
 			// Loop through the list of files/directories
-			for(int index = 0; index < fileList.length; index++) {
+			for (int index = 0; index < fileList.length; index++) {
 				// Get the current file object.
 				File file = fileList[index];
- 
-				// Call deleteDir function once again for deleting all the directory contents or
+
+				// Call deleteDir function once again for deleting all the
+				// directory contents or
 				// sub directories if any present.
 				deleteDir(file);
 			}
 		}
- 
+
 		// Delete the current directory or file.
-	        dir.delete();
+		dir.delete();
 	}
-	
+
 	private void changeLaF() {
 		logger.trace("changeLaF() - Entering");
 		try {
