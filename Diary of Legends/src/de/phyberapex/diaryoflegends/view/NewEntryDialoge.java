@@ -37,17 +37,15 @@ public class NewEntryDialoge extends JDialog {
 	private JButton cancelButton;
 	private JLabel iconPreviewLabel;
 	private GridBagConstraints constraints;
-	private ItemView itemView;
 	private JPanel contentPanel = new JPanel();
-	private static Logger logger = LogManager
-			.getLogger(NewChampionDialoge.class.getName());
+	private static Logger logger = LogManager.getLogger(NewEntryDialoge.class
+			.getName());
 
 	public NewEntryDialoge(ItemView itemview) {
 		super(MainView.getInstance());
 		this.setTitle("New Item");
 		logger.trace("NewChampionDialoge() - Entering");
 		logger.debug("NewChampionDialoge() - Parameter: {}", itemview);
-		this.itemView = itemview;
 		this.setModal(true);
 
 		contentPanel.setLayout(new GridBagLayout());
@@ -235,7 +233,6 @@ public class NewEntryDialoge extends JDialog {
 							item.setPrice(Integer.valueOf(getPriceTextField()
 									.getText()));
 							ItemUtil.saveItem(item);
-							itemView.addItem(item);
 							MainView.getInstance().setStatusText(
 									"Item " + item + " saved");
 							dispose();
@@ -274,9 +271,8 @@ public class NewEntryDialoge extends JDialog {
 		logger.trace("getIconPreviewLabel() - Entering");
 		if (iconPreviewLabel == null) {
 			iconPreviewLabel = new JLabel();
-			iconPreviewLabel
-					.setIcon(ImageIconFactory
-							.createImageIconFromResourePath("img/empty_60x60.png"));
+			iconPreviewLabel.setIcon(ImageIconFactory
+					.createImageIconFromResourePath("img/empty_60x60.png"));
 		}
 		logger.trace("getIconPreviewLabel() - Returning");
 		logger.debug("getIconPreviewLabel() - Returning: {}", iconPreviewLabel);
