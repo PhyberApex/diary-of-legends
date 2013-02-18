@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 import javax.swing.JButton;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -16,7 +15,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import de.phyberapex.diaryoflegends.controller.ItemController;
 import de.phyberapex.diaryoflegends.model.Item;
-import de.phyberapex.diaryoflegends.model.util.ItemUtil;
 
 public class ItemView extends JPanel implements View {
 
@@ -25,11 +23,8 @@ public class ItemView extends JPanel implements View {
 	private JTextField searchTextField;
 	private JButton searchButton;
 	private JButton clearSearchButton;
-	private JButton newButton;
-	private JButton deleteButton;
 	private JScrollPane itemTablePane;
 	private JTable itemTable;
-	private NewItemDialoge newItemDialoge = new NewItemDialoge(this);
 	private GridBagConstraints constraints;
 	private static Logger logger = LogManager.getLogger(ChampionView.class
 			.getName());
@@ -78,30 +73,12 @@ public class ItemView extends JPanel implements View {
 		this.add(getClearSearchButton(), constraints);
 		
 		constraints = new GridBagConstraints();
-		constraints.weightx = 0;
-		constraints.weighty = 0;
-		constraints.gridx = 0;
-		constraints.gridy = 1;
-		logger.debug("Adding newButton to panel with constraints: {}",
-				constraints);
-		this.add(getNewButton(), constraints);
-		
-		constraints = new GridBagConstraints();
-		constraints.weightx = 0;
-		constraints.weighty = 0;
-		constraints.gridx = 1;
-		constraints.gridy = 1;
-		logger.debug("Adding deleteButton to panel with constraints: {}",
-				constraints);
-		this.add(getDeleteButton(), constraints);
-		
-		constraints = new GridBagConstraints();
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridwidth = 4;
 		constraints.weightx = 1;
 		constraints.weighty = 1;
 		constraints.gridx = 0;
-		constraints.gridy = 2;
+		constraints.gridy = 1;
 		logger.debug("Adding championTable to panel with constraints: {}",
 				constraints);
 		this.add(getItemTablePane(), constraints);
@@ -183,69 +160,6 @@ public class ItemView extends JPanel implements View {
 	}
 
 	/**
-	 * Returns the newButton
-	 * 
-	 * @return {@link JButton} The newButton
-	 */
-	private JButton getNewButton() {
-		logger.trace("getNewButton() - Entering");
-		if (newButton == null) {
-			newButton = new JButton("new Item");
-			newButton.addActionListener(new ActionListener() {
-
-				@Override
-				public void actionPerformed(ActionEvent arg0) {
-					newItemDialoge.setVisible(true);
-				}
-			});
-		}
-		logger.trace("getNewButton() - Returning");
-		logger.debug("getNewButton() - Returning: {}", newButton);
-		return newButton;
-	}
-
-	/**
-	 * Returns the deleteButton
-	 * 
-	 * @return {@link JButton} The deleteButton
-	 */
-	private JButton getDeleteButton() {
-		logger.trace("getDeleteButton() - Entering");
-		if (deleteButton == null) {
-			deleteButton = new JButton("delete Item");
-			deleteButton.addActionListener(new ActionListener() {
-
-				@Override
-				public void actionPerformed(ActionEvent arg0) {
-					if (itemTable.getSelectedRow() != -1) {
-						Item item = (Item) itemTable.getValueAt(
-								itemTable.getSelectedRow(), 1);
-						String message = "Are you sure to delete: "
-								+ item.getName() + "?";
-						String title = "Information";
-						int ok = JOptionPane.showConfirmDialog(null, message,
-								title, JOptionPane.YES_NO_OPTION);
-						if (ok == JOptionPane.OK_OPTION) {
-							ItemUtil.deleteItem(item);
-							((ItemTableModel) itemTable.getModel())
-									.removeItem(item);
-							MainView.getInstance().setStatusText(
-									"Item " + item + " removed");
-						}
-					} else {
-						// TODO schöner!
-						JOptionPane.showMessageDialog(MainView.getInstance(),
-								"No Item selected");
-					}
-				}
-			});
-		}
-		logger.trace("getDeleteButton() - Returning");
-		logger.debug("getDeleteButton() - Returning: {}", deleteButton);
-		return deleteButton;
-	}
-
-	/**
 	 * Returns the itemTablePane
 	 * 
 	 * @return {@link JScrollPane} The itemTablePane
@@ -277,19 +191,6 @@ public class ItemView extends JPanel implements View {
 		logger.trace("getItemTable() - Returning");
 		logger.debug("getItemTable() - Returning: {}", itemTable);
 		return itemTable;
-	}
-
-	/**
-	 * Adds a new Item
-	 * 
-	 * @param item
-	 *            The {@link Item item} to add
-	 */
-	public void addItem(Item item) {
-		logger.trace("addItem() - Entering");
-		logger.debug("addItem() - Parameter: {}", item);
-		((ItemTableModel) itemTable.getModel()).addItem(item);
-		logger.trace("addItem() - Leaving");
 	}
 
 	@Override
