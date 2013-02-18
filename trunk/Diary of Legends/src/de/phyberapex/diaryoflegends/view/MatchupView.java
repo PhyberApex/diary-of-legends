@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -16,7 +15,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import de.phyberapex.diaryoflegends.controller.MatchupController;
 import de.phyberapex.diaryoflegends.model.Matchup;
-import de.phyberapex.diaryoflegends.model.util.MatchupUtil;
 
 public class MatchupView extends JPanel implements View {
 	private static final long serialVersionUID = -8456209180736169342L;
@@ -117,7 +115,7 @@ public class MatchupView extends JPanel implements View {
 						int ok = JOptionPane.showConfirmDialog(null, message,
 								title, JOptionPane.YES_NO_OPTION);
 						if (ok == JOptionPane.OK_OPTION) {
-							MatchupUtil.deleteMatchup(matchup);
+							controller.deleteMatchup(matchup, true);
 							((MatchupTableModel) matchupTable.getModel())
 									.removeMatchup(matchup);
 							MainView.getInstance().setStatusText(
@@ -126,7 +124,7 @@ public class MatchupView extends JPanel implements View {
 					} else {
 						// TODO schöner!
 						JOptionPane.showMessageDialog(MainView.getInstance(),
-								"No Champion selected");
+								"No Matchup selected");
 					}
 				}
 			});
@@ -214,12 +212,25 @@ public class MatchupView extends JPanel implements View {
 	 *            The {@link Matchup matchup} to add
 	 */
 	public void addMatchup(Matchup matchup) {
-		logger.trace("addChamp() - Entering");
-		logger.debug("addChamp() - Parameter: {}", matchup);
+		logger.trace("addMatchup() - Entering");
+		logger.debug("addMatchup() - Parameter: {}", matchup);
 		((MatchupTableModel) matchupTable.getModel()).addMatchup(matchup);
-		logger.trace("addChamp() - Leaving");
+		logger.trace("addMatchup() - Leaving");
 	}
-
+	
+	/**
+	 * Removes a matchup
+	 * 
+	 * @param matchup
+	 *            The {@link Matchup matchup} to remove
+	 */
+	public void removeMatchup(Matchup matchup){
+		logger.trace("removeMatchup() - Entering");
+		logger.debug("removeMatchup() - Parameter: {}", matchup);
+		((MatchupTableModel) matchupTable.getModel()).removeMatchup(matchup);
+		logger.trace("removeMatchup() - Leaving");
+	}
+	
 	@Override
 	public void refresh() {
 		((MatchupTableModel) matchupTable.getModel()).fireTableDataChanged();
