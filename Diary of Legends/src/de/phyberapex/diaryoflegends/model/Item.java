@@ -21,7 +21,9 @@ public class Item extends Model {
 		logger.trace("Champion() - Entering");
 		logger.debug("Champion() - Parameter: {}, {}, {}", name, price, icon);
 		this.setName(name);
-		this.setIcon(icon);
+		if (icon != null) {
+			this.setIcon(icon);
+		}
 		this.setPrice(price);
 		logger.trace("Champion() - Leaving");
 	}
@@ -87,7 +89,10 @@ public class Item extends Model {
 	 */
 	public ImageIcon getIcon() {
 		logger.trace("getName() - Entering");
-		ImageIcon img = ConvertImage.convertByteArrayToImageIcon(icon);
+		ImageIcon img = null;
+		if (icon != null) {
+			img = ConvertImage.convertByteArrayToImageIcon(icon);
+		}
 		logger.trace("getName() - Returning");
 		logger.debug("getName() - Returning: {}", img);
 		return img;
@@ -107,12 +112,23 @@ public class Item extends Model {
 	}
 
 	/**
+	 * Returns the raw byte array of the icon
+	 * @return {@link byte[]}
+	 */
+	public byte[] getIconRaw(){
+		logger.trace("getIconRaw() - Entering");
+		logger.trace("getIconRaw() - Returning");
+		logger.debug("getIconRaw() - Returning: {}", icon);
+		return icon;
+	}
+	
+	/**
 	 * Returns a string representation of this item
 	 * 
 	 * @return {@link String} The string representation
 	 */
 	@Override
-	public String toString() {
+ 	public String toString() {
 		logger.trace("toString() - Entering");
 		String str = this.getName();
 		logger.trace("toString() - Returning");

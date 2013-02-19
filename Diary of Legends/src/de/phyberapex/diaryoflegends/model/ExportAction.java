@@ -12,12 +12,12 @@ import org.apache.logging.log4j.Logger;
 import de.phyberapex.diaryoflegends.model.util.GameUtil;
 import de.phyberapex.diaryoflegends.view.MainView;
 
-public class ExportAction {
+public class ExportAction implements Runnable {
 
 	private static Logger logger = LogManager.getLogger(ExportAction.class
 			.getName());
 
-	public static void doExport() {
+	private void doExport() {
 		logger.trace("doExport() - Entering");
 		List<Game> games = GameUtil.getAllGames();
 		logger.debug("Trying to export {} games and matches", games.size());
@@ -66,11 +66,11 @@ public class ExportAction {
 							+ item.getAmount() + "§";
 				}
 				newLine += "ENEMYITEMSEND§";
-				newLine += m.getResult() + "§";
-				newLine += m.getLane() + "§";
+				newLine += m.getResult().name() + "§";
+				newLine += m.getLane().name() + "§";
 				newLine += m.getDifficulty().name() + "§";
 				newLine += m.getNotes() + "§";
-				newLine += game.getResult() + "§";
+				newLine += game.getResult().name() + "§";
 				newLine += game.getNotes() + "§";
 				newLine += game.getOwnKills() + "§";
 				newLine += game.getOwnDeaths() + "§";
@@ -89,5 +89,15 @@ public class ExportAction {
 		}
 		MainView.getInstance().setStatusText("Export complete");
 		logger.trace("doExport() - Leaving");
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Runnable#run()
+	 */
+	@Override
+	public void run() {
+		doExport();
 	}
 }
