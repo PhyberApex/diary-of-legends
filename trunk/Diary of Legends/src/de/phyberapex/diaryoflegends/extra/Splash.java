@@ -74,6 +74,7 @@ public class Splash extends JWindow {
 		progress.setBackground(new Color(254, 243, 224));
 		getContentPane().add(myPanel);
 		imageSplash = coolPicture;
+		this.setSize(getPreferredSize());
 		try {
 			imageBackground = new Robot().createScreenCapture(getBounds());
 		} catch (AWTException ex) {

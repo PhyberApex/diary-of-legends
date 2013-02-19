@@ -90,7 +90,7 @@ public class Initializer {
 			File update = new File(updateFolder.getAbsolutePath()
 					+ "\\update.dolup");
 			if (update != null) {
-				logger.debug("Update file found. Reading for update file");
+				logger.debug("Update file found. Reading update file");
 				try {
 					// Open the file that is the first
 					// command line parameter
@@ -107,13 +107,13 @@ public class Initializer {
 					// Close the input stream
 					br.close();
 					fstream.close();
+					try {
+						deleteDir(updateFolder);
+					} catch (SecurityException e) {
+						e.printStackTrace();
+					}
 				} catch (Exception e) {// Catch exception if any
-					e.printStackTrace();
-				}
-				try {
-					deleteDir(updateFolder);
-				} catch (SecurityException e) {
-					e.printStackTrace();
+					logger.error(e.getMessage());
 				}
 			}
 		}
