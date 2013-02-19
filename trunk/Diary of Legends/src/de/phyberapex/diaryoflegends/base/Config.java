@@ -45,6 +45,7 @@ public class Config {
 				logger.info("Setting databasename to {}",
 						Constants.getAppName() + Constants.getAppVersion()
 								+ ".db");
+				new File("db").mkdir();
 				this.setProperty(
 						"DATABASENAME",
 						"db\\" + Constants.getAppName()
