@@ -5,15 +5,11 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 public class Splash extends JWindow {
 
 	private static final long serialVersionUID = 1L;
 	private JProgressBar progress;
 	private Image imageSplash, imageBackground;
-	transient private static Logger logger = LogManager.getLogger(Splash.class.getName());
 
 	private class UpdateStatus implements Runnable {
 		public UpdateStatus(String status, int pc) {
@@ -74,7 +70,6 @@ public class Splash extends JWindow {
 		progress.setBackground(new Color(254, 243, 224));
 		getContentPane().add(myPanel);
 		imageSplash = coolPicture;
-		this.setSize(getPreferredSize());
 		try {
 			imageBackground = new Robot().createScreenCapture(getBounds());
 		} catch (AWTException ex) {

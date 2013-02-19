@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="create_run_jar" name="Create Runnable Jar for Project Diary of Legends with libraries in sub-folder">
+    <property name="project-name" value="DiaryOfLegends" />
+	<property name="folder-to-zip" value="build/1.0/content/" />
+    <target name="create_run_jar">
+        <jar destfile="build/1.0/content/DiaryOfLegends.jar">
+            <manifest>
+                <attribute name="Main-Class" value="de.phyberapex.diaryoflegends.controller.MainController"/>
+                <attribute name="Class-Path" value=". lib/log4j-api-2.0-beta3.jar lib/log4j-core-2.0-beta3.jar lib/db4o-8.0.249.16098-core-java5.jar lib/jcalendar-1.4.jar"/>
+            </manifest>
+            <fileset dir="C:/workspace/Diary of Legends/bin"/>
+        </jar>
+    	<copy todir="${folder-to-zip}" overwrite="true">
+    				<fileset dir="">
+    					<include name="logconfig.xml" />
+    					<include name="lib/*" />
+    				</fileset>
+    			<fileset dir="initUpdate/"> 
+    			</fileset>
+    			</copy>
+    	<delete file="build/1.0/${project-name}.zip" />
+    	<zip destfile="build/1.0/${project-name}.zip" basedir="${folder-to-zip}" />
+    </target>
+</project>
