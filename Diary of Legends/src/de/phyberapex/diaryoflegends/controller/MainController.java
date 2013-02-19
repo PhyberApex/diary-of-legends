@@ -38,7 +38,7 @@ public class MainController {
 	transient private Logger logger = LogManager
 			.getLogger(MainController.class.getName());
 
-	private MainController() {
+	public MainController() {
 		logger.trace("MainController() - Entering");
 		try {
 			splash = new Splash(ImageIconFactory
