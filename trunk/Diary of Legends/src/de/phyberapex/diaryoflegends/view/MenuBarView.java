@@ -3,16 +3,17 @@ package de.phyberapex.diaryoflegends.view;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import de.phyberapex.diaryoflegends.ExitAction;
+import de.phyberapex.diaryoflegends.extra.ImageIconFactory;
+import de.phyberapex.diaryoflegends.extra.Splash;
 import de.phyberapex.diaryoflegends.model.ExportAction;
 import de.phyberapex.diaryoflegends.model.ImportAction;
 
@@ -32,9 +33,8 @@ public class MenuBarView extends JMenuBar implements View {
 	private static Logger logger = LogManager.getLogger(MenuBarView.class
 			.getName());
 
-	public MenuBarView(MainView view) {
+	public MenuBarView() {
 		logger.trace("MenuBarView() - Entering");
-		logger.debug("MenuBarView() - Parameter: {}", view);
 		this.add(getFileMenu());
 		this.add(getEditMenu());
 		this.add(getAboutMenu());
@@ -63,6 +63,18 @@ public class MenuBarView extends JMenuBar implements View {
 		if (this.newEntryItem == null) {
 			logger.debug("Creating a new JMenuItem object");
 			this.newEntryItem = new JMenuItem("Add a new entry");
+			this.newEntryItem.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					Splash spl = new Splash(ImageIconFactory
+							.createImageIconFromResourePath("img\\loading.png")
+							.getImage(), "Loading...");
+					spl.setVisible(true);
+					SwingUtilities.invokeLater(new NewEntryDialoge());
+					spl.close();
+				}
+			});
 		}
 		logger.trace("getNewEntryItem() - Returning");
 		logger.debug("Returned {}", newEntryItem);
@@ -74,35 +86,41 @@ public class MenuBarView extends JMenuBar implements View {
 		if (this.importItem == null) {
 			this.importItem = new JMenuItem("Import...");
 			this.importItem.addActionListener(new ActionListener() {
-				
+
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					JFileChooser fc = new JFileChooser();
 					fc.setFileFilter(new FileFilter() {
-						
+
 						@Override
 						public String getDescription() {
 							return "DOLEX files";
 						}
-						
+
 						@Override
 						public boolean accept(File arg0) {
 							String extension = "";
 
 							int i = arg0.getName().lastIndexOf('.');
 							if (i > 0) {
-							    extension = arg0.getName().substring(i+1);
+								extension = arg0.getName().substring(i + 1);
 							}
-							if(extension.equals("dolex") || arg0.isDirectory()){
+							if (extension.equals("dolex") || arg0.isDirectory()) {
 								return true;
-							}else{
-							return false;
+							} else {
+								return false;
 							}
 						}
 					});
 					int ok = fc.showOpenDialog(MainView.getInstance());
-					if(ok == JFileChooser.APPROVE_OPTION){
-					ImportAction.doImport(fc.getSelectedFile());
+					if (ok == JFileChooser.APPROVE_OPTION) {
+						Splash spl = new Splash(null,
+								"Importing...");
+						spl.setVisible(true);
+						ImportAction imp = new ImportAction(fc
+								.getSelectedFile());
+						SwingUtilities.invokeLater(imp);
+						spl.close();
 					}
 				}
 			});
@@ -120,7 +138,12 @@ public class MenuBarView extends JMenuBar implements View {
 
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
-					ExportAction.doExport();
+					Splash spl = new Splash(ImageIconFactory
+							.createImageIconFromResourePath("img\\loading.png")
+							.getImage(), "Exporting...");
+					spl.setVisible(true);
+					SwingUtilities.invokeLater(new ExportAction());
+					spl.close();
 				}
 			});
 		}

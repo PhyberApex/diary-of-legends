@@ -66,6 +66,18 @@ public class Champion extends Model {
 	}
 
 	/**
+	 * Returns the raw byte array of the icon
+	 * 
+	 * @return {@link byte[]}
+	 */
+	public byte[] getIconRaw() {
+		logger.trace("getIconRaw() - Entering");
+		logger.trace("getIconRaw() - Returning");
+		logger.debug("getIconRaw() - Returning: {}", icon);
+		return icon;
+	}
+
+	/**
 	 * The file that represents the icon
 	 * 
 	 * @param file

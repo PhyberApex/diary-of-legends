@@ -23,7 +23,6 @@ public class MainView extends JFrame implements View, Runnable {
 	private MenuBarView menu;
 	private JLabel statusLabel;
 	private JTabbedPane contentPane;
-	private MainController controller;
 	private static Logger logger = LogManager.getLogger(MainView.class
 			.getName());
 
@@ -54,7 +53,6 @@ public class MainView extends JFrame implements View, Runnable {
 	public void setMainController(MainController controller) {
 		logger.trace("setMainController() - Entering");
 		logger.debug("setMainController() - Parameter {}", controller);
-		this.controller = controller;
 		logger.trace("setMainController() - Leaving");
 	}
 
@@ -73,7 +71,7 @@ public class MainView extends JFrame implements View, Runnable {
 	public MenuBarView getMenuBarView() {
 		logger.trace("getMenuBarView() - Entering");
 		if (menu == null) {
-			menu = new MenuBarView(this);
+			menu = new MenuBarView();
 		}
 		logger.trace("getMenuBarView() - Returning");
 		logger.debug("getMenuBarView() - Returning {}", menu);

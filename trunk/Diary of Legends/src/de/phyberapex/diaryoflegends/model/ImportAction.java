@@ -15,16 +15,17 @@ import de.phyberapex.diaryoflegends.model.util.ChampionUtil;
 import de.phyberapex.diaryoflegends.model.util.ItemUtil;
 import de.phyberapex.diaryoflegends.view.MainView;
 
-public class ImportAction {
+public class ImportAction implements Runnable {
 
+	private File file;
 	private static Logger logger = LogManager.getLogger(ExportAction.class
 			.getName());
 
-	private ImportAction() {
-
+	public ImportAction(File file) {
+		this.file = file;
 	}
 
-	public static void doImport(File importFile) {
+	private void doImport(File importFile) {
 		logger.trace("doImport() - Entering");
 		logger.debug("doImport() - Parameter: {}", importFile);
 		MainView.getInstance().setStatusText("Importing...");
@@ -214,5 +215,15 @@ public class ImportAction {
 		}
 		MainView.getInstance().setStatusText("Import complete");
 		logger.trace("doImport() - Leaving");
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Runnable#run()
+	 */
+	@Override
+	public void run() {
+		doImport(file);
 	}
 }

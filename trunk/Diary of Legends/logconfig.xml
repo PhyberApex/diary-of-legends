@@ -9,13 +9,13 @@
     </Console>
   </appenders>
   <loggers>
-  	<root level="error">
+  	<root level="all">
       <appender-ref ref="STDOUT"/>
     </root>
-     <logger name="de.phyberapex.diaryoflegends" level="error">
+     <logger name="de.phyberapex.diaryoflegends" level="all">
       <appender-ref ref="logfile"/>
       </logger>
-       <logger name="de.phyberapex.diaryoflegends.base.Initializer" level="error">
+       <logger name="de.phyberapex.diaryoflegends.base.Initializer" level="all">
       <appender-ref ref="STDOUT"/>
     </logger>
   </loggers>

@@ -17,6 +17,7 @@ import de.phyberapex.diaryoflegends.extra.ImageIconFactory;
 import de.phyberapex.diaryoflegends.extra.Splash;
 import de.phyberapex.diaryoflegends.model.Game;
 import de.phyberapex.diaryoflegends.model.Matchup;
+import de.phyberapex.diaryoflegends.model.util.GameUtil;
 import de.phyberapex.diaryoflegends.view.ChampionView;
 import de.phyberapex.diaryoflegends.view.CurrentSummonerNameView;
 import de.phyberapex.diaryoflegends.view.GameView;
@@ -32,10 +33,12 @@ public class MainController {
 	private ItemController itemController;
 	private MatchupController matchupController;
 	private GameController gameController;
-	transient private Logger logger = LogManager.getLogger(MainController.class
-			.getName());
 
-	public MainController() {
+	private static MainController instance;
+	transient private Logger logger = LogManager
+			.getLogger(MainController.class.getName());
+
+	private MainController() {
 		logger.trace("MainController() - Entering");
 		try {
 			splash = new Splash(ImageIconFactory
@@ -120,7 +123,7 @@ public class MainController {
 		System.setProperties(prop);
 		Logger logger = LogManager.getLogger(MainController.class.getName());
 		logger.trace("main() - Entering");
-		new MainController();
+		MainController.getInstance();
 		logger.trace("main() - Leaving");
 	}
 
@@ -158,4 +161,20 @@ public class MainController {
 		logger.trace("deleteMatchup() - Leaving");
 	}
 
+	/**
+	 * @param game
+	 */
+	public void saveNewGame(Game game) {
+		GameUtil.saveGame(game);
+		((MatchupView) matchupController.getView()).addMatchup(game
+				.getMatchup());
+		((GameView) gameController.getView()).addGame(game);
+	}
+
+	public static synchronized MainController getInstance() {
+		if (instance == null) {
+			instance = new MainController();
+		}
+		return instance;
+	}
 }
