@@ -1,0 +1,229 @@
+package de.phyberapex.diaryoflegends.backup;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import de.phyberapex.diaryoflegends.base.Config;
+import de.phyberapex.diaryoflegends.model.Champion;
+import de.phyberapex.diaryoflegends.model.Game;
+import de.phyberapex.diaryoflegends.model.GameResult;
+import de.phyberapex.diaryoflegends.model.Item;
+import de.phyberapex.diaryoflegends.model.Matchup;
+import de.phyberapex.diaryoflegends.model.MatchupDifficulty;
+import de.phyberapex.diaryoflegends.model.MatchupItem;
+import de.phyberapex.diaryoflegends.model.MatchupResult;
+import de.phyberapex.diaryoflegends.model.Role;
+import de.phyberapex.diaryoflegends.model.util.ChampionUtil;
+import de.phyberapex.diaryoflegends.model.util.ItemUtil;
+import de.phyberapex.diaryoflegends.view.MainView;
+
+public class ImportAction implements Runnable {
+
+	private File file;
+	private static Logger logger = LogManager.getLogger(ExportAction.class
+			.getName());
+
+	public ImportAction(File file) {
+		this.file = file;
+	}
+
+	private void doImport(File importFile) {
+		logger.trace("doImport() - Entering");
+		logger.debug("doImport() - Parameter: {}", importFile);
+		MainView.getInstance().setStatusText("Importing...");
+		FileInputStream fstream;
+		BufferedReader br;
+		try {
+			fstream = new FileInputStream(importFile);
+			br = new BufferedReader(new InputStreamReader(fstream));
+			String strLine;
+			String imp = "";
+			// Read File Line By Line
+			while ((strLine = br.readLine()) != null) {
+				imp += strLine;
+			}
+			br.close();
+			fstream.close();
+			JSONObject jo = new JSONObject(imp);
+			JSONArray gArray = jo.getJSONArray("games");
+			for (int i = 0; i <= gArray.length(); i++) {
+				JSONObject gJo = gArray.getJSONObject(i);
+
+				Game game = new Game();
+				SimpleDateFormat sdfToDate = new SimpleDateFormat(
+						"dd.MM.yyyy HH:mm:ss");
+				Date date = sdfToDate.parse(gJo.getString("date"));
+				game.setDate(date);
+				List<Champion> teams = new ArrayList<Champion>();
+				JSONArray myTeamArray = gJo.getJSONArray("myTeam");
+				Champion chmp;
+				for (int j = 0; j <= myTeamArray.length(); j++) {
+					chmp = null;
+					chmp = ChampionUtil.getChampionById(myTeamArray.getInt(j));
+					if (chmp == null) {
+						logger.error("Championt with id {} not found",
+								myTeamArray.getInt(j));
+						throw new ChampionNotFoundException(
+								"Champion not found. Maybe your champions are outdated.");
+					} else {
+						teams.add(chmp);
+					}
+				}
+				game.setMyTeam(teams);
+				teams = new ArrayList<Champion>();
+				JSONArray enemyTeamArray = gJo.getJSONArray("enemyTeam");
+				for (int j = 0; j <= enemyTeamArray.length(); j++) {
+					chmp = null;
+					chmp = ChampionUtil.getChampionById(myTeamArray.getInt(i));
+					if (chmp == null) {
+						logger.error("Champion with id {} not found",
+								enemyTeamArray.getInt(j));
+						throw new ChampionNotFoundException(
+								"Champion not found. Maybe your champions are outdated.");
+					} else {
+						teams.add(chmp);
+					}
+				}
+				game.setEnemyTeam(teams);
+				Matchup matchup = new Matchup();
+				matchup.setGame(game);
+				JSONObject mJo = gJo.getJSONObject("matchup");
+				chmp = null;
+				chmp = ChampionUtil.getChampionById(mJo.getInt("myChampion"));
+				if (!game.getMyTeam().contains(chmp)) {
+					logger.error("Champion with id {} not found in your team",
+							mJo.getInt("myChampion"));
+					throw new ChampionNotFoundException(
+							"You champion is not in your team.");
+				}
+				JSONArray myStartItemsArray = mJo.getJSONArray("myStartItems");
+				List<MatchupItem> matchupItems = new ArrayList<MatchupItem>();
+				Item item = null;
+				for (int j = 0; j <= myStartItemsArray.length(); j++) {
+					JSONObject maItJo = myStartItemsArray.getJSONObject(j);
+					item = ItemUtil.getItemById(maItJo.getInt("item"));
+					if (item == null) {
+						logger.error("Item with id {} not found",
+								maItJo.getInt("item"));
+						throw new ItemNotFoundException(
+								"Item not found. Maybe your champions are outdated.");
+					} else {
+						matchupItems.add(new MatchupItem(item, maItJo
+								.getInt("amount")));
+					}
+				}
+				matchup.setMyStartItems(matchupItems);
+
+				JSONArray myEndItemsArray = mJo.getJSONArray("myEndItems");
+				matchupItems = new ArrayList<MatchupItem>();
+				item = null;
+				for (int j = 0; j <= myEndItemsArray.length(); j++) {
+					JSONObject maItJo = myEndItemsArray.getJSONObject(j);
+					item = ItemUtil.getItemById(maItJo.getInt("item"));
+					if (item == null) {
+						logger.error("Item with id {} not found",
+								maItJo.getInt("item"));
+						throw new ItemNotFoundException(
+								"Item not found. Maybe your champions are outdated.");
+					} else {
+						matchupItems.add(new MatchupItem(item, maItJo
+								.getInt("amount")));
+					}
+				}
+				matchup.setMyEndItems(matchupItems);
+
+				chmp = null;
+				chmp = ChampionUtil
+						.getChampionById(mJo.getInt("enemyChampion"));
+				if (!game.getEnemyTeam().contains(chmp)) {
+					logger.error("Champion with id {} not found in enemy team",
+							mJo.getInt("enemyChampion"));
+					throw new ChampionNotFoundException(
+							"Enemy champion is not in enemy team.");
+				}
+
+				JSONArray enemyStartItemsArray = mJo
+						.getJSONArray("enemyStartItems");
+				matchupItems = new ArrayList<MatchupItem>();
+				item = null;
+				for (int j = 0; j <= enemyStartItemsArray.length(); j++) {
+					JSONObject maItJo = enemyStartItemsArray.getJSONObject(j);
+					item = ItemUtil.getItemById(maItJo.getInt("item"));
+					if (item == null) {
+						logger.error("Item with id {} not found",
+								maItJo.getInt("item"));
+						throw new ItemNotFoundException(
+								"Item not found. Maybe your champions are outdated.");
+					} else {
+						matchupItems.add(new MatchupItem(item, maItJo
+								.getInt("amount")));
+					}
+				}
+				matchup.setEnemyStartItems(matchupItems);
+
+				JSONArray enemyEndItemsArray = mJo
+						.getJSONArray("enemyEndItems");
+				matchupItems = new ArrayList<MatchupItem>();
+				item = null;
+				for (int j = 0; j <= enemyEndItemsArray.length(); j++) {
+					JSONObject maItJo = enemyEndItemsArray.getJSONObject(j);
+					item = ItemUtil.getItemById(maItJo.getInt("item"));
+					if (item == null) {
+						logger.error("Item with id {} not found",
+								maItJo.getInt("item"));
+						throw new ItemNotFoundException(
+								"Item not found. Maybe your champions are outdated.");
+					} else {
+						matchupItems.add(new MatchupItem(item, maItJo
+								.getInt("amount")));
+					}
+				}
+				matchup.setEnemyEndItems(matchupItems);
+				matchup.setResult(MatchupResult.valueOf(mJo
+						.getString("matchupResult")));
+				matchup.setLane(Role.valueOf(mJo.getString("lane")));
+				matchup.setDifficulty(MatchupDifficulty.valueOf(mJo
+						.getString("difficulty")));
+				matchup.setNotes(mJo.getString("matchupNotes"));
+				game.setMatchup(matchup);
+				game.setNotes(gJo.getString("gameNotes"));
+				game.setOwnKills(gJo.getInt("ownKills"));
+				game.setOwnDeaths(gJo.getInt("ownDeaths"));
+				game.setOwnAssists(gJo.getInt("ownAssists"));
+				game.setOwnCS(gJo.getInt("ownCS"));
+				game.setResult(GameResult.valueOf(gJo.getString("gameResult")));
+				game.setLength(gJo.getLong("length"));
+				Config.getInstance().getDBHandle().store(game);
+				MainView.getInstance().getGamePanel().addGame(game);
+				MainView.getInstance().getMatchupPanel().addMatchup(matchup);
+			}
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			MainView.getInstance().setStatusText(
+					"Import failed. Please read the logfile.");
+		}
+		MainView.getInstance().setStatusText("Import complete");
+		logger.trace("doImport() - Leaving");
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Runnable#run()
+	 */
+	@Override
+	public void run() {
+		if (file != null) {
+			doImport(file);
+		}
+	}
+}

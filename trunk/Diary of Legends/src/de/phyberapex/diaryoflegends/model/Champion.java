@@ -11,14 +11,16 @@ import de.phyberapex.diaryoflegends.extra.ConvertImage;
 
 public class Champion extends Model {
 
+	private int id;
 	private String name;
 	private byte[] icon;
 	transient private static Logger logger = LogManager
 			.getLogger(Champion.class.getName());
 
-	public Champion(String name, File icon) {
+	public Champion(int id, String name, File icon) {
 		logger.trace("Champion() - Entering");
-		logger.debug("Champion() - Parameter: {}, {}", name, icon);
+		logger.debug("Champion() - Parameter: {}, {}, {}", id, name, icon);
+		this.id = id;
 		this.setName(name);
 		if (icon != null) {
 			this.setIcon(icon);
@@ -27,6 +29,31 @@ public class Champion extends Model {
 	}
 
 	public Champion() {
+	}
+
+	/**
+	 * Returns the id of this champion
+	 * 
+	 * @return {@link int}
+	 */
+	public int getId() {
+		logger.trace("getId() - Entering");
+		logger.trace("getId() - Returning");
+		logger.debug("getId() - Returning: {}", id);
+		return id;
+	}
+
+	/**
+	 * Sets the id of this champion
+	 * 
+	 * @param name
+	 *            {@link int} The name to change to
+	 */
+	public void setId(int id) {
+		logger.trace("setId() - Entering");
+		logger.debug("setId() - Parameter: {}", name);
+		this.id = id;
+		logger.trace("setId() - Leaving");
 	}
 
 	/**

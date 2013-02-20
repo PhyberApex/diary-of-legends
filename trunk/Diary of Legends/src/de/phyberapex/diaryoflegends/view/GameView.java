@@ -23,6 +23,10 @@ import de.phyberapex.diaryoflegends.extra.ImageIconFactory;
 import de.phyberapex.diaryoflegends.extra.LoadingSplash;
 import de.phyberapex.diaryoflegends.model.Game;
 import de.phyberapex.diaryoflegends.model.Matchup;
+import de.phyberapex.diaryoflegends.view.dialoge.MatchupDetailDialoge;
+import de.phyberapex.diaryoflegends.view.dialoge.NewEntryDialoge;
+import de.phyberapex.diaryoflegends.view.model.GameTableModel;
+import de.phyberapex.diaryoflegends.view.renderer.GameTableRenderer;
 
 public class GameView extends JPanel implements View {
 

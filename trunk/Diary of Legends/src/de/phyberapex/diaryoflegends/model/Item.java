@@ -11,15 +11,18 @@ import de.phyberapex.diaryoflegends.extra.ConvertImage;
 
 public class Item extends Model {
 
+	private int id;
 	private String name;
 	private int price;
 	private byte[] icon;
 	transient private static Logger logger = LogManager.getLogger(Item.class
 			.getName());
 
-	public Item(String name, int price, File icon) {
+	public Item(int id, String name, int price, File icon) {
 		logger.trace("Champion() - Entering");
-		logger.debug("Champion() - Parameter: {}, {}, {}", name, price, icon);
+		logger.debug("Champion() - Parameter: {}, {}, {}, {}", id, name, price,
+				icon);
+		this.id = id;
 		this.setName(name);
 		if (icon != null) {
 			this.setIcon(icon);
@@ -30,6 +33,31 @@ public class Item extends Model {
 
 	public Item() {
 
+	}
+
+	/**
+	 * Returns the id of this item
+	 * 
+	 * @return {@link int}
+	 */
+	public int getId() {
+		logger.trace("getId() - Entering");
+		logger.trace("getId() - Returning");
+		logger.debug("getId() - Returning: {}", id);
+		return id;
+	}
+
+	/**
+	 * Sets the id of this item
+	 * 
+	 * @param name
+	 *            {@link int} The name to change to
+	 */
+	public void setId(int id) {
+		logger.trace("setId() - Entering");
+		logger.debug("setId() - Parameter: {}", name);
+		this.id = id;
+		logger.trace("setId() - Leaving");
 	}
 
 	/**
@@ -113,22 +141,23 @@ public class Item extends Model {
 
 	/**
 	 * Returns the raw byte array of the icon
+	 * 
 	 * @return {@link byte[]}
 	 */
-	public byte[] getIconRaw(){
+	public byte[] getIconRaw() {
 		logger.trace("getIconRaw() - Entering");
 		logger.trace("getIconRaw() - Returning");
 		logger.debug("getIconRaw() - Returning: {}", icon);
 		return icon;
 	}
-	
+
 	/**
 	 * Returns a string representation of this item
 	 * 
 	 * @return {@link String} The string representation
 	 */
 	@Override
- 	public String toString() {
+	public String toString() {
 		logger.trace("toString() - Entering");
 		String str = this.getName();
 		logger.trace("toString() - Returning");

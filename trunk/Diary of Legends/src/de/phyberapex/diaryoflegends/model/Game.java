@@ -17,6 +17,8 @@ public class Game extends Model {
 	private int ownKills;
 	private int ownDeaths;
 	private int ownAssists;
+	private int ownCS;
+	private long length;
 	transient private static Logger logger = LogManager.getLogger(Game.class
 			.getName());
 
@@ -25,7 +27,7 @@ public class Game extends Model {
 
 	public Game(Date date, List<Champion> myTeam, List<Champion> enemyTeam,
 			Matchup matchup, GameResult result, String notes, int ownKills,
-			int ownDeaths, int ownAssists) {
+			int ownDeaths, int ownAssists, int ownCS, long lenght) {
 		this.date = date;
 		this.myTeam = myTeam;
 		this.enemyTeam = enemyTeam;
@@ -36,6 +38,8 @@ public class Game extends Model {
 		this.ownKills = ownKills;
 		this.ownDeaths = ownDeaths;
 		this.ownAssists = ownAssists;
+		this.ownCS = ownCS;
+		this.length = lenght;
 	}
 
 	public Date getDate() {
@@ -163,9 +167,37 @@ public class Game extends Model {
 		this.ownAssists = ownAssists;
 		logger.trace("setOwnAssists() - Leaving");
 	}
-	
+
+	public int getOwnCS() {
+		logger.trace("getOwnCS() - Entering");
+		logger.trace("getOwnCS() - Returning");
+		logger.debug("getOwnCS() - Returning: {}", ownCS);
+		return ownCS;
+	}
+
+	public void setOwnCS(int ownCS) {
+		logger.trace("setOwnCS() - Entering");
+		logger.debug("setOwnCS() - Parameter: {}", ownCS);
+		this.ownCS = ownCS;
+		logger.trace("setOwnCS() - Leaving");
+	}
+
+	public long getLenght() {
+		logger.trace("getLenght() - Entering");
+		logger.trace("getLenght() - Returning");
+		logger.debug("getLenght() - Returning: {}", length);
+		return length;
+	}
+
+	public void setLength(long length) {
+		logger.trace("setLength() - Entering");
+		logger.debug("setLength() - Parameter: {}", length);
+		this.length = length;
+		logger.trace("setLength() - Leaving");
+	}
+
 	@Override
-	public String toString(){
+	public String toString() {
 		return this.notes;
 	}
 }

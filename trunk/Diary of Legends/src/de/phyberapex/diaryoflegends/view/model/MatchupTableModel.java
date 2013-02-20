@@ -1,75 +1,78 @@
-package de.phyberapex.diaryoflegends.view;
+package de.phyberapex.diaryoflegends.view.model;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
 import javax.swing.table.AbstractTableModel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import de.phyberapex.diaryoflegends.model.Game;
+import de.phyberapex.diaryoflegends.model.Matchup;
+import de.phyberapex.diaryoflegends.view.ItemTableModel;
 
-public class GameTableModel extends AbstractTableModel {
+public class MatchupTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = -7653762677922814674L;
-	private List<Game> games;
-	private String[] columnNames = new String[] { "Date", "Notes" };
+	private List<Matchup> matchups;
+	private String[] columnNames = new String[] { "Date", "Matchup", "Lane",
+			"Notes" };
 	transient private static Logger logger = LogManager
-			.getLogger(GameTableModel.class.getName());
+			.getLogger(ItemTableModel.class.getName());
 
 	/**
 	 * Constructor for a new tablemodel
 	 * 
 	 * @param models
-	 *            initial list of {@link Game games} to view
+	 *            initial list of {@link Matchup models} to view
 	 */
-	public GameTableModel(List<Game> games) {
-		logger.trace("GameTableModel() - Entering");
-		logger.debug("GameTableModel() - Parameter: {}", games);
-		this.games = games;
-		logger.trace("GameTableModel() - Leaving");
+	public MatchupTableModel(List<Matchup> models) {
+		logger.trace("MatchupTableModel() - Entering");
+		logger.debug("MatchupTableModel() - Parameter: {}", models);
+		this.matchups = models;
+		logger.trace("MatchupTableModel() - Leaving");
 	}
 
 	/**
-	 * Set the games to display in this table model
+	 * Set the matchups to display in this table model
 	 * 
-	 * @param games
-	 *            list of {@link Game games} to set
+	 * @param matchups
+	 *            list of {@link Matchup matchups} to set
 	 */
-	public void setGamess(List<Game> games) {
-		logger.trace("setGamess() - Entering");
-		logger.debug("setGamess() - Parameter: {}", games);
-		this.games = games;
+	public void setMatchups(List<Matchup> matchups) {
+		logger.trace("setMatchups() - Entering");
+		logger.debug("setMatchups() - Parameter: {}", matchups);
+		this.matchups = matchups;
 		fireTableDataChanged();
-		logger.trace("setGamess() - Leaving");
+		logger.trace("setMatchups() - Leaving");
 	}
 
 	/**
-	 * Adds a game to the list of games to display
-	 * 
-	 * @param game
-	 *            The {@link Game game} to add
-	 */
-	public void addGame(Game game) {
-		logger.trace("addGame() - Entering");
-		logger.debug("addGame() - Parameter: {}", game);
-		games.add(game);
-		fireTableRowsInserted(games.size() - 1, games.size() - 1);
-		logger.trace("addGame() - Leaving");
-	}
-
-	/**
-	 * Removes a game from the list of games to display
+	 * Adds a matchup to the list of matchups to display
 	 * 
 	 * @param matchup
-	 *            The {@link Game game} to remove
+	 *            The {@link Matchup matchup} to add
 	 */
-	public void removeGame(Game game) {
-		logger.trace("removeGame() - Entering");
-		logger.debug("removeGame() - Parameter: {}", game);
-		games.remove(game);
+	public void addMatchup(Matchup matchup) {
+		logger.trace("addMatchup() - Entering");
+		logger.debug("addMatchup() - Parameter: {}", matchup);
+		matchups.add(matchup);
+		fireTableRowsInserted(matchups.size() - 1, matchups.size() - 1);
+		logger.trace("addMatchup() - Leaving");
+	}
+
+	/**
+	 * Removes a matchup from the list of matchups to display
+	 * 
+	 * @param matchup
+	 *            The {@link Matchup matchup} to remove
+	 */
+	public void removeMatchup(Matchup matchup) {
+		logger.trace("removeMatchup() - Entering");
+		logger.debug("removeMatchup() - Parameter: {}", matchup);
+		matchups.remove(matchup);
 		fireTableRowsDeleted(1, 1);
-		logger.trace("removeGame() - Leaving");
+		logger.trace("removeMatchup() - Leaving");
 	}
 
 	/**
@@ -79,7 +82,7 @@ public class GameTableModel extends AbstractTableModel {
 	 */
 	@Override
 	public int getColumnCount() {
-		int columns = 2;
+		int columns = 4;
 		return columns;
 	}
 
@@ -90,7 +93,7 @@ public class GameTableModel extends AbstractTableModel {
 	 */
 	@Override
 	public int getRowCount() {
-		int rows = games.size();
+		int rows = matchups.size();
 		return rows;
 	}
 
@@ -108,13 +111,19 @@ public class GameTableModel extends AbstractTableModel {
 		Object returnValue = null;
 		switch (columnIndex) {
 		case 0:
-			Date d = games.get(rowIndex).getDate();
+			Date d = matchups.get(rowIndex).getGame().getDate();
 			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 			String str = df.format(d);
 			returnValue = str;
 			break;
 		case 1:
-			returnValue = games.get(rowIndex);
+			returnValue = matchups.get(rowIndex);
+			break;
+		case 2:
+			returnValue = matchups.get(rowIndex).getLane();
+			break;
+		case 3:
+			returnValue = matchups.get(rowIndex).getNotes();
 			break;
 		}
 		return returnValue;

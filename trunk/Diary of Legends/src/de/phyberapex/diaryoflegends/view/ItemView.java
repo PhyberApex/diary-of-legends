@@ -15,6 +15,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import de.phyberapex.diaryoflegends.controller.ItemController;
 import de.phyberapex.diaryoflegends.model.Item;
+import de.phyberapex.diaryoflegends.view.renderer.ItemTableRenderer;
 
 public class ItemView extends JPanel implements View {
 

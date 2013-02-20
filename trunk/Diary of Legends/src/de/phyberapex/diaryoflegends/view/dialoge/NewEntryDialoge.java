@@ -1,4 +1,4 @@
-package de.phyberapex.diaryoflegends.view;
+package de.phyberapex.diaryoflegends.view.dialoge;
 
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -40,6 +40,9 @@ import de.phyberapex.diaryoflegends.model.MatchupResult;
 import de.phyberapex.diaryoflegends.model.Role;
 import de.phyberapex.diaryoflegends.model.util.ChampionUtil;
 import de.phyberapex.diaryoflegends.model.util.ItemUtil;
+import de.phyberapex.diaryoflegends.view.MainView;
+import de.phyberapex.diaryoflegends.view.renderer.ChampionComboBoxRenderer;
+import de.phyberapex.diaryoflegends.view.renderer.ItemComboBoxRenderer;
 
 public class NewEntryDialoge extends JDialog implements Runnable {
 
@@ -2542,11 +2545,11 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 	private void createGUI() {
 		logger.trace("createGUI() - Entering");
 		allChampions = new ArrayList<Champion>();
-		Champion c = new Champion("no champion", null);
+		Champion c = new Champion(0, "no champion", null);
 		allChampions.add(c);
 		allChampions.addAll(ChampionUtil.getAllChampions());
 		allItems = new ArrayList<Item>();
-		Item i = new Item("no item", 0, null);
+		Item i = new Item(0, "no item", 0, null);
 		allItems.add(i);
 		allItems.addAll(ItemUtil.getAllItems());
 		this.setTitle("New Game");
