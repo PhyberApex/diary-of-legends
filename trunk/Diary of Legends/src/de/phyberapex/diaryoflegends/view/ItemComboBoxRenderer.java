@@ -45,7 +45,7 @@ public class ItemComboBoxRenderer extends JPanel implements
 		ImageIcon icon = value.getIcon();
 		if (icon == null) {
 			icon = ImageIconFactory
-					.createImageIconFromResourePath("img\\empty_60x60.png");
+					.createImageIconFromResourePath("img/empty_60x60.png");
 		}
 		panel.add(new JLabel(ImageIconFactory.resizeImageIcon(icon, 30, 30)),
 				constraints);

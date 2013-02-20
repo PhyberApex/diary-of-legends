@@ -7,13 +7,19 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.JButton;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingUtilities;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import de.phyberapex.diaryoflegends.controller.MatchupController;
+import de.phyberapex.diaryoflegends.extra.ImageIconFactory;
+import de.phyberapex.diaryoflegends.extra.LoadingSplash;
 import de.phyberapex.diaryoflegends.model.Matchup;
 
 public class MatchupView extends JPanel implements View {
@@ -167,9 +173,37 @@ public class MatchupView extends JPanel implements View {
 
 				@Override
 				public void mouseReleased(MouseEvent e) {
-					if (e.getClickCount() == 2) {
-						int row = matchupTable.rowAtPoint(e.getPoint());
+					final int row = matchupTable.rowAtPoint(e.getPoint());
+					if (e.getButton() == MouseEvent.BUTTON3) {
+						JPopupMenu menu = new JPopupMenu();
+						JMenuItem edit = new JMenuItem("Edit");
+						edit.addActionListener(new ActionListener() {
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								LoadingSplash spl = new LoadingSplash(ImageIconFactory
+										.getRandomLoadingIcon().getImage());
+								spl.setVisible(true);
+								NewEntryDialoge nd = new NewEntryDialoge();
+								nd.setToEdit(((Matchup) matchupTable
+										.getValueAt(row, 1)).getGame());
+								SwingUtilities.invokeLater(nd);
+								spl.close();
+							}
+						});
+						JMenuItem view = new JMenuItem("View");
+						view.addActionListener(new ActionListener() {
 
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								MatchupDetailDialoge.getInstance().showDetails(
+										(Matchup) matchupTable.getValueAt(row,
+												1));
+							}
+						});
+						menu.add(edit);
+						menu.add(view);
+						menu.show(matchupTable, e.getX(), e.getY());
+					} else if (e.getClickCount() == 2) {
 						MatchupDetailDialoge.getInstance().showDetails(
 								(Matchup) matchupTable.getValueAt(row, 1));
 					}
@@ -177,25 +211,18 @@ public class MatchupView extends JPanel implements View {
 
 				@Override
 				public void mousePressed(MouseEvent e) {
-					// TODO Auto-generated method stub
-
 				}
 
 				@Override
 				public void mouseExited(MouseEvent e) {
-					// TODO Auto-generated method stub
-
 				}
 
 				@Override
 				public void mouseEntered(MouseEvent e) {
-					// TODO Auto-generated method stub
-
 				}
 
 				@Override
 				public void mouseClicked(MouseEvent arg0) {
-					// TODO Auto-generated method stub
 
 				}
 			});
@@ -217,20 +244,20 @@ public class MatchupView extends JPanel implements View {
 		((MatchupTableModel) matchupTable.getModel()).addMatchup(matchup);
 		logger.trace("addMatchup() - Leaving");
 	}
-	
+
 	/**
 	 * Removes a matchup
 	 * 
 	 * @param matchup
 	 *            The {@link Matchup matchup} to remove
 	 */
-	public void removeMatchup(Matchup matchup){
+	public void removeMatchup(Matchup matchup) {
 		logger.trace("removeMatchup() - Entering");
 		logger.debug("removeMatchup() - Parameter: {}", matchup);
 		((MatchupTableModel) matchupTable.getModel()).removeMatchup(matchup);
 		logger.trace("removeMatchup() - Leaving");
 	}
-	
+
 	@Override
 	public void refresh() {
 		((MatchupTableModel) matchupTable.getModel()).fireTableDataChanged();

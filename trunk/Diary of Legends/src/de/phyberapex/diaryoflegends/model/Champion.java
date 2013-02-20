@@ -20,7 +20,9 @@ public class Champion extends Model {
 		logger.trace("Champion() - Entering");
 		logger.debug("Champion() - Parameter: {}, {}", name, icon);
 		this.setName(name);
-		this.setIcon(icon);
+		if (icon != null) {
+			this.setIcon(icon);
+		}
 		logger.trace("Champion() - Leaving");
 	}
 
@@ -59,7 +61,10 @@ public class Champion extends Model {
 	 */
 	public ImageIcon getIcon() {
 		logger.trace("getName() - Entering");
-		ImageIcon img = ConvertImage.convertByteArrayToImageIcon(icon);
+		ImageIcon img = null;
+		if (icon != null) {
+			img = ConvertImage.convertByteArrayToImageIcon(icon);
+		}
 		logger.trace("getName() - Returning");
 		logger.debug("getName() - Returning: {}", img);
 		return img;

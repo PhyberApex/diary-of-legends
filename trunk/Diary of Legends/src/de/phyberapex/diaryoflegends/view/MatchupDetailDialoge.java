@@ -15,6 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.BevelBorder;
 
@@ -62,6 +63,7 @@ public class MatchupDetailDialoge extends JDialog implements View {
 	private JLabel enemyChampResultLabel;
 	private JPanel notesPanel;
 	private JLabel notesLabel;
+	private JScrollPane notesScrollPane;
 	private JTextArea notesTextarea;
 	private JButton saveNotesButton;
 	private JPanel gamePanel;
@@ -91,8 +93,8 @@ public class MatchupDetailDialoge extends JDialog implements View {
 					.createImageIconFromResourePath("img/empty_60x60.png"), 30,
 			30);
 
-	private static Logger logger = LogManager.getLogger(MatchupDetailDialoge.class
-			.getName());
+	private static Logger logger = LogManager
+			.getLogger(MatchupDetailDialoge.class.getName());
 
 	private MatchupDetailDialoge() {
 		super();
@@ -613,7 +615,7 @@ public class MatchupDetailDialoge extends JDialog implements View {
 			constraints.fill = GridBagConstraints.BOTH;
 			constraints.weightx = 1;
 			constraints.weighty = 1;
-			notesPanel.add(getNotesTextarea(), constraints);
+			notesPanel.add(getNotesScrollPane(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 0;
@@ -635,10 +637,22 @@ public class MatchupDetailDialoge extends JDialog implements View {
 		return notesLabel;
 	}
 
+	public JScrollPane getNotesScrollPane() {
+		logger.trace("getNotesScrollPane() - Entering");
+		if (notesScrollPane == null) {
+			notesScrollPane = new JScrollPane(getNotesTextarea());
+			notesScrollPane.setMaximumSize(new Dimension((int) getMaximumSize().getWidth(), 200));
+		}
+		logger.trace("getNotesScrollPane() - Returning");
+		logger.debug("getNotesScrollPane() - Returning: {}", notesScrollPane);
+		return notesScrollPane;
+	}
+
 	public JTextArea getNotesTextarea() {
 		logger.trace("getNotesTextarea() - Entering");
 		if (notesTextarea == null) {
 			notesTextarea = new JTextArea();
+			notesTextarea.setLineWrap(true);
 		}
 		logger.trace("getNotesTextarea() - Returning");
 		logger.debug("getNotesTextarea() - Returning: {}", notesTextarea);

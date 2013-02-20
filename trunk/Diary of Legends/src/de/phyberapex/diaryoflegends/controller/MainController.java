@@ -35,8 +35,8 @@ public class MainController {
 	private GameController gameController;
 
 	private static MainController instance;
-	transient private Logger logger = LogManager
-			.getLogger(MainController.class.getName());
+	transient private Logger logger = LogManager.getLogger(MainController.class
+			.getName());
 
 	public MainController() {
 		logger.trace("MainController() - Entering");
@@ -176,5 +176,10 @@ public class MainController {
 			instance = new MainController();
 		}
 		return instance;
+	}
+
+	public void updated() {
+		((MatchupView) matchupController.getView()).refresh();
+		((GameView) gameController.getView()).refresh();
 	}
 }

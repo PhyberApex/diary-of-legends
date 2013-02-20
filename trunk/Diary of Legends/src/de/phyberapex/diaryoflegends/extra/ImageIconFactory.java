@@ -64,14 +64,33 @@ public class ImageIconFactory {
 
 	public static ImageIcon resizeImageIcon(ImageIcon icon, int height,
 			int width) {
-		logger.trace("createImageIconFromResourePath() - Entering");
-		logger.debug(
-				"createImageIconFromResourePath() - Parameter: {}, {}, {}",
-				icon, height, width);
+		logger.trace("resizeImageIcon() - Entering");
+		logger.debug("resizeImageIcon() - Parameter: {}, {}, {}", icon, height,
+				width);
 		Image img = icon.getImage();
 		ImageIcon newIcon = new ImageIcon(img.getScaledInstance(width, height,
 				java.awt.Image.SCALE_SMOOTH));
-		logger.debug(newIcon);
+		logger.trace("resizeImageIcon() - Returning");
+		logger.debug("resizeImageIcon() - Returning: {}", newIcon);
 		return newIcon;
+	}
+
+	/**
+	 * Returns 1 of 50 loading images
+	 * @return
+	 */
+	public static ImageIcon getRandomLoadingIcon() {
+		logger.trace("getRandomLoadingIcon() - Entering");
+		ImageIcon icon = null;
+		int rand = (int)(Math.random() * 30 + 1);
+		String path = Constants
+				.getResourcePath() + "img/loadingIcons/("+rand+").png";
+		URL imgURL = ImageIconFactory.class.getResource(path);
+		if (imgURL != null) {
+			icon = new ImageIcon(imgURL);
+		}
+		logger.trace("getRandomLoadingIcon() - Returning");
+		logger.debug("getRandomLoadingIcon() - Returning: {}", icon);
+		return icon;
 	}
 }
