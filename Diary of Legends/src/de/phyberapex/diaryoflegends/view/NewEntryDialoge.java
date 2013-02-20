@@ -19,6 +19,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
@@ -43,12 +44,12 @@ import de.phyberapex.diaryoflegends.model.util.ItemUtil;
 public class NewEntryDialoge extends JDialog implements Runnable {
 
 	private static final long serialVersionUID = 2162451784302955479L;
-	private List<Champion> allChampions = ChampionUtil.getAllChampions();
+	private List<Champion> allChampions;
 	private List<Item> allItems;
 	private List<Champion> myTeamChampions;
 	private List<Champion> enemyTeamChampions;
 	private JTabbedPane newEntryContentPane;
-
+	private Game toEdit;
 	private JPanel gameContentPanel;
 	private JPanel datePanel;
 	private JLabel dateLabel;
@@ -93,6 +94,7 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 	private JSpinner ownAssistsTextField;
 	private JPanel gameNotesPanel;
 	private JLabel gameNotesLabel;
+	private JScrollPane gameNotesScrollPane;
 	private JTextArea gameNotesTextArea;
 	private JButton goToMatchupButton;
 
@@ -169,6 +171,7 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 	private JComboBox<Role> laneBox;
 	private JPanel matchupNotesPanel;
 	private JLabel matchupNotesLabel;
+	private JScrollPane matchupNotesScrollPane;
 	private JTextArea matchupNotesTextArea;
 
 	private JButton goToGameButton;
@@ -914,7 +917,7 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 			constraints.weightx = 1;
 			constraints.weighty = 1;
 			constraints.insets = new Insets(0, 10, 5, 10);
-			gameNotesPanel.add(getGameNotesTextArea(), constraints);
+			gameNotesPanel.add(getGameNotesScrollPane(), constraints);
 		}
 		logger.trace("getGameNotesPanel() - Returning");
 		logger.debug("getGameNotesPanel() - Returning: {}", gameNotesPanel);
@@ -931,12 +934,24 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		return gameNotesLabel;
 	}
 
+	public JScrollPane getGameNotesScrollPane() {
+		logger.trace("getGameNotesScrollPane() - Entering");
+		if (gameNotesScrollPane == null) {
+			gameNotesScrollPane = new JScrollPane(getGameNotesTextArea());
+			gameNotesScrollPane.setPreferredSize(new Dimension(0, 100));
+		}
+		logger.trace("getGameNotesScrollPane() - Returning");
+		logger.debug("getGameNotesScrollPane() - Returning: {}",
+				gameNotesScrollPane);
+		return gameNotesScrollPane;
+	}
+
 	public JTextArea getGameNotesTextArea() {
 		logger.trace("getGameNotesTextArea() - Entering");
 		if (gameNotesTextArea == null) {
 			gameNotesTextArea = new JTextArea();
+			gameNotesTextArea.setLineWrap(true);
 			gameNotesTextArea.setBorder(BorderFactory.createBevelBorder(1));
-			gameNotesTextArea.setPreferredSize(new Dimension(0, 60));
 		}
 		logger.trace("getGameNotesTextArea() - Returning");
 		logger.debug("getGameNotesTextArea() - Returning: {}",
@@ -989,6 +1004,14 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 						ok = false;
 						error += "- There can't be the same champ twice in one team. Please check the enemy team.\n";
 					}
+					if (selected1 == 0 || selected2 == 0 || selected3 == 0
+							|| selected4 == 0 || selected5 == 0
+							|| selected6 == 0 || selected7 == 0
+							|| selected8 == 0 || selected9 == 0
+							|| selected10 == 0) {
+						ok = false;
+						error += "- You need to set all five champions for both teams.\n";
+					}
 					if (!getGameResultLossBox().isSelected()
 							&& !getGameResultWonBox().isSelected()) {
 						ok = false;
@@ -1022,6 +1045,13 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 						newEntryContentPane.setEnabledAt(1, true);
 						newEntryContentPane.setEnabledAt(0, false);
 						newEntryContentPane.setSelectedIndex(1);
+						if (toEdit != null) {
+							getMyChampionBox().setSelectedItem(
+									toEdit.getMatchup().getMyChamp());
+							getEnemyChampionBox().setSelectedItem(
+									toEdit.getMatchup().getEnemyChamp());
+							getFinishButton().setText("Save");
+						}
 					} else {
 						JOptionPane.showMessageDialog(MainView.getInstance(),
 								error);
@@ -2212,7 +2242,7 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 			constraints.weightx = 1;
 			constraints.weighty = 1;
 			constraints.insets = new Insets(0, 10, 5, 10);
-			matchupNotesPanel.add(getMatchupNotesTextArea(), constraints);
+			matchupNotesPanel.add(getMatchupNotesScrollPane(), constraints);
 		}
 		logger.trace("getMatchupNotesPanel() - Returning");
 		logger.debug("getMatchupNotesPanel() - Returning: {}",
@@ -2231,12 +2261,24 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		return matchupNotesLabel;
 	}
 
+	public JScrollPane getMatchupNotesScrollPane() {
+		logger.trace("getMatchupNotesScrollPane() - Entering");
+		if (matchupNotesScrollPane == null) {
+			matchupNotesScrollPane = new JScrollPane(getMatchupNotesTextArea());
+			matchupNotesScrollPane.setPreferredSize(new Dimension(0, 100));
+		}
+		logger.trace("getMatchupNotesScrollPane() - Returning");
+		logger.debug("getMatchupNotesScrollPane() - Returning: {}",
+				matchupNotesScrollPane);
+		return matchupNotesScrollPane;
+	}
+
 	public JTextArea getMatchupNotesTextArea() {
 		logger.trace("getMatchupNotesTextArea() - Entering");
 		if (matchupNotesTextArea == null) {
 			matchupNotesTextArea = new JTextArea();
+			matchupNotesTextArea.setLineWrap(true);
 			matchupNotesTextArea.setBorder(BorderFactory.createBevelBorder(1));
-			matchupNotesTextArea.setPreferredSize(new Dimension(0, 60));
 		}
 		logger.trace("getMatchupNotesTextArea() - Returning");
 		logger.debug("getMatchupNotesTextArea() - Returning: {}",
@@ -2334,6 +2376,9 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 								error);
 					} else {
 						Game game = new Game();
+						if (toEdit != null) {
+							game = toEdit;
+						}
 						game.setDate(getDateChooser().getDate());
 						game.setEnemyTeam(enemyTeamChampions);
 						game.setMyTeam(myTeamChampions);
@@ -2349,6 +2394,9 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 						game.setOwnAssists((int) getOwnAssistsSpinner()
 								.getValue());
 						Matchup matchup = new Matchup();
+						if (toEdit != null) {
+							matchup = toEdit.getMatchup();
+						}
 						matchup.setGame(game);
 						matchup.setMyChamp(myTeamChampions
 								.get(getMyChampionBox().getSelectedIndex()));
@@ -2452,7 +2500,11 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 						}
 						matchup.setEnemyStartItems(mis);
 						game.setMatchup(matchup);
-						MainController.getInstance().saveNewGame(game);
+						if (toEdit != null) {
+							MainController.getInstance().updated();
+						} else {
+							MainController.getInstance().saveNewGame(game);
+						}
 						dispose();
 					}
 				}
@@ -2461,6 +2513,13 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		logger.trace("getFinishButton() - Returning");
 		logger.debug("getFinishButton() - Returning: {}", finishButton);
 		return finishButton;
+	}
+
+	public void setToEdit(Game toEdit) {
+		logger.trace("setToEdit() - Entering");
+		logger.debug("setToEdit() - Parameter: {}", toEdit);
+		this.toEdit = toEdit;
+		logger.trace("setToEdit() - Leaving");
 	}
 
 	@Override
@@ -2475,10 +2534,17 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 	 */
 	@Override
 	public void run() {
+		logger.trace("run() - Entering");
 		createGUI();
+		logger.trace("run() - Leaving");
 	}
 
 	private void createGUI() {
+		logger.trace("createGUI() - Entering");
+		allChampions = new ArrayList<Champion>();
+		Champion c = new Champion("no champion", null);
+		allChampions.add(c);
+		allChampions.addAll(ChampionUtil.getAllChampions());
 		allItems = new ArrayList<Item>();
 		Item i = new Item("no item", 0, null);
 		allItems.add(i);
@@ -2491,6 +2557,122 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setLocation((d.width - this.getSize().width) / 2,
 				(d.height - this.getSize().height) / 2);
+		if (this.toEdit != null) {
+			fillFields();
+		}
 		setVisible(true);
+		logger.trace("createGUI() - Leaving");
+	}
+
+	private void fillFields() {
+		logger.trace("fillFields() - Entering");
+		getDateChooser().setDate(toEdit.getDate());
+		getTeam1Champ1Box().setSelectedItem(toEdit.getMyTeam().get(0));
+		getTeam1Champ2Box().setSelectedItem(toEdit.getMyTeam().get(1));
+		getTeam1Champ3Box().setSelectedItem(toEdit.getMyTeam().get(2));
+		getTeam1Champ4Box().setSelectedItem(toEdit.getMyTeam().get(3));
+		getTeam1Champ5Box().setSelectedItem(toEdit.getMyTeam().get(4));
+		getTeam2Champ1Box().setSelectedItem(toEdit.getEnemyTeam().get(0));
+		getTeam2Champ2Box().setSelectedItem(toEdit.getEnemyTeam().get(1));
+		getTeam2Champ3Box().setSelectedItem(toEdit.getEnemyTeam().get(2));
+		getTeam2Champ4Box().setSelectedItem(toEdit.getEnemyTeam().get(3));
+		getTeam2Champ5Box().setSelectedItem(toEdit.getEnemyTeam().get(4));
+		if (toEdit.getResult() == GameResult.WIN) {
+			getGameResultWonBox().setSelected(true);
+		} else {
+			getGameResultLossBox().setSelected(true);
+		}
+		getOwnKillsSpinner().setValue(toEdit.getOwnKills());
+		getOwnDeathsSpinner().setValue(toEdit.getOwnDeaths());
+		getOwnAssistsSpinner().setValue(toEdit.getOwnAssists());
+		getGameNotesTextArea().setText(toEdit.getNotes());
+
+		Matchup m = toEdit.getMatchup();
+		getLaneBox().setSelectedItem(m.getLane());
+		getMatchupDifficultyBox().setSelectedItem(m.getDifficulty());
+		if (m.getResult() == MatchupResult.WIN) {
+			getMatchupResultWonButton().setSelected(true);
+		} else if (m.getResult() == MatchupResult.LOSS) {
+			getMatchupResultLossButton().setSelected(true);
+		} else {
+			getMatchupResultDrawButton().setSelected(true);
+		}
+		if (m.getMyStartItems().size() >= 1) {
+			getMyItem1AmountSpinner().setValue(
+					m.getMyStartItems().get(0).getAmount());
+			getMyItem1Box().setSelectedItem(
+					m.getMyStartItems().get(0).getItem());
+			if (m.getMyStartItems().size() >= 2) {
+				getMyItem2AmountSpinner().setValue(
+						m.getMyStartItems().get(1).getAmount());
+				getMyItem2Box().setSelectedItem(
+						m.getMyStartItems().get(1).getItem());
+				if (m.getMyStartItems().size() >= 3) {
+					getMyItem3AmountSpinner().setValue(
+							m.getMyStartItems().get(2).getAmount());
+					getMyItem3Box().setSelectedItem(
+							m.getMyStartItems().get(2).getItem());
+					if (m.getMyStartItems().size() >= 4) {
+						getMyItem4AmountSpinner().setValue(
+								m.getMyStartItems().get(3).getAmount());
+						getMyItem4Box().setSelectedItem(
+								m.getMyStartItems().get(3).getItem());
+						if (m.getMyStartItems().size() >= 5) {
+							getMyItem5AmountSpinner().setValue(
+									m.getMyStartItems().get(4).getAmount());
+							getMyItem5Box().setSelectedItem(
+									m.getMyStartItems().get(4).getItem());
+							if (m.getMyStartItems().size() >= 5) {
+								getMyItem6AmountSpinner().setValue(
+										m.getMyStartItems().get(5).getAmount());
+								getMyItem6Box().setSelectedItem(
+										m.getMyStartItems().get(5).getItem());
+							}
+						}
+					}
+				}
+			}
+		}
+		if (m.getEnemyStartItems().size() >= 1) {
+			getEnemyItem1AmountSpinner().setValue(
+					m.getEnemyStartItems().get(0).getAmount());
+			getEnemyItem1Box().setSelectedItem(
+					m.getEnemyStartItems().get(0).getItem());
+			if (m.getEnemyStartItems().size() >= 2) {
+				getEnemyItem2AmountSpinner().setValue(
+						m.getEnemyStartItems().get(1).getAmount());
+				getEnemyItem2Box().setSelectedItem(
+						m.getEnemyStartItems().get(1).getItem());
+				if (m.getEnemyStartItems().size() >= 3) {
+					getEnemyItem3AmountSpinner().setValue(
+							m.getEnemyStartItems().get(2).getAmount());
+					getEnemyItem3Box().setSelectedItem(
+							m.getEnemyStartItems().get(2).getItem());
+					if (m.getEnemyStartItems().size() >= 4) {
+						getEnemyItem4AmountSpinner().setValue(
+								m.getEnemyStartItems().get(3).getAmount());
+						getEnemyItem4Box().setSelectedItem(
+								m.getEnemyStartItems().get(3).getItem());
+						if (m.getEnemyStartItems().size() >= 5) {
+							getEnemyItem5AmountSpinner().setValue(
+									m.getEnemyStartItems().get(4).getAmount());
+							getEnemyItem5Box().setSelectedItem(
+									m.getEnemyStartItems().get(4).getItem());
+							if (m.getEnemyStartItems().size() >= 5) {
+								getEnemyItem6AmountSpinner().setValue(
+										m.getEnemyStartItems().get(5)
+												.getAmount());
+								getEnemyItem6Box()
+										.setSelectedItem(
+												m.getEnemyStartItems().get(5)
+														.getItem());
+							}
+						}
+					}
+				}
+			}
+		}
+		getMatchupNotesTextArea().setText(m.getNotes());
+		logger.trace("fillFields() - Leaving");
 	}
 }

@@ -4,15 +4,25 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
 import javax.swing.JButton;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingUtilities;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import de.phyberapex.diaryoflegends.controller.GameController;
+import de.phyberapex.diaryoflegends.extra.ImageIconFactory;
+import de.phyberapex.diaryoflegends.extra.LoadingSplash;
 import de.phyberapex.diaryoflegends.model.Game;
+import de.phyberapex.diaryoflegends.model.Matchup;
 
 public class GameView extends JPanel implements View {
 
@@ -163,6 +173,63 @@ public class GameView extends JPanel implements View {
 			GameTableModel m = new GameTableModel(controller.getGames());
 			gameTable.setModel(m);
 			gameTable.setDefaultRenderer(Object.class, new GameTableRenderer());
+			gameTable.addMouseListener(new MouseListener() {
+
+				@Override
+				public void mouseReleased(MouseEvent e) {
+					final int row = gameTable.rowAtPoint(e.getPoint());
+					if (e.getButton() == MouseEvent.BUTTON3) {
+						JPopupMenu menu = new JPopupMenu();
+						JMenuItem edit = new JMenuItem("Edit");
+						edit.addActionListener(new ActionListener() {
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								LoadingSplash spl = new LoadingSplash(ImageIconFactory
+										.getRandomLoadingIcon().getImage());
+								spl.setVisible(true);
+								NewEntryDialoge nd = new NewEntryDialoge();
+								nd.setToEdit(((Game) gameTable
+										.getValueAt(row, 1)));
+								SwingUtilities.invokeLater(nd);
+								spl.close();
+							}
+						});
+						JMenuItem view = new JMenuItem("View");
+						view.addActionListener(new ActionListener() {
+
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								MatchupDetailDialoge.getInstance().showDetails(
+										(Matchup) gameTable.getValueAt(row,
+												1));
+							}
+						});
+						menu.add(edit);
+						menu.add(view);
+						menu.show(gameTable, e.getX(), e.getY());
+					} else if (e.getClickCount() == 2) {
+//						MatchupDetailDialoge.getInstance().showDetails(
+						// (Game) gameTable.getValueAt(row, 1));
+					}
+				}
+
+				@Override
+				public void mousePressed(MouseEvent e) {
+				}
+
+				@Override
+				public void mouseExited(MouseEvent e) {
+				}
+
+				@Override
+				public void mouseEntered(MouseEvent e) {
+				}
+
+				@Override
+				public void mouseClicked(MouseEvent e) {
+
+				}
+			});
 		}
 		logger.trace("getItemTable() - Returning");
 		logger.debug("getItemTable() - Returning: {}", gameTable);

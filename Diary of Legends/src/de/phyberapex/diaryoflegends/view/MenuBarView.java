@@ -7,13 +7,14 @@ import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JSeparator;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import de.phyberapex.diaryoflegends.ExitAction;
 import de.phyberapex.diaryoflegends.extra.ImageIconFactory;
-import de.phyberapex.diaryoflegends.extra.Splash;
+import de.phyberapex.diaryoflegends.extra.LoadingSplash;
 import de.phyberapex.diaryoflegends.model.ExportAction;
 import de.phyberapex.diaryoflegends.model.ImportAction;
 
@@ -25,8 +26,6 @@ public class MenuBarView extends JMenuBar implements View {
 	private JMenuItem importItem;
 	private JMenuItem exportItem;
 	private JMenuItem exitItem;
-	private JMenu editMenu;
-	private JMenuItem editEntryItem;
 	private JMenu aboutMenu;
 	private JMenuItem helpItem;
 	private JMenuItem updateItem;
@@ -36,7 +35,6 @@ public class MenuBarView extends JMenuBar implements View {
 	public MenuBarView() {
 		logger.trace("MenuBarView() - Entering");
 		this.add(getFileMenu());
-		this.add(getEditMenu());
 		this.add(getAboutMenu());
 		logger.trace("MenuBarView() - Leaving");
 	}
@@ -48,8 +46,10 @@ public class MenuBarView extends JMenuBar implements View {
 			logger.debug("Creating a new JMenu object");
 			this.fileMenu = new JMenu("File");
 			this.fileMenu.add(getNewEntryItem());
+			this.fileMenu.add(new JSeparator());
 			this.fileMenu.add(getImportItem());
 			this.fileMenu.add(getExportItem());
+			this.fileMenu.add(new JSeparator());
 			this.fileMenu.add(getExitItem());
 		}
 		logger.trace("getFileMenu() - Returning");
@@ -67,9 +67,8 @@ public class MenuBarView extends JMenuBar implements View {
 
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
-					Splash spl = new Splash(ImageIconFactory
-							.createImageIconFromResourePath("img\\loading.png")
-							.getImage(), "Loading...");
+					LoadingSplash spl = new LoadingSplash(ImageIconFactory
+							.getRandomLoadingIcon().getImage());
 					spl.setVisible(true);
 					SwingUtilities.invokeLater(new NewEntryDialoge());
 					spl.close();
@@ -114,8 +113,7 @@ public class MenuBarView extends JMenuBar implements View {
 					});
 					int ok = fc.showOpenDialog(MainView.getInstance());
 					if (ok == JFileChooser.APPROVE_OPTION) {
-						Splash spl = new Splash(null,
-								"Importing...");
+						LoadingSplash spl = new LoadingSplash(null);
 						spl.setVisible(true);
 						ImportAction imp = new ImportAction(fc
 								.getSelectedFile());
@@ -138,9 +136,8 @@ public class MenuBarView extends JMenuBar implements View {
 
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
-					Splash spl = new Splash(ImageIconFactory
-							.createImageIconFromResourePath("img\\loading.png")
-							.getImage(), "Exporting...");
+					LoadingSplash spl = new LoadingSplash(ImageIconFactory
+							.getRandomLoadingIcon().getImage());
 					spl.setVisible(true);
 					SwingUtilities.invokeLater(new ExportAction());
 					spl.close();
@@ -163,31 +160,6 @@ public class MenuBarView extends JMenuBar implements View {
 		logger.trace("getExitItem() - Returning");
 		logger.debug("Returned {}", exitItem);
 		return exitItem;
-	}
-
-	private JMenu getEditMenu() {
-		logger.trace("getEditMenu() - Entering");
-		logger.debug("editMenu currently {}", editMenu);
-		if (this.editMenu == null) {
-			logger.debug("Creating a new JMenu object");
-			this.editMenu = new JMenu("Edit");
-			this.editMenu.add(getEditEntryItem());
-		}
-		logger.trace("getEditMenu() - Returning");
-		logger.debug("Returned {}", editMenu);
-		return editMenu;
-	}
-
-	private JMenuItem getEditEntryItem() {
-		logger.trace("getEditEntryItem() - Entering");
-		logger.debug("editEntryItem currently {}", editEntryItem);
-		if (this.editEntryItem == null) {
-			logger.debug("Creating a new JMenuItem object");
-			this.editEntryItem = new JMenuItem("Edit a entry");
-		}
-		logger.trace("getEditEntryItem() - Returning");
-		logger.debug("Returned {}", editEntryItem);
-		return editEntryItem;
 	}
 
 	private JMenu getAboutMenu() {

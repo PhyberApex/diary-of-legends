@@ -4,6 +4,7 @@ import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -43,9 +44,13 @@ public class ChampionComboBoxRenderer extends JPanel implements
 		GridBagConstraints constraints = new GridBagConstraints();
 		constraints.gridx = 0;
 		constraints.gridy = 0;
-		panel.add(
-				new JLabel(ImageIconFactory.resizeImageIcon(value.getIcon(),
-						30, 30)), constraints);
+		ImageIcon icon = value.getIcon();
+		if (icon == null) {
+			icon = ImageIconFactory
+					.createImageIconFromResourePath("img/empty_60x60.png");
+		}
+		panel.add(new JLabel(ImageIconFactory.resizeImageIcon(icon, 30, 30)),
+				constraints);
 		constraints = new GridBagConstraints();
 		constraints.gridx = 1;
 		constraints.gridy = 0;
