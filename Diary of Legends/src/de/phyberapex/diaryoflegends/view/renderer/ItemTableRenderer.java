@@ -1,4 +1,4 @@
-package de.phyberapex.diaryoflegends.view;
+package de.phyberapex.diaryoflegends.view.renderer;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -11,14 +11,15 @@ import javax.swing.table.TableCellRenderer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-class ChampionTableRenderer implements TableCellRenderer {
+
+public class ItemTableRenderer implements TableCellRenderer {
 
 	private JPanel panel;
 	private JLabel label;
 	private static Logger logger = LogManager
-			.getLogger(ChampionTableRenderer.class.getName());
+			.getLogger(ItemTableRenderer.class.getName());
 
-	public ChampionTableRenderer() {
+	public ItemTableRenderer() {
 		logger.trace("ChampionTableRenderer() - Entering");
 		logger.trace("ChampionTableRenderer() - Leaving");
 	}
@@ -38,6 +39,17 @@ class ChampionTableRenderer implements TableCellRenderer {
 			returnValue = label;
 			break;
 		case 1:
+			panel = new JPanel();
+			panel.setLayout(new BorderLayout());
+			label = new JLabel();
+			if (isSelected || hasFocus) {
+				panel.setBackground(Color.ORANGE);
+			}
+			label.setText(value.toString());
+			panel.add(label);
+			returnValue = panel;
+			break;
+		case 2:
 			panel = new JPanel();
 			panel.setLayout(new BorderLayout());
 			label = new JLabel();

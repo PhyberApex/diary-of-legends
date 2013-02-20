@@ -1,4 +1,4 @@
-package de.phyberapex.diaryoflegends.view;
+package de.phyberapex.diaryoflegends.view.model;
 
 import java.util.List;
 import javax.swing.table.AbstractTableModel;

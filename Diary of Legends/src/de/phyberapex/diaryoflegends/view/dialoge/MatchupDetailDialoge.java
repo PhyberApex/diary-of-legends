@@ -1,4 +1,4 @@
-package de.phyberapex.diaryoflegends.view;
+package de.phyberapex.diaryoflegends.view.dialoge;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -28,6 +28,7 @@ import de.phyberapex.diaryoflegends.model.Matchup;
 import de.phyberapex.diaryoflegends.model.MatchupItem;
 import de.phyberapex.diaryoflegends.model.MatchupResult;
 import de.phyberapex.diaryoflegends.model.util.MatchupUtil;
+import de.phyberapex.diaryoflegends.view.View;
 
 public class MatchupDetailDialoge extends JDialog implements View {
 

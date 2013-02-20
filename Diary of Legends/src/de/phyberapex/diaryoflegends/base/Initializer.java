@@ -197,7 +197,7 @@ public class Initializer {
 
 					@Override
 					public boolean match(Champion arg0) {
-						if (arg0.getName().equals(attributes[0])) {
+						if (arg0.getId() == Integer.parseInt(attributes[0])) {
 							return true;
 						} else {
 							return false;
@@ -217,14 +217,16 @@ public class Initializer {
 	private void updateNew(String entity, String[] attributes) {
 		switch (entity) {
 		case "CHAMPION":
-			Champion champ = new Champion(attributes[0], new File(
-					updateFolder.getAbsolutePath() + "\\" + attributes[1]));
+			Champion champ = new Champion(Integer.valueOf(attributes[0]),
+					attributes[1], new File(updateFolder.getAbsolutePath()
+							+ "\\" + attributes[2]));
 			Config.getInstance().getDBHandle().store(champ);
 			break;
 		case "ITEM":
-			Item item = new Item(attributes[0], Integer.valueOf(attributes[1]),
-					new File(updateFolder.getAbsolutePath() + "\\"
-							+ attributes[2]));
+			Item item = new Item(Integer.valueOf(attributes[0]), attributes[1],
+					Integer.valueOf(attributes[2]), new File(
+							updateFolder.getAbsolutePath() + "\\"
+									+ attributes[3]));
 			Config.getInstance().getDBHandle().store(item);
 			break;
 		}

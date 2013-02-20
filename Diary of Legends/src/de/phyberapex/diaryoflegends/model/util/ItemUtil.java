@@ -53,7 +53,7 @@ public class ItemUtil {
 	/**
 	 * Saves the item given in the database
 	 * 
-	 * @param {@link Item item} 
+	 * @param {@link Item item}
 	 */
 	public static void saveItem(Item item) {
 		logger.trace("saveItem() - Entering");
@@ -105,6 +105,36 @@ public class ItemUtil {
 		}
 		logger.trace("searchItemByName() - Returning");
 		logger.debug("searchItemByName() - Returning {}", returnValue);
+		return returnValue;
+	}
+
+	/**
+	 * Returns the {@link Item} with the given id or if not found<br>
+	 * null
+	 * 
+	 * @param id
+	 *            {@link int}
+	 * @return {@link Item} or null
+	 */
+	public static Item getItemById(final int id) {
+		logger.trace("getItemById() - Entering");
+		logger.debug("getItemById() - Parameter: {}", id);
+		ObjectSet<Item> set = dbHandle.query(new Predicate<Item>() {
+
+			private static final long serialVersionUID = -6535736734146443615L;
+
+			@Override
+			public boolean match(Item arg0) {
+				if (arg0.getId() == id) {
+					return true;
+				} else {
+					return false;
+				}
+			}
+		});
+		Item returnValue = set.next();
+		logger.trace("getItemById() - Returning");
+		logger.debug("getItemById() - Returning {}", returnValue);
 		return returnValue;
 	}
 }

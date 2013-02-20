@@ -111,4 +111,34 @@ public class ChampionUtil {
 		logger.debug("searchChampionByName() - Returning {}", returnValue);
 		return returnValue;
 	}
+
+	/**
+	 * Returns the {@link Champion} with the given id or if not found<br>
+	 * null
+	 * 
+	 * @param id
+	 *            {@link int}
+	 * @return {@link Champion} or null
+	 */
+	public static Champion getChampionById(final int id) {
+		logger.trace("getChampionById() - Entering");
+		logger.debug("getChampionById() - Parameter: {}", id);
+		ObjectSet<Champion> set = dbHandle.query(new Predicate<Champion>() {
+
+			private static final long serialVersionUID = -6535736734146443615L;
+
+			@Override
+			public boolean match(Champion arg0) {
+				if (arg0.getId() == id) {
+					return true;
+				} else {
+					return false;
+				}
+			}
+		});
+		Champion returnValue = set.next();
+		logger.trace("getChampionById() - Returning");
+		logger.debug("getChampionById() - Returning {}", returnValue);
+		return returnValue;
+	}
 }

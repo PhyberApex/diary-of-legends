@@ -1,42 +1,51 @@
-package de.phyberapex.diaryoflegends.view;
+package de.phyberapex.diaryoflegends.view.renderer;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-
-import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import de.phyberapex.diaryoflegends.model.Game;
+import de.phyberapex.diaryoflegends.model.GameResult;
 
-public class ItemTableRenderer implements TableCellRenderer {
+public class GameTableRenderer implements TableCellRenderer {
 
 	private JPanel panel;
 	private JLabel label;
-	private static Logger logger = LogManager
-			.getLogger(ChampionTableRenderer.class.getName());
+	private static Logger logger = LogManager.getLogger(GameTableRenderer.class
+			.getName());
 
-	public ItemTableRenderer() {
-		logger.trace("ChampionTableRenderer() - Entering");
-		logger.trace("ChampionTableRenderer() - Leaving");
+	public GameTableRenderer() {
+		logger.trace("GameTableRender() - Entering");
+		logger.trace("GameTableRender() - Leaving");
 	}
 
 	@Override
 	public Component getTableCellRendererComponent(JTable table, Object value,
 			boolean isSelected, boolean hasFocus, int row, int column) {
 		Component returnValue = null;
-		table.getColumnModel().getColumn(0).setMaxWidth(60);
-		table.setRowHeight(60);
+		Game g = (Game) table.getValueAt(row, 1);
 		switch (column) {
 		case 0:
+			panel = new JPanel();
+			panel.setLayout(new BorderLayout());
 			label = new JLabel();
-			Icon ic = (Icon) value;
-			label.setIcon(ic);
-			label.setSize(ic.getIconHeight(), ic.getIconWidth());
-			returnValue = label;
+			if (isSelected || hasFocus) {
+				panel.setBackground(Color.ORANGE);
+			} else if (g.getResult() == GameResult.WIN) {
+				panel.setBackground(Color.GREEN);
+			} else if (g.getResult() == GameResult.LOSS) {
+				panel.setBackground(Color.RED);
+			} else {
+				panel.setBackground(Color.WHITE);
+			}
+			label.setText(value.toString());
+			panel.add(label);
+			returnValue = panel;
 			break;
 		case 1:
 			panel = new JPanel();
@@ -44,17 +53,12 @@ public class ItemTableRenderer implements TableCellRenderer {
 			label = new JLabel();
 			if (isSelected || hasFocus) {
 				panel.setBackground(Color.ORANGE);
-			}
-			label.setText(value.toString());
-			panel.add(label);
-			returnValue = panel;
-			break;
-		case 2:
-			panel = new JPanel();
-			panel.setLayout(new BorderLayout());
-			label = new JLabel();
-			if (isSelected || hasFocus) {
-				panel.setBackground(Color.ORANGE);
+			} else if (g.getResult() == GameResult.WIN) {
+				panel.setBackground(Color.GREEN);
+			} else if (g.getResult() == GameResult.LOSS) {
+				panel.setBackground(Color.RED);
+			} else {
+				panel.setBackground(Color.WHITE);
 			}
 			label.setText(value.toString());
 			panel.add(label);

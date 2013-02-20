@@ -16,6 +16,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import de.phyberapex.diaryoflegends.controller.ChampionController;
 import de.phyberapex.diaryoflegends.model.Champion;
+import de.phyberapex.diaryoflegends.view.model.ChampionTableModel;
+import de.phyberapex.diaryoflegends.view.renderer.ChampionTableRenderer;
+
 
 public class ChampionView extends JPanel implements View {
 

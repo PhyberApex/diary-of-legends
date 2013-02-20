@@ -13,10 +13,11 @@ import javax.swing.filechooser.FileFilter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import de.phyberapex.diaryoflegends.ExitAction;
+import de.phyberapex.diaryoflegends.backup.ExportAction;
+import de.phyberapex.diaryoflegends.backup.ImportAction;
 import de.phyberapex.diaryoflegends.extra.ImageIconFactory;
 import de.phyberapex.diaryoflegends.extra.LoadingSplash;
-import de.phyberapex.diaryoflegends.model.ExportAction;
-import de.phyberapex.diaryoflegends.model.ImportAction;
+import de.phyberapex.diaryoflegends.view.dialoge.NewEntryDialoge;
 
 public class MenuBarView extends JMenuBar implements View {
 

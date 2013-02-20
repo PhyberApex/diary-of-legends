@@ -21,6 +21,10 @@ import de.phyberapex.diaryoflegends.controller.MatchupController;
 import de.phyberapex.diaryoflegends.extra.ImageIconFactory;
 import de.phyberapex.diaryoflegends.extra.LoadingSplash;
 import de.phyberapex.diaryoflegends.model.Matchup;
+import de.phyberapex.diaryoflegends.view.dialoge.MatchupDetailDialoge;
+import de.phyberapex.diaryoflegends.view.dialoge.NewEntryDialoge;
+import de.phyberapex.diaryoflegends.view.model.MatchupTableModel;
+import de.phyberapex.diaryoflegends.view.renderer.MatchupTableRenderer;
 
 public class MatchupView extends JPanel implements View {
 	private static final long serialVersionUID = -8456209180736169342L;
