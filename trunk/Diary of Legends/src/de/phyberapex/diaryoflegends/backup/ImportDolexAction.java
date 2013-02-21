@@ -12,9 +12,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import de.phyberapex.diaryoflegends.base.Config;
 import de.phyberapex.diaryoflegends.exception.ChampionNotFoundException;
 import de.phyberapex.diaryoflegends.exception.ItemNotFoundException;
+import de.phyberapex.diaryoflegends.exception.SummonerSpellNotFoundException;
 import de.phyberapex.diaryoflegends.model.Champion;
 import de.phyberapex.diaryoflegends.model.Game;
 import de.phyberapex.diaryoflegends.model.GameResult;
@@ -24,8 +24,12 @@ import de.phyberapex.diaryoflegends.model.MatchupDifficulty;
 import de.phyberapex.diaryoflegends.model.MatchupItem;
 import de.phyberapex.diaryoflegends.model.MatchupResult;
 import de.phyberapex.diaryoflegends.model.Role;
+import de.phyberapex.diaryoflegends.model.SummonerSpell;
 import de.phyberapex.diaryoflegends.model.util.ChampionUtil;
+import de.phyberapex.diaryoflegends.model.util.GameUtil;
 import de.phyberapex.diaryoflegends.model.util.ItemUtil;
+import de.phyberapex.diaryoflegends.model.util.MatchupUtil;
+import de.phyberapex.diaryoflegends.model.util.SummonerSpellUtil;
 import de.phyberapex.diaryoflegends.view.MainView;
 
 public class ImportDolexAction implements Runnable {
@@ -57,7 +61,7 @@ public class ImportDolexAction implements Runnable {
 			fstream.close();
 			JSONObject jo = new JSONObject(imp);
 			JSONArray gArray = jo.getJSONArray("games");
-			for (int i = 0; i <= gArray.length(); i++) {
+			for (int i = 0; i < gArray.length(); i++) {
 				JSONObject gJo = gArray.getJSONObject(i);
 
 				Game game = new Game();
@@ -68,7 +72,7 @@ public class ImportDolexAction implements Runnable {
 				List<Champion> teams = new ArrayList<Champion>();
 				JSONArray myTeamArray = gJo.getJSONArray("myTeam");
 				Champion chmp;
-				for (int j = 0; j <= myTeamArray.length(); j++) {
+				for (int j = 0; j < myTeamArray.length(); j++) {
 					chmp = null;
 					chmp = ChampionUtil.getChampionById(myTeamArray.getInt(j));
 					if (chmp == null) {
@@ -83,9 +87,9 @@ public class ImportDolexAction implements Runnable {
 				game.setMyTeam(teams);
 				teams = new ArrayList<Champion>();
 				JSONArray enemyTeamArray = gJo.getJSONArray("enemyTeam");
-				for (int j = 0; j <= enemyTeamArray.length(); j++) {
+				for (int j = 0; j < enemyTeamArray.length(); j++) {
 					chmp = null;
-					chmp = ChampionUtil.getChampionById(myTeamArray.getInt(i));
+					chmp = ChampionUtil.getChampionById(enemyTeamArray.getInt(j));
 					if (chmp == null) {
 						logger.error("Champion with id {} not found",
 								enemyTeamArray.getInt(j));
@@ -107,10 +111,11 @@ public class ImportDolexAction implements Runnable {
 					throw new ChampionNotFoundException(
 							"You champion is not in your team.");
 				}
+				matchup.setMyChamp(chmp);
 				JSONArray myStartItemsArray = mJo.getJSONArray("myStartItems");
 				List<MatchupItem> matchupItems = new ArrayList<MatchupItem>();
 				Item item = null;
-				for (int j = 0; j <= myStartItemsArray.length(); j++) {
+				for (int j = 0; j < myStartItemsArray.length(); j++) {
 					JSONObject maItJo = myStartItemsArray.getJSONObject(j);
 					item = ItemUtil.getItemById(maItJo.getInt("item"));
 					if (item == null) {
@@ -124,11 +129,10 @@ public class ImportDolexAction implements Runnable {
 					}
 				}
 				matchup.setMyStartItems(matchupItems);
-
 				JSONArray myEndItemsArray = mJo.getJSONArray("myEndItems");
 				matchupItems = new ArrayList<MatchupItem>();
 				item = null;
-				for (int j = 0; j <= myEndItemsArray.length(); j++) {
+				for (int j = 0; j < myEndItemsArray.length(); j++) {
 					JSONObject maItJo = myEndItemsArray.getJSONObject(j);
 					item = ItemUtil.getItemById(maItJo.getInt("item"));
 					if (item == null) {
@@ -143,6 +147,24 @@ public class ImportDolexAction implements Runnable {
 				}
 				matchup.setMyEndItems(matchupItems);
 
+				SummonerSpell spell1 = SummonerSpellUtil.getSpellById(mJo
+						.getInt("mySpell1"));
+				if (spell1 == null) {
+					logger.error("Summoner spell with id {} not found",
+							mJo.getInt("mySpell1"));
+					throw new SummonerSpellNotFoundException(
+							"Summoner spell not found. Maybe your champions are outdated.");
+				}
+				matchup.setMySpell1(spell1);
+				SummonerSpell spell2 = SummonerSpellUtil.getSpellById(mJo
+						.getInt("mySpell2"));
+				if (spell2 == null) {
+					logger.error("Summoner spell with id {} not found",
+							mJo.getInt("mySpell2"));
+					throw new SummonerSpellNotFoundException(
+							"Summoner spell not found. Maybe your champions are outdated.");
+				}
+				matchup.setMySpell2(spell2);
 				chmp = null;
 				chmp = ChampionUtil
 						.getChampionById(mJo.getInt("enemyChampion"));
@@ -152,12 +174,12 @@ public class ImportDolexAction implements Runnable {
 					throw new ChampionNotFoundException(
 							"Enemy champion is not in enemy team.");
 				}
-
+				matchup.setEnemyChamp(chmp);
 				JSONArray enemyStartItemsArray = mJo
 						.getJSONArray("enemyStartItems");
 				matchupItems = new ArrayList<MatchupItem>();
 				item = null;
-				for (int j = 0; j <= enemyStartItemsArray.length(); j++) {
+				for (int j = 0; j < enemyStartItemsArray.length(); j++) {
 					JSONObject maItJo = enemyStartItemsArray.getJSONObject(j);
 					item = ItemUtil.getItemById(maItJo.getInt("item"));
 					if (item == null) {
@@ -171,12 +193,11 @@ public class ImportDolexAction implements Runnable {
 					}
 				}
 				matchup.setEnemyStartItems(matchupItems);
-
 				JSONArray enemyEndItemsArray = mJo
 						.getJSONArray("enemyEndItems");
 				matchupItems = new ArrayList<MatchupItem>();
 				item = null;
-				for (int j = 0; j <= enemyEndItemsArray.length(); j++) {
+				for (int j = 0; j < enemyEndItemsArray.length(); j++) {
 					JSONObject maItJo = enemyEndItemsArray.getJSONObject(j);
 					item = ItemUtil.getItemById(maItJo.getInt("item"));
 					if (item == null) {
@@ -190,6 +211,24 @@ public class ImportDolexAction implements Runnable {
 					}
 				}
 				matchup.setEnemyEndItems(matchupItems);
+				SummonerSpell enemySpell1 = SummonerSpellUtil.getSpellById(mJo
+						.getInt("enemySpell1"));
+				if (enemySpell1 == null) {
+					logger.error("Summoner spell with id {} not found",
+							mJo.getInt("enemySpell1"));
+					throw new SummonerSpellNotFoundException(
+							"Summoner spell not found. Maybe your champions are outdated.");
+				}
+				matchup.setEnemySpell1(enemySpell1);
+				SummonerSpell enemySpell2 = SummonerSpellUtil.getSpellById(mJo
+						.getInt("enemySpell2"));
+				if (enemySpell2 == null) {
+					logger.error("Summoner spell with id {} not found",
+							mJo.getInt("enemySpell2"));
+					throw new SummonerSpellNotFoundException(
+							"Summoner spell not found. Maybe your champions are outdated.");
+				}
+				matchup.setEnemySpell2(enemySpell2);
 				matchup.setResult(MatchupResult.valueOf(mJo
 						.getString("matchupResult")));
 				matchup.setLane(Role.valueOf(mJo.getString("lane")));
@@ -204,16 +243,17 @@ public class ImportDolexAction implements Runnable {
 				game.setOwnCS(gJo.getInt("ownCS"));
 				game.setResult(GameResult.valueOf(gJo.getString("gameResult")));
 				game.setLength(gJo.getLong("length"));
-				Config.getInstance().getDBHandle().store(game);
+				MatchupUtil.saveMatchup(matchup);
+				GameUtil.saveGame(game);
 				MainView.getInstance().getGamePanel().addGame(game);
 				MainView.getInstance().getMatchupPanel().addMatchup(matchup);
+				MainView.getInstance().setStatusText("Import complete");
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			MainView.getInstance().setStatusText(
 					"Import failed. Please read the logfile.");
 		}
-		MainView.getInstance().setStatusText("Import complete");
 		logger.trace("doImport() - Leaving");
 	}
 

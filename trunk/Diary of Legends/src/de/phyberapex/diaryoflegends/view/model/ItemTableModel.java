@@ -1,4 +1,4 @@
-package de.phyberapex.diaryoflegends.view;
+package de.phyberapex.diaryoflegends.view.model;
 
 import java.util.List;
 
@@ -162,9 +162,6 @@ public class ItemTableModel extends AbstractTableModel {
 	@Override
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
 		boolean editable = false;
-		if (columnIndex == 1 || columnIndex == 2) {
-			editable = true;
-		}
 		return editable;
 	}
 

@@ -94,7 +94,6 @@ public class Splash extends JWindow {
 	 */
 	public void setVisible(boolean show) {
 		if (show) {
-			setAlwaysOnTop(show);
 			pack();
 			setLocationRelativeTo(null);
 		}

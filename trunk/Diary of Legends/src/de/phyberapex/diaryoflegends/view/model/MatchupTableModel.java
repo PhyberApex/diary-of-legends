@@ -9,7 +9,6 @@ import javax.swing.table.AbstractTableModel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import de.phyberapex.diaryoflegends.model.Matchup;
-import de.phyberapex.diaryoflegends.view.ItemTableModel;
 
 public class MatchupTableModel extends AbstractTableModel {
 

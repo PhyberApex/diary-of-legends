@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-
 import javax.swing.JButton;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -15,11 +14,9 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import de.phyberapex.diaryoflegends.controller.GameController;
-import de.phyberapex.diaryoflegends.extra.ImageIconFactory;
 import de.phyberapex.diaryoflegends.extra.LoadingSplash;
 import de.phyberapex.diaryoflegends.model.Game;
 import de.phyberapex.diaryoflegends.model.Matchup;
@@ -99,7 +96,10 @@ public class GameView extends JPanel implements View {
 
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
-					// newItemDialoge.setVisible(true);
+					LoadingSplash spl = new LoadingSplash();
+					spl.setVisible(true);
+					SwingUtilities.invokeLater(new NewEntryDialoge());
+					spl.close();
 				}
 			});
 		}
@@ -188,12 +188,11 @@ public class GameView extends JPanel implements View {
 						edit.addActionListener(new ActionListener() {
 							@Override
 							public void actionPerformed(ActionEvent e) {
-								LoadingSplash spl = new LoadingSplash(ImageIconFactory
-										.getRandomLoadingIcon().getImage());
+								LoadingSplash spl = new LoadingSplash();
 								spl.setVisible(true);
 								NewEntryDialoge nd = new NewEntryDialoge();
-								nd.setToEdit(((Game) gameTable
-										.getValueAt(row, 1)));
+								nd.setToEdit(((Game) gameTable.getValueAt(row,
+										1)));
 								SwingUtilities.invokeLater(nd);
 								spl.close();
 							}
@@ -203,16 +202,16 @@ public class GameView extends JPanel implements View {
 
 							@Override
 							public void actionPerformed(ActionEvent e) {
-								new MatchupDetailDialoge().showDetails(
-										(Matchup) gameTable.getValueAt(row,
-												1));
+								new MatchupDetailDialoge()
+										.showDetails((Matchup) gameTable
+												.getValueAt(row, 1));
 							}
 						});
 						menu.add(edit);
 						menu.add(view);
 						menu.show(gameTable, e.getX(), e.getY());
 					} else if (e.getClickCount() == 2) {
-//						MatchupDetailDialoge.getInstance().showDetails(
+						// MatchupDetailDialoge.getInstance().showDetails(
 						// (Game) gameTable.getValueAt(row, 1));
 					}
 				}
