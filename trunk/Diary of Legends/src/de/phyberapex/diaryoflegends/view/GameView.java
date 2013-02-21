@@ -203,7 +203,7 @@ public class GameView extends JPanel implements View {
 
 							@Override
 							public void actionPerformed(ActionEvent e) {
-								MatchupDetailDialoge.getInstance().showDetails(
+								new MatchupDetailDialoge().showDetails(
 										(Matchup) gameTable.getValueAt(row,
 												1));
 							}

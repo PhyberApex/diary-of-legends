@@ -199,7 +199,7 @@ public class MatchupView extends JPanel implements View {
 
 							@Override
 							public void actionPerformed(ActionEvent e) {
-								MatchupDetailDialoge.getInstance().showDetails(
+								new MatchupDetailDialoge().showDetails(
 										(Matchup) matchupTable.getValueAt(row,
 												1));
 							}
@@ -208,7 +208,7 @@ public class MatchupView extends JPanel implements View {
 						menu.add(view);
 						menu.show(matchupTable, e.getX(), e.getY());
 					} else if (e.getClickCount() == 2) {
-						MatchupDetailDialoge.getInstance().showDetails(
+						new MatchupDetailDialoge().showDetails(
 								(Matchup) matchupTable.getValueAt(row, 1));
 					}
 				}

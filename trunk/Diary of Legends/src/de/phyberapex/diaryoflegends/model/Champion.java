@@ -135,4 +135,16 @@ public class Champion extends Model {
 		logger.debug("toString() - Returning: {}", str);
 		return str;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		logger.trace("equals() - Entering");
+		boolean returnValue = false;
+		if (o instanceof Item && ((Champion) o).getId() == this.getId()) {
+			return true;
+		}
+		logger.trace("equals() - Returning");
+		logger.debug("equals() - Returning: {}", returnValue);
+		return returnValue;
+	}
 }

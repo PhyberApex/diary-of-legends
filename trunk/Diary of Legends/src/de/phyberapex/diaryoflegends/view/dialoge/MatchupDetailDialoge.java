@@ -16,7 +16,9 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
+import javax.swing.JToggleButton;
 import javax.swing.border.BevelBorder;
 
 import org.apache.logging.log4j.LogManager;
@@ -33,7 +35,6 @@ import de.phyberapex.diaryoflegends.view.View;
 public class MatchupDetailDialoge extends JDialog implements View {
 
 	private static final long serialVersionUID = -7485492927311999351L;
-	private static MatchupDetailDialoge instance;
 	private JPanel matchupContentPanel;
 	private JPanel headPanel;
 	private JLabel headlineLabel;
@@ -42,18 +43,29 @@ public class MatchupDetailDialoge extends JDialog implements View {
 	private JPanel myChampPanel;
 	private JLabel myChampIconLabel;
 	private JLabel myChampNameLabel;
-	private JPanel myChampItemsPanel;
+	private JToggleButton switchMyItemsButton;
+	private JTabbedPane myChampItemsPanel;
+	private JPanel myChampStartingItemsPanel;
 	private JLabel myChampItem1Label;
 	private JLabel myChampItem2Label;
 	private JLabel myChampItem3Label;
 	private JLabel myChampItem4Label;
 	private JLabel myChampItem5Label;
 	private JLabel myChampItem6Label;
+	private JPanel myChampEndingItemsPanel;
+	private JLabel myChampEndingItem1Label;
+	private JLabel myChampEndingItem2Label;
+	private JLabel myChampEndingItem3Label;
+	private JLabel myChampEndingItem4Label;
+	private JLabel myChampEndingItem5Label;
+	private JLabel myChampEndingItem6Label;
 	private JLabel myChampResultLabel;
 	private JLabel versusLabel;
 	private JPanel enemyChampPanel;
 	private JLabel enemyChampIconLabel;
 	private JLabel enemyChampNameLabel;
+	private JToggleButton switchEnemyItemsButton;
+	private JPanel enemyChampStartingItemsPanel;
 	private JPanel enemyChampItemsPanel;
 	private JLabel enemyChampItem1Label;
 	private JLabel enemyChampItem2Label;
@@ -61,6 +73,13 @@ public class MatchupDetailDialoge extends JDialog implements View {
 	private JLabel enemyChampItem4Label;
 	private JLabel enemyChampItem5Label;
 	private JLabel enemyChampItem6Label;
+	private JPanel enemyChampEndingItemsPanel;
+	private JLabel enemyChampEndingItem1Label;
+	private JLabel enemyChampEndingItem2Label;
+	private JLabel enemyChampEndingItem3Label;
+	private JLabel enemyChampEndingItem4Label;
+	private JLabel enemyChampEndingItem5Label;
+	private JLabel enemyChampEndingItem6Label;
 	private JLabel enemyChampResultLabel;
 	private JPanel notesPanel;
 	private JLabel notesLabel;
@@ -75,6 +94,8 @@ public class MatchupDetailDialoge extends JDialog implements View {
 	private JLabel deathsValueLabel;
 	private JLabel assistsLabel;
 	private JLabel assistsValueLabel;
+	private JLabel csLabel;
+	private JLabel csLabelValue;
 	private JPanel gameChampsPanel;
 	private JLabel gameChamp1Label;
 	private JLabel gameChamp2Label;
@@ -97,7 +118,7 @@ public class MatchupDetailDialoge extends JDialog implements View {
 	private static Logger logger = LogManager
 			.getLogger(MatchupDetailDialoge.class.getName());
 
-	private MatchupDetailDialoge() {
+	public MatchupDetailDialoge() {
 		super();
 		createGUI();
 	}
@@ -253,8 +274,14 @@ public class MatchupDetailDialoge extends JDialog implements View {
 			constraints.gridx = 1;
 			constraints.gridy = 1;
 			constraints.insets = new Insets(0, 1, 5, 5);
+			constraints.gridheight = 1;
 			myChampPanel.add(getMyChampIconLabel(), constraints);
 
+//			constraints = new GridBagConstraints();
+//			constraints.gridx = 0;
+//			constraints.gridy = 1;
+//			myChampPanel.add(getSwitchMyItemsButton(), constraints);
+			
 			constraints = new GridBagConstraints();
 			constraints.gridx = 0;
 			constraints.gridy = 1;
@@ -274,7 +301,7 @@ public class MatchupDetailDialoge extends JDialog implements View {
 		logger.debug("getMyChampIconLabel() - Returning: {}", myChampIconLabel);
 		return myChampIconLabel;
 	}
-
+	
 	public JLabel getMyChampNameLabel() {
 		logger.trace("getMyChampNameLabel() - Entering");
 		if (myChampNameLabel == null) {
@@ -286,52 +313,91 @@ public class MatchupDetailDialoge extends JDialog implements View {
 		logger.debug("getMyChampNameLabel() - Returning: {}", myChampNameLabel);
 		return myChampNameLabel;
 	}
+	
+	public JToggleButton getSwitchMyItemsButton() {
+		logger.trace("getSwitchMyItemsButton() - Entering");
+		if (switchMyItemsButton == null) {
+			switchMyItemsButton = new JToggleButton("start");
+			switchMyItemsButton.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if(getSwitchMyItemsButton().isSelected()){
+						getSwitchMyItemsButton().setText("end");
+						getMyChampStartingItemsPanel().setVisible(false);
+						getMyChampEndingItemsPanel().setVisible(true);
+					}else{
+						getSwitchMyItemsButton().setText("start");
+						getMyChampEndingItemsPanel().setVisible(false);
+						getMyChampStartingItemsPanel().setVisible(true);
+						
+					}
+				}
+			});
+		}
+		logger.trace("getSwitchMyItemsButton() - Returning");
+		logger.debug("getSwitchMyItemsButton() - Returning: {}", switchMyItemsButton);
+		return switchMyItemsButton;
+	}
 
-	public JPanel getMyChampItemsPanel() {
+	public JTabbedPane getMyChampItemsPanel() {
 		logger.trace("getMyChampItemsPanel() - Entering");
 		if (myChampItemsPanel == null) {
-			myChampItemsPanel = new JPanel(new GridBagLayout());
-
-			GridBagConstraints constraints = new GridBagConstraints();
-			constraints.gridx = 0;
-			constraints.gridy = 0;
-			constraints.insets = new Insets(2, 5, 1, 1);
-			myChampItemsPanel.add(getMyChampItem1Label(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 1;
-			constraints.gridy = 0;
-			constraints.insets = new Insets(2, 1, 1, 1);
-			myChampItemsPanel.add(getMyChampItem2Label(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 2;
-			constraints.gridy = 0;
-			constraints.insets = new Insets(2, 1, 1, 1);
-			myChampItemsPanel.add(getMyChampItem3Label(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 0;
-			constraints.gridy = 1;
-			constraints.insets = new Insets(1, 5, 5, 1);
-			myChampItemsPanel.add(getMyChampItem4Label(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 1;
-			constraints.gridy = 1;
-			constraints.insets = new Insets(1, 1, 5, 1);
-			myChampItemsPanel.add(getMyChampItem5Label(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 2;
-			constraints.gridy = 1;
-			constraints.insets = new Insets(1, 1, 5, 1);
-			myChampItemsPanel.add(getMyChampItem6Label(), constraints);
+			myChampItemsPanel = new JTabbedPane();
+			myChampItemsPanel.addTab("Start", getMyChampStartingItemsPanel());
+			myChampItemsPanel.addTab("End", getMyChampEndingItemsPanel());
 		}
 		logger.trace("getMyChampItemsPanel() - Returning");
 		logger.debug("getMyChampItemsPanel() - Returning: {}",
 				myChampItemsPanel);
 		return myChampItemsPanel;
+	}
+	
+	public JPanel getMyChampStartingItemsPanel() {
+		logger.trace("getMyChampStartingItemsPanel() - Entering");
+		if (myChampStartingItemsPanel == null) {
+			myChampStartingItemsPanel = new JPanel(new GridBagLayout());
+
+			GridBagConstraints constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 0;
+			constraints.insets = new Insets(2, 5, 1, 1);
+			myChampStartingItemsPanel.add(getMyChampItem1Label(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 1;
+			constraints.gridy = 0;
+			constraints.insets = new Insets(2, 1, 1, 1);
+			myChampStartingItemsPanel.add(getMyChampItem2Label(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 2;
+			constraints.gridy = 0;
+			constraints.insets = new Insets(2, 1, 1, 1);
+			myChampStartingItemsPanel.add(getMyChampItem3Label(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 1;
+			constraints.insets = new Insets(1, 5, 5, 1);
+			myChampStartingItemsPanel.add(getMyChampItem4Label(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 1;
+			constraints.gridy = 1;
+			constraints.insets = new Insets(1, 1, 5, 1);
+			myChampStartingItemsPanel.add(getMyChampItem5Label(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 2;
+			constraints.gridy = 1;
+			constraints.insets = new Insets(1, 1, 5, 1);
+			myChampStartingItemsPanel.add(getMyChampItem6Label(), constraints);
+		}
+		logger.trace("getMyChampStartingItemsPanel() - Returning");
+		logger.debug("getMyChampStartingItemsPanel() - Returning: {}",
+				myChampStartingItemsPanel);
+		return myChampStartingItemsPanel;
 	}
 
 	public JLabel getMyChampItem1Label() {
@@ -400,6 +466,120 @@ public class MatchupDetailDialoge extends JDialog implements View {
 		return myChampItem6Label;
 	}
 
+	public JPanel getMyChampEndingItemsPanel() {
+		logger.trace("getMyChampEndingItemsPanel() - Entering");
+		if (myChampEndingItemsPanel == null) {
+			myChampEndingItemsPanel = new JPanel(new GridBagLayout());
+
+			GridBagConstraints constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 0;
+			constraints.insets = new Insets(2, 5, 1, 1);
+			myChampEndingItemsPanel.add(getMyChampEndingItem1Label(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 1;
+			constraints.gridy = 0;
+			constraints.insets = new Insets(2, 1, 1, 1);
+			myChampEndingItemsPanel.add(getMyChampEndingItem2Label(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 2;
+			constraints.gridy = 0;
+			constraints.insets = new Insets(2, 1, 1, 1);
+			myChampEndingItemsPanel.add(getMyChampEndingItem3Label(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 1;
+			constraints.insets = new Insets(1, 5, 5, 1);
+			myChampEndingItemsPanel.add(getMyChampEndingItem4Label(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 1;
+			constraints.gridy = 1;
+			constraints.insets = new Insets(1, 1, 5, 1);
+			myChampEndingItemsPanel.add(getMyChampEndingItem5Label(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 2;
+			constraints.gridy = 1;
+			constraints.insets = new Insets(1, 1, 5, 1);
+			myChampEndingItemsPanel.add(getMyChampEndingItem6Label(), constraints);
+		}
+		logger.trace("getMyChampEndingItemsPanel() - Returning");
+		logger.debug("getMyChampEndingItemsPanel() - Returning: {}",
+				myChampEndingItemsPanel);
+		return myChampEndingItemsPanel;
+	}
+	
+	public JLabel getMyChampEndingItem1Label() {
+		logger.trace("getMyChampEndingItem1Label() - Entering");
+		if (myChampEndingItem1Label == null) {
+			myChampEndingItem1Label = new JLabel(defaultImg);
+		}
+		logger.trace("getMyChampEndingItem1Label() - Returning");
+		logger.debug("getMyChampEndingItem1Label() - Returning: {}",
+				myChampEndingItem1Label);
+		return myChampEndingItem1Label;
+	}
+
+	public JLabel getMyChampEndingItem2Label() {
+		logger.trace("getMyChampEndingItem2Label() - Entering");
+		if (myChampEndingItem2Label == null) {
+			myChampEndingItem2Label = new JLabel(defaultImg);
+		}
+		logger.trace("getMyChampEndingItem2Label() - Returning");
+		logger.debug("getMyChampEndingItem2Label() - Returning: {}",
+				myChampEndingItem2Label);
+		return myChampEndingItem2Label;
+	}
+
+	public JLabel getMyChampEndingItem3Label() {
+		logger.trace("getMyChampEndingItem3Label() - Entering");
+		if (myChampEndingItem3Label == null) {
+			myChampEndingItem3Label = new JLabel(defaultImg);
+		}
+		logger.trace("getMyChampEndingItem3Label() - Returning");
+		logger.debug("getMyChampEndingItem3Label() - Returning: {}",
+				myChampEndingItem3Label);
+		return myChampEndingItem3Label;
+	}
+
+	public JLabel getMyChampEndingItem4Label() {
+		logger.trace("getMyChampEndingItem4Label() - Entering");
+		if (myChampEndingItem4Label == null) {
+			myChampEndingItem4Label = new JLabel(defaultImg);
+		}
+		logger.trace("getMyChampEndingItem4Label() - Returning");
+		logger.debug("getMyChampEndingItem4Label() - Returning: {}",
+				myChampEndingItem4Label);
+		return myChampEndingItem4Label;
+	}
+
+	public JLabel getMyChampEndingItem5Label() {
+		logger.trace("getMyChampEndingItem5Label() - Entering");
+		if (myChampEndingItem5Label == null) {
+			myChampEndingItem5Label = new JLabel(defaultImg);
+		}
+		logger.trace("getMyChampEndingItem5Label() - Returning");
+		logger.debug("getMyChampEndingItem5Label() - Returning: {}",
+				myChampEndingItem5Label);
+		return myChampEndingItem5Label;
+	}
+
+	public JLabel getMyChampEndingItem6Label() {
+		logger.trace("getMyChampEndingItem6Label() - Entering");
+		if (myChampEndingItem6Label == null) {
+			myChampEndingItem6Label = new JLabel(defaultImg);
+		}
+		logger.trace("getMyChampEndingItem6Label() - Returning");
+		logger.debug("getMyChampEndingItem6Label() - Returning: {}",
+				myChampEndingItem6Label);
+		return myChampEndingItem6Label;
+	}
+
+	
 	public JLabel getMyChampResultLabel() {
 		logger.trace("getMyChampResultLabel() - Entering");
 		if (myChampResultLabel == null) {
@@ -718,6 +898,16 @@ public class MatchupDetailDialoge extends JDialog implements View {
 			constraints.gridx = 1;
 			constraints.gridy = 3;
 			gamePanel.add(getAssistsValueLabel(), constraints);
+			
+			constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 4;
+			gamePanel.add(getCsLabel(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 1;
+			constraints.gridy = 4;
+			gamePanel.add(getCsValueLabel(), constraints);
 		}
 		logger.trace("getGamePanel() - Returning");
 		logger.debug("getGamePanel() - Returning: {}", gamePanel);
@@ -793,6 +983,28 @@ public class MatchupDetailDialoge extends JDialog implements View {
 		logger.debug("getAssistsValueLabel() - Returning: {}",
 				assistsValueLabel);
 		return assistsValueLabel;
+	}
+	
+	public JLabel getCsLabel() {
+		logger.trace("getCsLabel() - Entering");
+		if (csLabel == null) {
+			csLabel = new JLabel("CS:");
+			csLabel.setToolTipText("Amount of minions slain");
+		}
+		logger.trace("getCsLabel() - Returning");
+		logger.debug("getCsLabel() - Returning: {}", csLabel);
+		return csLabel;
+	}
+
+	public JLabel getCsValueLabel() {
+		logger.trace("getCsValueLabel() - Entering");
+		if (csLabelValue == null) {
+			csLabelValue = new JLabel();
+		}
+		logger.trace("getCsValueLabel() - Returning");
+		logger.debug("getCsValueLabel() - Returning: {}",
+				csLabelValue);
+		return csLabelValue;
 	}
 
 	public JPanel getGameChampsPanel() {
@@ -1131,6 +1343,7 @@ public class MatchupDetailDialoge extends JDialog implements View {
 		this.getKillsValueLabel().setText(String.valueOf(g.getOwnKills()));
 		this.getDeathsValueLabel().setText(String.valueOf(g.getOwnDeaths()));
 		this.getAssistsValueLabel().setText(String.valueOf(g.getOwnAssists()));
+		this.getCsValueLabel().setText(String.valueOf(g.getOwnCS()));
 
 		x = 0;
 		for (Champion champ : g.getMyTeam()) {
@@ -1188,18 +1401,6 @@ public class MatchupDetailDialoge extends JDialog implements View {
 		this.setResizable(false);
 		this.setModal(true);
 		setVisible(true);
-	}
-
-	public static synchronized MatchupDetailDialoge getInstance() {
-		logger.trace("getInstance() - Entering");
-		logger.debug("getInstance() - Instance is {}", instance);
-		if (instance == null) {
-			logger.debug("Creating a new instance of MatchupDetailView");
-			instance = new MatchupDetailDialoge();
-		}
-		logger.trace("getInstance() - Returning");
-		logger.debug("getInstance() - Returning {}", instance);
-		return instance;
 	}
 
 	@Override

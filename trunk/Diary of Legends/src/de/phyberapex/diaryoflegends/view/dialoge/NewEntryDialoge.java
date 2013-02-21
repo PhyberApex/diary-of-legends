@@ -39,7 +39,9 @@ import de.phyberapex.diaryoflegends.model.MatchupItem;
 import de.phyberapex.diaryoflegends.model.MatchupResult;
 import de.phyberapex.diaryoflegends.model.Role;
 import de.phyberapex.diaryoflegends.model.util.ChampionUtil;
+import de.phyberapex.diaryoflegends.model.util.GameUtil;
 import de.phyberapex.diaryoflegends.model.util.ItemUtil;
+import de.phyberapex.diaryoflegends.model.util.MatchupUtil;
 import de.phyberapex.diaryoflegends.view.MainView;
 import de.phyberapex.diaryoflegends.view.renderer.ChampionComboBoxRenderer;
 import de.phyberapex.diaryoflegends.view.renderer.ItemComboBoxRenderer;
@@ -2422,37 +2424,43 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 						ArrayList<MatchupItem> mis = new ArrayList<MatchupItem>();
 						i = getMyItem1Box().getItemAt(
 								getMyItem1Box().getSelectedIndex());
-						if (!i.getName().equals("no item")) {
+						if (!i.getName().equals("no item")
+								&& (int) getMyItem1AmountSpinner().getValue() != 0) {
 							mis.add(new MatchupItem(i,
 									(int) getMyItem1AmountSpinner().getValue()));
 						}
 						i = getMyItem2Box().getItemAt(
 								getMyItem2Box().getSelectedIndex());
-						if (!i.getName().equals("no item")) {
+						if (!i.getName().equals("no item")
+								&& (int) getMyItem2AmountSpinner().getValue() != 0) {
 							mis.add(new MatchupItem(i,
 									(int) getMyItem2AmountSpinner().getValue()));
 						}
 						i = getMyItem3Box().getItemAt(
 								getMyItem3Box().getSelectedIndex());
-						if (!i.getName().equals("no item")) {
+						if (!i.getName().equals("no item")
+								&& (int) getMyItem3AmountSpinner().getValue() != 0) {
 							mis.add(new MatchupItem(i,
 									(int) getMyItem3AmountSpinner().getValue()));
 						}
 						i = getMyItem4Box().getItemAt(
 								getMyItem4Box().getSelectedIndex());
-						if (!i.getName().equals("no item")) {
+						if (!i.getName().equals("no item")
+								&& (int) getMyItem4AmountSpinner().getValue() != 0) {
 							mis.add(new MatchupItem(i,
 									(int) getMyItem4AmountSpinner().getValue()));
 						}
 						i = getMyItem5Box().getItemAt(
 								getMyItem5Box().getSelectedIndex());
-						if (!i.getName().equals("no item")) {
+						if (!i.getName().equals("no item")
+								&& (int) getMyItem5AmountSpinner().getValue() != 0) {
 							mis.add(new MatchupItem(i,
 									(int) getMyItem5AmountSpinner().getValue()));
 						}
 						i = getMyItem6Box().getItemAt(
 								getMyItem6Box().getSelectedIndex());
-						if (!i.getName().equals("no item")) {
+						if (!i.getName().equals("no item")
+								&& (int) getMyItem6AmountSpinner().getValue() != 0) {
 							mis.add(new MatchupItem(i,
 									(int) getMyItem6AmountSpinner().getValue()));
 						}
@@ -2461,42 +2469,54 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 						mis = new ArrayList<MatchupItem>();
 						i = getEnemyItem1Box().getItemAt(
 								getEnemyItem1Box().getSelectedIndex());
-						if (!i.getName().equals("no item")) {
+						if (!i.getName().equals("no item")
+								&& (int) getEnemyItem1AmountSpinner()
+										.getValue() != 0) {
 							mis.add(new MatchupItem(i,
 									(int) getEnemyItem1AmountSpinner()
 											.getValue()));
 						}
 						i = getEnemyItem2Box().getItemAt(
 								getEnemyItem2Box().getSelectedIndex());
-						if (!i.getName().equals("no item")) {
+						if (!i.getName().equals("no item")
+								&& (int) getEnemyItem2AmountSpinner()
+										.getValue() != 0) {
 							mis.add(new MatchupItem(i,
 									(int) getEnemyItem2AmountSpinner()
 											.getValue()));
 						}
 						i = getEnemyItem3Box().getItemAt(
 								getEnemyItem3Box().getSelectedIndex());
-						if (!i.getName().equals("no item")) {
+						if (!i.getName().equals("no item")
+								&& (int) getEnemyItem3AmountSpinner()
+										.getValue() != 0) {
 							mis.add(new MatchupItem(i,
 									(int) getEnemyItem3AmountSpinner()
 											.getValue()));
 						}
 						i = getEnemyItem4Box().getItemAt(
 								getEnemyItem4Box().getSelectedIndex());
-						if (!i.getName().equals("no item")) {
+						if (!i.getName().equals("no item")
+								&& (int) getEnemyItem4AmountSpinner()
+										.getValue() != 0) {
 							mis.add(new MatchupItem(i,
 									(int) getEnemyItem4AmountSpinner()
 											.getValue()));
 						}
 						i = getEnemyItem5Box().getItemAt(
 								getEnemyItem5Box().getSelectedIndex());
-						if (!i.getName().equals("no item")) {
+						if (!i.getName().equals("no item")
+								&& (int) getEnemyItem5AmountSpinner()
+										.getValue() != 0) {
 							mis.add(new MatchupItem(i,
 									(int) getEnemyItem5AmountSpinner()
 											.getValue()));
 						}
 						i = getEnemyItem6Box().getItemAt(
 								getEnemyItem6Box().getSelectedIndex());
-						if (!i.getName().equals("no item")) {
+						if (!i.getName().equals("no item")
+								&& (int) getEnemyItem6AmountSpinner()
+										.getValue() != 0) {
 							mis.add(new MatchupItem(i,
 									(int) getEnemyItem6AmountSpinner()
 											.getValue()));
@@ -2508,6 +2528,8 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 						} else {
 							MainController.getInstance().saveNewGame(game);
 						}
+						MatchupUtil.saveMatchup(game.getMatchup());
+						GameUtil.saveGame(game);
 						dispose();
 					}
 				}
@@ -2551,7 +2573,7 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		allItems = new ArrayList<Item>();
 		Item i = new Item(0, "no item", 0, null);
 		allItems.add(i);
-		allItems.addAll(ItemUtil.getAllItems());
+		allItems.addAll(ItemUtil.getAllStartingItems());
 		this.setTitle("New Game");
 		this.setModal(true);
 		this.setResizable(false);
