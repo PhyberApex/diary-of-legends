@@ -15,7 +15,7 @@ import org.apache.logging.log4j.Logger;
 import de.phyberapex.diaryoflegends.ExitAction;
 import de.phyberapex.diaryoflegends.backup.ExportDolexAction;
 import de.phyberapex.diaryoflegends.backup.ImportDolexAction;
-import de.phyberapex.diaryoflegends.extra.ImageIconFactory;
+import de.phyberapex.diaryoflegends.backup.ImportRoflAction;
 import de.phyberapex.diaryoflegends.extra.LoadingSplash;
 import de.phyberapex.diaryoflegends.view.dialoge.NewEntryDialoge;
 
@@ -70,8 +70,7 @@ public class MenuBarView extends JMenuBar implements View {
 
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
-					LoadingSplash spl = new LoadingSplash(ImageIconFactory
-							.getRandomLoadingIcon().getImage());
+					LoadingSplash spl = new LoadingSplash();
 					spl.setVisible(true);
 					SwingUtilities.invokeLater(new NewEntryDialoge());
 					spl.close();
@@ -116,7 +115,7 @@ public class MenuBarView extends JMenuBar implements View {
 					});
 					int ok = fc.showOpenDialog(MainView.getInstance());
 					if (ok == JFileChooser.APPROVE_OPTION) {
-						LoadingSplash spl = new LoadingSplash(null);
+						LoadingSplash spl = new LoadingSplash();
 						spl.setVisible(true);
 						ImportDolexAction imp = new ImportDolexAction(fc
 								.getSelectedFile());
@@ -130,7 +129,7 @@ public class MenuBarView extends JMenuBar implements View {
 		logger.debug("getImportDolexItem() - Returning {}", importDolexItem);
 		return importDolexItem;
 	}
-	
+
 	private JMenuItem getImportRoflItem() {
 		logger.trace("getImportRoflItem() - Entering");
 		if (this.importRoflItem == null) {
@@ -144,7 +143,7 @@ public class MenuBarView extends JMenuBar implements View {
 
 						@Override
 						public String getDescription() {
-							return "DOLEX files";
+							return "rofl files";
 						}
 
 						@Override
@@ -155,7 +154,7 @@ public class MenuBarView extends JMenuBar implements View {
 							if (i > 0) {
 								extension = arg0.getName().substring(i + 1);
 							}
-							if (extension.equals("dolex") || arg0.isDirectory()) {
+							if (extension.equals("rofl") || arg0.isDirectory()) {
 								return true;
 							} else {
 								return false;
@@ -164,9 +163,9 @@ public class MenuBarView extends JMenuBar implements View {
 					});
 					int ok = fc.showOpenDialog(MainView.getInstance());
 					if (ok == JFileChooser.APPROVE_OPTION) {
-						LoadingSplash spl = new LoadingSplash(null);
+						LoadingSplash spl = new LoadingSplash();
 						spl.setVisible(true);
-						ImportDolexAction imp = new ImportDolexAction(fc
+						ImportRoflAction imp = new ImportRoflAction(fc
 								.getSelectedFile());
 						SwingUtilities.invokeLater(imp);
 						spl.close();
@@ -187,8 +186,7 @@ public class MenuBarView extends JMenuBar implements View {
 
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
-					LoadingSplash spl = new LoadingSplash(ImageIconFactory
-							.getRandomLoadingIcon().getImage());
+					LoadingSplash spl = new LoadingSplash();
 					spl.setVisible(true);
 					SwingUtilities.invokeLater(new ExportDolexAction());
 					spl.close();

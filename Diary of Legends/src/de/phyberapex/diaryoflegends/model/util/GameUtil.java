@@ -58,9 +58,9 @@ public class GameUtil {
 	 */
 	public static void saveGame(Game game) {
 		logger.trace("saveGame() - Entering");
-		logger.debug("Parameter {}", game);
+		logger.debug("saveGame() - Parameter {}", game);
 		dbHandle.store(game);
-		logger.trace("getAllGames() - Leaving");
+		logger.trace("saveGame() - Leaving");
 	}
 
 	/**

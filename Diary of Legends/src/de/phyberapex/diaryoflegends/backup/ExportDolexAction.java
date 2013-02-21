@@ -84,6 +84,12 @@ public class ExportDolexAction implements Runnable {
 					jw.endObject();
 				}
 				jw.endArray();
+				jw.key("mySpell1");
+				jw.value(game.getMatchup().getMySpell1().getId());
+				jw.key("mySpell2");
+				jw.value(game.getMatchup().getMySpell2().getId());
+				jw.key("enemyChampion");
+				jw.value(game.getMatchup().getEnemyChamp().getId());
 				jw.key("enemyStartItems");
 				jw.array();
 				for (MatchupItem mi : game.getMatchup().getEnemyStartItems()) {
@@ -97,7 +103,7 @@ public class ExportDolexAction implements Runnable {
 				jw.endArray();
 				jw.key("enemyEndItems");
 				jw.array();
-				for (MatchupItem mi : game.getMatchup().getEnemyStartItems()) {
+				for (MatchupItem mi : game.getMatchup().getEnemyEndItems()) {
 					jw.object();
 					jw.key("amount");
 					jw.value(mi.getAmount());
@@ -106,8 +112,12 @@ public class ExportDolexAction implements Runnable {
 					jw.endObject();
 				}
 				jw.endArray();
+				jw.key("enemySpell1");
+				jw.value(game.getMatchup().getMySpell1().getId());
+				jw.key("enemySpell2");
+				jw.value(game.getMatchup().getMySpell2().getId());
 				jw.key("matchupResult");
-				jw.value(game.getMatchup().getResult());
+				jw.value(game.getMatchup().getResult().name());
 				jw.key("lane");
 				jw.value(game.getMatchup().getLane().name());
 				jw.key("difficulty");
@@ -126,7 +136,7 @@ public class ExportDolexAction implements Runnable {
 				jw.key("ownCS");
 				jw.value(game.getOwnCS());
 				jw.key("gameResult");
-				jw.value(game.getResult());
+				jw.value(game.getResult().name());
 				jw.key("length");
 				jw.value(game.getLenght());
 				jw.endObject();
@@ -136,12 +146,12 @@ public class ExportDolexAction implements Runnable {
 			jw.endObject();
 			fw.close();
 			logger.debug("All games exported.");
+			MainView.getInstance().setStatusText("Export complete");
 		} catch (IOException e) {
 			logger.error("Export failed. Reason" + e.getMessage());
 			MainView.getInstance().setStatusText(
 					"Export failed. Please read the logfile");
 		}
-		MainView.getInstance().setStatusText("Export complete");
 		logger.trace("doExport() - Leaving");
 	}
 

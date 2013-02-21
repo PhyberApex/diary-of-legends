@@ -8,9 +8,13 @@ public class Matchup extends Model {
 
 	private Game game;
 	private Champion myChamp;
+	private SummonerSpell mySpell1;
+	private SummonerSpell mySpell2;
 	private List<MatchupItem> myStartItems;
 	private List<MatchupItem> myEndItems;
 	private Champion enemyChamp;
+	private SummonerSpell enemySpell1;
+	private SummonerSpell enemySpell2;
 	private List<MatchupItem> enemyStartItems;
 	private List<MatchupItem> enemyEndItems;
 	private MatchupResult result;
@@ -23,14 +27,20 @@ public class Matchup extends Model {
 	public Matchup() {
 	}
 
-	public Matchup(Game game, Champion myChamp, Champion enemyChamp,
+	public Matchup(Game game, Champion myChamp, SummonerSpell mySpell1,
+			SummonerSpell mySpell2, Champion enemyChamp,
+			SummonerSpell enemySpell1, SummonerSpell enemySpell2,
 			List<MatchupItem> myStartItems, List<MatchupItem> myEndItems,
 			List<MatchupItem> enemyStartItems, List<MatchupItem> enemyEndItems,
 			MatchupResult result, Role role, MatchupDifficulty difficulty,
 			String notes) {
 		this.game = game;
 		this.myChamp = myChamp;
+		this.mySpell1 = mySpell1;
+		this.mySpell2 = mySpell2;
 		this.enemyChamp = enemyChamp;
+		this.enemySpell1 = enemySpell1;
+		this.enemySpell2 = enemySpell2;
 		this.myStartItems = myStartItems;
 		this.myEndItems = myEndItems;
 		this.enemyStartItems = enemyStartItems;
@@ -70,6 +80,34 @@ public class Matchup extends Model {
 		logger.trace("setMyChamp() - Leaving");
 	}
 
+	public SummonerSpell getMySpell1() {
+		logger.trace("getMySpell1() - Entering");
+		logger.trace("getMySpell1() - Returning");
+		logger.debug("getMySpell1() - Returning: {}", mySpell1);
+		return mySpell1;
+	}
+
+	public void setMySpell1(SummonerSpell spell) {
+		logger.trace("setMySpell1() - Entering");
+		logger.debug("setMySpell1() - Parameter: {}", spell);
+		this.mySpell1 = spell;
+		logger.trace("setMySpell1() - Leaving");
+	}
+
+	public SummonerSpell getMySpell2() {
+		logger.trace("getMySpell2() - Entering");
+		logger.trace("getMySpell2() - Returning");
+		logger.debug("getMySpell2() - Returning: {}", mySpell2);
+		return mySpell2;
+	}
+
+	public void setMySpell2(SummonerSpell spell) {
+		logger.trace("setMySpell2() - Entering");
+		logger.debug("setMySpell2() - Parameter: {}", spell);
+		this.mySpell2 = spell;
+		logger.trace("setMySpell2() - Leaving");
+	}
+
 	public List<MatchupItem> getMyStartItems() {
 		logger.trace("getMyStartItems() - Entering");
 		logger.trace("getMyStartItems() - Returning");
@@ -83,7 +121,7 @@ public class Matchup extends Model {
 		this.myStartItems = myStartItems;
 		logger.trace("setMyStartItems() - Leaving");
 	}
-	
+
 	public List<MatchupItem> getMyEndItems() {
 		logger.trace("getMyEndItems() - Entering");
 		logger.trace("getMyEndItems() - Returning");
@@ -112,6 +150,34 @@ public class Matchup extends Model {
 		logger.trace("setEnemyChamp() - Leaving");
 	}
 
+	public SummonerSpell getEnemySpell1() {
+		logger.trace("getEnemySpell1() - Entering");
+		logger.trace("getEnemySpell1() - Returning");
+		logger.debug("getEnemySpell1() - Returning: {}", enemySpell1);
+		return enemySpell1;
+	}
+
+	public void setEnemySpell1(SummonerSpell spell) {
+		logger.trace("setEnemySpell1() - Entering");
+		logger.debug("setEnemySpell1() - Parameter: {}", spell);
+		this.enemySpell1 = spell;
+		logger.trace("setEnemySpell1() - Leaving");
+	}
+
+	public SummonerSpell getEnemySpell2() {
+		logger.trace("getEnemySpell2() - Entering");
+		logger.trace("getEnemySpell2() - Returning");
+		logger.debug("getEnemySpell2() - Returning: {}", enemySpell2);
+		return enemySpell2;
+	}
+
+	public void setEnemySpell2(SummonerSpell spell) {
+		logger.trace("setEnemySpell2() - Entering");
+		logger.debug("setEnemySpell2() - Parameter: {}", spell);
+		this.enemySpell2 = spell;
+		logger.trace("setEnemySpell2() - Leaving");
+	}
+
 	public List<MatchupItem> getEnemyStartItems() {
 		logger.trace("getEnemyStartItems() - Entering");
 		logger.trace("getEnemyStartItems() - Returning");
@@ -125,7 +191,7 @@ public class Matchup extends Model {
 		this.enemyStartItems = enemyStartItems;
 		logger.trace("setEnemyStartItems() - Leaving");
 	}
-	
+
 	public List<MatchupItem> getEnemyEndItems() {
 		logger.trace("getEnemyEndItems() - Entering");
 		logger.trace("getEnemyEndItems() - Returning");

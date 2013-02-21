@@ -16,6 +16,7 @@ import de.phyberapex.diaryoflegends.exception.InitializeException;
 import de.phyberapex.diaryoflegends.model.Champion;
 import de.phyberapex.diaryoflegends.model.Item;
 import de.phyberapex.diaryoflegends.model.Summoner;
+import de.phyberapex.diaryoflegends.model.SummonerSpell;
 
 /**
  * Class to initialize the application on the start
@@ -158,6 +159,9 @@ public class Initializer {
 		case "ITEM":
 			editItem(attributes);
 			break;
+		case "SPELL":
+			editSpell(attributes);
+			break;
 		}
 	}
 
@@ -180,9 +184,10 @@ public class Initializer {
 					}
 				});
 		Item item = osItem.next();
-		item.setPrice(Integer.valueOf(attributes[1]));
+		item.setName(attributes[1]);
+		item.setPrice(Integer.valueOf(attributes[2]));
 		item.setIcon(new File(updateFolder.getAbsolutePath() + "\\"
-				+ attributes[2]));
+				+ attributes[3]));
 		Config.getInstance().getDBHandle().store(item);
 	}
 
@@ -205,9 +210,35 @@ public class Initializer {
 					}
 				});
 		Champion champ = osChamp.next();
+		champ.setName(attributes[1]);
 		champ.setIcon(new File(updateFolder.getAbsolutePath() + "\\"
-				+ attributes[1]));
+				+ attributes[2]));
 		Config.getInstance().getDBHandle().store(champ);
+	}
+
+	/**
+	 * @param attributes
+	 */
+	private void editSpell(final String[] attributes) {
+		ObjectSet<SummonerSpell> osSpell = Config.getInstance().getDBHandle()
+				.query(new Predicate<SummonerSpell>() {
+
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public boolean match(SummonerSpell arg0) {
+						if (arg0.getId() == Integer.parseInt(attributes[0])) {
+							return true;
+						} else {
+							return false;
+						}
+					}
+				});
+		SummonerSpell spell = osSpell.next();
+		spell.setName(attributes[1]);
+		spell.setIcon(new File(updateFolder.getAbsolutePath() + "\\"
+				+ attributes[2]));
+		Config.getInstance().getDBHandle().store(spell);
 	}
 
 	/**
@@ -228,6 +259,13 @@ public class Initializer {
 							updateFolder.getAbsolutePath() + "\\"
 									+ attributes[3]));
 			Config.getInstance().getDBHandle().store(item);
+			break;
+		case "SPELL":
+			SummonerSpell spell = new SummonerSpell(
+					Integer.valueOf(attributes[0]), attributes[1], new File(
+							updateFolder.getAbsolutePath() + "\\"
+									+ attributes[2]));
+			Config.getInstance().getDBHandle().store(spell);
 			break;
 		}
 	}

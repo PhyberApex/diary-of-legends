@@ -123,6 +123,7 @@ public class ChampionUtil {
 	public static Champion getChampionById(final int id) {
 		logger.trace("getChampionById() - Entering");
 		logger.debug("getChampionById() - Parameter: {}", id);
+		Champion returnValue = null;
 		ObjectSet<Champion> set = dbHandle.query(new Predicate<Champion>() {
 
 			private static final long serialVersionUID = -6535736734146443615L;
@@ -136,7 +137,9 @@ public class ChampionUtil {
 				}
 			}
 		});
-		Champion returnValue = set.next();
+		if (set.hasNext()) {
+			returnValue = set.next();
+		}
 		logger.trace("getChampionById() - Returning");
 		logger.debug("getChampionById() - Returning {}", returnValue);
 		return returnValue;

@@ -14,11 +14,9 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import de.phyberapex.diaryoflegends.controller.MatchupController;
-import de.phyberapex.diaryoflegends.extra.ImageIconFactory;
 import de.phyberapex.diaryoflegends.extra.LoadingSplash;
 import de.phyberapex.diaryoflegends.model.Matchup;
 import de.phyberapex.diaryoflegends.view.dialoge.MatchupDetailDialoge;
@@ -184,8 +182,7 @@ public class MatchupView extends JPanel implements View {
 						edit.addActionListener(new ActionListener() {
 							@Override
 							public void actionPerformed(ActionEvent e) {
-								LoadingSplash spl = new LoadingSplash(ImageIconFactory
-										.getRandomLoadingIcon().getImage());
+								LoadingSplash spl = new LoadingSplash();
 								spl.setVisible(true);
 								NewEntryDialoge nd = new NewEntryDialoge();
 								nd.setToEdit(((Matchup) matchupTable

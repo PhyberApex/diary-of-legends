@@ -3,7 +3,7 @@ package de.phyberapex.diaryoflegends.extra;
 import java.awt.*;
 import javax.swing.*;
 
-public class LoadingSplash extends JWindow {
+public class LoadingSplash extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	private JProgressBar progress;
@@ -39,13 +39,9 @@ public class LoadingSplash extends JWindow {
 	/**
 	 * SplashScreen erzeugen
 	 */
-	public LoadingSplash(Image coolPicture) {
-		if (coolPicture != null) {
-			setSize(coolPicture.getWidth(this),
-					coolPicture.getHeight(null) + 25);
-		} else {
-			setSize(200, 200);
-		}
+	public LoadingSplash() {
+		Image coolPicture = ImageIconFactory.getRandomLoadingIcon().getImage();
+		setSize(coolPicture.getWidth(this), coolPicture.getHeight(null));
 		setLocationRelativeTo(null);
 		MyPanel myPanel = new MyPanel(getSize());
 
@@ -59,7 +55,7 @@ public class LoadingSplash extends JWindow {
 		height = height + 5;// / 2.0;
 		preferredSize.setSize(width, height);
 		progress.setString("Loading");
-		myPanel.add(progress, BorderLayout.SOUTH);
+		//myPanel.add(progress, BorderLayout.SOUTH);
 		progress.setStringPainted(true); // progressbar mit Beschriftung
 		progress.setPreferredSize(preferredSize); // schmalere progressbar
 		progress.setBorderPainted(false); // progressbar ohne Rand
@@ -91,7 +87,8 @@ public class LoadingSplash extends JWindow {
 	 */
 	public void setVisible(boolean show) {
 		if (show) {
-			setAlwaysOnTop(show);
+			setUndecorated(show);
+			setModal(show);
 			pack();
 			setLocationRelativeTo(null);
 		}

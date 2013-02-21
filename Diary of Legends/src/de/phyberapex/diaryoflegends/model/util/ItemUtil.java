@@ -119,6 +119,7 @@ public class ItemUtil {
 	public static Item getItemById(final int id) {
 		logger.trace("getItemById() - Entering");
 		logger.debug("getItemById() - Parameter: {}", id);
+		Item returnValue = null;
 		ObjectSet<Item> set = dbHandle.query(new Predicate<Item>() {
 
 			private static final long serialVersionUID = -6535736734146443615L;
@@ -132,7 +133,9 @@ public class ItemUtil {
 				}
 			}
 		});
-		Item returnValue = set.next();
+		if (set.hasNext()) {
+			returnValue = set.next();
+		}
 		logger.trace("getItemById() - Returning");
 		logger.debug("getItemById() - Returning {}", returnValue);
 		return returnValue;

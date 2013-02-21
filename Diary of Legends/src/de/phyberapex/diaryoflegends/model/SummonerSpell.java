@@ -9,30 +9,30 @@ import org.apache.logging.log4j.Logger;
 
 import de.phyberapex.diaryoflegends.extra.ConvertImage;
 
-public class Champion extends Model {
+public class SummonerSpell extends Model {
 
 	private int id;
 	private String name;
 	private byte[] icon;
 	transient private static Logger logger = LogManager
-			.getLogger(Champion.class.getName());
+			.getLogger(SummonerSpell.class.getName());
 
-	public Champion(int id, String name, File icon) {
-		logger.trace("Champion() - Entering");
-		logger.debug("Champion() - Parameter: {}, {}, {}", id, name, icon);
+	public SummonerSpell(int id, String name, File icon) {
+		logger.trace("SummonerSpell() - Entering");
+		logger.debug("SummonerSpell() - Parameter: {}, {}, {}", id, name, icon);
 		this.id = id;
 		this.setName(name);
 		if (icon != null) {
 			this.setIcon(icon);
 		}
-		logger.trace("Champion() - Leaving");
+		logger.trace("SummonerSpell() - Leaving");
 	}
 
-	public Champion() {
+	public SummonerSpell() {
 	}
 
 	/**
-	 * Returns the id of this champion
+	 * Returns the id of this spell
 	 * 
 	 * @return {@link int}
 	 */
@@ -44,10 +44,10 @@ public class Champion extends Model {
 	}
 
 	/**
-	 * Sets the id of this champion
+	 * Sets the id of this spell
 	 * 
 	 * @param name
-	 *            {@link int} The name to change to
+	 *            {@link int} The spell to change to
 	 */
 	public void setId(int id) {
 		logger.trace("setId() - Entering");
@@ -57,7 +57,7 @@ public class Champion extends Model {
 	}
 
 	/**
-	 * Returns the name of this champion
+	 * Returns the name of this spell
 	 * 
 	 * @return {@link String}
 	 */
@@ -69,7 +69,7 @@ public class Champion extends Model {
 	}
 
 	/**
-	 * Sets the name of this champion
+	 * Sets the name of this spell
 	 * 
 	 * @param name
 	 *            {@link String} The name to change to
@@ -82,9 +82,9 @@ public class Champion extends Model {
 	}
 
 	/**
-	 * Returns the {@link ImageIcon} for this champion
+	 * Returns the {@link ImageIcon} for this spell
 	 * 
-	 * @return {@link ImageIcon} The image for this champion
+	 * @return {@link ImageIcon} The image for this spell
 	 */
 	public ImageIcon getIcon() {
 		logger.trace("getName() - Entering");
@@ -123,7 +123,7 @@ public class Champion extends Model {
 	}
 
 	/**
-	 * Returns a string representation of this Champion
+	 * Returns a string representation of this spell
 	 * 
 	 * @return {@link String} The string representation
 	 */
@@ -140,7 +140,8 @@ public class Champion extends Model {
 	public boolean equals(Object o) {
 		logger.trace("equals() - Entering");
 		boolean returnValue = false;
-		if (o instanceof Champion && ((Champion) o).getId() == this.getId()) {
+		if (o instanceof SummonerSpell
+				&& ((SummonerSpell) o).getId() == this.getId()) {
 			return true;
 		}
 		logger.trace("equals() - Returning");

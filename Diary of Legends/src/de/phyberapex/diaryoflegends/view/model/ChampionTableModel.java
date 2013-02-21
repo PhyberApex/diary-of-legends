@@ -150,9 +150,6 @@ public class ChampionTableModel extends AbstractTableModel {
 	@Override
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
 		boolean editable = false;
-		if (columnIndex == 1) {
-			editable = true;
-		}
 		return editable;
 	}
 

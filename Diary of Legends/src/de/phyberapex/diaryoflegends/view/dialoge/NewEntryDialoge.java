@@ -38,10 +38,12 @@ import de.phyberapex.diaryoflegends.model.MatchupDifficulty;
 import de.phyberapex.diaryoflegends.model.MatchupItem;
 import de.phyberapex.diaryoflegends.model.MatchupResult;
 import de.phyberapex.diaryoflegends.model.Role;
+import de.phyberapex.diaryoflegends.model.SummonerSpell;
 import de.phyberapex.diaryoflegends.model.util.ChampionUtil;
 import de.phyberapex.diaryoflegends.model.util.GameUtil;
 import de.phyberapex.diaryoflegends.model.util.ItemUtil;
 import de.phyberapex.diaryoflegends.model.util.MatchupUtil;
+import de.phyberapex.diaryoflegends.model.util.SummonerSpellUtil;
 import de.phyberapex.diaryoflegends.view.MainView;
 import de.phyberapex.diaryoflegends.view.renderer.ChampionComboBoxRenderer;
 import de.phyberapex.diaryoflegends.view.renderer.ItemComboBoxRenderer;
@@ -50,7 +52,9 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 
 	private static final long serialVersionUID = 2162451784302955479L;
 	private List<Champion> allChampions;
+	private List<Item> allStartingItems;
 	private List<Item> allItems;
+	private List<SummonerSpell> allSpells;
 	private List<Champion> myTeamChampions;
 	private List<Champion> enemyTeamChampions;
 	private JTabbedPane newEntryContentPane;
@@ -59,6 +63,12 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 	private JPanel datePanel;
 	private JLabel dateLabel;
 	private JDateChooser dateChooser;
+	private JPanel lengthPanel;
+	private JLabel lengthLabel;
+	private JLabel lengthMinutesLabel;
+	private JSpinner lengthMinutesSpinner;
+	private JLabel lengthSecondsLabel;
+	private JSpinner lengthSecondsSpinner;
 	private JPanel teamsPanel;
 	private JPanel myTeamPanel;
 	private JLabel myTeamLabel;
@@ -97,6 +107,8 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 	private JSpinner ownDeathsTextField;
 	private JLabel ownAssistsLabel;
 	private JSpinner ownAssistsTextField;
+	private JLabel ownCSLabel;
+	private JSpinner ownCSTextField;
 	private JPanel gameNotesPanel;
 	private JLabel gameNotesLabel;
 	private JScrollPane gameNotesScrollPane;
@@ -108,6 +120,8 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 	private JPanel myChampionPanel;
 	private JLabel myChampionLabel;
 	private JComboBox<Champion> myChampionBox;
+	private JTabbedPane myItemsPane;
+	private JPanel myStartItemsPanel;
 	private JLabel myItem1Label;
 	private JSpinner myItem1AmountSpinner;
 	private JLabel myItem1xLabel;
@@ -132,6 +146,36 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 	private JSpinner myItem6AmountSpinner;
 	private JLabel myItem6xLabel;
 	private JComboBox<Item> myItem6Box;
+	private JPanel myEndItemsPanel;
+	private JLabel myEndItem1Label;
+	private JSpinner myEndItem1AmountSpinner;
+	private JLabel myEndItem1xLabel;
+	private JComboBox<Item> myEndItem1Box;
+	private JLabel myEndItem2Label;
+	private JSpinner myEndItem2AmountSpinner;
+	private JLabel myEndItem2xLabel;
+	private JComboBox<Item> myEndItem2Box;
+	private JLabel myEndItem3Label;
+	private JSpinner myEndItem3AmountSpinner;
+	private JLabel myEndItem3xLabel;
+	private JComboBox<Item> myEndItem3Box;
+	private JLabel myEndItem4Label;
+	private JSpinner myEndItem4AmountSpinner;
+	private JLabel myEndItem4xLabel;
+	private JComboBox<Item> myEndItem4Box;
+	private JLabel myEndItem5Label;
+	private JSpinner myEndItem5AmountSpinner;
+	private JLabel myEndItem5xLabel;
+	private JComboBox<Item> myEndItem5Box;
+	private JLabel myEndItem6Label;
+	private JSpinner myEndItem6AmountSpinner;
+	private JLabel myEndItem6xLabel;
+	private JComboBox<Item> myEndItem6Box;
+	private JPanel mySpellsPanel;
+	private JLabel mySpell1Label;
+	private JComboBox<SummonerSpell> mySpell1Box;
+	private JLabel mySpell2Label;
+	private JComboBox<SummonerSpell> mySpell2Box;
 	private JPanel matchupResultPanel;
 	private JLabel matchupResultLabel;
 	private ButtonGroup matchupResultGroup = new ButtonGroup();
@@ -144,6 +188,8 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 	private JPanel enemyChampionPanel;
 	private JLabel enemyChampionLabel;
 	private JComboBox<Champion> enemyChampionBox;
+	private JTabbedPane enemyItemsPane;
+	private JPanel enemyStartItemsPanel;
 	private JLabel enemyItem1Label;
 	private JSpinner enemyItem1AmountSpinner;
 	private JLabel enemyItem1xLabel;
@@ -168,6 +214,36 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 	private JSpinner enemyItem6AmountSpinner;
 	private JLabel enemyItem6xLabel;
 	private JComboBox<Item> enemyItem6Box;
+	private JPanel enemyEndItemsPanel;
+	private JLabel enemyEndItem1Label;
+	private JSpinner enemyEndItem1AmountSpinner;
+	private JLabel enemyEndItem1xLabel;
+	private JComboBox<Item> enemyEndItem1Box;
+	private JLabel enemyEndItem2Label;
+	private JSpinner enemyEndItem2AmountSpinner;
+	private JLabel enemyEndItem2xLabel;
+	private JComboBox<Item> enemyEndItem2Box;
+	private JLabel enemyEndItem3Label;
+	private JSpinner enemyEndItem3AmountSpinner;
+	private JLabel enemyEndItem3xLabel;
+	private JComboBox<Item> enemyEndItem3Box;
+	private JLabel enemyEndItem4Label;
+	private JSpinner enemyEndItem4AmountSpinner;
+	private JLabel enemyEndItem4xLabel;
+	private JComboBox<Item> enemyEndItem4Box;
+	private JLabel enemyEndItem5Label;
+	private JSpinner enemyEndItem5AmountSpinner;
+	private JLabel enemyEndItem5xLabel;
+	private JComboBox<Item> enemyEndItem5Box;
+	private JLabel enemyEndItem6Label;
+	private JSpinner enemyEndItem6AmountSpinner;
+	private JLabel enemyEndItem6xLabel;
+	private JComboBox<Item> enemyEndItem6Box;
+	private JPanel enemySpellsPanel;
+	private JLabel enemySpell1Label;
+	private JComboBox<SummonerSpell> enemySpell1Box;
+	private JLabel enemySpell2Label;
+	private JComboBox<SummonerSpell> enemySpell2Box;
 	private JPanel difficultyPanel;
 	private JLabel difficultyLabel;
 	private JComboBox<MatchupDifficulty> matchupDifficultyBox;
@@ -212,13 +288,23 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 			GridBagConstraints constraints = new GridBagConstraints();
 			constraints.gridx = 0;
 			constraints.gridy = 0;
-			constraints.fill = GridBagConstraints.HORIZONTAL;
-			constraints.weightx = 1;
+			constraints.fill = GridBagConstraints.BOTH;
+			constraints.weightx = 0.5;
+			constraints.weighty = 1;
 			gameContentPanel.add(getDatePanel(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 1;
+			constraints.gridy = 0;
+			constraints.fill = GridBagConstraints.BOTH;
+			constraints.weightx = 0.5;
+			constraints.weighty = 1;
+			gameContentPanel.add(getLengthPanel(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 0;
 			constraints.gridy = 1;
+			constraints.gridwidth = 2;
 			constraints.insets = new Insets(5, 10, 5, 10);
 			constraints.fill = GridBagConstraints.HORIZONTAL;
 			constraints.weightx = 1;
@@ -227,13 +313,14 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 			constraints = new GridBagConstraints();
 			constraints.gridx = 0;
 			constraints.gridy = 2;
+			constraints.gridwidth = 2;
 			constraints.fill = GridBagConstraints.BOTH;
 			constraints.weightx = 1;
 			constraints.weighty = 1;
 			gameContentPanel.add(getGameNotesPanel(), constraints);
 
 			constraints = new GridBagConstraints();
-			constraints.gridx = 0;
+			constraints.gridx = 1;
 			constraints.gridy = 3;
 			gameContentPanel.add(getGoToMatchupButton(), constraints);
 		}
@@ -246,6 +333,9 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		logger.trace("getDatePanel() - Entering");
 		if (datePanel == null) {
 			datePanel = new JPanel(new GridBagLayout());
+			datePanel.setBorder(BorderFactory
+					.createBevelBorder(BevelBorder.LOWERED));
+
 			GridBagConstraints constraints = new GridBagConstraints();
 			constraints.gridx = 0;
 			constraints.gridy = 0;
@@ -280,6 +370,100 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		logger.trace("getDateChooser() - Returning");
 		logger.debug("getDateChooser() - Returning: {}", dateChooser);
 		return dateChooser;
+	}
+
+	public JPanel getLengthPanel() {
+		logger.trace("getLengthPanel() - Entering");
+		if (lengthPanel == null) {
+			lengthPanel = new JPanel(new GridBagLayout());
+			lengthPanel.setBorder(BorderFactory
+					.createBevelBorder(BevelBorder.LOWERED));
+
+			GridBagConstraints constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 0;
+			constraints.gridwidth = 4;
+			lengthPanel.add(getLengthLabel(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 1;
+			lengthPanel.add(getLengthMinutesLabel(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 1;
+			constraints.gridy = 1;
+			lengthPanel.add(getLengthMinutesSpinner(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 2;
+			constraints.gridy = 1;
+			lengthPanel.add(getLengthSecondsLabel(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 3;
+			constraints.gridy = 1;
+			lengthPanel.add(getLengthSecondsSpinner(), constraints);
+		}
+		logger.trace("getLengthPanel() - Returning");
+		logger.debug("getLengthPanel() - Returning: {}", lengthPanel);
+		return lengthPanel;
+	}
+
+	public JLabel getLengthLabel() {
+		logger.trace("getLengthLabel() - Entering");
+		if (lengthLabel == null) {
+			lengthLabel = new JLabel("Game Length");
+		}
+		logger.trace("getLengthLabel() - Returning");
+		logger.debug("getLengthLabel() - Returning: {}", lengthLabel);
+		return lengthLabel;
+	}
+
+	public JLabel getLengthMinutesLabel() {
+		logger.trace("getLengthMinutesLabel() - Entering");
+		if (lengthMinutesLabel == null) {
+			lengthMinutesLabel = new JLabel("Minutes:");
+		}
+		logger.trace("getLengthMinutesLabel() - Returning");
+		logger.debug("getLengthMinutesLabel() - Returning: {}",
+				lengthMinutesLabel);
+		return lengthMinutesLabel;
+	}
+
+	public JSpinner getLengthMinutesSpinner() {
+		logger.trace("getLengthMinutesSpinner() - Entering");
+		if (lengthMinutesSpinner == null) {
+			lengthMinutesSpinner = new JSpinner();
+			lengthMinutesSpinner.setModel(new SpinnerNumberModel(0, 0, 239, 1));
+		}
+		logger.trace("getLengthMinutesSpinner() - Returning");
+		logger.debug("getLengthMinutesSpinner() - Returning: {}",
+				lengthMinutesSpinner);
+		return lengthMinutesSpinner;
+	}
+
+	public JLabel getLengthSecondsLabel() {
+		logger.trace("getLengthSecondsLabel() - Entering");
+		if (lengthSecondsLabel == null) {
+			lengthSecondsLabel = new JLabel("Seconds:");
+		}
+		logger.trace("getLengthSecondsLabel() - Returning");
+		logger.debug("getLengthSecondsLabel() - Returning: {}",
+				lengthSecondsLabel);
+		return lengthSecondsLabel;
+	}
+
+	public JSpinner getLengthSecondsSpinner() {
+		logger.trace("getLengthSecondsSpinner() - Entering");
+		if (lengthSecondsSpinner == null) {
+			lengthSecondsSpinner = new JSpinner();
+			lengthSecondsSpinner.setModel(new SpinnerNumberModel(0, 0, 59, 1));
+		}
+		logger.trace("getLengthSecondsSpinner() - Returning");
+		logger.debug("getLengthSecondsSpinner() - Returning: {}",
+				lengthSecondsSpinner);
+		return lengthSecondsSpinner;
 	}
 
 	public JPanel getTeamsPanel() {
@@ -833,6 +1017,18 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 			constraints.fill = GridBagConstraints.BOTH;
 			constraints.weightx = 1;
 			gameStatsPanel.add(getOwnAssistsSpinner(), constraints);
+			
+			constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 3;
+			gameStatsPanel.add(getOwnCSLabel(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 1;
+			constraints.gridy = 3;
+			constraints.fill = GridBagConstraints.BOTH;
+			constraints.weightx = 1;
+			gameStatsPanel.add(getOwnCSSpinner(), constraints);
 		}
 		logger.trace("getGameStatsPanel() - Returning");
 		logger.debug("getGameStatsPanel() - Returning: {}", gameStatsPanel);
@@ -904,6 +1100,27 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		logger.debug("getOwnAssistsSpinner() - Returning: {}",
 				ownAssistsTextField);
 		return ownAssistsTextField;
+	}
+
+	public JLabel getOwnCSLabel() {
+		logger.trace("getOwnCSLabel() - Entering");
+		if (ownCSLabel == null) {
+			ownCSLabel = new JLabel("CS:");
+		}
+		logger.trace("getOwnCSLabel() - Returning");
+		logger.debug("getOwnCSLabel() - Returning: {}", ownCSLabel);
+		return ownCSLabel;
+	}
+
+	public JSpinner getOwnCSSpinner() {
+		logger.trace("getOwnCSSpinner() - Entering");
+		if (ownCSTextField == null) {
+			ownCSTextField = new JSpinner();
+			ownCSTextField.setModel(new SpinnerNumberModel(0, 0, 999, 1));
+		}
+		logger.trace("getOwnCSSpinner() - Returning");
+		logger.debug("getOwnCSSpinner() - Returning: {}", ownCSTextField);
+		return ownCSTextField;
 	}
 
 	public JPanel getGameNotesPanel() {
@@ -978,6 +1195,11 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 						ok = false;
 						error += "- You need to enter a date for this game.\n";
 					}
+					if ((int) getLengthMinutesSpinner().getValue() == 0
+							&& (int) getLengthSecondsSpinner().getValue() == 0) {
+						ok = false;
+						error += "- You need to enter the length for this game.\n";
+					}
 					int selected1 = getTeam1Champ1Box().getSelectedIndex();
 					int selected2 = getTeam1Champ2Box().getSelectedIndex();
 					int selected3 = getTeam1Champ3Box().getSelectedIndex();
@@ -1021,10 +1243,6 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 							&& !getGameResultWonBox().isSelected()) {
 						ok = false;
 						error += "- You need to set if you won or lost this game.\n";
-					}
-					if (getGameNotesTextArea().getText().contains("§")) {
-						ok = false;
-						error += "- Your notes can't contain the character '§'. This is due to exporting.\n";
 					}
 					if (ok) {
 						myTeamChampions = new ArrayList<Champion>();
@@ -1157,13 +1375,11 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 			GridBagConstraints constraints = new GridBagConstraints();
 			constraints.gridx = 0;
 			constraints.gridy = 0;
-			constraints.gridwidth = 4;
 			myChampionPanel.add(getMyChampionLabel(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 0;
 			constraints.gridy = 1;
-			constraints.gridwidth = 4;
 			constraints.fill = GridBagConstraints.HORIZONTAL;
 			constraints.weightx = 1;
 			myChampionPanel.add(getMyChampionBox(), constraints);
@@ -1171,122 +1387,9 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 			constraints = new GridBagConstraints();
 			constraints.gridx = 0;
 			constraints.gridy = 2;
-			myChampionPanel.add(getMyItem1Label(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 1;
-			constraints.gridy = 2;
-			myChampionPanel.add(getMyItem1AmountSpinner(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 2;
-			constraints.gridy = 2;
-			myChampionPanel.add(getMyItem1xLabel(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 3;
-			constraints.gridy = 2;
-			myChampionPanel.add(getMyItem1Box(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 0;
-			constraints.gridy = 3;
-			myChampionPanel.add(getMyItem2Label(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 1;
-			constraints.gridy = 3;
-			myChampionPanel.add(getMyItem2AmountSpinner(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 2;
-			constraints.gridy = 3;
-			myChampionPanel.add(getMyItem2xLabel(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 3;
-			constraints.gridy = 3;
-			myChampionPanel.add(getMyItem2Box(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 0;
-			constraints.gridy = 4;
-			myChampionPanel.add(getMyItem3Label(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 1;
-			constraints.gridy = 4;
-			myChampionPanel.add(getMyItem3AmountSpinner(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 2;
-			constraints.gridy = 4;
-			myChampionPanel.add(getMyItem3xLabel(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 3;
-			constraints.gridy = 4;
-			myChampionPanel.add(getMyItem3Box(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 0;
-			constraints.gridy = 5;
-			myChampionPanel.add(getMyItem4Label(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 1;
-			constraints.gridy = 5;
-			myChampionPanel.add(getMyItem4AmountSpinner(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 2;
-			constraints.gridy = 5;
-			myChampionPanel.add(getMyItem4xLabel(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 3;
-			constraints.gridy = 5;
-			myChampionPanel.add(getMyItem4Box(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 0;
-			constraints.gridy = 6;
-			myChampionPanel.add(getMyItem5Label(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 1;
-			constraints.gridy = 6;
-			myChampionPanel.add(getMyItem5AmountSpinner(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 2;
-			constraints.gridy = 6;
-			myChampionPanel.add(getMyItem5xLabel(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 3;
-			constraints.gridy = 6;
-			myChampionPanel.add(getMyItem5Box(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 0;
-			constraints.gridy = 7;
-			myChampionPanel.add(getMyItem6Label(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 1;
-			constraints.gridy = 7;
-			myChampionPanel.add(getMyItem6AmountSpinner(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 2;
-			constraints.gridy = 7;
-			myChampionPanel.add(getMyItem6xLabel(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 3;
-			constraints.gridy = 7;
-			myChampionPanel.add(getMyItem6Box(), constraints);
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.weightx = 1;
+			myChampionPanel.add(getMyItemsPane(), constraints);
 		}
 		logger.trace("getMyChampionPanel() - Returning");
 		logger.debug("getMyChampionPanel() - Returning: {}", myChampionPanel);
@@ -1312,6 +1415,163 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		logger.trace("getMyChampionBox() - Returning");
 		logger.debug("getMyChampionBox() - Returning: {}", myChampionBox);
 		return myChampionBox;
+	}
+
+	private JTabbedPane getMyItemsPane() {
+		logger.trace("getMyItemsPane() - Entering");
+		if (myItemsPane == null) {
+			myItemsPane = new JTabbedPane();
+			myItemsPane.setTabPlacement(JTabbedPane.BOTTOM);
+			myItemsPane.addTab("Start items", getMyStartItemsPanel());
+			myItemsPane.addTab("End items", getMyEndItemsPanel());
+			myItemsPane.addTab("Summoner Spells", getMySpellsPanel());
+		}
+		logger.trace("getMyItemsPane() - Returning");
+		logger.debug("getMyItemsPane() - Returning: {}", myItemsPane);
+		return myItemsPane;
+	}
+
+	public JPanel getMyStartItemsPanel() {
+		logger.trace("getMyStartItemsPanel() - Entering");
+		if (myStartItemsPanel == null) {
+			myStartItemsPanel = new JPanel(new GridBagLayout());
+			GridBagConstraints constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 0;
+			myStartItemsPanel.add(getMyItem1Label(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 1;
+			constraints.gridy = 0;
+			myStartItemsPanel.add(getMyItem1AmountSpinner(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 2;
+			constraints.gridy = 0;
+			myStartItemsPanel.add(getMyItem1xLabel(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 3;
+			constraints.gridy = 0;
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.weightx = 1;
+			myStartItemsPanel.add(getMyItem1Box(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 1;
+			myStartItemsPanel.add(getMyItem2Label(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 1;
+			constraints.gridy = 1;
+			myStartItemsPanel.add(getMyItem2AmountSpinner(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 2;
+			constraints.gridy = 1;
+			myStartItemsPanel.add(getMyItem2xLabel(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 3;
+			constraints.gridy = 1;
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.weightx = 1;
+			myStartItemsPanel.add(getMyItem2Box(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 2;
+			myStartItemsPanel.add(getMyItem3Label(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 1;
+			constraints.gridy = 2;
+			myStartItemsPanel.add(getMyItem3AmountSpinner(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 2;
+			constraints.gridy = 2;
+			myStartItemsPanel.add(getMyItem3xLabel(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 3;
+			constraints.gridy = 2;
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.weightx = 1;
+			myStartItemsPanel.add(getMyItem3Box(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 3;
+			myStartItemsPanel.add(getMyItem4Label(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 1;
+			constraints.gridy = 3;
+			myStartItemsPanel.add(getMyItem4AmountSpinner(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 2;
+			constraints.gridy = 3;
+			myStartItemsPanel.add(getMyItem4xLabel(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 3;
+			constraints.gridy = 3;
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.weightx = 1;
+			myStartItemsPanel.add(getMyItem4Box(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 4;
+			myStartItemsPanel.add(getMyItem5Label(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 1;
+			constraints.gridy = 4;
+			myStartItemsPanel.add(getMyItem5AmountSpinner(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 2;
+			constraints.gridy = 4;
+			myStartItemsPanel.add(getMyItem5xLabel(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 3;
+			constraints.gridy = 4;
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.weightx = 1;
+			myStartItemsPanel.add(getMyItem5Box(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 5;
+			myStartItemsPanel.add(getMyItem6Label(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 1;
+			constraints.gridy = 5;
+			myStartItemsPanel.add(getMyItem6AmountSpinner(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 2;
+			constraints.gridy = 5;
+			myStartItemsPanel.add(getMyItem6xLabel(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 3;
+			constraints.gridy = 5;
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.weightx = 1;
+			myStartItemsPanel.add(getMyItem6Box(), constraints);
+
+		}
+		logger.trace("getMyStartItemsPanel() - Returning");
+		logger.debug("getMyStartItemsPanel() - Returning: {}",
+				myStartItemsPanel);
+		return myStartItemsPanel;
 	}
 
 	public JLabel getMyItem1Label() {
@@ -1350,7 +1610,7 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		logger.trace("getMyItem1Box() - Entering");
 		if (myItem1Box == null) {
 			myItem1Box = new JComboBox<Item>(new DefaultComboBoxModel<Item>(
-					allItems.toArray(new Item[] {})));
+					allStartingItems.toArray(new Item[] {})));
 			myItem1Box.setRenderer(new ItemComboBoxRenderer());
 		}
 		logger.trace("getMyItem1Box() - Returning");
@@ -1394,7 +1654,7 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		logger.trace("getMyItem2Box() - Entering");
 		if (myItem2Box == null) {
 			myItem2Box = new JComboBox<Item>(new DefaultComboBoxModel<Item>(
-					allItems.toArray(new Item[] {})));
+					allStartingItems.toArray(new Item[] {})));
 			myItem2Box.setRenderer(new ItemComboBoxRenderer());
 		}
 		logger.trace("getMyItem2Box() - Returning");
@@ -1438,7 +1698,7 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		logger.trace("getMyItem3Box() - Entering");
 		if (myItem3Box == null) {
 			myItem3Box = new JComboBox<Item>(new DefaultComboBoxModel<Item>(
-					allItems.toArray(new Item[] {})));
+					allStartingItems.toArray(new Item[] {})));
 			myItem3Box.setRenderer(new ItemComboBoxRenderer());
 		}
 		logger.trace("getMyItem3Box() - Returning");
@@ -1482,7 +1742,7 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		logger.trace("getMyItem4Box() - Entering");
 		if (myItem4Box == null) {
 			myItem4Box = new JComboBox<Item>(new DefaultComboBoxModel<Item>(
-					allItems.toArray(new Item[] {})));
+					allStartingItems.toArray(new Item[] {})));
 			myItem4Box.setRenderer(new ItemComboBoxRenderer());
 		}
 		logger.trace("getMyItem4Box() - Returning");
@@ -1526,7 +1786,7 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		logger.trace("getMyItem5Box() - Entering");
 		if (myItem5Box == null) {
 			myItem5Box = new JComboBox<Item>(new DefaultComboBoxModel<Item>(
-					allItems.toArray(new Item[] {})));
+					allStartingItems.toArray(new Item[] {})));
 			myItem5Box.setRenderer(new ItemComboBoxRenderer());
 		}
 		logger.trace("getMyItem5Box() - Returning");
@@ -1570,12 +1830,491 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		logger.trace("getMyItem6Box() - Entering");
 		if (myItem6Box == null) {
 			myItem6Box = new JComboBox<Item>(new DefaultComboBoxModel<Item>(
-					allItems.toArray(new Item[] {})));
+					allStartingItems.toArray(new Item[] {})));
 			myItem6Box.setRenderer(new ItemComboBoxRenderer());
 		}
 		logger.trace("getMyItem6Box() - Returning");
 		logger.debug("getMyItem6Box() - Returning: {}", myItem6Box);
 		return myItem6Box;
+	}
+
+	public JPanel getMyEndItemsPanel() {
+		logger.trace("getMyEndItemsPanel() - Entering");
+		if (myEndItemsPanel == null) {
+			myEndItemsPanel = new JPanel(new GridBagLayout());
+			GridBagConstraints constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 0;
+			myEndItemsPanel.add(getMyEndItem1Label(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 1;
+			constraints.gridy = 0;
+			myEndItemsPanel.add(getMyEndItem1AmountSpinner(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 2;
+			constraints.gridy = 0;
+			myEndItemsPanel.add(getMyEndItem1xLabel(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 3;
+			constraints.gridy = 0;
+			myEndItemsPanel.add(getMyEndItem1Box(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 1;
+			myEndItemsPanel.add(getMyEndItem2Label(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 1;
+			constraints.gridy = 1;
+			myEndItemsPanel.add(getMyEndItem2AmountSpinner(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 2;
+			constraints.gridy = 1;
+			myEndItemsPanel.add(getMyEndItem2xLabel(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 3;
+			constraints.gridy = 1;
+			myEndItemsPanel.add(getMyEndItem2Box(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 2;
+			myEndItemsPanel.add(getMyEndItem3Label(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 1;
+			constraints.gridy = 2;
+			myEndItemsPanel.add(getMyEndItem3AmountSpinner(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 2;
+			constraints.gridy = 2;
+			myEndItemsPanel.add(getMyEndItem3xLabel(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 3;
+			constraints.gridy = 2;
+			myEndItemsPanel.add(getMyEndItem3Box(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 3;
+			myEndItemsPanel.add(getMyEndItem4Label(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 1;
+			constraints.gridy = 3;
+			myEndItemsPanel.add(getMyEndItem4AmountSpinner(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 2;
+			constraints.gridy = 3;
+			myEndItemsPanel.add(getMyEndItem4xLabel(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 3;
+			constraints.gridy = 3;
+			myEndItemsPanel.add(getMyEndItem4Box(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 4;
+			myEndItemsPanel.add(getMyEndItem5Label(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 1;
+			constraints.gridy = 4;
+			myEndItemsPanel.add(getMyEndItem5AmountSpinner(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 2;
+			constraints.gridy = 4;
+			myEndItemsPanel.add(getMyEndItem5xLabel(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 3;
+			constraints.gridy = 4;
+			myEndItemsPanel.add(getMyEndItem5Box(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 5;
+			myEndItemsPanel.add(getMyEndItem6Label(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 1;
+			constraints.gridy = 5;
+			myEndItemsPanel.add(getMyEndItem6AmountSpinner(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 2;
+			constraints.gridy = 5;
+			myEndItemsPanel.add(getMyEndItem6xLabel(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 3;
+			constraints.gridy = 5;
+			myEndItemsPanel.add(getMyEndItem6Box(), constraints);
+
+		}
+		logger.trace("getMyEndItemsPanel() - Returning");
+		logger.debug("getMyEndItemsPanel() - Returning: {}", myEndItemsPanel);
+		return myEndItemsPanel;
+	}
+
+	public JLabel getMyEndItem1Label() {
+		logger.trace("getMyEndItem1Label() - Entering");
+		if (myEndItem1Label == null) {
+			myEndItem1Label = new JLabel("Item slot 1");
+		}
+		logger.trace("getMyEndItem1Label() - Returning");
+		logger.debug("getMyEndItem1Label() - Returning: {}", myEndItem1Label);
+		return myEndItem1Label;
+	}
+
+	public JSpinner getMyEndItem1AmountSpinner() {
+		logger.trace("getMyEndItem1AmountSpinner() - Entering");
+		if (myEndItem1AmountSpinner == null) {
+			myEndItem1AmountSpinner = new JSpinner();
+			myEndItem1AmountSpinner
+					.setModel(new SpinnerNumberModel(0, 0, 9, 1));
+		}
+		logger.trace("getMyEndItem1AmountSpinner() - Returning");
+		logger.debug("getMyEndItem1AmountSpinner() - Returning: {}",
+				myEndItem1AmountSpinner);
+		return myEndItem1AmountSpinner;
+	}
+
+	public JLabel getMyEndItem1xLabel() {
+		logger.trace("getMyEndItem1xLabel() - Entering");
+		if (myEndItem1xLabel == null) {
+			myEndItem1xLabel = new JLabel("x");
+		}
+		logger.trace("getMyEndItem1xLabel() - Returning");
+		logger.debug("getMyEndItem1xLabel() - Returning: {}", myEndItem1xLabel);
+		return myEndItem1xLabel;
+	}
+
+	public JComboBox<Item> getMyEndItem1Box() {
+		logger.trace("getMyEndItem1Box() - Entering");
+		if (myEndItem1Box == null) {
+			myEndItem1Box = new JComboBox<Item>(new DefaultComboBoxModel<Item>(
+					allItems.toArray(new Item[] {})));
+			myEndItem1Box.setRenderer(new ItemComboBoxRenderer());
+		}
+		logger.trace("getMyEndItem1Box() - Returning");
+		logger.debug("getMyEndItem1Box() - Returning: {}", myEndItem1Box);
+		return myEndItem1Box;
+	}
+
+	public JLabel getMyEndItem2Label() {
+		logger.trace("getMyEndItem2Label() - Entering");
+		if (myEndItem2Label == null) {
+			myEndItem2Label = new JLabel("Item slot 2");
+		}
+		logger.trace("getMyEndItem2Label() - Returning");
+		logger.debug("getMyEndItem2Label() - Returning: {}", myEndItem2Label);
+		return myEndItem2Label;
+	}
+
+	public JSpinner getMyEndItem2AmountSpinner() {
+		logger.trace("getMyEndItem2AmountSpinner() - Entering");
+		if (myEndItem2AmountSpinner == null) {
+			myEndItem2AmountSpinner = new JSpinner();
+			myEndItem2AmountSpinner
+					.setModel(new SpinnerNumberModel(0, 0, 9, 1));
+		}
+		logger.trace("getMyEndItem2AmountSpinner() - Returning");
+		logger.debug("getMyEndItem2AmountSpinner() - Returning: {}",
+				myEndItem2AmountSpinner);
+		return myEndItem2AmountSpinner;
+	}
+
+	public JLabel getMyEndItem2xLabel() {
+		logger.trace("getMyEndItem2xLabel() - Entering");
+		if (myEndItem2xLabel == null) {
+			myEndItem2xLabel = new JLabel("x");
+		}
+		logger.trace("getMyEndItem2xLabel() - Returning");
+		logger.debug("getMyEndItem2xLabel() - Returning: {}", myEndItem2xLabel);
+		return myEndItem2xLabel;
+	}
+
+	public JComboBox<Item> getMyEndItem2Box() {
+		logger.trace("getMyEndItem2Box() - Entering");
+		if (myEndItem2Box == null) {
+			myEndItem2Box = new JComboBox<Item>(new DefaultComboBoxModel<Item>(
+					allItems.toArray(new Item[] {})));
+			myEndItem2Box.setRenderer(new ItemComboBoxRenderer());
+		}
+		logger.trace("getMyEndItem2Box() - Returning");
+		logger.debug("getMyEndItem2Box() - Returning: {}", myEndItem2Box);
+		return myEndItem2Box;
+	}
+
+	public JLabel getMyEndItem3Label() {
+		logger.trace("getMyEndItem3Label() - Entering");
+		if (myEndItem3Label == null) {
+			myEndItem3Label = new JLabel("Item slot 3");
+		}
+		logger.trace("getMyEndItem3Label() - Returning");
+		logger.debug("getMyEndItem3Label() - Returning: {}", myEndItem3Label);
+		return myEndItem3Label;
+	}
+
+	public JSpinner getMyEndItem3AmountSpinner() {
+		logger.trace("getMyEndItem3AmountSpinner() - Entering");
+		if (myEndItem3AmountSpinner == null) {
+			myEndItem3AmountSpinner = new JSpinner();
+			myEndItem3AmountSpinner
+					.setModel(new SpinnerNumberModel(0, 0, 9, 1));
+		}
+		logger.trace("getMyEndItem3AmountSpinner() - Returning");
+		logger.debug("getMyEndItem3AmountSpinner() - Returning: {}",
+				myEndItem3AmountSpinner);
+		return myEndItem3AmountSpinner;
+	}
+
+	public JLabel getMyEndItem3xLabel() {
+		logger.trace("getMyEndItem3xLabel() - Entering");
+		if (myEndItem3xLabel == null) {
+			myEndItem3xLabel = new JLabel("x");
+		}
+		logger.trace("getMyEndItem3xLabel() - Returning");
+		logger.debug("getMyEndItem3xLabel() - Returning: {}", myEndItem3xLabel);
+		return myEndItem3xLabel;
+	}
+
+	public JComboBox<Item> getMyEndItem3Box() {
+		logger.trace("getMyEndItem3Box() - Entering");
+		if (myEndItem3Box == null) {
+			myEndItem3Box = new JComboBox<Item>(new DefaultComboBoxModel<Item>(
+					allItems.toArray(new Item[] {})));
+			myEndItem3Box.setRenderer(new ItemComboBoxRenderer());
+		}
+		logger.trace("getMyEndItem3Box() - Returning");
+		logger.debug("getMyEndItem3Box() - Returning: {}", myEndItem3Box);
+		return myEndItem3Box;
+	}
+
+	public JLabel getMyEndItem4Label() {
+		logger.trace("getMyEndItem4Label() - Entering");
+		if (myEndItem4Label == null) {
+			myEndItem4Label = new JLabel("Item slot 4");
+		}
+		logger.trace("getMyEndItem4Label() - Returning");
+		logger.debug("getMyEndItem4Label() - Returning: {}", myEndItem4Label);
+		return myEndItem4Label;
+	}
+
+	public JSpinner getMyEndItem4AmountSpinner() {
+		logger.trace("getMyEndItem4AmountSpinner() - Entering");
+		if (myEndItem4AmountSpinner == null) {
+			myEndItem4AmountSpinner = new JSpinner();
+			myEndItem4AmountSpinner
+					.setModel(new SpinnerNumberModel(0, 0, 9, 1));
+		}
+		logger.trace("getMyEndItem4AmountSpinner() - Returning");
+		logger.debug("getMyEndItem4AmountSpinner() - Returning: {}",
+				myEndItem4AmountSpinner);
+		return myEndItem4AmountSpinner;
+	}
+
+	public JLabel getMyEndItem4xLabel() {
+		logger.trace("getMyEndItem4xLabel() - Entering");
+		if (myEndItem4xLabel == null) {
+			myEndItem4xLabel = new JLabel("x");
+		}
+		logger.trace("getMyEndItem4xLabel() - Returning");
+		logger.debug("getMyEndItem4xLabel() - Returning: {}", myEndItem4xLabel);
+		return myEndItem4xLabel;
+	}
+
+	public JComboBox<Item> getMyEndItem4Box() {
+		logger.trace("getMyEndItem4Box() - Entering");
+		if (myEndItem4Box == null) {
+			myEndItem4Box = new JComboBox<Item>(new DefaultComboBoxModel<Item>(
+					allItems.toArray(new Item[] {})));
+			myEndItem4Box.setRenderer(new ItemComboBoxRenderer());
+		}
+		logger.trace("getMyEndItem4Box() - Returning");
+		logger.debug("getMyEndItem4Box() - Returning: {}", myEndItem4Box);
+		return myEndItem4Box;
+	}
+
+	public JLabel getMyEndItem5Label() {
+		logger.trace("getMyEndItem5Label() - Entering");
+		if (myEndItem5Label == null) {
+			myEndItem5Label = new JLabel("Item slot 5");
+		}
+		logger.trace("getMyEndItem5Label() - Returning");
+		logger.debug("getMyEndItem5Label() - Returning: {}", myEndItem5Label);
+		return myEndItem5Label;
+	}
+
+	public JSpinner getMyEndItem5AmountSpinner() {
+		logger.trace("getMyEndItem5AmountSpinner() - Entering");
+		if (myEndItem5AmountSpinner == null) {
+			myEndItem5AmountSpinner = new JSpinner();
+			myEndItem5AmountSpinner
+					.setModel(new SpinnerNumberModel(0, 0, 9, 1));
+		}
+		logger.trace("getMyEndItem5AmountSpinner() - Returning");
+		logger.debug("getMyEndItem5AmountSpinner() - Returning: {}",
+				myEndItem5AmountSpinner);
+		return myEndItem5AmountSpinner;
+	}
+
+	public JLabel getMyEndItem5xLabel() {
+		logger.trace("getMyEndItem5xLabel() - Entering");
+		if (myEndItem5xLabel == null) {
+			myEndItem5xLabel = new JLabel("x");
+		}
+		logger.trace("getMyEndItem5xLabel() - Returning");
+		logger.debug("getMyEndItem5xLabel() - Returning: {}", myEndItem5xLabel);
+		return myEndItem5xLabel;
+	}
+
+	public JComboBox<Item> getMyEndItem5Box() {
+		logger.trace("getMyEndItem5Box() - Entering");
+		if (myEndItem5Box == null) {
+			myEndItem5Box = new JComboBox<Item>(new DefaultComboBoxModel<Item>(
+					allItems.toArray(new Item[] {})));
+			myEndItem5Box.setRenderer(new ItemComboBoxRenderer());
+		}
+		logger.trace("getMyEndItem5Box() - Returning");
+		logger.debug("getMyEndItem5Box() - Returning: {}", myEndItem5Box);
+		return myEndItem5Box;
+	}
+
+	public JLabel getMyEndItem6Label() {
+		logger.trace("getMyEndItem6Label() - Entering");
+		if (myEndItem6Label == null) {
+			myEndItem6Label = new JLabel("Item slot 6");
+		}
+		logger.trace("getMyEndItem6Label() - Returning");
+		logger.debug("getMyEndItem6Label() - Returning: {}", myEndItem6Label);
+		return myEndItem6Label;
+	}
+
+	public JSpinner getMyEndItem6AmountSpinner() {
+		logger.trace("getMyEndItem6AmountSpinner() - Entering");
+		if (myEndItem6AmountSpinner == null) {
+			myEndItem6AmountSpinner = new JSpinner();
+			myEndItem6AmountSpinner
+					.setModel(new SpinnerNumberModel(0, 0, 9, 1));
+		}
+		logger.trace("getMyEndItem6AmountSpinner() - Returning");
+		logger.debug("getMyEndItem6AmountSpinner() - Returning: {}",
+				myEndItem6AmountSpinner);
+		return myEndItem6AmountSpinner;
+	}
+
+	public JLabel getMyEndItem6xLabel() {
+		logger.trace("getMyEndItem6xLabel() - Entering");
+		if (myEndItem6xLabel == null) {
+			myEndItem6xLabel = new JLabel("x");
+		}
+		logger.trace("getMyEndItem6xLabel() - Returning");
+		logger.debug("getMyEndItem6xLabel() - Returning: {}", myEndItem6xLabel);
+		return myEndItem6xLabel;
+	}
+
+	public JComboBox<Item> getMyEndItem6Box() {
+		logger.trace("getMyEndItem6Box() - Entering");
+		if (myEndItem6Box == null) {
+			myEndItem6Box = new JComboBox<Item>(new DefaultComboBoxModel<Item>(
+					allItems.toArray(new Item[] {})));
+			myEndItem6Box.setRenderer(new ItemComboBoxRenderer());
+		}
+		logger.trace("getMyEndItem6Box() - Returning");
+		logger.debug("getMyEndItem6Box() - Returning: {}", myEndItem6Box);
+		return myEndItem6Box;
+	}
+
+	public JPanel getMySpellsPanel() {
+		logger.trace("getMySpellsPanel() - Entering");
+		if (mySpellsPanel == null) {
+			mySpellsPanel = new JPanel(new GridBagLayout());
+			GridBagConstraints constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 0;
+			mySpellsPanel.add(getMySpell1Label(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 1;
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.weightx = 1;
+			mySpellsPanel.add(getMySpell1Box(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 2;
+			mySpellsPanel.add(getMySpell2Label(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 3;
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.weightx = 1;
+			mySpellsPanel.add(getMySpell2Box(), constraints);
+		}
+		logger.trace("getMySpellsPanel() - Returning");
+		logger.debug("getMySpellsPanel() - Returning: {}", mySpellsPanel);
+		return mySpellsPanel;
+	}
+
+	public JLabel getMySpell1Label() {
+		logger.trace("getMySpell1Label() - Entering");
+		if (mySpell1Label == null) {
+			mySpell1Label = new JLabel("Summoner Spell 1");
+		}
+		logger.trace("getMySpell1Label() - Returning");
+		logger.debug("getMySpell1Label() - Returning: {}", mySpell1Label);
+		return mySpell1Label;
+	}
+
+	public JComboBox<SummonerSpell> getMySpell1Box() {
+		logger.trace("getMySpell1Box() - Entering");
+		if (mySpell1Box == null) {
+			mySpell1Box = new JComboBox<SummonerSpell>(
+					new DefaultComboBoxModel<SummonerSpell>(
+							allSpells.toArray(new SummonerSpell[] {})));
+			mySpell1Box.setRenderer(new SpellComboBoxRenderer());
+		}
+		logger.trace("getMySpell1Box() - Returning");
+		logger.debug("getMySpell1Box() - Returning: {}", mySpell1Box);
+		return mySpell1Box;
+	}
+
+	public JLabel getMySpell2Label() {
+		logger.trace("getMySpell2Label() - Entering");
+		if (mySpell2Label == null) {
+			mySpell2Label = new JLabel("Summoner Spell 2");
+		}
+		logger.trace("getMySpell2Label() - Returning");
+		logger.debug("getMySpell2Label() - Returning: {}", mySpell2Label);
+		return mySpell2Label;
+	}
+
+	public JComboBox<SummonerSpell> getMySpell2Box() {
+		logger.trace("getMySpell2Box() - Entering");
+		if (mySpell2Box == null) {
+			mySpell2Box = new JComboBox<SummonerSpell>(
+					new DefaultComboBoxModel<SummonerSpell>(
+							allSpells.toArray(new SummonerSpell[] {})));
+			mySpell2Box.setRenderer(new SpellComboBoxRenderer());
+		}
+		logger.trace("getMySpell2Box() - Returning");
+		logger.debug("getMySpell2Box() - Returning: {}", mySpell2Box);
+		return mySpell2Box;
 	}
 
 	public JPanel getEnemyChampionPanel() {
@@ -1587,13 +2326,11 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 			GridBagConstraints constraints = new GridBagConstraints();
 			constraints.gridx = 0;
 			constraints.gridy = 0;
-			constraints.gridwidth = 4;
 			enemyChampionPanel.add(getEnemyChampionLabel(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 0;
 			constraints.gridy = 1;
-			constraints.gridwidth = 4;
 			constraints.fill = GridBagConstraints.HORIZONTAL;
 			constraints.weightx = 1;
 			enemyChampionPanel.add(getEnemyChampionBox(), constraints);
@@ -1601,122 +2338,9 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 			constraints = new GridBagConstraints();
 			constraints.gridx = 0;
 			constraints.gridy = 2;
-			enemyChampionPanel.add(getEnemyItem1Label(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 1;
-			constraints.gridy = 2;
-			enemyChampionPanel.add(getEnemyItem1AmountSpinner(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 2;
-			constraints.gridy = 2;
-			enemyChampionPanel.add(getEnemyItem1xLabel(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 3;
-			constraints.gridy = 2;
-			enemyChampionPanel.add(getEnemyItem1Box(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 0;
-			constraints.gridy = 3;
-			enemyChampionPanel.add(getEnemyItem2Label(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 1;
-			constraints.gridy = 3;
-			enemyChampionPanel.add(getEnemyItem2AmountSpinner(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 2;
-			constraints.gridy = 3;
-			enemyChampionPanel.add(getEnemyItem2xLabel(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 3;
-			constraints.gridy = 3;
-			enemyChampionPanel.add(getEnemyItem2Box(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 0;
-			constraints.gridy = 4;
-			enemyChampionPanel.add(getEnemyItem3Label(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 1;
-			constraints.gridy = 4;
-			enemyChampionPanel.add(getEnemyItem3AmountSpinner(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 2;
-			constraints.gridy = 4;
-			enemyChampionPanel.add(getEnemyItem3xLabel(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 3;
-			constraints.gridy = 4;
-			enemyChampionPanel.add(getEnemyItem3Box(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 0;
-			constraints.gridy = 5;
-			enemyChampionPanel.add(getEnemyItem4Label(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 1;
-			constraints.gridy = 5;
-			enemyChampionPanel.add(getEnemyItem4AmountSpinner(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 2;
-			constraints.gridy = 5;
-			enemyChampionPanel.add(getEnemyItem4xLabel(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 3;
-			constraints.gridy = 5;
-			enemyChampionPanel.add(getEnemyItem4Box(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 0;
-			constraints.gridy = 6;
-			enemyChampionPanel.add(getEnemyItem5Label(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 1;
-			constraints.gridy = 6;
-			enemyChampionPanel.add(getEnemyItem5AmountSpinner(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 2;
-			constraints.gridy = 6;
-			enemyChampionPanel.add(getEnemyItem5xLabel(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 3;
-			constraints.gridy = 6;
-			enemyChampionPanel.add(getEnemyItem5Box(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 0;
-			constraints.gridy = 7;
-			enemyChampionPanel.add(getEnemyItem6Label(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 1;
-			constraints.gridy = 7;
-			enemyChampionPanel.add(getEnemyItem6AmountSpinner(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 2;
-			constraints.gridy = 7;
-			enemyChampionPanel.add(getEnemyItem6xLabel(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 3;
-			constraints.gridy = 7;
-			enemyChampionPanel.add(getEnemyItem6Box(), constraints);
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.weightx = 1;
+			enemyChampionPanel.add(getEnemyItemsPane(), constraints);
 		}
 		logger.trace("getEnemyChampionPanel() - Returning");
 		logger.debug("getEnemyChampionPanel() - Returning: {}",
@@ -1727,7 +2351,7 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 	public JLabel getEnemyChampionLabel() {
 		logger.trace("getEnemyChampionLabel() - Entering");
 		if (enemyChampionLabel == null) {
-			enemyChampionLabel = new JLabel("Lane opponent");
+			enemyChampionLabel = new JLabel("Enemy champion");
 		}
 		logger.trace("getEnemyChampionLabel() - Returning");
 		logger.debug("getEnemyChampionLabel() - Returning: {}",
@@ -1744,6 +2368,163 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		logger.trace("getEnemyChampionBox() - Returning");
 		logger.debug("getEnemyChampionBox() - Returning: {}", enemyChampionBox);
 		return enemyChampionBox;
+	}
+
+	private JTabbedPane getEnemyItemsPane() {
+		logger.trace("getEnemyItemsPane() - Entering");
+		if (enemyItemsPane == null) {
+			enemyItemsPane = new JTabbedPane();
+			enemyItemsPane.setTabPlacement(JTabbedPane.BOTTOM);
+			enemyItemsPane.addTab("Start items", getEnemyStartItemsPanel());
+			enemyItemsPane.addTab("End items", getEnemyEndItemsPanel());
+			enemyItemsPane.addTab("Summoner Spells", getEnemySpellsPanel());
+		}
+		logger.trace("getEnemyItemsPane() - Returning");
+		logger.debug("getEnemyItemsPane() - Returning: {}", enemyItemsPane);
+		return enemyItemsPane;
+	}
+
+	public JPanel getEnemyStartItemsPanel() {
+		logger.trace("getEnemyStartItemsPanel() - Entering");
+		if (enemyStartItemsPanel == null) {
+			enemyStartItemsPanel = new JPanel(new GridBagLayout());
+			GridBagConstraints constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 0;
+			enemyStartItemsPanel.add(getEnemyItem1Label(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 1;
+			constraints.gridy = 0;
+			enemyStartItemsPanel.add(getEnemyItem1AmountSpinner(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 2;
+			constraints.gridy = 0;
+			enemyStartItemsPanel.add(getEnemyItem1xLabel(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 3;
+			constraints.gridy = 0;
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.weightx = 1;
+			enemyStartItemsPanel.add(getEnemyItem1Box(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 1;
+			enemyStartItemsPanel.add(getEnemyItem2Label(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 1;
+			constraints.gridy = 1;
+			enemyStartItemsPanel.add(getEnemyItem2AmountSpinner(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 2;
+			constraints.gridy = 1;
+			enemyStartItemsPanel.add(getEnemyItem2xLabel(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 3;
+			constraints.gridy = 1;
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.weightx = 1;
+			enemyStartItemsPanel.add(getEnemyItem2Box(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 2;
+			enemyStartItemsPanel.add(getEnemyItem3Label(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 1;
+			constraints.gridy = 2;
+			enemyStartItemsPanel.add(getEnemyItem3AmountSpinner(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 2;
+			constraints.gridy = 2;
+			enemyStartItemsPanel.add(getEnemyItem3xLabel(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 3;
+			constraints.gridy = 2;
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.weightx = 1;
+			enemyStartItemsPanel.add(getEnemyItem3Box(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 3;
+			enemyStartItemsPanel.add(getEnemyItem4Label(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 1;
+			constraints.gridy = 3;
+			enemyStartItemsPanel.add(getEnemyItem4AmountSpinner(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 2;
+			constraints.gridy = 3;
+			enemyStartItemsPanel.add(getEnemyItem4xLabel(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 3;
+			constraints.gridy = 3;
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.weightx = 1;
+			enemyStartItemsPanel.add(getEnemyItem4Box(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 4;
+			enemyStartItemsPanel.add(getEnemyItem5Label(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 1;
+			constraints.gridy = 4;
+			enemyStartItemsPanel.add(getEnemyItem5AmountSpinner(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 2;
+			constraints.gridy = 4;
+			enemyStartItemsPanel.add(getEnemyItem5xLabel(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 3;
+			constraints.gridy = 4;
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.weightx = 1;
+			enemyStartItemsPanel.add(getEnemyItem5Box(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 5;
+			enemyStartItemsPanel.add(getEnemyItem6Label(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 1;
+			constraints.gridy = 5;
+			enemyStartItemsPanel.add(getEnemyItem6AmountSpinner(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 2;
+			constraints.gridy = 5;
+			enemyStartItemsPanel.add(getEnemyItem6xLabel(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 3;
+			constraints.gridy = 5;
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.weightx = 1;
+			enemyStartItemsPanel.add(getEnemyItem6Box(), constraints);
+
+		}
+		logger.trace("getEnemyStartItemsPanel() - Returning");
+		logger.debug("getEnemyStartItemsPanel() - Returning: {}",
+				enemyStartItemsPanel);
+		return enemyStartItemsPanel;
 	}
 
 	public JLabel getEnemyItem1Label() {
@@ -1783,7 +2564,7 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		logger.trace("getEnemyItem1Box() - Entering");
 		if (enemyItem1Box == null) {
 			enemyItem1Box = new JComboBox<Item>(new DefaultComboBoxModel<Item>(
-					allItems.toArray(new Item[] {})));
+					allStartingItems.toArray(new Item[] {})));
 			enemyItem1Box.setRenderer(new ItemComboBoxRenderer());
 		}
 		logger.trace("getEnemyItem1Box() - Returning");
@@ -1828,7 +2609,7 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		logger.trace("getEnemyItem2Box() - Entering");
 		if (enemyItem2Box == null) {
 			enemyItem2Box = new JComboBox<Item>(new DefaultComboBoxModel<Item>(
-					allItems.toArray(new Item[] {})));
+					allStartingItems.toArray(new Item[] {})));
 			enemyItem2Box.setRenderer(new ItemComboBoxRenderer());
 		}
 		logger.trace("getEnemyItem2Box() - Returning");
@@ -1873,7 +2654,7 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		logger.trace("getEnemyItem3Box() - Entering");
 		if (enemyItem3Box == null) {
 			enemyItem3Box = new JComboBox<Item>(new DefaultComboBoxModel<Item>(
-					allItems.toArray(new Item[] {})));
+					allStartingItems.toArray(new Item[] {})));
 			enemyItem3Box.setRenderer(new ItemComboBoxRenderer());
 		}
 		logger.trace("getEnemyItem3Box() - Returning");
@@ -1918,7 +2699,7 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		logger.trace("getEnemyItem4Box() - Entering");
 		if (enemyItem4Box == null) {
 			enemyItem4Box = new JComboBox<Item>(new DefaultComboBoxModel<Item>(
-					allItems.toArray(new Item[] {})));
+					allStartingItems.toArray(new Item[] {})));
 			enemyItem4Box.setRenderer(new ItemComboBoxRenderer());
 		}
 		logger.trace("getEnemyItem4Box() - Returning");
@@ -1963,7 +2744,7 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		logger.trace("getEnemyItem5Box() - Entering");
 		if (enemyItem5Box == null) {
 			enemyItem5Box = new JComboBox<Item>(new DefaultComboBoxModel<Item>(
-					allItems.toArray(new Item[] {})));
+					allStartingItems.toArray(new Item[] {})));
 			enemyItem5Box.setRenderer(new ItemComboBoxRenderer());
 		}
 		logger.trace("getEnemyItem5Box() - Returning");
@@ -2008,12 +2789,516 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		logger.trace("getEnemyItem6Box() - Entering");
 		if (enemyItem6Box == null) {
 			enemyItem6Box = new JComboBox<Item>(new DefaultComboBoxModel<Item>(
-					allItems.toArray(new Item[] {})));
+					allStartingItems.toArray(new Item[] {})));
 			enemyItem6Box.setRenderer(new ItemComboBoxRenderer());
 		}
 		logger.trace("getEnemyItem6Box() - Returning");
 		logger.debug("getEnemyItem6Box() - Returning: {}", enemyItem6Box);
 		return enemyItem6Box;
+	}
+
+	public JPanel getEnemyEndItemsPanel() {
+		logger.trace("getEnemyEndItemsPanel() - Entering");
+		if (enemyEndItemsPanel == null) {
+			enemyEndItemsPanel = new JPanel(new GridBagLayout());
+			GridBagConstraints constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 0;
+			enemyEndItemsPanel.add(getEnemyEndItem1Label(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 1;
+			constraints.gridy = 0;
+			enemyEndItemsPanel
+					.add(getEnemyEndItem1AmountSpinner(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 2;
+			constraints.gridy = 0;
+			enemyEndItemsPanel.add(getEnemyEndItem1xLabel(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 3;
+			constraints.gridy = 0;
+			enemyEndItemsPanel.add(getEnemyEndItem1Box(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 1;
+			enemyEndItemsPanel.add(getEnemyEndItem2Label(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 1;
+			constraints.gridy = 1;
+			enemyEndItemsPanel
+					.add(getEnemyEndItem2AmountSpinner(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 2;
+			constraints.gridy = 1;
+			enemyEndItemsPanel.add(getEnemyEndItem2xLabel(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 3;
+			constraints.gridy = 1;
+			enemyEndItemsPanel.add(getEnemyEndItem2Box(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 2;
+			enemyEndItemsPanel.add(getEnemyEndItem3Label(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 1;
+			constraints.gridy = 2;
+			enemyEndItemsPanel
+					.add(getEnemyEndItem3AmountSpinner(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 2;
+			constraints.gridy = 2;
+			enemyEndItemsPanel.add(getEnemyEndItem3xLabel(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 3;
+			constraints.gridy = 2;
+			enemyEndItemsPanel.add(getEnemyEndItem3Box(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 3;
+			enemyEndItemsPanel.add(getEnemyEndItem4Label(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 1;
+			constraints.gridy = 3;
+			enemyEndItemsPanel
+					.add(getEnemyEndItem4AmountSpinner(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 2;
+			constraints.gridy = 3;
+			enemyEndItemsPanel.add(getEnemyEndItem4xLabel(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 3;
+			constraints.gridy = 3;
+			enemyEndItemsPanel.add(getEnemyEndItem4Box(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 4;
+			enemyEndItemsPanel.add(getEnemyEndItem5Label(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 1;
+			constraints.gridy = 4;
+			enemyEndItemsPanel
+					.add(getEnemyEndItem5AmountSpinner(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 2;
+			constraints.gridy = 4;
+			enemyEndItemsPanel.add(getEnemyEndItem5xLabel(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 3;
+			constraints.gridy = 4;
+			enemyEndItemsPanel.add(getEnemyEndItem5Box(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 5;
+			enemyEndItemsPanel.add(getEnemyEndItem6Label(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 1;
+			constraints.gridy = 5;
+			enemyEndItemsPanel
+					.add(getEnemyEndItem6AmountSpinner(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 2;
+			constraints.gridy = 5;
+			enemyEndItemsPanel.add(getEnemyEndItem6xLabel(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 3;
+			constraints.gridy = 5;
+			enemyEndItemsPanel.add(getEnemyEndItem6Box(), constraints);
+
+		}
+		logger.trace("getEnemyEndItemsPanel() - Returning");
+		logger.debug("getEnemyEndItemsPanel() - Returning: {}",
+				enemyEndItemsPanel);
+		return enemyEndItemsPanel;
+	}
+
+	public JLabel getEnemyEndItem1Label() {
+		logger.trace("getEnemyEndItem1Label() - Entering");
+		if (enemyEndItem1Label == null) {
+			enemyEndItem1Label = new JLabel("Item slot 1");
+		}
+		logger.trace("getEnemyEndItem1Label() - Returning");
+		logger.debug("getEnemyEndItem1Label() - Returning: {}",
+				enemyEndItem1Label);
+		return enemyEndItem1Label;
+	}
+
+	public JSpinner getEnemyEndItem1AmountSpinner() {
+		logger.trace("getEnemyEndItem1AmountSpinner() - Entering");
+		if (enemyEndItem1AmountSpinner == null) {
+			enemyEndItem1AmountSpinner = new JSpinner();
+			enemyEndItem1AmountSpinner.setModel(new SpinnerNumberModel(0, 0, 9,
+					1));
+		}
+		logger.trace("getEnemyEndItem1AmountSpinner() - Returning");
+		logger.debug("getEnemyEndItem1AmountSpinner() - Returning: {}",
+				enemyEndItem1AmountSpinner);
+		return enemyEndItem1AmountSpinner;
+	}
+
+	public JLabel getEnemyEndItem1xLabel() {
+		logger.trace("getEnemyEndItem1xLabel() - Entering");
+		if (enemyEndItem1xLabel == null) {
+			enemyEndItem1xLabel = new JLabel("x");
+		}
+		logger.trace("getEnemyEndItem1xLabel() - Returning");
+		logger.debug("getEnemyEndItem1xLabel() - Returning: {}",
+				enemyEndItem1xLabel);
+		return enemyEndItem1xLabel;
+	}
+
+	public JComboBox<Item> getEnemyEndItem1Box() {
+		logger.trace("getEnemyEndItem1Box() - Entering");
+		if (enemyEndItem1Box == null) {
+			enemyEndItem1Box = new JComboBox<Item>(
+					new DefaultComboBoxModel<Item>(
+							allItems.toArray(new Item[] {})));
+			enemyEndItem1Box.setRenderer(new ItemComboBoxRenderer());
+		}
+		logger.trace("getEnemyEndItem1Box() - Returning");
+		logger.debug("getEnemyEndItem1Box() - Returning: {}", enemyEndItem1Box);
+		return enemyEndItem1Box;
+	}
+
+	public JLabel getEnemyEndItem2Label() {
+		logger.trace("getEnemyEndItem2Label() - Entering");
+		if (enemyEndItem2Label == null) {
+			enemyEndItem2Label = new JLabel("Item slot 2");
+		}
+		logger.trace("getEnemyEndItem2Label() - Returning");
+		logger.debug("getEnemyEndItem2Label() - Returning: {}",
+				enemyEndItem2Label);
+		return enemyEndItem2Label;
+	}
+
+	public JSpinner getEnemyEndItem2AmountSpinner() {
+		logger.trace("getEnemyEndItem2AmountSpinner() - Entering");
+		if (enemyEndItem2AmountSpinner == null) {
+			enemyEndItem2AmountSpinner = new JSpinner();
+			enemyEndItem2AmountSpinner.setModel(new SpinnerNumberModel(0, 0, 9,
+					1));
+		}
+		logger.trace("getEnemyEndItem2AmountSpinner() - Returning");
+		logger.debug("getEnemyEndItem2AmountSpinner() - Returning: {}",
+				enemyEndItem2AmountSpinner);
+		return enemyEndItem2AmountSpinner;
+	}
+
+	public JLabel getEnemyEndItem2xLabel() {
+		logger.trace("getEnemyEndItem2xLabel() - Entering");
+		if (enemyEndItem2xLabel == null) {
+			enemyEndItem2xLabel = new JLabel("x");
+		}
+		logger.trace("getEnemyEndItem2xLabel() - Returning");
+		logger.debug("getEnemyEndItem2xLabel() - Returning: {}",
+				enemyEndItem2xLabel);
+		return enemyEndItem2xLabel;
+	}
+
+	public JComboBox<Item> getEnemyEndItem2Box() {
+		logger.trace("getEnemyEndItem2Box() - Entering");
+		if (enemyEndItem2Box == null) {
+			enemyEndItem2Box = new JComboBox<Item>(
+					new DefaultComboBoxModel<Item>(
+							allItems.toArray(new Item[] {})));
+			enemyEndItem2Box.setRenderer(new ItemComboBoxRenderer());
+		}
+		logger.trace("getEnemyEndItem2Box() - Returning");
+		logger.debug("getEnemyEndItem2Box() - Returning: {}", enemyEndItem2Box);
+		return enemyEndItem2Box;
+	}
+
+	public JLabel getEnemyEndItem3Label() {
+		logger.trace("getEnemyEndItem3Label() - Entering");
+		if (enemyEndItem3Label == null) {
+			enemyEndItem3Label = new JLabel("Item slot 3");
+		}
+		logger.trace("getEnemyEndItem3Label() - Returning");
+		logger.debug("getEnemyEndItem3Label() - Returning: {}",
+				enemyEndItem3Label);
+		return enemyEndItem3Label;
+	}
+
+	public JSpinner getEnemyEndItem3AmountSpinner() {
+		logger.trace("getEnemyEndItem3AmountSpinner() - Entering");
+		if (enemyEndItem3AmountSpinner == null) {
+			enemyEndItem3AmountSpinner = new JSpinner();
+			enemyEndItem3AmountSpinner.setModel(new SpinnerNumberModel(0, 0, 9,
+					1));
+		}
+		logger.trace("getEnemyEndItem3AmountSpinner() - Returning");
+		logger.debug("getEnemyEndItem3AmountSpinner() - Returning: {}",
+				enemyEndItem3AmountSpinner);
+		return enemyEndItem3AmountSpinner;
+	}
+
+	public JLabel getEnemyEndItem3xLabel() {
+		logger.trace("getEnemyEndItem3xLabel() - Entering");
+		if (enemyEndItem3xLabel == null) {
+			enemyEndItem3xLabel = new JLabel("x");
+		}
+		logger.trace("getEnemyEndItem3xLabel() - Returning");
+		logger.debug("getEnemyEndItem3xLabel() - Returning: {}",
+				enemyEndItem3xLabel);
+		return enemyEndItem3xLabel;
+	}
+
+	public JComboBox<Item> getEnemyEndItem3Box() {
+		logger.trace("getEnemyEndItem3Box() - Entering");
+		if (enemyEndItem3Box == null) {
+			enemyEndItem3Box = new JComboBox<Item>(
+					new DefaultComboBoxModel<Item>(
+							allItems.toArray(new Item[] {})));
+			enemyEndItem3Box.setRenderer(new ItemComboBoxRenderer());
+		}
+		logger.trace("getEnemyEndItem3Box() - Returning");
+		logger.debug("getEnemyEndItem3Box() - Returning: {}", enemyEndItem3Box);
+		return enemyEndItem3Box;
+	}
+
+	public JLabel getEnemyEndItem4Label() {
+		logger.trace("getEnemyEndItem4Label() - Entering");
+		if (enemyEndItem4Label == null) {
+			enemyEndItem4Label = new JLabel("Item slot 4");
+		}
+		logger.trace("getEnemyEndItem4Label() - Returning");
+		logger.debug("getEnemyEndItem4Label() - Returning: {}",
+				enemyEndItem4Label);
+		return enemyEndItem4Label;
+	}
+
+	public JSpinner getEnemyEndItem4AmountSpinner() {
+		logger.trace("getEnemyEndItem4AmountSpinner() - Entering");
+		if (enemyEndItem4AmountSpinner == null) {
+			enemyEndItem4AmountSpinner = new JSpinner();
+			enemyEndItem4AmountSpinner.setModel(new SpinnerNumberModel(0, 0, 9,
+					1));
+		}
+		logger.trace("getEnemyEndItem4AmountSpinner() - Returning");
+		logger.debug("getEnemyEndItem4AmountSpinner() - Returning: {}",
+				enemyEndItem4AmountSpinner);
+		return enemyEndItem4AmountSpinner;
+	}
+
+	public JLabel getEnemyEndItem4xLabel() {
+		logger.trace("getEnemyEndItem4xLabel() - Entering");
+		if (enemyEndItem4xLabel == null) {
+			enemyEndItem4xLabel = new JLabel("x");
+		}
+		logger.trace("getEnemyEndItem4xLabel() - Returning");
+		logger.debug("getEnemyEndItem4xLabel() - Returning: {}",
+				enemyEndItem4xLabel);
+		return enemyEndItem4xLabel;
+	}
+
+	public JComboBox<Item> getEnemyEndItem4Box() {
+		logger.trace("getEnemyEndItem4Box() - Entering");
+		if (enemyEndItem4Box == null) {
+			enemyEndItem4Box = new JComboBox<Item>(
+					new DefaultComboBoxModel<Item>(
+							allItems.toArray(new Item[] {})));
+			enemyEndItem4Box.setRenderer(new ItemComboBoxRenderer());
+		}
+		logger.trace("getEnemyEndItem4Box() - Returning");
+		logger.debug("getEnemyEndItem4Box() - Returning: {}", enemyEndItem4Box);
+		return enemyEndItem4Box;
+	}
+
+	public JLabel getEnemyEndItem5Label() {
+		logger.trace("getEnemyEndItem5Label() - Entering");
+		if (enemyEndItem5Label == null) {
+			enemyEndItem5Label = new JLabel("Item slot 5");
+		}
+		logger.trace("getEnemyEndItem5Label() - Returning");
+		logger.debug("getEnemyEndItem5Label() - Returning: {}",
+				enemyEndItem5Label);
+		return enemyEndItem5Label;
+	}
+
+	public JSpinner getEnemyEndItem5AmountSpinner() {
+		logger.trace("getEnemyEndItem5AmountSpinner() - Entering");
+		if (enemyEndItem5AmountSpinner == null) {
+			enemyEndItem5AmountSpinner = new JSpinner();
+			enemyEndItem5AmountSpinner.setModel(new SpinnerNumberModel(0, 0, 9,
+					1));
+		}
+		logger.trace("getEnemyEndItem5AmountSpinner() - Returning");
+		logger.debug("getEnemyEndItem5AmountSpinner() - Returning: {}",
+				enemyEndItem5AmountSpinner);
+		return enemyEndItem5AmountSpinner;
+	}
+
+	public JLabel getEnemyEndItem5xLabel() {
+		logger.trace("getEnemyEndItem5xLabel() - Entering");
+		if (enemyEndItem5xLabel == null) {
+			enemyEndItem5xLabel = new JLabel("x");
+		}
+		logger.trace("getEnemyEndItem5xLabel() - Returning");
+		logger.debug("getEnemyEndItem5xLabel() - Returning: {}",
+				enemyEndItem5xLabel);
+		return enemyEndItem5xLabel;
+	}
+
+	public JComboBox<Item> getEnemyEndItem5Box() {
+		logger.trace("getEnemyEndItem5Box() - Entering");
+		if (enemyEndItem5Box == null) {
+			enemyEndItem5Box = new JComboBox<Item>(
+					new DefaultComboBoxModel<Item>(
+							allItems.toArray(new Item[] {})));
+			enemyEndItem5Box.setRenderer(new ItemComboBoxRenderer());
+		}
+		logger.trace("getEnemyEndItem5Box() - Returning");
+		logger.debug("getEnemyEndItem5Box() - Returning: {}", enemyEndItem5Box);
+		return enemyEndItem5Box;
+	}
+
+	public JLabel getEnemyEndItem6Label() {
+		logger.trace("getEnemyEndItem6Label() - Entering");
+		if (enemyEndItem6Label == null) {
+			enemyEndItem6Label = new JLabel("Item slot 6");
+		}
+		logger.trace("getEnemyEndItem6Label() - Returning");
+		logger.debug("getEnemyEndItem6Label() - Returning: {}",
+				enemyEndItem6Label);
+		return enemyEndItem6Label;
+	}
+
+	public JSpinner getEnemyEndItem6AmountSpinner() {
+		logger.trace("getEnemyEndItem6AmountSpinner() - Entering");
+		if (enemyEndItem6AmountSpinner == null) {
+			enemyEndItem6AmountSpinner = new JSpinner();
+			enemyEndItem6AmountSpinner.setModel(new SpinnerNumberModel(0, 0, 9,
+					1));
+		}
+		logger.trace("getEnemyEndItem6AmountSpinner() - Returning");
+		logger.debug("getEnemyEndItem6AmountSpinner() - Returning: {}",
+				enemyEndItem6AmountSpinner);
+		return enemyEndItem6AmountSpinner;
+	}
+
+	public JLabel getEnemyEndItem6xLabel() {
+		logger.trace("getEnemyEndItem6xLabel() - Entering");
+		if (enemyEndItem6xLabel == null) {
+			enemyEndItem6xLabel = new JLabel("x");
+		}
+		logger.trace("getEnemyEndItem6xLabel() - Returning");
+		logger.debug("getEnemyEndItem6xLabel() - Returning: {}",
+				enemyEndItem6xLabel);
+		return enemyEndItem6xLabel;
+	}
+
+	public JComboBox<Item> getEnemyEndItem6Box() {
+		logger.trace("getEnemyEndItem6Box() - Entering");
+		if (enemyEndItem6Box == null) {
+			enemyEndItem6Box = new JComboBox<Item>(
+					new DefaultComboBoxModel<Item>(
+							allItems.toArray(new Item[] {})));
+			enemyEndItem6Box.setRenderer(new ItemComboBoxRenderer());
+		}
+		logger.trace("getEnemyEndItem6Box() - Returning");
+		logger.debug("getEnemyEndItem6Box() - Returning: {}", enemyEndItem6Box);
+		return enemyEndItem6Box;
+	}
+
+	public JPanel getEnemySpellsPanel() {
+		logger.trace("getEnemySpellsPanel() - Entering");
+		if (enemySpellsPanel == null) {
+			enemySpellsPanel = new JPanel(new GridBagLayout());
+			GridBagConstraints constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 0;
+			enemySpellsPanel.add(getEnemySpell1Label(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 1;
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.weightx = 1;
+			enemySpellsPanel.add(getEnemySpell1Box(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 2;
+			enemySpellsPanel.add(getEnemySpell2Label(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 3;
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.weightx = 1;
+			enemySpellsPanel.add(getEnemySpell2Box(), constraints);
+		}
+		logger.trace("getEnemySpellsPanel() - Returning");
+		logger.debug("getEnemySpellsPanel() - Returning: {}", enemySpellsPanel);
+		return enemySpellsPanel;
+	}
+
+	public JLabel getEnemySpell1Label() {
+		logger.trace("getEnemySpell1Label() - Entering");
+		if (enemySpell1Label == null) {
+			enemySpell1Label = new JLabel("Summoner Spell 1");
+		}
+		logger.trace("getEnemySpell1Label() - Returning");
+		logger.debug("getEnemySpell1Label() - Returning: {}", enemySpell1Label);
+		return enemySpell1Label;
+	}
+
+	public JComboBox<SummonerSpell> getEnemySpell1Box() {
+		logger.trace("getEnemySpell1Box() - Entering");
+		if (enemySpell1Box == null) {
+			enemySpell1Box = new JComboBox<SummonerSpell>(
+					new DefaultComboBoxModel<SummonerSpell>(
+							allSpells.toArray(new SummonerSpell[] {})));
+			enemySpell1Box.setRenderer(new SpellComboBoxRenderer());
+		}
+		logger.trace("getEnemySpell1Box() - Returning");
+		logger.debug("getEnemySpell1Box() - Returning: {}", enemySpell1Box);
+		return enemySpell1Box;
+	}
+
+	public JLabel getEnemySpell2Label() {
+		logger.trace("getEnemySpell2Label() - Entering");
+		if (enemySpell2Label == null) {
+			enemySpell2Label = new JLabel("Summoner Spell 2");
+		}
+		logger.trace("getEnemySpell2Label() - Returning");
+		logger.debug("getEnemySpell2Label() - Returning: {}", enemySpell2Label);
+		return enemySpell2Label;
+	}
+
+	public JComboBox<SummonerSpell> getEnemySpell2Box() {
+		logger.trace("getEnemySpell2Box() - Entering");
+		if (enemySpell2Box == null) {
+			enemySpell2Box = new JComboBox<SummonerSpell>(
+					new DefaultComboBoxModel<SummonerSpell>(
+							allSpells.toArray(new SummonerSpell[] {})));
+			enemySpell2Box.setRenderer(new SpellComboBoxRenderer());
+		}
+		logger.trace("getEnemySpell2Box() - Returning");
+		logger.debug("getEnemySpell2Box() - Returning: {}", enemySpell2Box);
+		return enemySpell2Box;
 	}
 
 	public JPanel getMatchupResultPanel() {
@@ -2326,27 +3611,29 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 						ok = false;
 						error += "- Please select if you won the matchup.\n";
 					}
-					if (getMatchupNotesTextArea().getText().contains("§")) {
-						ok = false;
-						error += "- Your notes can't contain the character '§'. This is due to exporting.\n";
-					}
 					int monehz = 500;
-					Item i = allItems.get(getMyItem1Box().getSelectedIndex());
+					Item i = allStartingItems.get(getMyItem1Box()
+							.getSelectedIndex());
 					monehz -= (i.getPrice() * (int) getMyItem1AmountSpinner()
 							.getValue());
-					i = allItems.get(getMyItem2Box().getSelectedIndex());
+					i = allStartingItems
+							.get(getMyItem2Box().getSelectedIndex());
 					monehz -= (i.getPrice() * (int) getMyItem2AmountSpinner()
 							.getValue());
-					i = allItems.get(getMyItem3Box().getSelectedIndex());
+					i = allStartingItems
+							.get(getMyItem3Box().getSelectedIndex());
 					monehz -= (i.getPrice() * (int) getMyItem3AmountSpinner()
 							.getValue());
-					i = allItems.get(getMyItem4Box().getSelectedIndex());
+					i = allStartingItems
+							.get(getMyItem4Box().getSelectedIndex());
 					monehz -= (i.getPrice() * (int) getMyItem4AmountSpinner()
 							.getValue());
-					i = allItems.get(getMyItem5Box().getSelectedIndex());
+					i = allStartingItems
+							.get(getMyItem5Box().getSelectedIndex());
 					monehz -= (i.getPrice() * (int) getMyItem5AmountSpinner()
 							.getValue());
-					i = allItems.get(getMyItem6Box().getSelectedIndex());
+					i = allStartingItems
+							.get(getMyItem6Box().getSelectedIndex());
 					monehz -= (i.getPrice() * (int) getMyItem6AmountSpinner()
 							.getValue());
 					if (monehz < 0) {
@@ -2354,27 +3641,53 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 						error += "- Please dont exceed 500g with your items.\n";
 					}
 					monehz = 500;
-					i = allItems.get(getEnemyItem1Box().getSelectedIndex());
+					i = allStartingItems.get(getEnemyItem1Box()
+							.getSelectedIndex());
 					monehz -= (i.getPrice() * (int) getEnemyItem1AmountSpinner()
 							.getValue());
-					i = allItems.get(getEnemyItem2Box().getSelectedIndex());
+					i = allStartingItems.get(getEnemyItem2Box()
+							.getSelectedIndex());
 					monehz -= (i.getPrice() * (int) getEnemyItem2AmountSpinner()
 							.getValue());
-					i = allItems.get(getEnemyItem3Box().getSelectedIndex());
+					i = allStartingItems.get(getEnemyItem3Box()
+							.getSelectedIndex());
 					monehz -= (i.getPrice() * (int) getEnemyItem3AmountSpinner()
 							.getValue());
-					i = allItems.get(getEnemyItem4Box().getSelectedIndex());
+					i = allStartingItems.get(getEnemyItem4Box()
+							.getSelectedIndex());
 					monehz -= (i.getPrice() * (int) getEnemyItem4AmountSpinner()
 							.getValue());
-					i = allItems.get(getEnemyItem5Box().getSelectedIndex());
+					i = allStartingItems.get(getEnemyItem5Box()
+							.getSelectedIndex());
 					monehz -= (i.getPrice() * (int) getEnemyItem5AmountSpinner()
 							.getValue());
-					i = allItems.get(getEnemyItem6Box().getSelectedIndex());
+					i = allStartingItems.get(getEnemyItem6Box()
+							.getSelectedIndex());
 					monehz -= (i.getPrice() * (int) getEnemyItem6AmountSpinner()
 							.getValue());
 					if (monehz < 0) {
 						ok = false;
 						error += "- Please dont exceed 500g with your opponents items.\n";
+					}
+					if (getMySpell1Box().getItemAt(
+							getMySpell1Box().getSelectedIndex()).getId() == 0) {
+						ok = false;
+						error += "- Please select your first summoner spell\n";
+					}
+					if (getMySpell2Box().getItemAt(
+							getMySpell2Box().getSelectedIndex()).getId() == 0) {
+						ok = false;
+						error += "- Please select your second summoner spell\n";
+					}
+					if (getEnemySpell1Box().getItemAt(
+							getEnemySpell1Box().getSelectedIndex()).getId() == 0) {
+						ok = false;
+						error += "- Please select your opponents first summoner spell\n";
+					}
+					if (getEnemySpell2Box().getItemAt(
+							getEnemySpell2Box().getSelectedIndex()).getId() == 0) {
+						ok = false;
+						error += "- Please select your opponents second summoner spell\n";
 					}
 					if (!ok) {
 						JOptionPane.showMessageDialog(MainView.getInstance(),
@@ -2385,6 +3698,10 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 							game = toEdit;
 						}
 						game.setDate(getDateChooser().getDate());
+						long length = ((int) getLengthMinutesSpinner()
+								.getValue() * 60)
+								+ ((int) getLengthSecondsSpinner().getValue());
+						game.setLength(length);
 						game.setEnemyTeam(enemyTeamChampions);
 						game.setMyTeam(myTeamChampions);
 						game.setNotes(getGameNotesTextArea().getText());
@@ -2398,6 +3715,7 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 								.getValue());
 						game.setOwnAssists((int) getOwnAssistsSpinner()
 								.getValue());
+						game.setOwnCS((int) getOwnCSSpinner().getValue());
 						Matchup matchup = new Matchup();
 						if (toEdit != null) {
 							matchup = toEdit.getMatchup();
@@ -2424,42 +3742,42 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 						ArrayList<MatchupItem> mis = new ArrayList<MatchupItem>();
 						i = getMyItem1Box().getItemAt(
 								getMyItem1Box().getSelectedIndex());
-						if (!i.getName().equals("no item")
+						if (i.getId() != 0
 								&& (int) getMyItem1AmountSpinner().getValue() != 0) {
 							mis.add(new MatchupItem(i,
 									(int) getMyItem1AmountSpinner().getValue()));
 						}
 						i = getMyItem2Box().getItemAt(
 								getMyItem2Box().getSelectedIndex());
-						if (!i.getName().equals("no item")
+						if (i.getId() != 0
 								&& (int) getMyItem2AmountSpinner().getValue() != 0) {
 							mis.add(new MatchupItem(i,
 									(int) getMyItem2AmountSpinner().getValue()));
 						}
 						i = getMyItem3Box().getItemAt(
 								getMyItem3Box().getSelectedIndex());
-						if (!i.getName().equals("no item")
+						if (i.getId() != 0
 								&& (int) getMyItem3AmountSpinner().getValue() != 0) {
 							mis.add(new MatchupItem(i,
 									(int) getMyItem3AmountSpinner().getValue()));
 						}
 						i = getMyItem4Box().getItemAt(
 								getMyItem4Box().getSelectedIndex());
-						if (!i.getName().equals("no item")
+						if (i.getId() != 0
 								&& (int) getMyItem4AmountSpinner().getValue() != 0) {
 							mis.add(new MatchupItem(i,
 									(int) getMyItem4AmountSpinner().getValue()));
 						}
 						i = getMyItem5Box().getItemAt(
 								getMyItem5Box().getSelectedIndex());
-						if (!i.getName().equals("no item")
+						if (i.getId() != 0
 								&& (int) getMyItem5AmountSpinner().getValue() != 0) {
 							mis.add(new MatchupItem(i,
 									(int) getMyItem5AmountSpinner().getValue()));
 						}
 						i = getMyItem6Box().getItemAt(
 								getMyItem6Box().getSelectedIndex());
-						if (!i.getName().equals("no item")
+						if (i.getId() != 0
 								&& (int) getMyItem6AmountSpinner().getValue() != 0) {
 							mis.add(new MatchupItem(i,
 									(int) getMyItem6AmountSpinner().getValue()));
@@ -2467,9 +3785,66 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 						matchup.setMyStartItems(mis);
 
 						mis = new ArrayList<MatchupItem>();
+						i = getMyEndItem1Box().getItemAt(
+								getMyEndItem1Box().getSelectedIndex());
+						if (i.getId() != 0
+								&& (int) getMyEndItem1AmountSpinner()
+										.getValue() != 0) {
+							mis.add(new MatchupItem(i,
+									(int) getMyEndItem1AmountSpinner()
+											.getValue()));
+						}
+						i = getMyEndItem2Box().getItemAt(
+								getMyEndItem2Box().getSelectedIndex());
+						if (i.getId() != 0
+								&& (int) getMyEndItem2AmountSpinner()
+										.getValue() != 0) {
+							mis.add(new MatchupItem(i,
+									(int) getMyEndItem2AmountSpinner()
+											.getValue()));
+						}
+						i = getMyEndItem3Box().getItemAt(
+								getMyEndItem3Box().getSelectedIndex());
+						if (i.getId() != 0
+								&& (int) getMyEndItem3AmountSpinner()
+										.getValue() != 0) {
+							mis.add(new MatchupItem(i,
+									(int) getMyEndItem3AmountSpinner()
+											.getValue()));
+						}
+						i = getMyEndItem4Box().getItemAt(
+								getMyEndItem4Box().getSelectedIndex());
+						if (i.getId() != 0
+								&& (int) getMyEndItem4AmountSpinner()
+										.getValue() != 0) {
+							mis.add(new MatchupItem(i,
+									(int) getMyEndItem4AmountSpinner()
+											.getValue()));
+						}
+						i = getMyEndItem5Box().getItemAt(
+								getMyEndItem5Box().getSelectedIndex());
+						if (i.getId() != 0
+								&& (int) getMyEndItem5AmountSpinner()
+										.getValue() != 0) {
+							mis.add(new MatchupItem(i,
+									(int) getMyEndItem5AmountSpinner()
+											.getValue()));
+						}
+						i = getMyEndItem6Box().getItemAt(
+								getMyEndItem6Box().getSelectedIndex());
+						if (i.getId() != 0
+								&& (int) getMyEndItem6AmountSpinner()
+										.getValue() != 0) {
+							mis.add(new MatchupItem(i,
+									(int) getMyEndItem6AmountSpinner()
+											.getValue()));
+						}
+						matchup.setMyEndItems(mis);
+
+						mis = new ArrayList<MatchupItem>();
 						i = getEnemyItem1Box().getItemAt(
 								getEnemyItem1Box().getSelectedIndex());
-						if (!i.getName().equals("no item")
+						if (i.getId() != 0
 								&& (int) getEnemyItem1AmountSpinner()
 										.getValue() != 0) {
 							mis.add(new MatchupItem(i,
@@ -2478,7 +3853,7 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 						}
 						i = getEnemyItem2Box().getItemAt(
 								getEnemyItem2Box().getSelectedIndex());
-						if (!i.getName().equals("no item")
+						if (i.getId() != 0
 								&& (int) getEnemyItem2AmountSpinner()
 										.getValue() != 0) {
 							mis.add(new MatchupItem(i,
@@ -2487,7 +3862,7 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 						}
 						i = getEnemyItem3Box().getItemAt(
 								getEnemyItem3Box().getSelectedIndex());
-						if (!i.getName().equals("no item")
+						if (i.getId() != 0
 								&& (int) getEnemyItem3AmountSpinner()
 										.getValue() != 0) {
 							mis.add(new MatchupItem(i,
@@ -2496,7 +3871,7 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 						}
 						i = getEnemyItem4Box().getItemAt(
 								getEnemyItem4Box().getSelectedIndex());
-						if (!i.getName().equals("no item")
+						if (i.getId() != 0
 								&& (int) getEnemyItem4AmountSpinner()
 										.getValue() != 0) {
 							mis.add(new MatchupItem(i,
@@ -2505,7 +3880,7 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 						}
 						i = getEnemyItem5Box().getItemAt(
 								getEnemyItem5Box().getSelectedIndex());
-						if (!i.getName().equals("no item")
+						if (i.getId() != 0
 								&& (int) getEnemyItem5AmountSpinner()
 										.getValue() != 0) {
 							mis.add(new MatchupItem(i,
@@ -2514,7 +3889,7 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 						}
 						i = getEnemyItem6Box().getItemAt(
 								getEnemyItem6Box().getSelectedIndex());
-						if (!i.getName().equals("no item")
+						if (i.getId() != 0
 								&& (int) getEnemyItem6AmountSpinner()
 										.getValue() != 0) {
 							mis.add(new MatchupItem(i,
@@ -2522,6 +3897,71 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 											.getValue()));
 						}
 						matchup.setEnemyStartItems(mis);
+
+						mis = new ArrayList<MatchupItem>();
+						i = getEnemyEndItem1Box().getItemAt(
+								getEnemyEndItem1Box().getSelectedIndex());
+						if (i.getId() != 0
+								&& (int) getEnemyEndItem1AmountSpinner()
+										.getValue() != 0) {
+							mis.add(new MatchupItem(i,
+									(int) getEnemyEndItem1AmountSpinner()
+											.getValue()));
+						}
+						i = getEnemyEndItem2Box().getItemAt(
+								getEnemyEndItem2Box().getSelectedIndex());
+						if (i.getId() != 0
+								&& (int) getEnemyEndItem2AmountSpinner()
+										.getValue() != 0) {
+							mis.add(new MatchupItem(i,
+									(int) getEnemyEndItem2AmountSpinner()
+											.getValue()));
+						}
+						i = getEnemyEndItem3Box().getItemAt(
+								getEnemyEndItem3Box().getSelectedIndex());
+						if (i.getId() != 0
+								&& (int) getEnemyEndItem3AmountSpinner()
+										.getValue() != 0) {
+							mis.add(new MatchupItem(i,
+									(int) getEnemyEndItem3AmountSpinner()
+											.getValue()));
+						}
+						i = getEnemyEndItem4Box().getItemAt(
+								getEnemyEndItem4Box().getSelectedIndex());
+						if (i.getId() != 0
+								&& (int) getEnemyEndItem4AmountSpinner()
+										.getValue() != 0) {
+							mis.add(new MatchupItem(i,
+									(int) getEnemyEndItem4AmountSpinner()
+											.getValue()));
+						}
+						i = getEnemyEndItem5Box().getItemAt(
+								getEnemyEndItem5Box().getSelectedIndex());
+						if (i.getId() != 0
+								&& (int) getEnemyEndItem5AmountSpinner()
+										.getValue() != 0) {
+							mis.add(new MatchupItem(i,
+									(int) getEnemyEndItem5AmountSpinner()
+											.getValue()));
+						}
+						i = getEnemyEndItem6Box().getItemAt(
+								getEnemyEndItem6Box().getSelectedIndex());
+						if (i.getId() != 0
+								&& (int) getEnemyEndItem6AmountSpinner()
+										.getValue() != 0) {
+							mis.add(new MatchupItem(i,
+									(int) getEnemyEndItem6AmountSpinner()
+											.getValue()));
+						}
+						matchup.setEnemyEndItems(mis);
+						matchup.setMySpell1(getMySpell1Box().getItemAt(
+								getMySpell1Box().getSelectedIndex()));
+						matchup.setMySpell2(getMySpell2Box().getItemAt(
+								getMySpell2Box().getSelectedIndex()));
+						matchup.setEnemySpell1(getEnemySpell1Box().getItemAt(
+								getEnemySpell1Box().getSelectedIndex()));
+						matchup.setEnemySpell2(getEnemySpell2Box().getItemAt(
+								getEnemySpell2Box().getSelectedIndex()));
 						game.setMatchup(matchup);
 						if (toEdit != null) {
 							MainController.getInstance().updated();
@@ -2570,10 +4010,18 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		Champion c = new Champion(0, "no champion", null);
 		allChampions.add(c);
 		allChampions.addAll(ChampionUtil.getAllChampions());
-		allItems = new ArrayList<Item>();
+		allStartingItems = new ArrayList<Item>();
 		Item i = new Item(0, "no item", 0, null);
+		allStartingItems.add(i);
+		allStartingItems.addAll(ItemUtil.getAllStartingItems());
+		allItems = new ArrayList<Item>();
+		i = new Item(0, "no item", 0, null);
 		allItems.add(i);
-		allItems.addAll(ItemUtil.getAllStartingItems());
+		allItems.addAll(ItemUtil.getAllItems());
+		allSpells = new ArrayList<SummonerSpell>();
+		SummonerSpell s = new SummonerSpell(0, "no spell", null);
+		allSpells.add(s);
+		allSpells.addAll(SummonerSpellUtil.getAllSpells());
 		this.setTitle("New Game");
 		this.setModal(true);
 		this.setResizable(false);
@@ -2592,6 +4040,11 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 	private void fillFields() {
 		logger.trace("fillFields() - Entering");
 		getDateChooser().setDate(toEdit.getDate());
+		long lengthFull = toEdit.getLenght();
+		int lengthMin = (int)lengthFull/60;
+		int lengthSec = (int)lengthFull-lengthMin*60;
+		getLengthMinutesSpinner().setValue(lengthMin);
+		getLengthSecondsSpinner().setValue(lengthSec);
 		getTeam1Champ1Box().setSelectedItem(toEdit.getMyTeam().get(0));
 		getTeam1Champ2Box().setSelectedItem(toEdit.getMyTeam().get(1));
 		getTeam1Champ3Box().setSelectedItem(toEdit.getMyTeam().get(2));
@@ -2610,6 +4063,7 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		getOwnKillsSpinner().setValue(toEdit.getOwnKills());
 		getOwnDeathsSpinner().setValue(toEdit.getOwnDeaths());
 		getOwnAssistsSpinner().setValue(toEdit.getOwnAssists());
+		getOwnCSSpinner().setValue(toEdit.getOwnCS());
 		getGameNotesTextArea().setText(toEdit.getNotes());
 
 		Matchup m = toEdit.getMatchup();
@@ -2658,6 +4112,42 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 				}
 			}
 		}
+		if (m.getMyEndItems().size() >= 1) {
+			getMyEndItem1AmountSpinner().setValue(
+					m.getMyEndItems().get(0).getAmount());
+			getMyEndItem1Box().setSelectedItem(
+					m.getMyEndItems().get(0).getItem());
+			if (m.getMyEndItems().size() >= 2) {
+				getMyEndItem2AmountSpinner().setValue(
+						m.getMyEndItems().get(1).getAmount());
+				getMyEndItem2Box().setSelectedItem(
+						m.getMyEndItems().get(1).getItem());
+				if (m.getMyEndItems().size() >= 3) {
+					getMyEndItem3AmountSpinner().setValue(
+							m.getMyEndItems().get(2).getAmount());
+					getMyEndItem3Box().setSelectedItem(
+							m.getMyEndItems().get(2).getItem());
+					if (m.getMyEndItems().size() >= 4) {
+						getMyEndItem4AmountSpinner().setValue(
+								m.getMyEndItems().get(3).getAmount());
+						getMyEndItem4Box().setSelectedItem(
+								m.getMyEndItems().get(3).getItem());
+						if (m.getMyEndItems().size() >= 5) {
+							getMyEndItem5AmountSpinner().setValue(
+									m.getMyEndItems().get(4).getAmount());
+							getMyEndItem5Box().setSelectedItem(
+									m.getMyEndItems().get(4).getItem());
+							if (m.getMyEndItems().size() >= 5) {
+								getMyEndItem6AmountSpinner().setValue(
+										m.getMyEndItems().get(5).getAmount());
+								getMyEndItem6Box().setSelectedItem(
+										m.getMyEndItems().get(5).getItem());
+							}
+						}
+					}
+				}
+			}
+		}
 		if (m.getEnemyStartItems().size() >= 1) {
 			getEnemyItem1AmountSpinner().setValue(
 					m.getEnemyStartItems().get(0).getAmount());
@@ -2697,6 +4187,49 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 				}
 			}
 		}
+		if (m.getEnemyEndItems().size() >= 1) {
+			getEnemyEndItem1AmountSpinner().setValue(
+					m.getEnemyEndItems().get(0).getAmount());
+			getEnemyEndItem1Box().setSelectedItem(
+					m.getEnemyEndItems().get(0).getItem());
+			if (m.getEnemyEndItems().size() >= 2) {
+				getEnemyEndItem2AmountSpinner().setValue(
+						m.getEnemyEndItems().get(1).getAmount());
+				getEnemyEndItem2Box().setSelectedItem(
+						m.getEnemyEndItems().get(1).getItem());
+				if (m.getEnemyEndItems().size() >= 3) {
+					getEnemyEndItem3AmountSpinner().setValue(
+							m.getEnemyEndItems().get(2).getAmount());
+					getEnemyEndItem3Box().setSelectedItem(
+							m.getEnemyEndItems().get(2).getItem());
+					if (m.getEnemyEndItems().size() >= 4) {
+						getEnemyEndItem4AmountSpinner().setValue(
+								m.getEnemyEndItems().get(3).getAmount());
+						getEnemyEndItem4Box().setSelectedItem(
+								m.getEnemyEndItems().get(3).getItem());
+						if (m.getEnemyEndItems().size() >= 5) {
+							getEnemyEndItem5AmountSpinner().setValue(
+									m.getEnemyEndItems().get(4).getAmount());
+							getEnemyEndItem5Box().setSelectedItem(
+									m.getEnemyEndItems().get(4).getItem());
+							if (m.getEnemyEndItems().size() >= 5) {
+								getEnemyEndItem6AmountSpinner().setValue(
+										m.getEnemyEndItems().get(5)
+												.getAmount());
+								getEnemyEndItem6Box()
+										.setSelectedItem(
+												m.getEnemyEndItems().get(5)
+														.getItem());
+							}
+						}
+					}
+				}
+			}
+		}
+		getMySpell1Box().setSelectedItem(m.getMySpell1());
+		getMySpell2Box().setSelectedItem(m.getMySpell2());
+		getEnemySpell1Box().setSelectedItem(m.getEnemySpell1());
+		getEnemySpell2Box().setSelectedItem(m.getEnemySpell2());
 		getMatchupNotesTextArea().setText(m.getNotes());
 		logger.trace("fillFields() - Leaving");
 	}
