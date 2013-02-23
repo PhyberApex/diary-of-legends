@@ -13,10 +13,9 @@ import java.io.IOException;
 import java.util.Properties;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import com.db4o.Db4oEmbedded;
 import com.db4o.ObjectContainer;
-import com.db4o.config.EmbeddedConfiguration;
-
+import com.db4o.ObjectServer;
+import com.db4o.cs.Db4oClientServer;
 import de.phyberapex.diaryoflegends.model.Summoner;
 
 public class Config {
@@ -25,7 +24,9 @@ public class Config {
 	private Properties prop;
 	private ObjectContainer dbHandle;
 	private Summoner currentSummoner;
-	transient private static Logger logger = LogManager.getLogger(Config.class.getName());
+	private ObjectServer server;
+	transient private static Logger logger = LogManager.getLogger(Config.class
+			.getName());
 
 	private Config() {
 		logger.trace("Config() - Entering");
@@ -139,10 +140,9 @@ public class Config {
 		logger.debug("Database handle is {}", dbHandle);
 		if (dbHandle == null) {
 			logger.debug("Creating a new instance of ObjectContainer");
-			EmbeddedConfiguration configuration = Db4oEmbedded
-					.newConfiguration();
-			dbHandle = Db4oEmbedded.openFile(configuration,
-					prop.getProperty("DATABASENAME"));
+			server = Db4oClientServer.openServer(
+					prop.getProperty("DATABASENAME"), 0);
+			dbHandle = server.openClient();
 		}
 		logger.trace("getDBHandle() - Returning");
 		logger.debug("getDBHandle() - Returning: {}", dbHandle);
@@ -161,5 +161,11 @@ public class Config {
 		logger.debug("setCurrentSummoner() - Parameter: {}", currentSummoner);
 		this.currentSummoner = currentSummoner;
 		logger.trace("setCurrentSummoner() - Leaving");
+	}
+
+	
+	public void closeDatabase() {
+		getDBHandle().close();
+		server.close();
 	}
 }

@@ -3,7 +3,7 @@ package de.phyberapex.diaryoflegends.extra;
 import java.awt.*;
 import javax.swing.*;
 
-public class LoadingSplash extends JDialog {
+public class LoadingSplash extends JWindow {
 
 	private static final long serialVersionUID = 1L;
 	private JProgressBar progress;
@@ -87,8 +87,7 @@ public class LoadingSplash extends JDialog {
 	 */
 	public void setVisible(boolean show) {
 		if (show) {
-			setUndecorated(show);
-			setModal(show);
+			setAlwaysOnTop(true);
 			pack();
 			setLocationRelativeTo(null);
 		}

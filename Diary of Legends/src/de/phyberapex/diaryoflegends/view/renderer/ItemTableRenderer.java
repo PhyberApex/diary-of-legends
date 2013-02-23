@@ -11,13 +11,14 @@ import javax.swing.table.TableCellRenderer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import de.phyberapex.diaryoflegends.extra.ImageIconFactory;
 
 public class ItemTableRenderer implements TableCellRenderer {
 
 	private JPanel panel;
 	private JLabel label;
-	private static Logger logger = LogManager
-			.getLogger(ItemTableRenderer.class.getName());
+	private static Logger logger = LogManager.getLogger(ItemTableRenderer.class
+			.getName());
 
 	public ItemTableRenderer() {
 		logger.trace("ChampionTableRenderer() - Entering");
@@ -34,6 +35,10 @@ public class ItemTableRenderer implements TableCellRenderer {
 		case 0:
 			label = new JLabel();
 			Icon ic = (Icon) value;
+			if (ic == null) {
+				ic = ImageIconFactory
+						.createImageIconFromResourePath("img/empty_60x60.png");
+			}
 			label.setIcon(ic);
 			label.setSize(ic.getIconHeight(), ic.getIconWidth());
 			returnValue = label;

@@ -59,6 +59,7 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 	private List<Champion> enemyTeamChampions;
 	private JTabbedPane newEntryContentPane;
 	private Game toEdit;
+	private boolean isImport;
 	private JPanel gameContentPanel;
 	private JPanel datePanel;
 	private JLabel dateLabel;
@@ -1017,7 +1018,7 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 			constraints.fill = GridBagConstraints.BOTH;
 			constraints.weightx = 1;
 			gameStatsPanel.add(getOwnAssistsSpinner(), constraints);
-			
+
 			constraints = new GridBagConstraints();
 			constraints.gridx = 0;
 			constraints.gridy = 3;
@@ -3980,10 +3981,11 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		return finishButton;
 	}
 
-	public void setToEdit(Game toEdit) {
+	public void setToEdit(Game toEdit, boolean isImport) {
 		logger.trace("setToEdit() - Entering");
-		logger.debug("setToEdit() - Parameter: {}", toEdit);
+		logger.debug("setToEdit() - Parameter: {}, {}", toEdit, isImport);
 		this.toEdit = toEdit;
+		this.isImport = isImport;
 		logger.trace("setToEdit() - Leaving");
 	}
 
@@ -4041,8 +4043,8 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		logger.trace("fillFields() - Entering");
 		getDateChooser().setDate(toEdit.getDate());
 		long lengthFull = toEdit.getLenght();
-		int lengthMin = (int)lengthFull/60;
-		int lengthSec = (int)lengthFull-lengthMin*60;
+		int lengthMin = (int) lengthFull / 60;
+		int lengthSec = (int) lengthFull - lengthMin * 60;
 		getLengthMinutesSpinner().setValue(lengthMin);
 		getLengthSecondsSpinner().setValue(lengthSec);
 		getTeam1Champ1Box().setSelectedItem(toEdit.getMyTeam().get(0));
@@ -4067,14 +4069,16 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		getGameNotesTextArea().setText(toEdit.getNotes());
 
 		Matchup m = toEdit.getMatchup();
-		getLaneBox().setSelectedItem(m.getLane());
-		getMatchupDifficultyBox().setSelectedItem(m.getDifficulty());
-		if (m.getResult() == MatchupResult.WIN) {
-			getMatchupResultWonButton().setSelected(true);
-		} else if (m.getResult() == MatchupResult.LOSS) {
-			getMatchupResultLossButton().setSelected(true);
-		} else {
-			getMatchupResultDrawButton().setSelected(true);
+		if (!isImport) {
+			getLaneBox().setSelectedItem(m.getLane());
+			getMatchupDifficultyBox().setSelectedItem(m.getDifficulty());
+			if (m.getResult() == MatchupResult.WIN) {
+				getMatchupResultWonButton().setSelected(true);
+			} else if (m.getResult() == MatchupResult.LOSS) {
+				getMatchupResultLossButton().setSelected(true);
+			} else {
+				getMatchupResultDrawButton().setSelected(true);
+			}
 		}
 		if (m.getMyStartItems().size() >= 1) {
 			getMyItem1AmountSpinner().setValue(
@@ -4173,7 +4177,7 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 									m.getEnemyStartItems().get(4).getAmount());
 							getEnemyItem5Box().setSelectedItem(
 									m.getEnemyStartItems().get(4).getItem());
-							if (m.getEnemyStartItems().size() >= 5) {
+							if (m.getEnemyStartItems().size() >= 6) {
 								getEnemyItem6AmountSpinner().setValue(
 										m.getEnemyStartItems().get(5)
 												.getAmount());
@@ -4212,14 +4216,13 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 									m.getEnemyEndItems().get(4).getAmount());
 							getEnemyEndItem5Box().setSelectedItem(
 									m.getEnemyEndItems().get(4).getItem());
-							if (m.getEnemyEndItems().size() >= 5) {
-								getEnemyEndItem6AmountSpinner().setValue(
-										m.getEnemyEndItems().get(5)
-												.getAmount());
-								getEnemyEndItem6Box()
-										.setSelectedItem(
+							if (m.getEnemyEndItems().size() >= 6) {
+								getEnemyEndItem6AmountSpinner()
+										.setValue(
 												m.getEnemyEndItems().get(5)
-														.getItem());
+														.getAmount());
+								getEnemyEndItem6Box().setSelectedItem(
+										m.getEnemyEndItems().get(5).getItem());
 							}
 						}
 					}

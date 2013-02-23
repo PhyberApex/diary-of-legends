@@ -1,9 +1,6 @@
 package de.phyberapex.diaryoflegends.model.util;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import com.db4o.ObjectContainer;
@@ -32,8 +29,7 @@ public class GameUtil {
 	 */
 	public static List<Game> getAllGames() {
 		logger.trace("getAllGames() - Entering");
-		List<Game> returnValue = new ArrayList<Game>();
-		ObjectSet<Game> set = dbHandle.query(new Predicate<Game>() {
+		ObjectSet<Game> returnValue = dbHandle.query(new Predicate<Game>() {
 
 			private static final long serialVersionUID = 1625150373402614414L;
 
@@ -42,10 +38,6 @@ public class GameUtil {
 				return true;
 			}
 		});
-		Iterator<Game> i = set.iterator();
-		while (i.hasNext()) {
-			returnValue.add(i.next());
-		}
 		logger.trace("getAllGames() - Returning");
 		logger.debug("Return {}", returnValue);
 		return returnValue;

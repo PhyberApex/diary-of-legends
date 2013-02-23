@@ -1,7 +1,5 @@
 package de.phyberapex.diaryoflegends.model.util;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -31,8 +29,7 @@ public class SummonerSpellUtil {
 	 */
 	public static List<SummonerSpell> getAllSpells() {
 		logger.trace("getAllSpells() - Entering");
-		List<SummonerSpell> returnValue = new ArrayList<SummonerSpell>();
-		ObjectSet<SummonerSpell> set = dbHandle
+		ObjectSet<SummonerSpell> returnValue = dbHandle
 				.query(new Predicate<SummonerSpell>() {
 
 					private static final long serialVersionUID = 1625150373402614414L;
@@ -42,10 +39,6 @@ public class SummonerSpellUtil {
 						return true;
 					}
 				});
-		Iterator<SummonerSpell> i = set.iterator();
-		while (i.hasNext()) {
-			returnValue.add(i.next());
-		}
 		logger.trace("getAllSpells() - Returning");
 		logger.debug("getAllSpells {}", returnValue);
 		return returnValue;
@@ -74,7 +67,7 @@ public class SummonerSpellUtil {
 		dbHandle.delete(spell);
 		logger.trace("deleteItem() - Leaving");
 	}
-	
+
 	/**
 	 * Returns the {@link SummonerSpell} with the given id or if not found<br>
 	 * null
@@ -87,19 +80,20 @@ public class SummonerSpellUtil {
 		logger.trace("getSpellById() - Entering");
 		logger.debug("getSpellById() - Parameter: {}", id);
 		SummonerSpell returnValue = null;
-		ObjectSet<SummonerSpell> set = dbHandle.query(new Predicate<SummonerSpell>() {
+		ObjectSet<SummonerSpell> set = dbHandle
+				.query(new Predicate<SummonerSpell>() {
 
-			private static final long serialVersionUID = -6535736734146443615L;
+					private static final long serialVersionUID = -6535736734146443615L;
 
-			@Override
-			public boolean match(SummonerSpell arg0) {
-				if (arg0.getId() == id) {
-					return true;
-				} else {
-					return false;
-				}
-			}
-		});
+					@Override
+					public boolean match(SummonerSpell arg0) {
+						if (arg0.getId() == id) {
+							return true;
+						} else {
+							return false;
+						}
+					}
+				});
 		if (set.hasNext()) {
 			returnValue = set.next();
 		}

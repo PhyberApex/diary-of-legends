@@ -1,7 +1,5 @@
 package de.phyberapex.diaryoflegends.model.util;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -31,8 +29,7 @@ public class MatchupUtil {
 	 */
 	public static List<Matchup> getAllMatchups() {
 		logger.trace("getAllMatchups() - Entering");
-		List<Matchup> returnValue = new ArrayList<Matchup>();
-		ObjectSet<Matchup> set = dbHandle.query(new Predicate<Matchup>() {
+		ObjectSet<Matchup> returnValue = dbHandle.query(new Predicate<Matchup>() {
 
 			private static final long serialVersionUID = -6535736734146443615L;
 
@@ -41,10 +38,6 @@ public class MatchupUtil {
 				return true;
 			}
 		});
-		Iterator<Matchup> i = set.iterator();
-		while (i.hasNext()) {
-			returnValue.add(i.next());
-		}
 		logger.trace("getAllMatchups() - Returning");
 		logger.debug("getAllMatchups() - Returning: {}", returnValue);
 		return returnValue;

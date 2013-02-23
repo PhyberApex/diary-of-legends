@@ -24,7 +24,7 @@ public class ExitAction extends AbstractAction {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		try {
-			Config.getInstance().getDBHandle().close();
+			Config.getInstance().closeDatabase();
 		} catch (DatabaseFileLockedException e) {
 			logger.fatal("Databasefile is locked");
 		}

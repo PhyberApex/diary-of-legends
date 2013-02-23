@@ -1,7 +1,5 @@
 package de.phyberapex.diaryoflegends.model.util;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -31,8 +29,7 @@ public class ItemUtil {
 	 */
 	public static List<Item> getAllItems() {
 		logger.trace("getAllItems() - Entering");
-		List<Item> returnValue = new ArrayList<Item>();
-		ObjectSet<Item> set = dbHandle.query(new Predicate<Item>() {
+		ObjectSet<Item> returnValue = dbHandle.query(new Predicate<Item>() {
 
 			private static final long serialVersionUID = -6535736734146443615L;
 
@@ -41,10 +38,6 @@ public class ItemUtil {
 				return true;
 			}
 		});
-		Iterator<Item> i = set.iterator();
-		while (i.hasNext()) {
-			returnValue.add(i.next());
-		}
 		logger.trace("getAllItems() - Returning");
 		logger.debug("getAllItems() - Returning: {}", returnValue);
 		return returnValue;
@@ -85,8 +78,7 @@ public class ItemUtil {
 	public static List<Item> searchItemByName(final String text) {
 		logger.trace("searchItemByName() - Entering");
 		logger.debug("searchItemByName() - Parameter: {}", text);
-		List<Item> returnValue = new ArrayList<Item>();
-		ObjectSet<Item> set = dbHandle.query(new Predicate<Item>() {
+		ObjectSet<Item> returnValue = dbHandle.query(new Predicate<Item>() {
 
 			private static final long serialVersionUID = -6535736734146443615L;
 
@@ -99,10 +91,6 @@ public class ItemUtil {
 				}
 			}
 		});
-		Iterator<Item> i = set.iterator();
-		while (i.hasNext()) {
-			returnValue.add(i.next());
-		}
 		logger.trace("searchItemByName() - Returning");
 		logger.debug("searchItemByName() - Returning {}", returnValue);
 		return returnValue;
@@ -148,8 +136,7 @@ public class ItemUtil {
 	 */
 	public static List<Item> getAllStartingItems() {
 		logger.trace("getAllStartingItems() - Entering");
-		List<Item> returnValue = new ArrayList<Item>();
-		ObjectSet<Item> set = dbHandle.query(new Predicate<Item>() {
+		ObjectSet<Item> returnValue = dbHandle.query(new Predicate<Item>() {
 
 			private static final long serialVersionUID = -6535736734146443615L;
 
@@ -162,10 +149,6 @@ public class ItemUtil {
 				}
 			}
 		});
-		Iterator<Item> i = set.iterator();
-		while (i.hasNext()) {
-			returnValue.add(i.next());
-		}
 		logger.trace("getAllStartingItems() - Returning");
 		logger.debug("getAllStartingItems() - Returning {}", returnValue);
 		return returnValue;

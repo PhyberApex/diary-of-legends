@@ -35,7 +35,7 @@ import de.phyberapex.diaryoflegends.view.MainView;
 public class ImportDolexAction implements Runnable {
 
 	private File file;
-	private static Logger logger = LogManager.getLogger(ExportDolexAction.class
+	private static Logger logger = LogManager.getLogger(ImportDolexAction.class
 			.getName());
 
 	public ImportDolexAction(File file) {
@@ -59,8 +59,7 @@ public class ImportDolexAction implements Runnable {
 			}
 			br.close();
 			fstream.close();
-			JSONObject jo = new JSONObject(imp);
-			JSONArray gArray = jo.getJSONArray("games");
+			JSONArray gArray = new JSONArray(imp);
 			for (int i = 0; i < gArray.length(); i++) {
 				JSONObject gJo = gArray.getJSONObject(i);
 
@@ -89,7 +88,8 @@ public class ImportDolexAction implements Runnable {
 				JSONArray enemyTeamArray = gJo.getJSONArray("enemyTeam");
 				for (int j = 0; j < enemyTeamArray.length(); j++) {
 					chmp = null;
-					chmp = ChampionUtil.getChampionById(enemyTeamArray.getInt(j));
+					chmp = ChampionUtil.getChampionById(enemyTeamArray
+							.getInt(j));
 					if (chmp == null) {
 						logger.error("Champion with id {} not found",
 								enemyTeamArray.getInt(j));

@@ -8,6 +8,8 @@ import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
@@ -16,8 +18,10 @@ import de.phyberapex.diaryoflegends.base.Config;
 import de.phyberapex.diaryoflegends.exception.ChampionNotFoundException;
 import de.phyberapex.diaryoflegends.exception.ItemNotFoundException;
 import de.phyberapex.diaryoflegends.exception.SummonerSpellNotFoundException;
+import de.phyberapex.diaryoflegends.extra.LoadingSplash;
 import de.phyberapex.diaryoflegends.model.Champion;
 import de.phyberapex.diaryoflegends.model.Game;
+import de.phyberapex.diaryoflegends.model.GameResult;
 import de.phyberapex.diaryoflegends.model.Item;
 import de.phyberapex.diaryoflegends.model.Matchup;
 import de.phyberapex.diaryoflegends.model.MatchupItem;
@@ -26,11 +30,12 @@ import de.phyberapex.diaryoflegends.model.util.ChampionUtil;
 import de.phyberapex.diaryoflegends.model.util.ItemUtil;
 import de.phyberapex.diaryoflegends.model.util.SummonerSpellUtil;
 import de.phyberapex.diaryoflegends.view.MainView;
+import de.phyberapex.diaryoflegends.view.dialoge.NewEntryDialoge;
 
 public class ImportRoflAction implements Runnable {
 
 	private File file;
-	private static Logger logger = LogManager.getLogger(ExportDolexAction.class
+	private static Logger logger = LogManager.getLogger(ImportRoflAction.class
 			.getName());
 
 	public ImportRoflAction(File file) {
@@ -52,7 +57,7 @@ public class ImportRoflAction implements Runnable {
 			logger.debug("Own summoner name set to {}", sumName);
 			int myTeamId = 0;
 			Champion myChamp = null;
-			for (int i = 0; i <= partsJoAr.length(); i++) {
+			for (int i = 0; i < partsJoAr.length(); i++) {
 				logger.debug(
 						"Looping through all participants to find user. Currently {}",
 						i);
@@ -66,8 +71,8 @@ public class ImportRoflAction implements Runnable {
 							.getJSONObject(i).getInt("championId"));
 					logger.debug("Users champion is {}", myChamp);
 					if (myChamp == null) {
-						logger.error("Championt with id {} not found",
-								partsJoAr.getJSONObject(i).getInt("championId"));
+						logger.error("Champion with id {} not found", partsJoAr
+								.getJSONObject(i).getInt("championId"));
 						throw new ChampionNotFoundException(
 								"Champion not found. Maybe your champions are outdated.");
 					}
@@ -95,11 +100,17 @@ public class ImportRoflAction implements Runnable {
 						throw new SummonerSpellNotFoundException(
 								"Summoner spell not found. Maybe your summoner spells are outdated.");
 					}
-					matchup.setMySpell1(mySumm);
+					matchup.setMySpell2(mySumm);
 					break;
 				}
 
 			}
+			if (myChamp == null) {
+				logger.error("Own Champion not found");
+				throw new ChampionNotFoundException(
+						"Your champion was not found. Maybe you did not participate in that game.");
+			}
+			matchup.setMyChamp(myChamp);
 			List<Champion> myTeam = new ArrayList<Champion>();
 			List<Champion> enemyTeam = new ArrayList<Champion>();
 			List<String> enemyTeamSumms = new ArrayList<String>();
@@ -146,7 +157,6 @@ public class ImportRoflAction implements Runnable {
 			game.setDate(new Date());
 			game.setMyTeam(myTeam);
 			game.setEnemyTeam(enemyTeam);
-			matchup.setMyChamp(myChamp);
 			JComboBox<Champion> enemyChmps = new JComboBox<Champion>(
 					new DefaultComboBoxModel<Champion>(
 							enemyTeam.toArray(new Champion[] {})));
@@ -171,7 +181,7 @@ public class ImportRoflAction implements Runnable {
 				throw new SummonerSpellNotFoundException(
 						"Summoner spell not found. Maybe your summoner spells are outdated.");
 			}
-			matchup.setMySpell1(enemySumm);
+			matchup.setEnemySpell1(enemySumm);
 			enemySumm = SummonerSpellUtil.getSpellById(enemySpells2
 					.get(enemyChmps.getSelectedIndex()));
 			logger.debug("Enemy summoner spell 1 is {}", enemySumm);
@@ -181,11 +191,12 @@ public class ImportRoflAction implements Runnable {
 				throw new SummonerSpellNotFoundException(
 						"Summoner spell not found. Maybe your summoner spells are outdated.");
 			}
-			matchup.setMySpell1(enemySumm);
+			matchup.setEnemySpell2(enemySumm);
 			String enemySummName = enemyTeamSumms.get(enemyChmps
 					.getSelectedIndex());
 			logger.debug("Enemy summoner name is {}", enemySummName);
-			JSONArray gameStatsArray = jo.getJSONArray("statsJSON");
+			String innerJSONStr = jo.getString("statsJSON");
+			JSONArray gameStatsArray = new JSONArray(innerJSONStr);
 			List<MatchupItem> myItems = new ArrayList<MatchupItem>();
 			List<MatchupItem> enemyItems = new ArrayList<MatchupItem>();
 			for (int i = 0; i < gameStatsArray.length(); i++) {
@@ -198,6 +209,13 @@ public class ImportRoflAction implements Runnable {
 				if (currSummName.equals(Config.getInstance().getProperty(
 						"SUMMONER_NAME"))) {
 					logger.debug("Summoner is user");
+					String win = statJo.getString("WIN");
+					logger.debug("Win is {}", win);
+					if (win.equals("Win")) {
+						game.setResult(GameResult.WIN);
+					} else {
+						game.setResult(GameResult.LOSS);
+					}
 					game.setOwnKills(Integer.valueOf(statJo
 							.getString("CHAMPIONS_KILLED")));
 					game.setOwnAssists(Integer.valueOf(statJo
@@ -220,11 +238,12 @@ public class ImportRoflAction implements Runnable {
 								logger.error("Item with id {} not found",
 										itemId);
 								throw new ItemNotFoundException(
-										"Summoner spell not found. Maybe your summoner spells are outdated.");
+										"Item not found. Maybe your summoner spells are outdated.");
 							}
 							myItems.add(new MatchupItem(currItem, 1));
 						}
 					}
+					matchup.setMyStartItems(new ArrayList<MatchupItem>());
 					matchup.setMyEndItems(myItems);
 				} else if (currSummName.equals(enemySummName)) {
 					logger.debug("Summoner is enemy");
@@ -247,6 +266,7 @@ public class ImportRoflAction implements Runnable {
 							enemyItems.add(new MatchupItem(currItem, 1));
 						}
 					}
+					matchup.setEnemyStartItems(new ArrayList<MatchupItem>());
 					matchup.setEnemyEndItems(enemyItems);
 				}
 				if (matchup.getMyEndItems() != null
@@ -257,8 +277,21 @@ public class ImportRoflAction implements Runnable {
 			// TODO längerausfinden
 			game.setLength(0);
 			MainView.getInstance().setStatusText("Import complete");
-		} catch (Exception e) {
+			NewEntryDialoge nd = new NewEntryDialoge();
+			nd.setToEdit(game, true);
+			LoadingSplash sp = new LoadingSplash();
+			sp.setVisible(true);
+			SwingUtilities.invokeLater(nd);
+			sp.close();
+		} catch (ChampionNotFoundException | ItemNotFoundException
+				| SummonerSpellNotFoundException e) {
 			logger.error(e.getMessage());
+			MainView.getInstance().setStatusText(
+					"Import failed. Please read the logfile.");
+		}
+
+		catch (Exception e) {
+			logger.error("Unreadable format.");
 			MainView.getInstance().setStatusText(
 					"Import failed. Please read the logfile.");
 		}
@@ -280,8 +313,8 @@ public class ImportRoflAction implements Runnable {
 				x++;
 			}
 			String bla = new String(b);
-			int start = bla.indexOf("{");
-			int end = bla.indexOf("©", start);
+			int start = bla.indexOf("{\"gameId");
+			int end = bla.indexOf("gameLength", start) + 22;
 			returnValue = bla.substring(start, end);
 			in.close();
 		} catch (Exception e) {// Catch exception if any

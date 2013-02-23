@@ -140,18 +140,6 @@ public class Item extends Model {
 	}
 
 	/**
-	 * Returns the raw byte array of the icon
-	 * 
-	 * @return {@link byte[]}
-	 */
-	public byte[] getIconRaw() {
-		logger.trace("getIconRaw() - Entering");
-		logger.trace("getIconRaw() - Returning");
-		logger.debug("getIconRaw() - Returning: {}", icon);
-		return icon;
-	}
-
-	/**
 	 * Returns a string representation of this item
 	 * 
 	 * @return {@link String} The string representation

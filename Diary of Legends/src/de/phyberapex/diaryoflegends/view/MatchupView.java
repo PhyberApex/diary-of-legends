@@ -186,7 +186,7 @@ public class MatchupView extends JPanel implements View {
 								spl.setVisible(true);
 								NewEntryDialoge nd = new NewEntryDialoge();
 								nd.setToEdit(((Matchup) matchupTable
-										.getValueAt(row, 1)).getGame());
+										.getValueAt(row, 1)).getGame(), false);
 								SwingUtilities.invokeLater(nd);
 								spl.close();
 							}
@@ -196,17 +196,18 @@ public class MatchupView extends JPanel implements View {
 
 							@Override
 							public void actionPerformed(ActionEvent e) {
-								new MatchupDetailDialoge().showDetails(
-										(Matchup) matchupTable.getValueAt(row,
-												1));
+								new MatchupDetailDialoge()
+										.showDetails((Matchup) matchupTable
+												.getValueAt(row, 1));
 							}
 						});
 						menu.add(edit);
 						menu.add(view);
 						menu.show(matchupTable, e.getX(), e.getY());
 					} else if (e.getClickCount() == 2) {
-						new MatchupDetailDialoge().showDetails(
-								(Matchup) matchupTable.getValueAt(row, 1));
+						new MatchupDetailDialoge()
+								.showDetails((Matchup) matchupTable.getValueAt(
+										row, 1));
 					}
 				}
 

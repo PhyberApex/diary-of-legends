@@ -1,12 +1,8 @@
 package de.phyberapex.diaryoflegends.model.util;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
 import com.db4o.query.Predicate;
@@ -35,8 +31,7 @@ public class ChampionUtil {
 	 */
 	public static List<Champion> getAllChampions() {
 		logger.trace("getAllChampions() - Entering");
-		List<Champion> returnValue = new ArrayList<Champion>();
-		ObjectSet<Champion> set = dbHandle.query(new Predicate<Champion>() {
+		ObjectSet<Champion> returnValue = dbHandle.query(new Predicate<Champion>() {
 
 			private static final long serialVersionUID = -6535736734146443615L;
 
@@ -45,10 +40,6 @@ public class ChampionUtil {
 				return true;
 			}
 		});
-		Iterator<Champion> i = set.iterator();
-		while (i.hasNext()) {
-			returnValue.add(i.next());
-		}
 		logger.trace("getAllChampions() - Returning");
 		logger.debug("getAllChampions() - Returning {}", returnValue);
 		return returnValue;
@@ -89,8 +80,7 @@ public class ChampionUtil {
 	public static List<Champion> searchChampionByName(final String text) {
 		logger.trace("searchChampionByName() - Entering");
 		logger.debug("searchChampionByName() - Parameter: {}", text);
-		List<Champion> returnValue = new ArrayList<Champion>();
-		ObjectSet<Champion> set = dbHandle.query(new Predicate<Champion>() {
+		ObjectSet<Champion> returnValue = dbHandle.query(new Predicate<Champion>() {
 
 			private static final long serialVersionUID = -6535736734146443615L;
 
@@ -103,10 +93,6 @@ public class ChampionUtil {
 				}
 			}
 		});
-		Iterator<Champion> i = set.iterator();
-		while (i.hasNext()) {
-			returnValue.add(i.next());
-		}
 		logger.trace("searchChampionByName() - Returning");
 		logger.debug("searchChampionByName() - Returning {}", returnValue);
 		return returnValue;
