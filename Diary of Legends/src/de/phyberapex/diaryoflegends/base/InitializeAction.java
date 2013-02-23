@@ -6,5 +6,5 @@ package de.phyberapex.diaryoflegends.base;
  * @author Janis Walliser <walliser.janis@gmx.de>
  */
 public enum InitializeAction {
-	NONE, CREATE_SUMMONER
+	CREATE_SUMMONER, UPDATE
 }
