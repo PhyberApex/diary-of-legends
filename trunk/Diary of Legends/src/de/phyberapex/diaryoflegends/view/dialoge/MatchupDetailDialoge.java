@@ -25,14 +25,16 @@ import de.phyberapex.diaryoflegends.extra.ImageIconFactory;
 import de.phyberapex.diaryoflegends.model.Champion;
 import de.phyberapex.diaryoflegends.model.Game;
 import de.phyberapex.diaryoflegends.model.Matchup;
+import de.phyberapex.diaryoflegends.model.MatchupDifficulty;
 import de.phyberapex.diaryoflegends.model.MatchupItem;
 import de.phyberapex.diaryoflegends.model.MatchupResult;
+import de.phyberapex.diaryoflegends.model.Role;
 import de.phyberapex.diaryoflegends.model.util.MatchupUtil;
-import de.phyberapex.diaryoflegends.view.View;
 
-public class MatchupDetailDialoge extends JDialog implements View {
+public class MatchupDetailDialoge extends JDialog implements Runnable {
 
 	private static final long serialVersionUID = -7485492927311999351L;
+	private static MatchupDetailDialoge instance;
 	private JPanel matchupContentPanel;
 	private JPanel headPanel;
 	private JLabel headlineLabel;
@@ -124,13 +126,19 @@ public class MatchupDetailDialoge extends JDialog implements View {
 			ImageIconFactory
 					.createImageIconFromResourePath("img/empty_60x60.png"), 50,
 			50);
-
 	private static Logger logger = LogManager
 			.getLogger(MatchupDetailDialoge.class.getName());
 
-	public MatchupDetailDialoge() {
+	private MatchupDetailDialoge() {
 		super();
 		createGUI();
+	}
+
+	public void setMatchup(Matchup matchup) {
+		logger.trace("setMatchup() - Entering");
+		logger.debug("setMatchup() - Parameter: {}", matchup);
+		this.matchup = matchup;
+		logger.trace("setMatchup() - Leaving");
 	}
 
 	private void createGUI() {
@@ -722,7 +730,7 @@ public class MatchupDetailDialoge extends JDialog implements View {
 			enemyChampItemsPanel.setTabPlacement(JTabbedPane.RIGHT);
 			enemyChampItemsPanel.addTab("1", getEnemyChampStartingItemsPanel());
 			enemyChampItemsPanel.addTab("2", getEnemyChampEndingItemsPanel());
-			enemyChampItemsPanel.addTab("2", getEnemyChampSpellsPanel());
+			enemyChampItemsPanel.addTab("3", getEnemyChampSpellsPanel());
 		}
 		logger.trace("getEnemyChampItemsPanel() - Returning");
 		logger.debug("getEnemyChampItemsPanel() - Returning: {}",
@@ -1499,229 +1507,257 @@ public class MatchupDetailDialoge extends JDialog implements View {
 		return closeButton;
 	}
 
-	public void showDetails(Matchup m) {
-		this.matchup = m;
-		this.getHeadlineLabel().setText(m.getLane().toString());
-		this.getDifficultyValueLabel().setText(m.getDifficulty().toString());
-		switch (m.getLane()) {
-		case AD_CARRY:
-			this.getHeadlineLabel().setBackground(Color.RED);
-			break;
-		case JUNGLE:
-			this.getHeadlineLabel().setBackground(Color.GREEN);
-			break;
-		case MID:
-			this.getHeadlineLabel().setBackground(Color.BLUE);
-			break;
-		case SUPPORT:
-			this.getHeadlineLabel().setBackground(Color.YELLOW);
-			break;
-		case TOP:
-			this.getHeadlineLabel().setBackground(Color.ORANGE);
-			break;
-		}
+	private void fillFields() {
+		if (matchup != null) {
+			Matchup m = this.matchup;
+			setLane(m.getLane());
+			setDifficulty(m.getDifficulty());
 
-		this.getMyChampNameLabel().setText(m.getMyChamp().getName());
-		Color c = Color.GREEN;
-		if (matchup.getResult() == MatchupResult.LOSS) {
-			c = Color.RED;
-		} else if (matchup.getResult() == MatchupResult.DRAW) {
-			c = Color.WHITE;
-		}
-		this.getMyChampNameLabel().setOpaque(true);
-		this.getMyChampNameLabel().setBackground(c);
-		this.getMyChampIconLabel().setIcon(m.getMyChamp().getIcon());
-		int x = 0;
-		for (MatchupItem mi : m.getMyStartItems()) {
-			x++;
-			JLabel l = null;
-			switch (x) {
-			case 1:
-				l = this.getMyChampItem1Label();
+			switch (m.getLane()) {
+			case AD_CARRY:
+				this.getHeadlineLabel().setBackground(Color.RED);
 				break;
-			case 2:
-				l = this.getMyChampItem2Label();
+			case JUNGLE:
+				this.getHeadlineLabel().setBackground(Color.GREEN);
 				break;
-			case 3:
-				l = this.getMyChampItem3Label();
+			case MID:
+				this.getHeadlineLabel().setBackground(Color.BLUE);
 				break;
-			case 4:
-				l = this.getMyChampItem4Label();
+			case SUPPORT:
+				this.getHeadlineLabel().setBackground(Color.YELLOW);
 				break;
-			case 5:
-				l = this.getMyChampItem5Label();
-				break;
-			case 6:
-				l = this.getMyChampItem6Label();
+			case TOP:
+				this.getHeadlineLabel().setBackground(Color.ORANGE);
 				break;
 			}
-			l.setIcon(ImageIconFactory.resizeImageIcon(mi.getItem().getIcon(),
-					30, 30));
-			l.setToolTipText(mi.getAmount() + "x " + mi.getItem().getName());
-		}
-		x = 0;
-		for (MatchupItem mi : m.getMyEndItems()) {
-			x++;
-			JLabel l = null;
-			switch (x) {
-			case 1:
-				l = this.getMyChampEndingItem1Label();
-				break;
-			case 2:
-				l = this.getMyChampEndingItem2Label();
-				break;
-			case 3:
-				l = this.getMyChampEndingItem3Label();
-				break;
-			case 4:
-				l = this.getMyChampEndingItem4Label();
-				break;
-			case 5:
-				l = this.getMyChampEndingItem5Label();
-				break;
-			case 6:
-				l = this.getMyChampEndingItem6Label();
-				break;
-			}
-			l.setIcon(ImageIconFactory.resizeImageIcon(mi.getItem().getIcon(),
-					30, 30));
-			l.setToolTipText(mi.getAmount() + "x " + mi.getItem().getName());
-		}
-		getMyChampSpell1Label().setIcon(
-				ImageIconFactory.resizeImageIcon(m.getMySpell1().getIcon(), 50,
-						50));
-		getMyChampSpell2Label().setIcon(
-				ImageIconFactory.resizeImageIcon(m.getMySpell2().getIcon(), 50,
-						50));
-		this.getEnemyChampNameLabel().setText(m.getEnemyChamp().getName());
-		c = Color.GREEN;
-		if (matchup.getResult() == MatchupResult.WIN) {
-			c = Color.RED;
-		} else if (matchup.getResult() == MatchupResult.DRAW) {
-			c = Color.WHITE;
-		}
-		this.getEnemyChampNameLabel().setOpaque(true);
-		this.getEnemyChampNameLabel().setBackground(c);
-		this.getEnemyChampIconLabel().setIcon(m.getEnemyChamp().getIcon());
-		x = 0;
-		for (MatchupItem mi : m.getEnemyStartItems()) {
-			x++;
-			JLabel l = null;
-			switch (x) {
-			case 1:
-				l = this.getEnemyChampItem1Label();
-				break;
-			case 2:
-				l = this.getEnemyChampItem2Label();
-				break;
-			case 3:
-				l = this.getEnemyChampItem3Label();
-				break;
-			case 4:
-				l = this.getEnemyChampItem4Label();
-				break;
-			case 5:
-				l = this.getEnemyChampItem5Label();
-				break;
-			case 6:
-				l = this.getEnemyChampItem6Label();
-				break;
-			}
-			l.setIcon(ImageIconFactory.resizeImageIcon(mi.getItem().getIcon(),
-					30, 30));
-			l.setToolTipText(mi.getAmount() + "x " + mi.getItem().getName());
-		}
-		x = 0;
-		for (MatchupItem mi : m.getEnemyEndItems()) {
-			x++;
-			JLabel l = null;
-			switch (x) {
-			case 1:
-				l = this.getEnemyChampEndingItem1Label();
-				break;
-			case 2:
-				l = this.getEnemyChampEndingItem2Label();
-				break;
-			case 3:
-				l = this.getEnemyChampEndingItem3Label();
-				break;
-			case 4:
-				l = this.getEnemyChampEndingItem4Label();
-				break;
-			case 5:
-				l = this.getEnemyChampEndingItem5Label();
-				break;
-			case 6:
-				l = this.getEnemyChampEndingItem6Label();
-				break;
-			}
-			l.setIcon(ImageIconFactory.resizeImageIcon(mi.getItem().getIcon(),
-					30, 30));
-			l.setToolTipText(mi.getAmount() + "x " + mi.getItem().getName());
-		}
-		getEnemyChampSpell1Label().setIcon(
-				ImageIconFactory.resizeImageIcon(m.getEnemySpell1().getIcon(),
-						50, 50));
-		getEnemyChampSpell2Label().setIcon(
-				ImageIconFactory.resizeImageIcon(m.getEnemySpell2().getIcon(),
-						50, 50));
 
-		this.getNotesTextarea().setText(m.getNotes());
-		Game g = m.getGame();
-		this.getKillsValueLabel().setText(String.valueOf(g.getOwnKills()));
-		this.getDeathsValueLabel().setText(String.valueOf(g.getOwnDeaths()));
-		this.getAssistsValueLabel().setText(String.valueOf(g.getOwnAssists()));
-		this.getCsValueLabel().setText(String.valueOf(g.getOwnCS()));
-
-		x = 0;
-		for (Champion champ : g.getMyTeam()) {
-			x++;
-			JLabel l = null;
-			switch (x) {
-			case 1:
-				l = this.getGameChamp1Label();
-				break;
-			case 2:
-				l = this.getGameChamp2Label();
-				break;
-			case 3:
-				l = this.getGameChamp3Label();
-				break;
-			case 4:
-				l = this.getGameChamp4Label();
-				break;
-			case 5:
-				l = this.getGameChamp5Label();
-				break;
+			this.getMyChampNameLabel().setText(m.getMyChamp().getName());
+			Color c = Color.GREEN;
+			if (matchup.getResult() == MatchupResult.LOSS) {
+				c = Color.RED;
+			} else if (matchup.getResult() == MatchupResult.DRAW) {
+				c = Color.WHITE;
 			}
-			l.setIcon(ImageIconFactory.resizeImageIcon(champ.getIcon(), 25, 25));
-			l.setToolTipText(champ.getName());
-		}
-		x = 0;
-		for (Champion champ : g.getEnemyTeam()) {
-			x++;
-			JLabel l = null;
-			switch (x) {
-			case 1:
-				l = this.getGameChamp6Label();
-				break;
-			case 2:
-				l = this.getGameChamp7Label();
-				break;
-			case 3:
-				l = this.getGameChamp8Label();
-				break;
-			case 4:
-				l = this.getGameChamp9Label();
-				break;
-			case 5:
-				l = this.getGameChamp10Label();
-				break;
+			this.getMyChampNameLabel().setOpaque(true);
+			this.getMyChampNameLabel().setBackground(c);
+			this.getMyChampIconLabel().setIcon(m.getMyChamp().getIcon());
+			int x = 0;
+			for (MatchupItem mi : m.getMyStartItems()) {
+				x++;
+				JLabel l = null;
+				switch (x) {
+				case 1:
+					l = this.getMyChampItem1Label();
+					break;
+				case 2:
+					l = this.getMyChampItem2Label();
+					break;
+				case 3:
+					l = this.getMyChampItem3Label();
+					break;
+				case 4:
+					l = this.getMyChampItem4Label();
+					break;
+				case 5:
+					l = this.getMyChampItem5Label();
+					break;
+				case 6:
+					l = this.getMyChampItem6Label();
+					break;
+				}
+				l.setIcon(ImageIconFactory.resizeImageIcon(mi.getItem()
+						.getIcon(), 30, 30));
+				l.setToolTipText(mi.getAmount() + "x " + mi.getItem().getName());
 			}
-			l.setIcon(ImageIconFactory.resizeImageIcon(champ.getIcon(), 25, 25));
-			l.setToolTipText(champ.getName());
-		}
+			x = 0;
+			for (MatchupItem mi : m.getMyEndItems()) {
+				x++;
+				JLabel l = null;
+				switch (x) {
+				case 1:
+					l = this.getMyChampEndingItem1Label();
+					break;
+				case 2:
+					l = this.getMyChampEndingItem2Label();
+					break;
+				case 3:
+					l = this.getMyChampEndingItem3Label();
+					break;
+				case 4:
+					l = this.getMyChampEndingItem4Label();
+					break;
+				case 5:
+					l = this.getMyChampEndingItem5Label();
+					break;
+				case 6:
+					l = this.getMyChampEndingItem6Label();
+					break;
+				}
+				l.setIcon(ImageIconFactory.resizeImageIcon(mi.getItem()
+						.getIcon(), 30, 30));
+				l.setToolTipText(mi.getAmount() + "x " + mi.getItem().getName());
+			}
+			getMyChampSpell1Label().setIcon(
+					ImageIconFactory.resizeImageIcon(m.getMySpell1().getIcon(),
+							50, 50));
+			getMyChampSpell2Label().setIcon(
+					ImageIconFactory.resizeImageIcon(m.getMySpell2().getIcon(),
+							50, 50));
+			this.getEnemyChampNameLabel().setText(m.getEnemyChamp().getName());
+			c = Color.GREEN;
+			if (matchup.getResult() == MatchupResult.WIN) {
+				c = Color.RED;
+			} else if (matchup.getResult() == MatchupResult.DRAW) {
+				c = Color.WHITE;
+			}
+			this.getEnemyChampNameLabel().setOpaque(true);
+			this.getEnemyChampNameLabel().setBackground(c);
+			this.getEnemyChampIconLabel().setIcon(m.getEnemyChamp().getIcon());
+			x = 0;
+			for (MatchupItem mi : m.getEnemyStartItems()) {
+				x++;
+				JLabel l = null;
+				switch (x) {
+				case 1:
+					l = this.getEnemyChampItem1Label();
+					break;
+				case 2:
+					l = this.getEnemyChampItem2Label();
+					break;
+				case 3:
+					l = this.getEnemyChampItem3Label();
+					break;
+				case 4:
+					l = this.getEnemyChampItem4Label();
+					break;
+				case 5:
+					l = this.getEnemyChampItem5Label();
+					break;
+				case 6:
+					l = this.getEnemyChampItem6Label();
+					break;
+				}
+				l.setIcon(ImageIconFactory.resizeImageIcon(mi.getItem()
+						.getIcon(), 30, 30));
+				l.setToolTipText(mi.getAmount() + "x " + mi.getItem().getName());
+			}
+			x = 0;
+			for (MatchupItem mi : m.getEnemyEndItems()) {
+				x++;
+				JLabel l = null;
+				switch (x) {
+				case 1:
+					l = this.getEnemyChampEndingItem1Label();
+					break;
+				case 2:
+					l = this.getEnemyChampEndingItem2Label();
+					break;
+				case 3:
+					l = this.getEnemyChampEndingItem3Label();
+					break;
+				case 4:
+					l = this.getEnemyChampEndingItem4Label();
+					break;
+				case 5:
+					l = this.getEnemyChampEndingItem5Label();
+					break;
+				case 6:
+					l = this.getEnemyChampEndingItem6Label();
+					break;
+				}
+				l.setIcon(ImageIconFactory.resizeImageIcon(mi.getItem()
+						.getIcon(), 30, 30));
+				l.setToolTipText(mi.getAmount() + "x " + mi.getItem().getName());
+			}
+			getEnemyChampSpell1Label().setIcon(
+					ImageIconFactory.resizeImageIcon(m.getEnemySpell1()
+							.getIcon(), 50, 50));
+			getEnemyChampSpell2Label().setIcon(
+					ImageIconFactory.resizeImageIcon(m.getEnemySpell2()
+							.getIcon(), 50, 50));
 
+			this.getNotesTextarea().setText(m.getNotes());
+			Game g = m.getGame();
+			this.getKillsValueLabel().setText(String.valueOf(g.getOwnKills()));
+			this.getDeathsValueLabel()
+					.setText(String.valueOf(g.getOwnDeaths()));
+			this.getAssistsValueLabel().setText(
+					String.valueOf(g.getOwnAssists()));
+			this.getCsValueLabel().setText(String.valueOf(g.getOwnCS()));
+
+			x = 0;
+			for (Champion champ : g.getMyTeam()) {
+				x++;
+				JLabel l = null;
+				switch (x) {
+				case 1:
+					l = this.getGameChamp1Label();
+					break;
+				case 2:
+					l = this.getGameChamp2Label();
+					break;
+				case 3:
+					l = this.getGameChamp3Label();
+					break;
+				case 4:
+					l = this.getGameChamp4Label();
+					break;
+				case 5:
+					l = this.getGameChamp5Label();
+					break;
+				}
+				l.setIcon(ImageIconFactory.resizeImageIcon(champ.getIcon(), 25,
+						25));
+				l.setToolTipText(champ.getName());
+			}
+			x = 0;
+			for (Champion champ : g.getEnemyTeam()) {
+				x++;
+				JLabel l = null;
+				switch (x) {
+				case 1:
+					l = this.getGameChamp6Label();
+					break;
+				case 2:
+					l = this.getGameChamp7Label();
+					break;
+				case 3:
+					l = this.getGameChamp8Label();
+					break;
+				case 4:
+					l = this.getGameChamp9Label();
+					break;
+				case 5:
+					l = this.getGameChamp10Label();
+					break;
+				}
+				l.setIcon(ImageIconFactory.resizeImageIcon(champ.getIcon(), 25,
+						25));
+				l.setToolTipText(champ.getName());
+			}
+		}
+	}
+
+	public static synchronized MatchupDetailDialoge getInstance() {
+		logger.trace("getInstance() - Entering");
+		logger.debug("getInstance() - Instance is {}", instance);
+		if (instance == null) {
+			logger.debug("Creating a new instance of MatchupDetailDialoge");
+			instance = new MatchupDetailDialoge();
+		}
+		logger.trace("getInstance() - Returning");
+		logger.debug("getInstance() - Returning {}", instance);
+		return instance;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Runnable#run()
+	 */
+	@Override
+	public void run() {
+		fillFields();
 		this.pack();
 		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setLocation((d.width - this.getSize().width) / 2,
@@ -1731,8 +1767,18 @@ public class MatchupDetailDialoge extends JDialog implements View {
 		setVisible(true);
 	}
 
-	@Override
-	public void refresh() {
-		// Nothing to do here...
+	private void setDifficulty(MatchupDifficulty diff) {
+		logger.trace("setDifficulty() - Entering");
+		logger.debug("setLane() - Parameter: {}", diff);
+		this.getDifficultyValueLabel().setText(diff.toString());
+		logger.trace("setDifficulty() - Leaving");
+	}
+
+	private void setLane(Role lane) {
+		logger.trace("setLane() - Entering");
+		logger.debug("setLane() - Parameter: {}", lane);
+		this.getHeadlineLabel().setText(lane.toString());
+		logger.trace("setLane() - Leaving");
+
 	}
 }

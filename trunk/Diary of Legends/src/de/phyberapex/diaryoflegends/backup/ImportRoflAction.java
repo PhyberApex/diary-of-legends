@@ -277,7 +277,7 @@ public class ImportRoflAction implements Runnable {
 			// TODO längerausfinden
 			game.setLength(0);
 			MainView.getInstance().setStatusText("Import complete");
-			NewEntryDialoge nd = new NewEntryDialoge();
+			NewEntryDialoge nd = NewEntryDialoge.getInstance();
 			nd.setToEdit(game, true);
 			LoadingSplash sp = new LoadingSplash();
 			sp.setVisible(true);

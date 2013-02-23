@@ -1,5 +1,6 @@
 package de.phyberapex.diaryoflegends.controller;
 
+import java.util.List;
 import java.util.Properties;
 
 import javax.swing.JOptionPane;
@@ -7,11 +8,11 @@ import javax.swing.SwingUtilities;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import de.phyberapex.diaryoflegends.ExitAction;
 import de.phyberapex.diaryoflegends.base.Config;
 import de.phyberapex.diaryoflegends.base.InitializeAction;
 import de.phyberapex.diaryoflegends.base.Initializer;
+import de.phyberapex.diaryoflegends.base.Update;
 import de.phyberapex.diaryoflegends.exception.InitializeException;
 import de.phyberapex.diaryoflegends.extra.ImageIconFactory;
 import de.phyberapex.diaryoflegends.extra.Splash;
@@ -24,6 +25,8 @@ import de.phyberapex.diaryoflegends.view.GameView;
 import de.phyberapex.diaryoflegends.view.ItemView;
 import de.phyberapex.diaryoflegends.view.MainView;
 import de.phyberapex.diaryoflegends.view.MatchupView;
+import de.phyberapex.diaryoflegends.view.dialoge.MatchupDetailDialoge;
+import de.phyberapex.diaryoflegends.view.dialoge.NewEntryDialoge;
 
 public class MainController {
 
@@ -46,9 +49,13 @@ public class MainController {
 					.getImage(), "Checking resources");
 			splash.setVisible(true);
 			splash.showStatus("Initializing application", 10);
-			InitializeAction initAction = Initializer.getInstance()
+			List<InitializeAction> initAction = Initializer.getInstance()
 					.initializeApp();
 			logger.debug("Value of initAction {}", initAction);
+			splash.showStatus("Updating", 10);
+			if (initAction.contains(InitializeAction.UPDATE)) {
+				Update.update();
+			}
 			splash.showStatus("Preparing controller", 20);
 			champController = new ChampionController(this);
 			itemController = new ItemController(this);
@@ -61,6 +68,9 @@ public class MainController {
 			itemController.loadGUI();
 			matchupController.loadGUI();
 			gameController.loadGUI();
+			NewEntryDialoge.getInstance();
+			MatchupDetailDialoge.getInstance();
+			// more dialoges
 			splash.showStatus("Loading data", 40);
 			champController.loadData();
 			itemController.loadData();
@@ -74,7 +84,7 @@ public class MainController {
 			splash.close();
 			CurrentSummonerNameView currSumView = CurrentSummonerNameView
 					.getInstance();
-			if (initAction == InitializeAction.CREATE_SUMMONER) {
+			if (initAction.contains(InitializeAction.CREATE_SUMMONER)) {
 				Object[] options = { "OK" };
 				int ok = JOptionPane.showOptionDialog(null, currSumView,
 						"Enter your Summoner name",

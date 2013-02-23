@@ -70,10 +70,7 @@ public class MenuBarView extends JMenuBar implements View {
 
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
-					LoadingSplash spl = new LoadingSplash();
-					spl.setVisible(true);
-					SwingUtilities.invokeLater(new NewEntryDialoge());
-					spl.close();
+					SwingUtilities.invokeLater(NewEntryDialoge.getInstance());
 				}
 			});
 		}

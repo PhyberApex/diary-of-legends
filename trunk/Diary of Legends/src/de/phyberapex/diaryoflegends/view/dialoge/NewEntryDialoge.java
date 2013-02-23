@@ -7,6 +7,8 @@ import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.BorderFactory;
@@ -51,6 +53,7 @@ import de.phyberapex.diaryoflegends.view.renderer.ItemComboBoxRenderer;
 public class NewEntryDialoge extends JDialog implements Runnable {
 
 	private static final long serialVersionUID = 2162451784302955479L;
+	private static NewEntryDialoge instance;
 	private List<Champion> allChampions;
 	private List<Item> allStartingItems;
 	private List<Item> allItems;
@@ -58,8 +61,8 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 	private List<Champion> myTeamChampions;
 	private List<Champion> enemyTeamChampions;
 	private JTabbedPane newEntryContentPane;
-	private Game toEdit;
-	private boolean isImport;
+	private Game toEdit = null;
+	private boolean isImport = false;
 	private JPanel gameContentPanel;
 	private JPanel datePanel;
 	private JLabel dateLabel;
@@ -262,9 +265,10 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 	private static Logger logger = LogManager.getLogger(NewEntryDialoge.class
 			.getName());
 
-	public NewEntryDialoge() {
+	private NewEntryDialoge() {
 		super(MainView.getInstance());
 		logger.trace("NewEntryDialoge() - Entering");
+		createGUI();
 		logger.trace("NewEntryDialoge() - Leaving");
 	}
 
@@ -3991,6 +3995,7 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 
 	@Override
 	public void dispose() {
+		clearFields();
 		super.dispose();
 	}
 
@@ -4002,12 +4007,21 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 	@Override
 	public void run() {
 		logger.trace("run() - Entering");
-		createGUI();
+		if (this.toEdit != null) {
+			fillFields();
+		}
+		setVisible(true);
 		logger.trace("run() - Leaving");
 	}
 
 	private void createGUI() {
 		logger.trace("createGUI() - Entering");
+		this.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				dispose();
+			}
+		});
 		allChampions = new ArrayList<Champion>();
 		Champion c = new Champion(0, "no champion", null);
 		allChampions.add(c);
@@ -4032,11 +4046,91 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setLocation((d.width - this.getSize().width) / 2,
 				(d.height - this.getSize().height) / 2);
-		if (this.toEdit != null) {
-			fillFields();
-		}
-		setVisible(true);
 		logger.trace("createGUI() - Leaving");
+	}
+
+	private void clearFields() {
+		toEdit = null;
+		isImport = false;
+		getNewEntryContentPane().setSelectedIndex(0);
+		getDateChooser().setDate(null);
+		getLengthMinutesSpinner().setValue(0);
+		getLengthSecondsSpinner().setValue(0);
+		getTeam1Champ1Box().setSelectedIndex(0);
+		getTeam1Champ2Box().setSelectedIndex(0);
+		getTeam1Champ3Box().setSelectedIndex(0);
+		getTeam1Champ4Box().setSelectedIndex(0);
+		getTeam1Champ5Box().setSelectedIndex(0);
+		getTeam2Champ1Box().setSelectedIndex(0);
+		getTeam2Champ2Box().setSelectedIndex(0);
+		getTeam2Champ3Box().setSelectedIndex(0);
+		getTeam2Champ4Box().setSelectedIndex(0);
+		getTeam2Champ5Box().setSelectedIndex(0);
+		getGameResultWonBox().setSelected(false);
+		getGameResultLossBox().setSelected(false);
+		getOwnKillsSpinner().setValue(0);
+		getOwnDeathsSpinner().setValue(0);
+		getOwnAssistsSpinner().setValue(0);
+		getOwnCSSpinner().setValue(0);
+		getGameNotesTextArea().setText("");
+		getLaneBox().setSelectedIndex(0);
+		getMatchupDifficultyBox().setSelectedIndex(0);
+		getMatchupResultWonButton().setSelected(false);
+		getMatchupResultLossButton().setSelected(false);
+		getMatchupResultDrawButton().setSelected(false);
+		getMyItem1AmountSpinner().setValue(0);
+		getMyItem1Box().setSelectedIndex(0);
+		getMyItem2AmountSpinner().setValue(0);
+		getMyItem2Box().setSelectedIndex(0);
+		getMyItem3AmountSpinner().setValue(0);
+		getMyItem3Box().setSelectedIndex(0);
+		getMyItem4AmountSpinner().setValue(0);
+		getMyItem4Box().setSelectedIndex(0);
+		getMyItem5AmountSpinner().setValue(0);
+		getMyItem5Box().setSelectedIndex(0);
+		getMyItem6AmountSpinner().setValue(0);
+		getMyItem6Box().setSelectedIndex(0);
+		getMyItem1AmountSpinner().setValue(0);
+		getMyEndItem1Box().setSelectedIndex(0);
+		getMyEndItem2AmountSpinner().setValue(0);
+		getMyEndItem2Box().setSelectedIndex(0);
+		getMyEndItem3AmountSpinner().setValue(0);
+		getMyEndItem3Box().setSelectedIndex(0);
+		getMyEndItem4AmountSpinner().setValue(0);
+		getMyEndItem4Box().setSelectedIndex(0);
+		getMyEndItem5AmountSpinner().setValue(0);
+		getMyEndItem5Box().setSelectedIndex(0);
+		getMyEndItem6AmountSpinner().setValue(0);
+		getMyEndItem6Box().setSelectedIndex(0);
+		getEnemyItem1AmountSpinner().setValue(0);
+		getEnemyItem1Box().setSelectedIndex(0);
+		getEnemyItem2AmountSpinner().setValue(0);
+		getEnemyItem2Box().setSelectedIndex(0);
+		getEnemyItem3AmountSpinner().setValue(0);
+		getEnemyItem3Box().setSelectedIndex(0);
+		getEnemyItem4AmountSpinner().setValue(0);
+		getEnemyItem4Box().setSelectedIndex(0);
+		getEnemyItem5AmountSpinner().setValue(0);
+		getEnemyItem5Box().setSelectedIndex(0);
+		getEnemyItem6AmountSpinner().setValue(0);
+		getEnemyItem6Box().setSelectedIndex(0);
+		getEnemyItem1AmountSpinner().setValue(0);
+		getEnemyEndItem1Box().setSelectedIndex(0);
+		getEnemyEndItem2AmountSpinner().setValue(0);
+		getEnemyEndItem2Box().setSelectedIndex(0);
+		getEnemyEndItem3AmountSpinner().setValue(0);
+		getEnemyEndItem3Box().setSelectedIndex(0);
+		getEnemyEndItem4AmountSpinner().setValue(0);
+		getEnemyEndItem4Box().setSelectedIndex(0);
+		getEnemyEndItem5AmountSpinner().setValue(0);
+		getEnemyEndItem5Box().setSelectedIndex(0);
+		getEnemyEndItem6AmountSpinner().setValue(0);
+		getEnemyEndItem6Box().setSelectedIndex(0);
+		getMySpell1Box().setSelectedIndex(0);
+		getMySpell2Box().setSelectedIndex(0);
+		getEnemySpell1Box().setSelectedIndex(0);
+		getEnemySpell2Box().setSelectedIndex(0);
+		getMatchupNotesTextArea().setText("");
 	}
 
 	private void fillFields() {
@@ -4235,5 +4329,17 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		getEnemySpell2Box().setSelectedItem(m.getEnemySpell2());
 		getMatchupNotesTextArea().setText(m.getNotes());
 		logger.trace("fillFields() - Leaving");
+	}
+
+	public static synchronized NewEntryDialoge getInstance() {
+		logger.trace("getInstance() - Entering");
+		logger.debug("getInstance() - Instance is {}", instance);
+		if (instance == null) {
+			logger.debug("Creating a new instance of NewEntryDialoge");
+			instance = new NewEntryDialoge();
+		}
+		logger.trace("getInstance() - Returning");
+		logger.debug("getInstance() - Returning {}", instance);
+		return instance;
 	}
 }

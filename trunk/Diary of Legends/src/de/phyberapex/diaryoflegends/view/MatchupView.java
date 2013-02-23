@@ -91,8 +91,10 @@ public class MatchupView extends JPanel implements View {
 
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
-					// TODO
-					// newChampionDialoge.setVisible(true);
+					LoadingSplash spl = new LoadingSplash();
+					spl.setVisible(true);
+					SwingUtilities.invokeLater(NewEntryDialoge.getInstance());
+					spl.close();
 				}
 			});
 		}
@@ -184,7 +186,8 @@ public class MatchupView extends JPanel implements View {
 							public void actionPerformed(ActionEvent e) {
 								LoadingSplash spl = new LoadingSplash();
 								spl.setVisible(true);
-								NewEntryDialoge nd = new NewEntryDialoge();
+								NewEntryDialoge nd = NewEntryDialoge
+										.getInstance();
 								nd.setToEdit(((Matchup) matchupTable
 										.getValueAt(row, 1)).getGame(), false);
 								SwingUtilities.invokeLater(nd);
@@ -196,18 +199,21 @@ public class MatchupView extends JPanel implements View {
 
 							@Override
 							public void actionPerformed(ActionEvent e) {
-								new MatchupDetailDialoge()
-										.showDetails((Matchup) matchupTable
-												.getValueAt(row, 1));
+								MatchupDetailDialoge dd = MatchupDetailDialoge
+										.getInstance();
+								dd.setMatchup((Matchup) matchupTable
+										.getValueAt(row, 1));
+								SwingUtilities.invokeLater(dd);
 							}
 						});
 						menu.add(edit);
 						menu.add(view);
 						menu.show(matchupTable, e.getX(), e.getY());
 					} else if (e.getClickCount() == 2) {
-						new MatchupDetailDialoge()
-								.showDetails((Matchup) matchupTable.getValueAt(
-										row, 1));
+						MatchupDetailDialoge dd = MatchupDetailDialoge
+								.getInstance();
+						dd.setMatchup((Matchup) matchupTable.getValueAt(row, 1));
+						SwingUtilities.invokeLater(dd);
 					}
 				}
 

@@ -98,7 +98,7 @@ public class GameView extends JPanel implements View {
 				public void actionPerformed(ActionEvent arg0) {
 					LoadingSplash spl = new LoadingSplash();
 					spl.setVisible(true);
-					SwingUtilities.invokeLater(new NewEntryDialoge());
+					SwingUtilities.invokeLater(NewEntryDialoge.getInstance());
 					spl.close();
 				}
 			});
@@ -190,7 +190,7 @@ public class GameView extends JPanel implements View {
 							public void actionPerformed(ActionEvent e) {
 								LoadingSplash spl = new LoadingSplash();
 								spl.setVisible(true);
-								NewEntryDialoge nd = new NewEntryDialoge();
+								NewEntryDialoge nd = NewEntryDialoge.getInstance();
 								nd.setToEdit(((Game) gameTable.getValueAt(row,
 										1)), false);
 								SwingUtilities.invokeLater(nd);
@@ -202,9 +202,10 @@ public class GameView extends JPanel implements View {
 
 							@Override
 							public void actionPerformed(ActionEvent e) {
-								new MatchupDetailDialoge()
-										.showDetails((Matchup) gameTable
-												.getValueAt(row, 1));
+								MatchupDetailDialoge dd = MatchupDetailDialoge.getInstance();
+								dd.setMatchup((Matchup) gameTable
+										.getValueAt(row, 1));
+								SwingUtilities.invokeLater(dd);
 							}
 						});
 						menu.add(edit);
