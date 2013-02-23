@@ -192,7 +192,7 @@ public class GameView extends JPanel implements View {
 								spl.setVisible(true);
 								NewEntryDialoge nd = new NewEntryDialoge();
 								nd.setToEdit(((Game) gameTable.getValueAt(row,
-										1)));
+										1)), false);
 								SwingUtilities.invokeLater(nd);
 								spl.close();
 							}

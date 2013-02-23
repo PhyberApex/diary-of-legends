@@ -30,8 +30,6 @@ public class ExportDolexAction implements Runnable {
 			logger.debug("Exporting into {}", f);
 			FileWriter fw = new FileWriter(f, false);
 			JSONWriter jw = new JSONWriter(fw);
-			jw.object();
-			jw.key("games");
 			jw.array();
 			for (Game game : games) {
 				logger.debug("Exporting ", game);
@@ -143,7 +141,6 @@ public class ExportDolexAction implements Runnable {
 				logger.debug("Finished with this game.");
 			}
 			jw.endArray();
-			jw.endObject();
 			fw.close();
 			logger.debug("All games exported.");
 			MainView.getInstance().setStatusText("Export complete");
