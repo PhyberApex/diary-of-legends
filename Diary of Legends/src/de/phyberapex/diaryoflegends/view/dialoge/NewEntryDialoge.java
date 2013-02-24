@@ -49,6 +49,7 @@ import de.phyberapex.diaryoflegends.model.util.SummonerSpellUtil;
 import de.phyberapex.diaryoflegends.view.MainView;
 import de.phyberapex.diaryoflegends.view.renderer.ChampionComboBoxRenderer;
 import de.phyberapex.diaryoflegends.view.renderer.ItemComboBoxRenderer;
+import de.phyberapex.diaryoflegends.view.renderer.SpellComboBoxRenderer;
 
 public class NewEntryDialoge extends JDialog implements Runnable {
 
