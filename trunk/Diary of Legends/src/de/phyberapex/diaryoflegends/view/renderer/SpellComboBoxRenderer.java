@@ -1,4 +1,4 @@
-package de.phyberapex.diaryoflegends.view.dialoge;
+package de.phyberapex.diaryoflegends.view.renderer;
 
 import java.awt.Component;
 import java.awt.GridBagConstraints;

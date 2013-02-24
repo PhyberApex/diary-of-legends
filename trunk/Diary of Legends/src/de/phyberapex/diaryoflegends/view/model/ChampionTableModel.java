@@ -6,6 +6,7 @@ import javax.swing.table.AbstractTableModel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import de.phyberapex.diaryoflegends.extra.ImageIconFactory;
 import de.phyberapex.diaryoflegends.model.Champion;
 import de.phyberapex.diaryoflegends.model.util.ChampionUtil;
 
@@ -108,7 +109,8 @@ public class ChampionTableModel extends AbstractTableModel {
 		Object returnValue = null;
 		switch (columnIndex) {
 		case 0:
-			returnValue = champs.get(rowIndex).getIcon();
+			returnValue = ImageIconFactory.resizeImageIcon(champs.get(rowIndex)
+					.getIcon(), 60, 60);
 			break;
 		case 1:
 			returnValue = champs.get(rowIndex);

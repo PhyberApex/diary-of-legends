@@ -125,6 +125,10 @@ public class Champion extends Model {
 		return str;
 	}
 
+	public byte[] getIconreal(){
+		return this.icon;
+	}
+	
 	@Override
 	public boolean equals(Object o) {
 		logger.trace("equals() - Entering");
