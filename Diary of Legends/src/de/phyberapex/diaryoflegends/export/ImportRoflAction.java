@@ -1,4 +1,4 @@
-package de.phyberapex.diaryoflegends.backup;
+package de.phyberapex.diaryoflegends.export;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -238,7 +238,7 @@ public class ImportRoflAction implements Runnable {
 								logger.error("Item with id {} not found",
 										itemId);
 								throw new ItemNotFoundException(
-										"Item not found. Maybe your summoner spells are outdated.");
+										"Item not found. Maybe your items are outdated.");
 							}
 							myItems.add(new MatchupItem(currItem, 1));
 						}
@@ -261,7 +261,7 @@ public class ImportRoflAction implements Runnable {
 								logger.error("Item with id {} not found",
 										itemId);
 								throw new ItemNotFoundException(
-										"Summoner spell not found. Maybe your summoner spells are outdated.");
+										"Item not found. Maybe your items are outdated.");
 							}
 							enemyItems.add(new MatchupItem(currItem, 1));
 						}

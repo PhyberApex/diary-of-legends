@@ -1,4 +1,4 @@
-package de.phyberapex.diaryoflegends.view.panel;
+package de.phyberapex.diaryoflegends.view.dialoge.panel;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -18,7 +18,6 @@ import org.apache.logging.log4j.Logger;
 
 import de.phyberapex.diaryoflegends.extra.ImageIconFactory;
 import de.phyberapex.diaryoflegends.model.Champion;
-import de.phyberapex.diaryoflegends.model.Matchup;
 import de.phyberapex.diaryoflegends.model.MatchupItem;
 import de.phyberapex.diaryoflegends.model.MatchupResult;
 import de.phyberapex.diaryoflegends.model.SummonerSpell;
@@ -475,37 +474,15 @@ public class MatchupDetailChampionPanel extends JPanel {
 		return myChampSpell2Label;
 	}
 
-	public void setChampionAndItems(Matchup m) {
+	public void setChampionAndItems(Champion champ,
+			List<MatchupItem> matchupStartItems,
+			List<MatchupItem> matchupEndItems, SummonerSpell spell1,
+			SummonerSpell spell2, MatchupResult result) {
 		logger.trace("setChampionAndItems() - Entering");
-		logger.debug("setChampionAndItems() - Parameter: {}", m);
-		Champion champ;
-		List<MatchupItem> matchupStartItems;
-		List<MatchupItem> matchupEndItems;
-		SummonerSpell spell1;
-		SummonerSpell spell2;
-		MatchupResult result;
-		if (isEnemy) {
-			champ = m.getEnemyChamp();
-			matchupStartItems = m.getEnemyStartItems();
-			matchupEndItems = m.getEnemyEndItems();
-			result = m.getResult();
-			if (m.getResult() == MatchupResult.LOSS) {
-				result = MatchupResult.LOSS;
-			} else if (m.getResult() == MatchupResult.WIN) {
-				result = MatchupResult.LOSS;
-			} else {
-				result = m.getResult();
-			}
-			spell1 = m.getEnemySpell1();
-			spell2 = m.getEnemySpell2();
-		} else {
-			champ = m.getMyChamp();
-			matchupStartItems = m.getMyStartItems();
-			matchupEndItems = m.getMyEndItems();
-			result = m.getResult();
-			spell1 = m.getMySpell1();
-			spell2 = m.getMySpell2();
-		}
+		logger.debug(
+				"setChampionAndItems() - Parameter: {}, {}, {}, {}, {}, {}",
+				champ, matchupStartItems, matchupEndItems, spell1, spell2,
+				result);
 		this.getMyChampNameLabel().setText(champ.getName());
 		Color c = Color.GREEN;
 		if (result == MatchupResult.LOSS) {

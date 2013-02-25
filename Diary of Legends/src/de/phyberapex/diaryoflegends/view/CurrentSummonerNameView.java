@@ -63,9 +63,7 @@ public class CurrentSummonerNameView extends JPanel implements View {
 	 */
 	public static synchronized CurrentSummonerNameView getInstance() {
 		logger.trace("getInstance() - Entering");
-		logger.debug("Instance is {}", instance);
 		if (instance == null) {
-			logger.debug("Creating a new instance of Initializer");
 			instance = new CurrentSummonerNameView();
 		}
 		logger.trace("getInstance() - Returning");

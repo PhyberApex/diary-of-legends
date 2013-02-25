@@ -52,11 +52,11 @@ public class MainController {
 			List<InitializeAction> initAction = Initializer.getInstance()
 					.initializeApp();
 			logger.debug("Value of initAction {}", initAction);
-			splash.showStatus("Updating", 10);
+			splash.showStatus("Updating", 20);
 			if (initAction.contains(InitializeAction.UPDATE)) {
 				Update.update();
 			}
-			splash.showStatus("Preparing controller", 20);
+			splash.showStatus("Preparing controller", 25);
 			champController = new ChampionController(this);
 			itemController = new ItemController(this);
 			matchupController = new MatchupController(this);
@@ -70,7 +70,6 @@ public class MainController {
 			gameController.loadGUI();
 			NewEntryDialoge.getInstance();
 			MatchupDetailDialoge.getInstance();
-			// more dialoges
 			splash.showStatus("Loading data", 40);
 			champController.loadData();
 			itemController.loadData();
@@ -82,9 +81,9 @@ public class MainController {
 			mainView.setGamesPanel((GameView) gameController.getView());
 			splash.showStatus("Preparing to start", 100);
 			splash.close();
-			CurrentSummonerNameView currSumView = CurrentSummonerNameView
-					.getInstance();
 			if (initAction.contains(InitializeAction.CREATE_SUMMONER)) {
+				CurrentSummonerNameView currSumView = CurrentSummonerNameView
+						.getInstance();
 				Object[] options = { "OK" };
 				int ok = JOptionPane.showOptionDialog(null, currSumView,
 						"Enter your Summoner name",
@@ -108,9 +107,6 @@ public class MainController {
 				Config.getInstance().setProperty("SUMMONER_NAME",
 						currSumView.getSummonerName());
 				Config.getInstance().saveChanges();
-			} else {
-				currSumView.setSummonerName(Config.getInstance().getProperty(
-						"SUMMONER_NAME"));
 			}
 			SwingUtilities.invokeLater(mainView);
 
