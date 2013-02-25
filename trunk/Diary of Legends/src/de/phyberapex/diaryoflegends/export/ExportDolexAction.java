@@ -1,4 +1,4 @@
-package de.phyberapex.diaryoflegends.backup;
+package de.phyberapex.diaryoflegends.export;
 
 import java.io.File;
 import java.io.FileWriter;

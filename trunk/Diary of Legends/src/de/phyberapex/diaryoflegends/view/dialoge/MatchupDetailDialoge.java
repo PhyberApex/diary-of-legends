@@ -24,9 +24,10 @@ import de.phyberapex.diaryoflegends.model.Champion;
 import de.phyberapex.diaryoflegends.model.Game;
 import de.phyberapex.diaryoflegends.model.Matchup;
 import de.phyberapex.diaryoflegends.model.MatchupDifficulty;
+import de.phyberapex.diaryoflegends.model.MatchupResult;
 import de.phyberapex.diaryoflegends.model.Role;
 import de.phyberapex.diaryoflegends.model.util.MatchupUtil;
-import de.phyberapex.diaryoflegends.view.panel.MatchupDetailChampionPanel;
+import de.phyberapex.diaryoflegends.view.dialoge.panel.MatchupDetailChampionPanel;
 
 public class MatchupDetailDialoge extends JDialog implements Runnable {
 
@@ -798,14 +799,22 @@ public class MatchupDetailDialoge extends JDialog implements Runnable {
 	private void setMyChampionAndItems(Matchup m) {
 		logger.trace("setMyChampion() - Entering");
 		logger.debug("setMyChampion() - Parameter: {}", m);
-		myChampPanel.setChampionAndItems(m);
+		myChampPanel.setChampionAndItems(m.getMyChamp(), m.getMyStartItems(),
+				m.getMyEndItems(), m.getMySpell1(), m.getMySpell2(),
+				m.getResult());
 		logger.trace("setMyChampion() - Leaving");
 	}
 
 	private void setEnemyChampionAndItems(Matchup m) {
 		logger.trace("setEnemyChampionAndItems() - Entering");
 		logger.debug("setEnemyChampionAndItems() - Parameter: {}", m);
-		enemyChampPanel.setChampionAndItems(m);
+		MatchupResult r = MatchupResult.WIN;
+		if (m.getResult() == MatchupResult.WIN) {
+			r = MatchupResult.LOSS;
+		}
+		enemyChampPanel.setChampionAndItems(m.getEnemyChamp(),
+				m.getEnemyStartItems(), m.getEnemyEndItems(),
+				m.getEnemySpell1(), m.getEnemySpell2(), r);
 		logger.trace("setEnemyChampionAndItems() - Leaving");
 	}
 }

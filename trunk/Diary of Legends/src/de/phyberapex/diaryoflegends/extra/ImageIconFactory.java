@@ -52,6 +52,7 @@ public class ImageIconFactory {
 		logger.trace("createImageIconFromResourePath() - Entering");
 		logger.debug("createImageIconFromResourePath() - Parameter: {}", path);
 		path = Constants.getResourcePath() + path;
+		logger.debug("New path is {}", path);
 		ImageIcon icon = null;
 		URL imgURL = ImageIconFactory.class.getResource(path);
 		if (imgURL != null) {
