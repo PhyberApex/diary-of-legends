@@ -31,7 +31,10 @@ public class ExportDolexAction implements Runnable {
 			FileWriter fw = new FileWriter(f, false);
 			JSONWriter jw = new JSONWriter(fw);
 			jw.array();
+			int x = 0;
 			for (Game game : games) {
+				x++;
+				MainView.getInstance().setStatusText("Exporting game "+x+" of "+games.size()+"...");
 				logger.debug("Exporting ", game);
 				jw.object();
 				jw.key("date");

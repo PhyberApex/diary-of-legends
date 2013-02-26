@@ -16,7 +16,6 @@ import de.phyberapex.diaryoflegends.ExitAction;
 import de.phyberapex.diaryoflegends.export.ExportDolexAction;
 import de.phyberapex.diaryoflegends.export.ImportDolexAction;
 import de.phyberapex.diaryoflegends.export.ImportRoflAction;
-import de.phyberapex.diaryoflegends.extra.LoadingSplash;
 import de.phyberapex.diaryoflegends.view.dialoge.NewEntryDialoge;
 
 public class MenuBarView extends JMenuBar implements View {
@@ -87,7 +86,8 @@ public class MenuBarView extends JMenuBar implements View {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					JFileChooser fc = new JFileChooser();
+					JFileChooser fc = new JFileChooser(System
+							.getProperty("user.dir"));
 					fc.setFileFilter(new FileFilter() {
 
 						@Override
@@ -112,12 +112,10 @@ public class MenuBarView extends JMenuBar implements View {
 					});
 					int ok = fc.showOpenDialog(MainView.getInstance());
 					if (ok == JFileChooser.APPROVE_OPTION) {
-						LoadingSplash spl = new LoadingSplash();
-						spl.setVisible(true);
 						ImportDolexAction imp = new ImportDolexAction(fc
 								.getSelectedFile());
-						SwingUtilities.invokeLater(imp);
-						spl.close();
+						Thread tr = new Thread(imp);
+						tr.start();
 					}
 				}
 			});
@@ -160,12 +158,10 @@ public class MenuBarView extends JMenuBar implements View {
 					});
 					int ok = fc.showOpenDialog(MainView.getInstance());
 					if (ok == JFileChooser.APPROVE_OPTION) {
-						LoadingSplash spl = new LoadingSplash();
-						spl.setVisible(true);
 						ImportRoflAction imp = new ImportRoflAction(fc
 								.getSelectedFile());
-						SwingUtilities.invokeLater(imp);
-						spl.close();
+						Thread tr = new Thread(imp);
+						tr.start();
 					}
 				}
 			});
@@ -183,10 +179,8 @@ public class MenuBarView extends JMenuBar implements View {
 
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
-					LoadingSplash spl = new LoadingSplash();
-					spl.setVisible(true);
-					SwingUtilities.invokeLater(new ExportDolexAction());
-					spl.close();
+					Thread tr = new Thread(new ExportDolexAction());
+					tr.start();
 				}
 			});
 		}

@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -48,6 +49,8 @@ public class ImportDolexAction implements Runnable {
 		MainView.getInstance().setStatusText("Importing...");
 		FileInputStream fstream;
 		BufferedReader br;
+		List<Champion> allChampions = ChampionUtil.getAllChampions();
+		List<Item> allItems = ItemUtil.getAllItems();
 		try {
 			fstream = new FileInputStream(importFile);
 			br = new BufferedReader(new InputStreamReader(fstream));
@@ -61,6 +64,7 @@ public class ImportDolexAction implements Runnable {
 			fstream.close();
 			JSONArray gArray = new JSONArray(imp);
 			for (int i = 0; i < gArray.length(); i++) {
+				MainView.getInstance().setStatusText("Importing game "+(int)(i+1)+" of "+gArray.length()+"...");
 				JSONObject gJo = gArray.getJSONObject(i);
 
 				Game game = new Game();
@@ -73,7 +77,14 @@ public class ImportDolexAction implements Runnable {
 				Champion chmp;
 				for (int j = 0; j < myTeamArray.length(); j++) {
 					chmp = null;
-					chmp = ChampionUtil.getChampionById(myTeamArray.getInt(j));
+					Iterator<Champion> it = allChampions.iterator();
+					while (it.hasNext()) {
+						Champion tmp = it.next();
+						if (tmp.getId() == myTeamArray.getInt(j)) {
+							chmp = tmp;
+							break;
+						}
+					}
 					if (chmp == null) {
 						logger.error("Championt with id {} not found",
 								myTeamArray.getInt(j));
@@ -88,8 +99,14 @@ public class ImportDolexAction implements Runnable {
 				JSONArray enemyTeamArray = gJo.getJSONArray("enemyTeam");
 				for (int j = 0; j < enemyTeamArray.length(); j++) {
 					chmp = null;
-					chmp = ChampionUtil.getChampionById(enemyTeamArray
-							.getInt(j));
+					Iterator<Champion> it = allChampions.iterator();
+					while (it.hasNext()) {
+						Champion tmp = it.next();
+						if (tmp.getId() == enemyTeamArray.getInt(j)) {
+							chmp = tmp;
+							break;
+						}
+					}
 					if (chmp == null) {
 						logger.error("Champion with id {} not found",
 								enemyTeamArray.getInt(j));
@@ -104,7 +121,14 @@ public class ImportDolexAction implements Runnable {
 				matchup.setGame(game);
 				JSONObject mJo = gJo.getJSONObject("matchup");
 				chmp = null;
-				chmp = ChampionUtil.getChampionById(mJo.getInt("myChampion"));
+				Iterator<Champion> chmpit = allChampions.iterator();
+				while (chmpit.hasNext()) {
+					Champion tmp = chmpit.next();
+					if (tmp.getId() == mJo.getInt("myChampion")) {
+						chmp = tmp;
+						break;
+					}
+				}
 				if (!game.getMyTeam().contains(chmp)) {
 					logger.error("Champion with id {} not found in your team",
 							mJo.getInt("myChampion"));
@@ -117,7 +141,14 @@ public class ImportDolexAction implements Runnable {
 				Item item = null;
 				for (int j = 0; j < myStartItemsArray.length(); j++) {
 					JSONObject maItJo = myStartItemsArray.getJSONObject(j);
-					item = ItemUtil.getItemById(maItJo.getInt("item"));
+					Iterator<Item> it = allItems.iterator();
+					while (it.hasNext()) {
+						Item tmp = it.next();
+						if (tmp.getId() == maItJo.getInt("item")) {
+							item = tmp;
+							break;
+						}
+					}
 					if (item == null) {
 						logger.error("Item with id {} not found",
 								maItJo.getInt("item"));
@@ -134,7 +165,14 @@ public class ImportDolexAction implements Runnable {
 				item = null;
 				for (int j = 0; j < myEndItemsArray.length(); j++) {
 					JSONObject maItJo = myEndItemsArray.getJSONObject(j);
-					item = ItemUtil.getItemById(maItJo.getInt("item"));
+					Iterator<Item> it = allItems.iterator();
+					while (it.hasNext()) {
+						Item tmp = it.next();
+						if (tmp.getId() == maItJo.getInt("item")) {
+							item = tmp;
+							break;
+						}
+					}
 					if (item == null) {
 						logger.error("Item with id {} not found",
 								maItJo.getInt("item"));
@@ -166,8 +204,14 @@ public class ImportDolexAction implements Runnable {
 				}
 				matchup.setMySpell2(spell2);
 				chmp = null;
-				chmp = ChampionUtil
-						.getChampionById(mJo.getInt("enemyChampion"));
+				Iterator<Champion> chmspit = allChampions.iterator();
+				while (chmspit.hasNext()) {
+					Champion tmp = chmspit.next();
+					if (tmp.getId() == mJo.getInt("enemyChampion")) {
+						chmp = tmp;
+						break;
+					}
+				}
 				if (!game.getEnemyTeam().contains(chmp)) {
 					logger.error("Champion with id {} not found in enemy team",
 							mJo.getInt("enemyChampion"));
@@ -181,7 +225,14 @@ public class ImportDolexAction implements Runnable {
 				item = null;
 				for (int j = 0; j < enemyStartItemsArray.length(); j++) {
 					JSONObject maItJo = enemyStartItemsArray.getJSONObject(j);
-					item = ItemUtil.getItemById(maItJo.getInt("item"));
+					Iterator<Item> it = allItems.iterator();
+					while (it.hasNext()) {
+						Item tmp = it.next();
+						if (tmp.getId() == maItJo.getInt("item")) {
+							item = tmp;
+							break;
+						}
+					}
 					if (item == null) {
 						logger.error("Item with id {} not found",
 								maItJo.getInt("item"));
@@ -199,7 +250,14 @@ public class ImportDolexAction implements Runnable {
 				item = null;
 				for (int j = 0; j < enemyEndItemsArray.length(); j++) {
 					JSONObject maItJo = enemyEndItemsArray.getJSONObject(j);
-					item = ItemUtil.getItemById(maItJo.getInt("item"));
+					Iterator<Item> it = allItems.iterator();
+					while (it.hasNext()) {
+						Item tmp = it.next();
+						if (tmp.getId() == maItJo.getInt("item")) {
+							item = tmp;
+							break;
+						}
+					}
 					if (item == null) {
 						logger.error("Item with id {} not found",
 								maItJo.getInt("item"));
@@ -247,8 +305,8 @@ public class ImportDolexAction implements Runnable {
 				GameUtil.saveGame(game);
 				MainView.getInstance().getGamePanel().addGame(game);
 				MainView.getInstance().getMatchupPanel().addMatchup(matchup);
-				MainView.getInstance().setStatusText("Import complete");
 			}
+			MainView.getInstance().setStatusText("Import complete");
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			MainView.getInstance().setStatusText(

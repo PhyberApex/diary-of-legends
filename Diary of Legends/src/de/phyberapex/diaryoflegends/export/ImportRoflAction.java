@@ -9,7 +9,6 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
@@ -18,7 +17,6 @@ import de.phyberapex.diaryoflegends.base.Config;
 import de.phyberapex.diaryoflegends.exception.ChampionNotFoundException;
 import de.phyberapex.diaryoflegends.exception.ItemNotFoundException;
 import de.phyberapex.diaryoflegends.exception.SummonerSpellNotFoundException;
-import de.phyberapex.diaryoflegends.extra.LoadingSplash;
 import de.phyberapex.diaryoflegends.model.Champion;
 import de.phyberapex.diaryoflegends.model.Game;
 import de.phyberapex.diaryoflegends.model.GameResult;
@@ -279,10 +277,7 @@ public class ImportRoflAction implements Runnable {
 			MainView.getInstance().setStatusText("Import complete");
 			NewEntryDialoge nd = NewEntryDialoge.getInstance();
 			nd.setToEdit(game, true);
-			LoadingSplash sp = new LoadingSplash();
-			sp.setVisible(true);
 			SwingUtilities.invokeLater(nd);
-			sp.close();
 		} catch (ChampionNotFoundException | ItemNotFoundException
 				| SummonerSpellNotFoundException e) {
 			logger.error(e.getMessage());

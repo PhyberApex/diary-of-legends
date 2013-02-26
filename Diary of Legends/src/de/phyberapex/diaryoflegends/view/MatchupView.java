@@ -17,7 +17,6 @@ import javax.swing.SwingUtilities;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import de.phyberapex.diaryoflegends.controller.MatchupController;
-import de.phyberapex.diaryoflegends.extra.LoadingSplash;
 import de.phyberapex.diaryoflegends.model.Matchup;
 import de.phyberapex.diaryoflegends.view.dialoge.MatchupDetailDialoge;
 import de.phyberapex.diaryoflegends.view.dialoge.NewEntryDialoge;
@@ -91,10 +90,7 @@ public class MatchupView extends JPanel implements View {
 
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
-					LoadingSplash spl = new LoadingSplash();
-					spl.setVisible(true);
 					SwingUtilities.invokeLater(NewEntryDialoge.getInstance());
-					spl.close();
 				}
 			});
 		}
@@ -184,14 +180,11 @@ public class MatchupView extends JPanel implements View {
 						edit.addActionListener(new ActionListener() {
 							@Override
 							public void actionPerformed(ActionEvent e) {
-								LoadingSplash spl = new LoadingSplash();
-								spl.setVisible(true);
 								NewEntryDialoge nd = NewEntryDialoge
 										.getInstance();
 								nd.setToEdit(((Matchup) matchupTable
 										.getValueAt(row, 1)).getGame(), false);
 								SwingUtilities.invokeLater(nd);
-								spl.close();
 							}
 						});
 						JMenuItem view = new JMenuItem("View");
