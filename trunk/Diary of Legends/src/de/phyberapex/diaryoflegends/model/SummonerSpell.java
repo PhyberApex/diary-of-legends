@@ -2,18 +2,21 @@ package de.phyberapex.diaryoflegends.model;
 
 import java.io.File;
 
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import de.phyberapex.diaryoflegends.extra.ConvertImage;
+import de.phyberapex.diaryoflegends.extra.ImageIconFactory;
 
 public class SummonerSpell extends Model {
 
 	private int id;
 	private String name;
 	private byte[] icon;
+	transient ImageIcon icon30x30;
 	transient private static Logger logger = LogManager
 			.getLogger(SummonerSpell.class.getName());
 
@@ -147,5 +150,15 @@ public class SummonerSpell extends Model {
 		logger.trace("equals() - Returning");
 		logger.debug("equals() - Returning: {}", returnValue);
 		return returnValue;
+	}
+
+	/**
+	 * @return
+	 */
+	public Icon get30x30Icon() {
+		if (icon30x30 == null) {
+			icon30x30 = ImageIconFactory.resizeImageIcon(getIcon(), 30, 30);
+		}
+		return icon30x30;
 	}
 }

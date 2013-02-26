@@ -9,8 +9,8 @@
     </Console>
   </appenders>
   <loggers>
-  	<root level="debug">
-      <appender-ref ref="STDOUT"/>
+  	<root level="error">
+      <appender-ref ref="logfile"/>
     </root>
   </loggers>
 </configuration>
