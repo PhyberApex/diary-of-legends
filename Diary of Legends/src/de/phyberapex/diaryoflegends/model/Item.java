@@ -152,16 +152,25 @@ public class Item extends Model {
 		logger.debug("toString() - Returning: {}", str);
 		return str;
 	}
-	
+
 	@Override
 	public boolean equals(Object o) {
 		logger.trace("equals() - Entering");
 		boolean returnValue = false;
-		if (o instanceof Item && ((Item)o).getId() == this.getId()){
+		if (o != null && ((Item) o).getId() == this.getId()) {
 			return true;
 		}
 		logger.trace("equals() - Returning");
 		logger.debug("equals() - Returning: {}", returnValue);
 		return returnValue;
+	}
+
+	@Override
+	public int hashCode() {
+		int hash = 1;
+		hash = hash * 17 + id;
+		hash = hash * 31 + name.hashCode();
+		hash = hash * 13 + icon.hashCode();
+		return hash;
 	}
 }

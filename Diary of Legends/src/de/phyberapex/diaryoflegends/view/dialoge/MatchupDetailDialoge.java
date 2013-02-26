@@ -87,6 +87,8 @@ public class MatchupDetailDialoge extends JDialog implements Runnable {
 	private void createGUI() {
 		this.setContentPane(getMatchupContentPanel());
 		this.setUndecorated(true);
+		this.setResizable(false);
+		this.setModal(true);
 	}
 
 	public JPanel getMatchupContentPanel() {
@@ -759,8 +761,6 @@ public class MatchupDetailDialoge extends JDialog implements Runnable {
 		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setLocation((d.width - this.getSize().width) / 2,
 				(d.height - this.getSize().height) / 2);
-		this.setResizable(false);
-		this.setModal(true);
 		setVisible(true);
 	}
 

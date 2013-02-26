@@ -3,9 +3,7 @@ package de.phyberapex.diaryoflegends.base;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.swing.UIManager;
-import javax.swing.UIManager.LookAndFeelInfo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import com.db4o.ext.DatabaseFileLockedException;
@@ -101,15 +99,9 @@ public class Initializer {
 	private void changeLaF() {
 		logger.trace("changeLaF() - Entering");
 		try {
+			UIManager.setLookAndFeel(
+		            UIManager.getSystemLookAndFeelClassName());
 			logger.debug("Iterating through LaFs");
-			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-				logger.debug("Current LaF: {}", info.getName());
-				if ("Nimbus".equals(info.getName())) {
-					UIManager.setLookAndFeel(info.getClassName());
-					logger.debug("LaF {} set", info.getName());
-					break;
-				}
-			}
 		} catch (Exception e) {
 			logger.info("Unable to find look and feel nimbus. Using default.");
 		} finally {

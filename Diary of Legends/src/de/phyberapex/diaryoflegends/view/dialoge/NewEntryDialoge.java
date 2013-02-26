@@ -47,15 +47,16 @@ import de.phyberapex.diaryoflegends.model.util.ItemUtil;
 import de.phyberapex.diaryoflegends.model.util.MatchupUtil;
 import de.phyberapex.diaryoflegends.model.util.SummonerSpellUtil;
 import de.phyberapex.diaryoflegends.view.MainView;
-import de.phyberapex.diaryoflegends.view.renderer.ChampionComboBoxRenderer;
-import de.phyberapex.diaryoflegends.view.renderer.ItemComboBoxRenderer;
-import de.phyberapex.diaryoflegends.view.renderer.SpellComboBoxRenderer;
+import de.phyberapex.diaryoflegends.view.dialoge.ComboBox.ChampionComboBox;
+import de.phyberapex.diaryoflegends.view.dialoge.ComboBox.ItemComboBox;
+import de.phyberapex.diaryoflegends.view.dialoge.ComboBox.SummonerSpellComboBox;
 
 public class NewEntryDialoge extends JDialog implements Runnable {
 
 	private static final long serialVersionUID = 2162451784302955479L;
 	private static NewEntryDialoge instance;
 	private List<Champion> allChampions;
+	private Champion[] allChampionsArray;
 	private List<Item> allStartingItems;
 	private List<Item> allItems;
 	private List<SummonerSpell> allSpells;
@@ -78,27 +79,27 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 	private JPanel myTeamPanel;
 	private JLabel myTeamLabel;
 	private JLabel team1Champ1Label;
-	private JComboBox<Champion> team1Champ1Box;
+	private ChampionComboBox team1Champ1Box;
 	private JLabel team1Champ2Label;
-	private JComboBox<Champion> team1Champ2Box;
+	private ChampionComboBox team1Champ2Box;
 	private JLabel team1Champ3Label;
-	private JComboBox<Champion> team1Champ3Box;
+	private ChampionComboBox team1Champ3Box;
 	private JLabel team1Champ4Label;
-	private JComboBox<Champion> team1Champ4Box;
+	private ChampionComboBox team1Champ4Box;
 	private JLabel team1Champ5Label;
-	private JComboBox<Champion> team1Champ5Box;
+	private ChampionComboBox team1Champ5Box;
 	private JPanel enemyTeamPanel;
 	private JLabel enemyTeamLabel;
 	private JLabel team2Champ1Label;
-	private JComboBox<Champion> team2Champ1Box;
+	private ChampionComboBox team2Champ1Box;
 	private JLabel team2Champ2Label;
-	private JComboBox<Champion> team2Champ2Box;
+	private ChampionComboBox team2Champ2Box;
 	private JLabel team2Champ3Label;
-	private JComboBox<Champion> team2Champ3Box;
+	private ChampionComboBox team2Champ3Box;
 	private JLabel team2Champ4Label;
-	private JComboBox<Champion> team2Champ4Box;
+	private ChampionComboBox team2Champ4Box;
 	private JLabel team2Champ5Label;
-	private JComboBox<Champion> team2Champ5Box;
+	private ChampionComboBox team2Champ5Box;
 	private JPanel gameResultPanel;
 	private JLabel gameResultWonLabel;
 	private ButtonGroup winLossGroup = new ButtonGroup();
@@ -124,63 +125,63 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 	private JPanel championsPanel;
 	private JPanel myChampionPanel;
 	private JLabel myChampionLabel;
-	private JComboBox<Champion> myChampionBox;
+	private ChampionComboBox myChampionBox;
 	private JTabbedPane myItemsPane;
 	private JPanel myStartItemsPanel;
 	private JLabel myItem1Label;
 	private JSpinner myItem1AmountSpinner;
 	private JLabel myItem1xLabel;
-	private JComboBox<Item> myItem1Box;
+	private ItemComboBox myItem1Box;
 	private JLabel myItem2Label;
 	private JSpinner myItem2AmountSpinner;
 	private JLabel myItem2xLabel;
-	private JComboBox<Item> myItem2Box;
+	private ItemComboBox myItem2Box;
 	private JLabel myItem3Label;
 	private JSpinner myItem3AmountSpinner;
 	private JLabel myItem3xLabel;
-	private JComboBox<Item> myItem3Box;
+	private ItemComboBox myItem3Box;
 	private JLabel myItem4Label;
 	private JSpinner myItem4AmountSpinner;
 	private JLabel myItem4xLabel;
-	private JComboBox<Item> myItem4Box;
+	private ItemComboBox myItem4Box;
 	private JLabel myItem5Label;
 	private JSpinner myItem5AmountSpinner;
 	private JLabel myItem5xLabel;
-	private JComboBox<Item> myItem5Box;
+	private ItemComboBox myItem5Box;
 	private JLabel myItem6Label;
 	private JSpinner myItem6AmountSpinner;
 	private JLabel myItem6xLabel;
-	private JComboBox<Item> myItem6Box;
+	private ItemComboBox myItem6Box;
 	private JPanel myEndItemsPanel;
 	private JLabel myEndItem1Label;
 	private JSpinner myEndItem1AmountSpinner;
 	private JLabel myEndItem1xLabel;
-	private JComboBox<Item> myEndItem1Box;
+	private ItemComboBox myEndItem1Box;
 	private JLabel myEndItem2Label;
 	private JSpinner myEndItem2AmountSpinner;
 	private JLabel myEndItem2xLabel;
-	private JComboBox<Item> myEndItem2Box;
+	private ItemComboBox myEndItem2Box;
 	private JLabel myEndItem3Label;
 	private JSpinner myEndItem3AmountSpinner;
 	private JLabel myEndItem3xLabel;
-	private JComboBox<Item> myEndItem3Box;
+	private ItemComboBox myEndItem3Box;
 	private JLabel myEndItem4Label;
 	private JSpinner myEndItem4AmountSpinner;
 	private JLabel myEndItem4xLabel;
-	private JComboBox<Item> myEndItem4Box;
+	private ItemComboBox myEndItem4Box;
 	private JLabel myEndItem5Label;
 	private JSpinner myEndItem5AmountSpinner;
 	private JLabel myEndItem5xLabel;
-	private JComboBox<Item> myEndItem5Box;
+	private ItemComboBox myEndItem5Box;
 	private JLabel myEndItem6Label;
 	private JSpinner myEndItem6AmountSpinner;
 	private JLabel myEndItem6xLabel;
-	private JComboBox<Item> myEndItem6Box;
+	private ItemComboBox myEndItem6Box;
 	private JPanel mySpellsPanel;
 	private JLabel mySpell1Label;
-	private JComboBox<SummonerSpell> mySpell1Box;
+	private SummonerSpellComboBox mySpell1Box;
 	private JLabel mySpell2Label;
-	private JComboBox<SummonerSpell> mySpell2Box;
+	private SummonerSpellComboBox mySpell2Box;
 	private JPanel matchupResultPanel;
 	private JLabel matchupResultLabel;
 	private ButtonGroup matchupResultGroup = new ButtonGroup();
@@ -192,63 +193,63 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 	private JRadioButton matchupResultLossButton;
 	private JPanel enemyChampionPanel;
 	private JLabel enemyChampionLabel;
-	private JComboBox<Champion> enemyChampionBox;
+	private ChampionComboBox enemyChampionBox;
 	private JTabbedPane enemyItemsPane;
 	private JPanel enemyStartItemsPanel;
 	private JLabel enemyItem1Label;
 	private JSpinner enemyItem1AmountSpinner;
 	private JLabel enemyItem1xLabel;
-	private JComboBox<Item> enemyItem1Box;
+	private ItemComboBox enemyItem1Box;
 	private JLabel enemyItem2Label;
 	private JSpinner enemyItem2AmountSpinner;
 	private JLabel enemyItem2xLabel;
-	private JComboBox<Item> enemyItem2Box;
+	private ItemComboBox enemyItem2Box;
 	private JLabel enemyItem3Label;
 	private JSpinner enemyItem3AmountSpinner;
 	private JLabel enemyItem3xLabel;
-	private JComboBox<Item> enemyItem3Box;
+	private ItemComboBox enemyItem3Box;
 	private JLabel enemyItem4Label;
 	private JSpinner enemyItem4AmountSpinner;
 	private JLabel enemyItem4xLabel;
-	private JComboBox<Item> enemyItem4Box;
+	private ItemComboBox enemyItem4Box;
 	private JLabel enemyItem5Label;
 	private JSpinner enemyItem5AmountSpinner;
 	private JLabel enemyItem5xLabel;
-	private JComboBox<Item> enemyItem5Box;
+	private ItemComboBox enemyItem5Box;
 	private JLabel enemyItem6Label;
 	private JSpinner enemyItem6AmountSpinner;
 	private JLabel enemyItem6xLabel;
-	private JComboBox<Item> enemyItem6Box;
+	private ItemComboBox enemyItem6Box;
 	private JPanel enemyEndItemsPanel;
 	private JLabel enemyEndItem1Label;
 	private JSpinner enemyEndItem1AmountSpinner;
 	private JLabel enemyEndItem1xLabel;
-	private JComboBox<Item> enemyEndItem1Box;
+	private ItemComboBox enemyEndItem1Box;
 	private JLabel enemyEndItem2Label;
 	private JSpinner enemyEndItem2AmountSpinner;
 	private JLabel enemyEndItem2xLabel;
-	private JComboBox<Item> enemyEndItem2Box;
+	private ItemComboBox enemyEndItem2Box;
 	private JLabel enemyEndItem3Label;
 	private JSpinner enemyEndItem3AmountSpinner;
 	private JLabel enemyEndItem3xLabel;
-	private JComboBox<Item> enemyEndItem3Box;
+	private ItemComboBox enemyEndItem3Box;
 	private JLabel enemyEndItem4Label;
 	private JSpinner enemyEndItem4AmountSpinner;
 	private JLabel enemyEndItem4xLabel;
-	private JComboBox<Item> enemyEndItem4Box;
+	private ItemComboBox enemyEndItem4Box;
 	private JLabel enemyEndItem5Label;
 	private JSpinner enemyEndItem5AmountSpinner;
 	private JLabel enemyEndItem5xLabel;
-	private JComboBox<Item> enemyEndItem5Box;
+	private ItemComboBox enemyEndItem5Box;
 	private JLabel enemyEndItem6Label;
 	private JSpinner enemyEndItem6AmountSpinner;
 	private JLabel enemyEndItem6xLabel;
-	private JComboBox<Item> enemyEndItem6Box;
+	private ItemComboBox enemyEndItem6Box;
 	private JPanel enemySpellsPanel;
 	private JLabel enemySpell1Label;
-	private JComboBox<SummonerSpell> enemySpell1Box;
+	private SummonerSpellComboBox enemySpell1Box;
 	private JLabel enemySpell2Label;
-	private JComboBox<SummonerSpell> enemySpell2Box;
+	private SummonerSpellComboBox enemySpell2Box;
 	private JPanel difficultyPanel;
 	private JLabel difficultyLabel;
 	private JComboBox<MatchupDifficulty> matchupDifficultyBox;
@@ -605,13 +606,11 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		return team1Champ1Label;
 	}
 
-	public JComboBox<Champion> getTeam1Champ1Box() {
+	public ChampionComboBox getTeam1Champ1Box() {
 		logger.trace("getTeam1Champ1Box() - Entering");
 		if (team1Champ1Box == null) {
-			team1Champ1Box = new JComboBox<Champion>(
-					new DefaultComboBoxModel<Champion>(
-							allChampions.toArray(new Champion[] {})));
-			team1Champ1Box.setRenderer(new ChampionComboBoxRenderer());
+			team1Champ1Box = new ChampionComboBox(
+					new DefaultComboBoxModel<Champion>(allChampionsArray));
 		}
 		logger.trace("getTeam1Champ1Box() - Returning");
 		logger.debug("getTeam1Champ1Box() - Returning: {}", team1Champ1Box);
@@ -628,13 +627,11 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		return team1Champ2Label;
 	}
 
-	public JComboBox<Champion> getTeam1Champ2Box() {
+	public ChampionComboBox getTeam1Champ2Box() {
 		logger.trace("getTeam1Champ2Box() - Entering");
 		if (team1Champ2Box == null) {
-			team1Champ2Box = new JComboBox<Champion>(
-					new DefaultComboBoxModel<Champion>(
-							allChampions.toArray(new Champion[] {})));
-			team1Champ2Box.setRenderer(new ChampionComboBoxRenderer());
+			team1Champ2Box = new ChampionComboBox(
+					new DefaultComboBoxModel<Champion>(allChampionsArray));
 		}
 		logger.trace("getTeam1Champ2Box() - Returning");
 		logger.debug("getTeam1Champ2Box() - Returning: {}", team1Champ2Box);
@@ -651,13 +648,11 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		return team1Champ3Label;
 	}
 
-	public JComboBox<Champion> getTeam1Champ3Box() {
+	public ChampionComboBox getTeam1Champ3Box() {
 		logger.trace("getTeam1Champ3Box() - Entering");
 		if (team1Champ3Box == null) {
-			team1Champ3Box = new JComboBox<Champion>(
-					new DefaultComboBoxModel<Champion>(
-							allChampions.toArray(new Champion[] {})));
-			team1Champ3Box.setRenderer(new ChampionComboBoxRenderer());
+			team1Champ3Box = new ChampionComboBox(
+					new DefaultComboBoxModel<Champion>(allChampionsArray));
 		}
 		logger.trace("getTeam1Champ3Box() - Returning");
 		logger.debug("getTeam1Champ3Box() - Returning: {}", team1Champ3Box);
@@ -674,13 +669,11 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		return team1Champ4Label;
 	}
 
-	public JComboBox<Champion> getTeam1Champ4Box() {
+	public ChampionComboBox getTeam1Champ4Box() {
 		logger.trace("getTeam1Champ4Box() - Entering");
 		if (team1Champ4Box == null) {
-			team1Champ4Box = new JComboBox<Champion>(
-					new DefaultComboBoxModel<Champion>(
-							allChampions.toArray(new Champion[] {})));
-			team1Champ4Box.setRenderer(new ChampionComboBoxRenderer());
+			team1Champ4Box = new ChampionComboBox(
+					new DefaultComboBoxModel<Champion>(allChampionsArray));
 		}
 		logger.trace("getTeam1Champ4Box() - Returning");
 		logger.debug("getTeam1Champ4Box() - Returning: {}", team1Champ4Box);
@@ -697,13 +690,11 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		return team1Champ5Label;
 	}
 
-	public JComboBox<Champion> getTeam1Champ5Box() {
+	public ChampionComboBox getTeam1Champ5Box() {
 		logger.trace("getTeam1Champ5Box() - Entering");
 		if (team1Champ5Box == null) {
-			team1Champ5Box = new JComboBox<Champion>(
-					new DefaultComboBoxModel<Champion>(
-							allChampions.toArray(new Champion[] {})));
-			team1Champ5Box.setRenderer(new ChampionComboBoxRenderer());
+			team1Champ5Box = new ChampionComboBox(
+					new DefaultComboBoxModel<Champion>(allChampionsArray));
 		}
 		logger.trace("getTeam1Champ5Box() - Returning");
 		logger.debug("getTeam1Champ5Box() - Returning: {}", team1Champ5Box);
@@ -805,13 +796,11 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		return team2Champ1Label;
 	}
 
-	public JComboBox<Champion> getTeam2Champ1Box() {
+	public ChampionComboBox getTeam2Champ1Box() {
 		logger.trace("getTeam2Champ1Box() - Entering");
 		if (team2Champ1Box == null) {
-			team2Champ1Box = new JComboBox<Champion>(
-					new DefaultComboBoxModel<Champion>(
-							allChampions.toArray(new Champion[] {})));
-			team2Champ1Box.setRenderer(new ChampionComboBoxRenderer());
+			team2Champ1Box = new ChampionComboBox(
+					new DefaultComboBoxModel<Champion>(allChampionsArray));
 		}
 		logger.trace("getTeam2Champ1Box() - Returning");
 		logger.debug("getTeam2Champ1Box() - Returning: {}", team2Champ1Box);
@@ -828,13 +817,11 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		return team2Champ2Label;
 	}
 
-	public JComboBox<Champion> getTeam2Champ2Box() {
+	public ChampionComboBox getTeam2Champ2Box() {
 		logger.trace("getTeam2Champ2Box() - Entering");
 		if (team2Champ2Box == null) {
-			team2Champ2Box = new JComboBox<Champion>(
-					new DefaultComboBoxModel<Champion>(
-							allChampions.toArray(new Champion[] {})));
-			team2Champ2Box.setRenderer(new ChampionComboBoxRenderer());
+			team2Champ2Box = new ChampionComboBox(
+					new DefaultComboBoxModel<Champion>(allChampionsArray));
 		}
 		logger.trace("getTeam2Champ2Box() - Returning");
 		logger.debug("getTeam2Champ2Box() - Returning: {}", team2Champ2Box);
@@ -851,13 +838,11 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		return team2Champ3Label;
 	}
 
-	public JComboBox<Champion> getTeam2Champ3Box() {
+	public ChampionComboBox getTeam2Champ3Box() {
 		logger.trace("getTeam2Champ3Box() - Entering");
 		if (team2Champ3Box == null) {
-			team2Champ3Box = new JComboBox<Champion>(
-					new DefaultComboBoxModel<Champion>(
-							allChampions.toArray(new Champion[] {})));
-			team2Champ3Box.setRenderer(new ChampionComboBoxRenderer());
+			team2Champ3Box = new ChampionComboBox(
+					new DefaultComboBoxModel<Champion>(allChampionsArray));
 		}
 		logger.trace("getTeam2Champ3Box() - Returning");
 		logger.debug("getTeam2Champ3Box() - Returning: {}", team2Champ3Box);
@@ -874,13 +859,11 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		return team2Champ4Label;
 	}
 
-	public JComboBox<Champion> getTeam2Champ4Box() {
+	public ChampionComboBox getTeam2Champ4Box() {
 		logger.trace("getTeam2Champ4Box() - Entering");
 		if (team2Champ4Box == null) {
-			team2Champ4Box = new JComboBox<Champion>(
-					new DefaultComboBoxModel<Champion>(
-							allChampions.toArray(new Champion[] {})));
-			team2Champ4Box.setRenderer(new ChampionComboBoxRenderer());
+			team2Champ4Box = new ChampionComboBox(
+					new DefaultComboBoxModel<Champion>(allChampionsArray));
 		}
 		logger.trace("getTeam2Champ4Box() - Returning");
 		logger.debug("getTeam2Champ4Box() - Returning: {}", team2Champ4Box);
@@ -897,13 +880,11 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		return team2Champ5Label;
 	}
 
-	public JComboBox<Champion> getTeam2Champ5Box() {
+	public ChampionComboBox getTeam2Champ5Box() {
 		logger.trace("getTeam2Champ5Box() - Entering");
 		if (team2Champ5Box == null) {
-			team2Champ5Box = new JComboBox<Champion>(
-					new DefaultComboBoxModel<Champion>(
-							allChampions.toArray(new Champion[] {})));
-			team2Champ5Box.setRenderer(new ChampionComboBoxRenderer());
+			team2Champ5Box = new ChampionComboBox(
+					new DefaultComboBoxModel<Champion>(allChampionsArray));
 		}
 		logger.trace("getTeam2Champ5Box() - Returning");
 		logger.debug("getTeam2Champ5Box() - Returning: {}", team2Champ5Box);
@@ -1412,11 +1393,10 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		return myChampionLabel;
 	}
 
-	public JComboBox<Champion> getMyChampionBox() {
+	public ChampionComboBox getMyChampionBox() {
 		logger.trace("getMyChampionBox() - Entering");
 		if (myChampionBox == null) {
-			myChampionBox = new JComboBox<Champion>();
-			myChampionBox.setRenderer(new ChampionComboBoxRenderer());
+			myChampionBox = new ChampionComboBox();
 		}
 		logger.trace("getMyChampionBox() - Returning");
 		logger.debug("getMyChampionBox() - Returning: {}", myChampionBox);
@@ -1612,12 +1592,11 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		return myItem1xLabel;
 	}
 
-	public JComboBox<Item> getMyItem1Box() {
+	public ItemComboBox getMyItem1Box() {
 		logger.trace("getMyItem1Box() - Entering");
 		if (myItem1Box == null) {
-			myItem1Box = new JComboBox<Item>(new DefaultComboBoxModel<Item>(
+			myItem1Box = new ItemComboBox(new DefaultComboBoxModel<Item>(
 					allStartingItems.toArray(new Item[] {})));
-			myItem1Box.setRenderer(new ItemComboBoxRenderer());
 		}
 		logger.trace("getMyItem1Box() - Returning");
 		logger.debug("getMyItem1Box() - Returning: {}", myItem1Box);
@@ -1656,12 +1635,11 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		return myItem2xLabel;
 	}
 
-	public JComboBox<Item> getMyItem2Box() {
+	public ItemComboBox getMyItem2Box() {
 		logger.trace("getMyItem2Box() - Entering");
 		if (myItem2Box == null) {
-			myItem2Box = new JComboBox<Item>(new DefaultComboBoxModel<Item>(
+			myItem2Box = new ItemComboBox(new DefaultComboBoxModel<Item>(
 					allStartingItems.toArray(new Item[] {})));
-			myItem2Box.setRenderer(new ItemComboBoxRenderer());
 		}
 		logger.trace("getMyItem2Box() - Returning");
 		logger.debug("getMyItem2Box() - Returning: {}", myItem2Box);
@@ -1700,12 +1678,11 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		return myItem3xLabel;
 	}
 
-	public JComboBox<Item> getMyItem3Box() {
+	public ItemComboBox getMyItem3Box() {
 		logger.trace("getMyItem3Box() - Entering");
 		if (myItem3Box == null) {
-			myItem3Box = new JComboBox<Item>(new DefaultComboBoxModel<Item>(
+			myItem3Box = new ItemComboBox(new DefaultComboBoxModel<Item>(
 					allStartingItems.toArray(new Item[] {})));
-			myItem3Box.setRenderer(new ItemComboBoxRenderer());
 		}
 		logger.trace("getMyItem3Box() - Returning");
 		logger.debug("getMyItem3Box() - Returning: {}", myItem3Box);
@@ -1744,12 +1721,11 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		return myItem4xLabel;
 	}
 
-	public JComboBox<Item> getMyItem4Box() {
+	public ItemComboBox getMyItem4Box() {
 		logger.trace("getMyItem4Box() - Entering");
 		if (myItem4Box == null) {
-			myItem4Box = new JComboBox<Item>(new DefaultComboBoxModel<Item>(
+			myItem4Box = new ItemComboBox(new DefaultComboBoxModel<Item>(
 					allStartingItems.toArray(new Item[] {})));
-			myItem4Box.setRenderer(new ItemComboBoxRenderer());
 		}
 		logger.trace("getMyItem4Box() - Returning");
 		logger.debug("getMyItem4Box() - Returning: {}", myItem4Box);
@@ -1788,12 +1764,11 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		return myItem5xLabel;
 	}
 
-	public JComboBox<Item> getMyItem5Box() {
+	public ItemComboBox getMyItem5Box() {
 		logger.trace("getMyItem5Box() - Entering");
 		if (myItem5Box == null) {
-			myItem5Box = new JComboBox<Item>(new DefaultComboBoxModel<Item>(
+			myItem5Box = new ItemComboBox(new DefaultComboBoxModel<Item>(
 					allStartingItems.toArray(new Item[] {})));
-			myItem5Box.setRenderer(new ItemComboBoxRenderer());
 		}
 		logger.trace("getMyItem5Box() - Returning");
 		logger.debug("getMyItem5Box() - Returning: {}", myItem5Box);
@@ -1832,12 +1807,11 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		return myItem6xLabel;
 	}
 
-	public JComboBox<Item> getMyItem6Box() {
+	public ItemComboBox getMyItem6Box() {
 		logger.trace("getMyItem6Box() - Entering");
 		if (myItem6Box == null) {
-			myItem6Box = new JComboBox<Item>(new DefaultComboBoxModel<Item>(
+			myItem6Box = new ItemComboBox(new DefaultComboBoxModel<Item>(
 					allStartingItems.toArray(new Item[] {})));
-			myItem6Box.setRenderer(new ItemComboBoxRenderer());
 		}
 		logger.trace("getMyItem6Box() - Returning");
 		logger.debug("getMyItem6Box() - Returning: {}", myItem6Box);
@@ -2007,12 +1981,11 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		return myEndItem1xLabel;
 	}
 
-	public JComboBox<Item> getMyEndItem1Box() {
+	public ItemComboBox getMyEndItem1Box() {
 		logger.trace("getMyEndItem1Box() - Entering");
 		if (myEndItem1Box == null) {
-			myEndItem1Box = new JComboBox<Item>(new DefaultComboBoxModel<Item>(
+			myEndItem1Box = new ItemComboBox(new DefaultComboBoxModel<Item>(
 					allItems.toArray(new Item[] {})));
-			myEndItem1Box.setRenderer(new ItemComboBoxRenderer());
 		}
 		logger.trace("getMyEndItem1Box() - Returning");
 		logger.debug("getMyEndItem1Box() - Returning: {}", myEndItem1Box);
@@ -2052,12 +2025,11 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		return myEndItem2xLabel;
 	}
 
-	public JComboBox<Item> getMyEndItem2Box() {
+	public ItemComboBox getMyEndItem2Box() {
 		logger.trace("getMyEndItem2Box() - Entering");
 		if (myEndItem2Box == null) {
-			myEndItem2Box = new JComboBox<Item>(new DefaultComboBoxModel<Item>(
+			myEndItem2Box = new ItemComboBox(new DefaultComboBoxModel<Item>(
 					allItems.toArray(new Item[] {})));
-			myEndItem2Box.setRenderer(new ItemComboBoxRenderer());
 		}
 		logger.trace("getMyEndItem2Box() - Returning");
 		logger.debug("getMyEndItem2Box() - Returning: {}", myEndItem2Box);
@@ -2097,12 +2069,11 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		return myEndItem3xLabel;
 	}
 
-	public JComboBox<Item> getMyEndItem3Box() {
+	public ItemComboBox getMyEndItem3Box() {
 		logger.trace("getMyEndItem3Box() - Entering");
 		if (myEndItem3Box == null) {
-			myEndItem3Box = new JComboBox<Item>(new DefaultComboBoxModel<Item>(
+			myEndItem3Box = new ItemComboBox(new DefaultComboBoxModel<Item>(
 					allItems.toArray(new Item[] {})));
-			myEndItem3Box.setRenderer(new ItemComboBoxRenderer());
 		}
 		logger.trace("getMyEndItem3Box() - Returning");
 		logger.debug("getMyEndItem3Box() - Returning: {}", myEndItem3Box);
@@ -2142,12 +2113,11 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		return myEndItem4xLabel;
 	}
 
-	public JComboBox<Item> getMyEndItem4Box() {
+	public ItemComboBox getMyEndItem4Box() {
 		logger.trace("getMyEndItem4Box() - Entering");
 		if (myEndItem4Box == null) {
-			myEndItem4Box = new JComboBox<Item>(new DefaultComboBoxModel<Item>(
+			myEndItem4Box = new ItemComboBox(new DefaultComboBoxModel<Item>(
 					allItems.toArray(new Item[] {})));
-			myEndItem4Box.setRenderer(new ItemComboBoxRenderer());
 		}
 		logger.trace("getMyEndItem4Box() - Returning");
 		logger.debug("getMyEndItem4Box() - Returning: {}", myEndItem4Box);
@@ -2187,12 +2157,11 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		return myEndItem5xLabel;
 	}
 
-	public JComboBox<Item> getMyEndItem5Box() {
+	public ItemComboBox getMyEndItem5Box() {
 		logger.trace("getMyEndItem5Box() - Entering");
 		if (myEndItem5Box == null) {
-			myEndItem5Box = new JComboBox<Item>(new DefaultComboBoxModel<Item>(
+			myEndItem5Box = new ItemComboBox(new DefaultComboBoxModel<Item>(
 					allItems.toArray(new Item[] {})));
-			myEndItem5Box.setRenderer(new ItemComboBoxRenderer());
 		}
 		logger.trace("getMyEndItem5Box() - Returning");
 		logger.debug("getMyEndItem5Box() - Returning: {}", myEndItem5Box);
@@ -2232,12 +2201,11 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		return myEndItem6xLabel;
 	}
 
-	public JComboBox<Item> getMyEndItem6Box() {
+	public ItemComboBox getMyEndItem6Box() {
 		logger.trace("getMyEndItem6Box() - Entering");
 		if (myEndItem6Box == null) {
-			myEndItem6Box = new JComboBox<Item>(new DefaultComboBoxModel<Item>(
+			myEndItem6Box = new ItemComboBox(new DefaultComboBoxModel<Item>(
 					allItems.toArray(new Item[] {})));
-			myEndItem6Box.setRenderer(new ItemComboBoxRenderer());
 		}
 		logger.trace("getMyEndItem6Box() - Returning");
 		logger.debug("getMyEndItem6Box() - Returning: {}", myEndItem6Box);
@@ -2287,13 +2255,12 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		return mySpell1Label;
 	}
 
-	public JComboBox<SummonerSpell> getMySpell1Box() {
+	public SummonerSpellComboBox getMySpell1Box() {
 		logger.trace("getMySpell1Box() - Entering");
 		if (mySpell1Box == null) {
-			mySpell1Box = new JComboBox<SummonerSpell>(
+			mySpell1Box = new SummonerSpellComboBox(
 					new DefaultComboBoxModel<SummonerSpell>(
 							allSpells.toArray(new SummonerSpell[] {})));
-			mySpell1Box.setRenderer(new SpellComboBoxRenderer());
 		}
 		logger.trace("getMySpell1Box() - Returning");
 		logger.debug("getMySpell1Box() - Returning: {}", mySpell1Box);
@@ -2310,13 +2277,12 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		return mySpell2Label;
 	}
 
-	public JComboBox<SummonerSpell> getMySpell2Box() {
+	public SummonerSpellComboBox getMySpell2Box() {
 		logger.trace("getMySpell2Box() - Entering");
 		if (mySpell2Box == null) {
-			mySpell2Box = new JComboBox<SummonerSpell>(
+			mySpell2Box = new SummonerSpellComboBox(
 					new DefaultComboBoxModel<SummonerSpell>(
 							allSpells.toArray(new SummonerSpell[] {})));
-			mySpell2Box.setRenderer(new SpellComboBoxRenderer());
 		}
 		logger.trace("getMySpell2Box() - Returning");
 		logger.debug("getMySpell2Box() - Returning: {}", mySpell2Box);
@@ -2365,11 +2331,10 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		return enemyChampionLabel;
 	}
 
-	public JComboBox<Champion> getEnemyChampionBox() {
+	public ChampionComboBox getEnemyChampionBox() {
 		logger.trace("getEnemyChampionBox() - Entering");
 		if (enemyChampionBox == null) {
-			enemyChampionBox = new JComboBox<Champion>();
-			enemyChampionBox.setRenderer(new ChampionComboBoxRenderer());
+			enemyChampionBox = new ChampionComboBox();
 		}
 		logger.trace("getEnemyChampionBox() - Returning");
 		logger.debug("getEnemyChampionBox() - Returning: {}", enemyChampionBox);
@@ -2566,12 +2531,11 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		return enemyItem1xLabel;
 	}
 
-	public JComboBox<Item> getEnemyItem1Box() {
+	public ItemComboBox getEnemyItem1Box() {
 		logger.trace("getEnemyItem1Box() - Entering");
 		if (enemyItem1Box == null) {
-			enemyItem1Box = new JComboBox<Item>(new DefaultComboBoxModel<Item>(
+			enemyItem1Box = new ItemComboBox(new DefaultComboBoxModel<Item>(
 					allStartingItems.toArray(new Item[] {})));
-			enemyItem1Box.setRenderer(new ItemComboBoxRenderer());
 		}
 		logger.trace("getEnemyItem1Box() - Returning");
 		logger.debug("getEnemyItem1Box() - Returning: {}", enemyItem1Box);
@@ -2611,12 +2575,11 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		return enemyItem2xLabel;
 	}
 
-	public JComboBox<Item> getEnemyItem2Box() {
+	public ItemComboBox getEnemyItem2Box() {
 		logger.trace("getEnemyItem2Box() - Entering");
 		if (enemyItem2Box == null) {
-			enemyItem2Box = new JComboBox<Item>(new DefaultComboBoxModel<Item>(
+			enemyItem2Box = new ItemComboBox(new DefaultComboBoxModel<Item>(
 					allStartingItems.toArray(new Item[] {})));
-			enemyItem2Box.setRenderer(new ItemComboBoxRenderer());
 		}
 		logger.trace("getEnemyItem2Box() - Returning");
 		logger.debug("getEnemyItem2Box() - Returning: {}", enemyItem2Box);
@@ -2656,12 +2619,11 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		return enemyItem3xLabel;
 	}
 
-	public JComboBox<Item> getEnemyItem3Box() {
+	public ItemComboBox getEnemyItem3Box() {
 		logger.trace("getEnemyItem3Box() - Entering");
 		if (enemyItem3Box == null) {
-			enemyItem3Box = new JComboBox<Item>(new DefaultComboBoxModel<Item>(
+			enemyItem3Box = new ItemComboBox(new DefaultComboBoxModel<Item>(
 					allStartingItems.toArray(new Item[] {})));
-			enemyItem3Box.setRenderer(new ItemComboBoxRenderer());
 		}
 		logger.trace("getEnemyItem3Box() - Returning");
 		logger.debug("getEnemyItem3Box() - Returning: {}", enemyItem3Box);
@@ -2701,12 +2663,11 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		return enemyItem4xLabel;
 	}
 
-	public JComboBox<Item> getEnemyItem4Box() {
+	public ItemComboBox getEnemyItem4Box() {
 		logger.trace("getEnemyItem4Box() - Entering");
 		if (enemyItem4Box == null) {
-			enemyItem4Box = new JComboBox<Item>(new DefaultComboBoxModel<Item>(
+			enemyItem4Box = new ItemComboBox(new DefaultComboBoxModel<Item>(
 					allStartingItems.toArray(new Item[] {})));
-			enemyItem4Box.setRenderer(new ItemComboBoxRenderer());
 		}
 		logger.trace("getEnemyItem4Box() - Returning");
 		logger.debug("getEnemyItem4Box() - Returning: {}", enemyItem4Box);
@@ -2746,12 +2707,11 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		return enemyItem5xLabel;
 	}
 
-	public JComboBox<Item> getEnemyItem5Box() {
+	public ItemComboBox getEnemyItem5Box() {
 		logger.trace("getEnemyItem5Box() - Entering");
 		if (enemyItem5Box == null) {
-			enemyItem5Box = new JComboBox<Item>(new DefaultComboBoxModel<Item>(
+			enemyItem5Box = new ItemComboBox(new DefaultComboBoxModel<Item>(
 					allStartingItems.toArray(new Item[] {})));
-			enemyItem5Box.setRenderer(new ItemComboBoxRenderer());
 		}
 		logger.trace("getEnemyItem5Box() - Returning");
 		logger.debug("getEnemyItem5Box() - Returning: {}", enemyItem5Box);
@@ -2791,12 +2751,11 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		return enemyItem6xLabel;
 	}
 
-	public JComboBox<Item> getEnemyItem6Box() {
+	public ItemComboBox getEnemyItem6Box() {
 		logger.trace("getEnemyItem6Box() - Entering");
 		if (enemyItem6Box == null) {
-			enemyItem6Box = new JComboBox<Item>(new DefaultComboBoxModel<Item>(
+			enemyItem6Box = new ItemComboBox(new DefaultComboBoxModel<Item>(
 					allStartingItems.toArray(new Item[] {})));
-			enemyItem6Box.setRenderer(new ItemComboBoxRenderer());
 		}
 		logger.trace("getEnemyItem6Box() - Returning");
 		logger.debug("getEnemyItem6Box() - Returning: {}", enemyItem6Box);
@@ -2975,13 +2934,11 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		return enemyEndItem1xLabel;
 	}
 
-	public JComboBox<Item> getEnemyEndItem1Box() {
+	public ItemComboBox getEnemyEndItem1Box() {
 		logger.trace("getEnemyEndItem1Box() - Entering");
 		if (enemyEndItem1Box == null) {
-			enemyEndItem1Box = new JComboBox<Item>(
-					new DefaultComboBoxModel<Item>(
-							allItems.toArray(new Item[] {})));
-			enemyEndItem1Box.setRenderer(new ItemComboBoxRenderer());
+			enemyEndItem1Box = new ItemComboBox(new DefaultComboBoxModel<Item>(
+					allItems.toArray(new Item[] {})));
 		}
 		logger.trace("getEnemyEndItem1Box() - Returning");
 		logger.debug("getEnemyEndItem1Box() - Returning: {}", enemyEndItem1Box);
@@ -3023,13 +2980,11 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		return enemyEndItem2xLabel;
 	}
 
-	public JComboBox<Item> getEnemyEndItem2Box() {
+	public ItemComboBox getEnemyEndItem2Box() {
 		logger.trace("getEnemyEndItem2Box() - Entering");
 		if (enemyEndItem2Box == null) {
-			enemyEndItem2Box = new JComboBox<Item>(
-					new DefaultComboBoxModel<Item>(
-							allItems.toArray(new Item[] {})));
-			enemyEndItem2Box.setRenderer(new ItemComboBoxRenderer());
+			enemyEndItem2Box = new ItemComboBox(new DefaultComboBoxModel<Item>(
+					allItems.toArray(new Item[] {})));
 		}
 		logger.trace("getEnemyEndItem2Box() - Returning");
 		logger.debug("getEnemyEndItem2Box() - Returning: {}", enemyEndItem2Box);
@@ -3071,13 +3026,11 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		return enemyEndItem3xLabel;
 	}
 
-	public JComboBox<Item> getEnemyEndItem3Box() {
+	public ItemComboBox getEnemyEndItem3Box() {
 		logger.trace("getEnemyEndItem3Box() - Entering");
 		if (enemyEndItem3Box == null) {
-			enemyEndItem3Box = new JComboBox<Item>(
-					new DefaultComboBoxModel<Item>(
-							allItems.toArray(new Item[] {})));
-			enemyEndItem3Box.setRenderer(new ItemComboBoxRenderer());
+			enemyEndItem3Box = new ItemComboBox(new DefaultComboBoxModel<Item>(
+					allItems.toArray(new Item[] {})));
 		}
 		logger.trace("getEnemyEndItem3Box() - Returning");
 		logger.debug("getEnemyEndItem3Box() - Returning: {}", enemyEndItem3Box);
@@ -3119,13 +3072,11 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		return enemyEndItem4xLabel;
 	}
 
-	public JComboBox<Item> getEnemyEndItem4Box() {
+	public ItemComboBox getEnemyEndItem4Box() {
 		logger.trace("getEnemyEndItem4Box() - Entering");
 		if (enemyEndItem4Box == null) {
-			enemyEndItem4Box = new JComboBox<Item>(
-					new DefaultComboBoxModel<Item>(
-							allItems.toArray(new Item[] {})));
-			enemyEndItem4Box.setRenderer(new ItemComboBoxRenderer());
+			enemyEndItem4Box = new ItemComboBox(new DefaultComboBoxModel<Item>(
+					allItems.toArray(new Item[] {})));
 		}
 		logger.trace("getEnemyEndItem4Box() - Returning");
 		logger.debug("getEnemyEndItem4Box() - Returning: {}", enemyEndItem4Box);
@@ -3167,13 +3118,11 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		return enemyEndItem5xLabel;
 	}
 
-	public JComboBox<Item> getEnemyEndItem5Box() {
+	public ItemComboBox getEnemyEndItem5Box() {
 		logger.trace("getEnemyEndItem5Box() - Entering");
 		if (enemyEndItem5Box == null) {
-			enemyEndItem5Box = new JComboBox<Item>(
-					new DefaultComboBoxModel<Item>(
-							allItems.toArray(new Item[] {})));
-			enemyEndItem5Box.setRenderer(new ItemComboBoxRenderer());
+			enemyEndItem5Box = new ItemComboBox(new DefaultComboBoxModel<Item>(
+					allItems.toArray(new Item[] {})));
 		}
 		logger.trace("getEnemyEndItem5Box() - Returning");
 		logger.debug("getEnemyEndItem5Box() - Returning: {}", enemyEndItem5Box);
@@ -3215,13 +3164,11 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		return enemyEndItem6xLabel;
 	}
 
-	public JComboBox<Item> getEnemyEndItem6Box() {
+	public ItemComboBox getEnemyEndItem6Box() {
 		logger.trace("getEnemyEndItem6Box() - Entering");
 		if (enemyEndItem6Box == null) {
-			enemyEndItem6Box = new JComboBox<Item>(
-					new DefaultComboBoxModel<Item>(
-							allItems.toArray(new Item[] {})));
-			enemyEndItem6Box.setRenderer(new ItemComboBoxRenderer());
+			enemyEndItem6Box = new ItemComboBox(new DefaultComboBoxModel<Item>(
+					allItems.toArray(new Item[] {})));
 		}
 		logger.trace("getEnemyEndItem6Box() - Returning");
 		logger.debug("getEnemyEndItem6Box() - Returning: {}", enemyEndItem6Box);
@@ -3271,13 +3218,12 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		return enemySpell1Label;
 	}
 
-	public JComboBox<SummonerSpell> getEnemySpell1Box() {
+	public SummonerSpellComboBox getEnemySpell1Box() {
 		logger.trace("getEnemySpell1Box() - Entering");
 		if (enemySpell1Box == null) {
-			enemySpell1Box = new JComboBox<SummonerSpell>(
+			enemySpell1Box = new SummonerSpellComboBox(
 					new DefaultComboBoxModel<SummonerSpell>(
 							allSpells.toArray(new SummonerSpell[] {})));
-			enemySpell1Box.setRenderer(new SpellComboBoxRenderer());
 		}
 		logger.trace("getEnemySpell1Box() - Returning");
 		logger.debug("getEnemySpell1Box() - Returning: {}", enemySpell1Box);
@@ -3294,13 +3240,12 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		return enemySpell2Label;
 	}
 
-	public JComboBox<SummonerSpell> getEnemySpell2Box() {
+	public SummonerSpellComboBox getEnemySpell2Box() {
 		logger.trace("getEnemySpell2Box() - Entering");
 		if (enemySpell2Box == null) {
-			enemySpell2Box = new JComboBox<SummonerSpell>(
+			enemySpell2Box = new SummonerSpellComboBox(
 					new DefaultComboBoxModel<SummonerSpell>(
 							allSpells.toArray(new SummonerSpell[] {})));
-			enemySpell2Box.setRenderer(new SpellComboBoxRenderer());
 		}
 		logger.trace("getEnemySpell2Box() - Returning");
 		logger.debug("getEnemySpell2Box() - Returning: {}", enemySpell2Box);
@@ -4026,15 +3971,23 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		allChampions = new ArrayList<Champion>();
 		Champion c = new Champion(0, "no champion", null);
 		allChampions.add(c);
-		allChampions.addAll(ChampionUtil.getAllChampions());
+		for (Champion champ : ChampionUtil.getAllChampions()) {
+			allChampions.add(champ);
+		}
+		allChampionsArray = allChampions.toArray(new Champion[] {});
 		allStartingItems = new ArrayList<Item>();
 		Item i = new Item(0, "no item", 0, null);
 		allStartingItems.add(i);
-		allStartingItems.addAll(ItemUtil.getAllStartingItems());
+		for (Item item : ItemUtil.getAllStartingItems()) {
+			allStartingItems.add(item);
+		}
+
 		allItems = new ArrayList<Item>();
 		i = new Item(0, "no item", 0, null);
 		allItems.add(i);
-		allItems.addAll(ItemUtil.getAllItems());
+		for (Item item : ItemUtil.getAllItems()) {
+			allItems.add(item);
+		}
 		allSpells = new ArrayList<SummonerSpell>();
 		SummonerSpell s = new SummonerSpell(0, "no spell", null);
 		allSpells.add(s);

@@ -2,18 +2,21 @@ package de.phyberapex.diaryoflegends.model;
 
 import java.io.File;
 
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import de.phyberapex.diaryoflegends.extra.ConvertImage;
+import de.phyberapex.diaryoflegends.extra.ImageIconFactory;
 
 public class Champion extends Model {
 
 	private int id;
 	private String name;
 	private byte[] icon;
+	transient ImageIcon icon30x30;
 	transient private static Logger logger = LogManager
 			.getLogger(Champion.class.getName());
 
@@ -97,7 +100,6 @@ public class Champion extends Model {
 		return img;
 	}
 
-
 	/**
 	 * The file that represents the icon
 	 * 
@@ -125,19 +127,38 @@ public class Champion extends Model {
 		return str;
 	}
 
-	public byte[] getIconreal(){
+	public byte[] getIconreal() {
 		return this.icon;
 	}
-	
+
 	@Override
 	public boolean equals(Object o) {
 		logger.trace("equals() - Entering");
 		boolean returnValue = false;
-		if (o instanceof Champion && ((Champion) o).getId() == this.getId()) {
+		if (o != null && ((Champion) o).getId() == this.getId()) {
 			return true;
 		}
 		logger.trace("equals() - Returning");
 		logger.debug("equals() - Returning: {}", returnValue);
 		return returnValue;
+	}
+
+	@Override
+	public int hashCode() {
+		int hash = 1;
+		hash = hash * 17 + id;
+		hash = hash * 31 + name.hashCode();
+		hash = hash * 13 + icon.hashCode();
+		return hash;
+	}
+
+	/**
+	 * @return
+	 */
+	public Icon get30x30Icon() {
+		if (icon30x30 == null) {
+			icon30x30 = ImageIconFactory.resizeImageIcon(getIcon(), 30, 30);
+		}
+		return icon30x30;
 	}
 }
