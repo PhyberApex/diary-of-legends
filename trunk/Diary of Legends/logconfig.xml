@@ -9,7 +9,7 @@
     </Console>
   </appenders>
   <loggers>
-  	<root level="error">
+  	<root level="debug">
       <appender-ref ref="logfile"/>
     </root>
   </loggers>
