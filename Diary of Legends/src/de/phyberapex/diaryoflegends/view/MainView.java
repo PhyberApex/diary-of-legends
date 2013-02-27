@@ -1,7 +1,6 @@
 package de.phyberapex.diaryoflegends.view;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
@@ -82,11 +81,8 @@ public class MainView extends JFrame implements View, Runnable {
 		logger.trace("getContentTabbedPane() - Entering");
 		if (contentPane == null) {
 			contentPane = new JTabbedPane();
-			contentPane.addTab("Games", null);
 			contentPane.addTab("Matchups", null);
 			contentPane.addTab("Stats", null);
-			contentPane.addTab("Champions", null);
-			contentPane.addTab("Items", null);
 		}
 		logger.trace("getContentTabbedPane() - Returning");
 		logger.debug("getContentTabbedPane() - Returning {}", contentPane);
@@ -104,40 +100,10 @@ public class MainView extends JFrame implements View, Runnable {
 		return statusLabel;
 	}
 
-	public void setGamesPanel(Component comp) {
-		logger.trace("setGamesPanel() - Entering");
-		logger.debug("Parameter: {}", comp);
-		getContentTabbedPane().setComponentAt(0, comp);
-		logger.trace("setGamesPanel() - Leaving");
-	}
-
-	public void setChampPanel(ChampionView comp) {
-		logger.trace("setChampPanel() - Entering");
-		logger.debug("setChampPanel() - Parameter: {}", comp);
-		getContentTabbedPane().setComponentAt(3, comp);
-		logger.trace("setChampPanel() - Leaving");
-	}
-
-	public ChampionView getChampPanel() {
-		logger.trace("getChampPanel() - Entering");
-		ChampionView returnValue = (ChampionView) getContentTabbedPane()
-				.getComponentAt(3);
-		logger.trace("getChampPanel() - Returning");
-		logger.debug("getChampPanel() - Returning: {}", returnValue);
-		return returnValue;
-	}
-
-	public void setItemPanel(ItemView comp) {
-		logger.trace("setItemPanel() - Entering");
-		logger.debug("setItemPanel() - Parameter: {}", comp);
-		getContentTabbedPane().setComponentAt(4, comp);
-		logger.trace("setItemPanel() - Leaving");
-	}
-
 	public void setMatchupPanel(MatchupView comp) {
 		logger.trace("setMatchupPanel() - Entering");
 		logger.debug("setMatchupPanel() - Parameter: {}", comp);
-		getContentTabbedPane().setComponentAt(1, comp);
+		getContentTabbedPane().setComponentAt(0, comp);
 		logger.trace("setMatchupPanel() - Leaving");
 	}
 
@@ -159,32 +125,7 @@ public class MainView extends JFrame implements View, Runnable {
 
 	@Override
 	public void refresh() {
-		// TODO Auto-generated method stub
 
-	}
-
-	/**
-	 * @return
-	 */
-	public ItemView getItemPanel() {
-		logger.trace("getItemPanel() - Entering");
-		ItemView returnValue = (ItemView) getContentTabbedPane()
-				.getComponentAt(4);
-		logger.trace("getItemPanel() - Returning");
-		logger.debug("getItemPanel() - Returning: {}", returnValue);
-		return returnValue;
-	}
-
-	/**
-	 * @return
-	 */
-	public GameView getGamePanel() {
-		logger.trace("getGamePanel() - Entering");
-		GameView returnValue = (GameView) getContentTabbedPane()
-				.getComponentAt(0);
-		logger.trace("getGamePanel() - Returning");
-		logger.debug("getGamePanel() - Returning: {}", returnValue);
-		return returnValue;
 	}
 
 	/**
@@ -193,9 +134,17 @@ public class MainView extends JFrame implements View, Runnable {
 	public MatchupView getMatchupPanel() {
 		logger.trace("getMatchupPanel() - Entering");
 		MatchupView returnValue = (MatchupView) getContentTabbedPane()
-				.getComponentAt(1);
+				.getComponentAt(0);
 		logger.trace("getMatchupPanel() - Returning");
 		logger.debug("getMatchupPanel() - Returning: {}", returnValue);
 		return returnValue;
+	}
+
+	
+	public void setStatsPanel(StatsView view) {
+		logger.trace("setStatsPanel() - Entering");
+		logger.debug("setStatsPanel() - Parameter: {}", view);
+		getContentTabbedPane().setComponentAt(1, view);
+		logger.trace("setStatsPanel() - Leaving");
 	}
 }

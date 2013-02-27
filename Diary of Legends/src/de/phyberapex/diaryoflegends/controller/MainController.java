@@ -2,10 +2,8 @@ package de.phyberapex.diaryoflegends.controller;
 
 import java.util.List;
 import java.util.Properties;
-
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import de.phyberapex.diaryoflegends.ExitAction;
@@ -16,15 +14,10 @@ import de.phyberapex.diaryoflegends.base.Update;
 import de.phyberapex.diaryoflegends.exception.InitializeException;
 import de.phyberapex.diaryoflegends.extra.ImageIconFactory;
 import de.phyberapex.diaryoflegends.extra.Splash;
-import de.phyberapex.diaryoflegends.model.Game;
-import de.phyberapex.diaryoflegends.model.Matchup;
-import de.phyberapex.diaryoflegends.model.util.GameUtil;
-import de.phyberapex.diaryoflegends.view.ChampionView;
 import de.phyberapex.diaryoflegends.view.CurrentSummonerNameView;
-import de.phyberapex.diaryoflegends.view.GameView;
-import de.phyberapex.diaryoflegends.view.ItemView;
 import de.phyberapex.diaryoflegends.view.MainView;
 import de.phyberapex.diaryoflegends.view.MatchupView;
+import de.phyberapex.diaryoflegends.view.StatsView;
 import de.phyberapex.diaryoflegends.view.dialoge.MatchupDetailDialoge;
 import de.phyberapex.diaryoflegends.view.dialoge.NewEntryDialoge;
 
@@ -32,10 +25,8 @@ public class MainController {
 
 	private Splash splash;
 	private MainView mainView;
-	private ChampionController champController;
-	private ItemController itemController;
 	private MatchupController matchupController;
-	private GameController gameController;
+	private StatsController statsController;
 
 	private static MainController instance;
 	transient private Logger logger = LogManager.getLogger(MainController.class
@@ -44,8 +35,7 @@ public class MainController {
 	public MainController() {
 		logger.trace("MainController() - Entering");
 		try {
-			splash = new Splash(ImageIconFactory
-					.createImageIconFromResourePath("img/splash.png")
+			splash = new Splash(ImageIconFactory.getRandomLoadingIcon()
 					.getImage(), "Checking resources");
 			splash.setVisible(true);
 			splash.showStatus("Initializing application", 10);
@@ -57,28 +47,20 @@ public class MainController {
 				Update.update();
 			}
 			splash.showStatus("Preparing controller", 25);
-			champController = new ChampionController(this);
-			itemController = new ItemController(this);
 			matchupController = new MatchupController(this);
-			gameController = new GameController(this);
+			statsController = new StatsController(this);
 			splash.showStatus("Creating user interface", 30);
 			mainView = MainView.getInstance();
 			mainView.setMainController(this);
-			champController.loadGUI();
-			itemController.loadGUI();
 			matchupController.loadGUI();
-			gameController.loadGUI();
+			statsController.loadGUI();
 			NewEntryDialoge.getInstance();
 			MatchupDetailDialoge.getInstance();
 			splash.showStatus("Loading data", 40);
-			champController.loadData();
-			itemController.loadData();
 			matchupController.loadData();
-			gameController.loadData();
-			mainView.setChampPanel((ChampionView) champController.getView());
-			mainView.setItemPanel((ItemView) itemController.getView());
+			statsController.loadData();
 			mainView.setMatchupPanel((MatchupView) matchupController.getView());
-			mainView.setGamesPanel((GameView) gameController.getView());
+			mainView.setStatsPanel((StatsView)statsController.getView());
 			splash.showStatus("Preparing to start", 100);
 			splash.close();
 			if (initAction.contains(InitializeAction.CREATE_SUMMONER)) {
@@ -147,36 +129,6 @@ public class MainController {
 		ExitAction.getInstance().actionPerformed(null);
 	}
 
-	/**
-	 * @param game
-	 */
-	public void deleteGame(Game game) {
-		logger.trace("deleteGame() - Entering");
-		logger.debug("deleteGame() - Parameter: {}", game);
-		gameController.deleteGame(game, false);
-		logger.trace("deleteGame() - Leaving");
-	}
-
-	/**
-	 * @param matchup
-	 */
-	public void deleteMatchup(Matchup matchup) {
-		logger.trace("deleteMatchup() - Entering");
-		logger.debug("deleteMatchup() - Parameter: {}", matchup);
-		matchupController.deleteMatchup(matchup, false);
-		logger.trace("deleteMatchup() - Leaving");
-	}
-
-	/**
-	 * @param game
-	 */
-	public void saveNewGame(Game game) {
-		GameUtil.saveGame(game);
-		((MatchupView) matchupController.getView()).addMatchup(game
-				.getMatchup());
-		((GameView) gameController.getView()).addGame(game);
-	}
-
 	public static synchronized MainController getInstance() {
 		if (instance == null) {
 			instance = new MainController();
@@ -186,6 +138,5 @@ public class MainController {
 
 	public void updated() {
 		((MatchupView) matchupController.getView()).refresh();
-		((GameView) gameController.getView()).refresh();
 	}
 }

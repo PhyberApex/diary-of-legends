@@ -26,6 +26,7 @@ import de.phyberapex.diaryoflegends.model.Matchup;
 import de.phyberapex.diaryoflegends.model.MatchupDifficulty;
 import de.phyberapex.diaryoflegends.model.MatchupResult;
 import de.phyberapex.diaryoflegends.model.Role;
+import de.phyberapex.diaryoflegends.model.util.GameUtil;
 import de.phyberapex.diaryoflegends.model.util.MatchupUtil;
 import de.phyberapex.diaryoflegends.view.dialoge.panel.MatchupDetailChampionPanel;
 
@@ -40,6 +41,11 @@ public class MatchupDetailDialoge extends JDialog implements Runnable {
 	private MatchupDetailChampionPanel myChampPanel;
 	private JLabel versusLabel;
 	private MatchupDetailChampionPanel enemyChampPanel;
+	private JPanel gameNotesPanel;
+	private JLabel gameNotesLabel;
+	private JScrollPane gameNotesScrollPane;
+	private JTextArea gameNotesTextarea;
+	private JButton saveGameNotesButton;
 	private JPanel notesPanel;
 	private JLabel notesLabel;
 	private JScrollPane notesScrollPane;
@@ -55,18 +61,16 @@ public class MatchupDetailDialoge extends JDialog implements Runnable {
 	private JLabel assistsValueLabel;
 	private JLabel csLabel;
 	private JLabel csLabelValue;
-	private JPanel gameChampsPanel;
+	private JPanel myTeamPanel;
 	private JLabel gameChamp1Label;
 	private JLabel gameChamp2Label;
 	private JLabel gameChamp3Label;
 	private JLabel gameChamp4Label;
-	private JLabel gameChamp5Label;
-	private JLabel gameChampVersusLabel;
+	private JPanel enemyTeamPanel;
 	private JLabel gameChamp6Label;
 	private JLabel gameChamp7Label;
 	private JLabel gameChamp8Label;
 	private JLabel gameChamp9Label;
-	private JLabel gameChamp10Label;
 	private JButton closeButton;
 	private Matchup matchup;
 	private static Logger logger = LogManager
@@ -101,7 +105,7 @@ public class MatchupDetailDialoge extends JDialog implements Runnable {
 			GridBagConstraints constraints = new GridBagConstraints();
 			constraints.gridx = 0;
 			constraints.gridy = 0;
-			constraints.gridwidth = 3;
+			constraints.gridwidth = 5;
 			constraints.fill = GridBagConstraints.HORIZONTAL;
 			matchupContentPanel.add(getHeadPanel(), constraints);
 
@@ -112,13 +116,13 @@ public class MatchupDetailDialoge extends JDialog implements Runnable {
 			matchupContentPanel.add(getMyChampPanel(), constraints);
 
 			constraints = new GridBagConstraints();
-			constraints.gridx = 1;
+			constraints.gridx = 2;
 			constraints.gridy = 1;
 			constraints.insets = new Insets(10, 10, 10, 10);
 			matchupContentPanel.add(getVersusLabel(), constraints);
 
 			constraints = new GridBagConstraints();
-			constraints.gridx = 2;
+			constraints.gridx = 4;
 			constraints.gridy = 1;
 			constraints.insets = new Insets(10, 10, 10, 10);
 			matchupContentPanel.add(getEnemyChampPanel(), constraints);
@@ -126,24 +130,50 @@ public class MatchupDetailDialoge extends JDialog implements Runnable {
 			constraints = new GridBagConstraints();
 			constraints.gridx = 0;
 			constraints.gridy = 2;
+			constraints.gridwidth = 2;
 			constraints.fill = GridBagConstraints.BOTH;
 			matchupContentPanel.add(getNotesPanel(), constraints);
 
 			constraints = new GridBagConstraints();
-			constraints.gridx = 1;
+			constraints.gridx = 3;
 			constraints.gridy = 2;
-			matchupContentPanel.add(getGamePanel(), constraints);
+			constraints.gridwidth = 2;
+			constraints.fill = GridBagConstraints.BOTH;
+			matchupContentPanel.add(getGameNotesPanel(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 2;
 			constraints.gridy = 2;
-			matchupContentPanel.add(getGameChampsPanel(), constraints);
+			constraints.anchor = GridBagConstraints.NORTH;
+			matchupContentPanel.add(getGamePanel(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 1;
+			constraints.gridy = 1;
+			matchupContentPanel.add(getMyTeamPanel(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 3;
+			constraints.gridy = 1;
+			matchupContentPanel.add(getEnemyTeamPanel(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 0;
 			constraints.gridy = 3;
-			constraints.gridwidth = 3;
+			constraints.fill = GridBagConstraints.BOTH;
+			matchupContentPanel.add(getSaveNotesButton(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 2;
+			constraints.gridy = 3;
+			constraints.fill = GridBagConstraints.BOTH;
 			matchupContentPanel.add(getCloseButton(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 4;
+			constraints.gridy = 3;
+			constraints.fill = GridBagConstraints.BOTH;
+			matchupContentPanel.add(getSaveGameNotesButton(), constraints);
 		}
 		logger.trace("getMatchupContentPanel() - Returning");
 		logger.debug("getMatchupContentPanel() - Returning: {}",
@@ -151,7 +181,7 @@ public class MatchupDetailDialoge extends JDialog implements Runnable {
 		return matchupContentPanel;
 	}
 
-	public JPanel getHeadPanel() {
+	private JPanel getHeadPanel() {
 		logger.trace("getHeadPanel() - Entering");
 		if (headPanel == null) {
 			headPanel = new JPanel(new GridBagLayout());
@@ -175,7 +205,7 @@ public class MatchupDetailDialoge extends JDialog implements Runnable {
 		return headPanel;
 	}
 
-	public JLabel getHeadlineLabel() {
+	private JLabel getHeadlineLabel() {
 		logger.trace("getHeadlineLabel() - Entering");
 		if (headlineLabel == null) {
 			headlineLabel = new JLabel();
@@ -188,7 +218,7 @@ public class MatchupDetailDialoge extends JDialog implements Runnable {
 		return headlineLabel;
 	}
 
-	public JLabel getDifficultyValueLabel() {
+	private JLabel getDifficultyValueLabel() {
 		logger.trace("getDifficultyValueLabel() - Entering");
 		if (difficultyValueLabel == null) {
 			difficultyValueLabel = new JLabel();
@@ -200,7 +230,7 @@ public class MatchupDetailDialoge extends JDialog implements Runnable {
 		return difficultyValueLabel;
 	}
 
-	public JPanel getMyChampPanel() {
+	private JPanel getMyChampPanel() {
 		logger.trace("getMyChampPanel() - Entering");
 		if (myChampPanel == null) {
 			myChampPanel = new MatchupDetailChampionPanel(false);
@@ -210,7 +240,7 @@ public class MatchupDetailDialoge extends JDialog implements Runnable {
 		return myChampPanel;
 	}
 
-	public JLabel getVersusLabel() {
+	private JLabel getVersusLabel() {
 		logger.trace("getVersusLabel() - Entering");
 		if (versusLabel == null) {
 			versusLabel = new JLabel(
@@ -223,7 +253,7 @@ public class MatchupDetailDialoge extends JDialog implements Runnable {
 		return versusLabel;
 	}
 
-	public JPanel getEnemyChampPanel() {
+	private JPanel getEnemyChampPanel() {
 		logger.trace("getEnemyChampPanel() - Entering");
 		if (enemyChampPanel == null) {
 			enemyChampPanel = new MatchupDetailChampionPanel(true);
@@ -233,7 +263,7 @@ public class MatchupDetailDialoge extends JDialog implements Runnable {
 		return enemyChampPanel;
 	}
 
-	public JPanel getNotesPanel() {
+	private JPanel getNotesPanel() {
 		logger.trace("getNotesPanel() - Entering");
 		if (notesPanel == null) {
 			notesPanel = new JPanel(new GridBagLayout());
@@ -249,28 +279,23 @@ public class MatchupDetailDialoge extends JDialog implements Runnable {
 			constraints.weightx = 1;
 			constraints.weighty = 1;
 			notesPanel.add(getNotesScrollPane(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 0;
-			constraints.gridy = 3;
-			notesPanel.add(getSaveNotesButton(), constraints);
 		}
 		logger.trace("getNotesPanel() - Returning");
 		logger.debug("getNotesPanel() - Returning: {}", notesPanel);
 		return notesPanel;
 	}
 
-	public JLabel getNotesLabel() {
+	private JLabel getNotesLabel() {
 		logger.trace("getNotesLabel() - Entering");
 		if (notesLabel == null) {
-			notesLabel = new JLabel("Notes for this matchup:");
+			notesLabel = new JLabel("Notes for the matchup:");
 		}
 		logger.trace("getNotesLabel() - Returning");
 		logger.debug("getNotesLabel() - Returning: {}", notesLabel);
 		return notesLabel;
 	}
 
-	public JScrollPane getNotesScrollPane() {
+	private JScrollPane getNotesScrollPane() {
 		logger.trace("getNotesScrollPane() - Entering");
 		if (notesScrollPane == null) {
 			notesScrollPane = new JScrollPane(getNotesTextarea());
@@ -282,7 +307,7 @@ public class MatchupDetailDialoge extends JDialog implements Runnable {
 		return notesScrollPane;
 	}
 
-	public JTextArea getNotesTextarea() {
+	private JTextArea getNotesTextarea() {
 		logger.trace("getNotesTextarea() - Entering");
 		if (notesTextarea == null) {
 			notesTextarea = new JTextArea();
@@ -293,7 +318,7 @@ public class MatchupDetailDialoge extends JDialog implements Runnable {
 		return notesTextarea;
 	}
 
-	public JButton getSaveNotesButton() {
+	private JButton getSaveNotesButton() {
 		logger.trace("getSaveNotesButton() - Entering");
 		if (saveNotesButton == null) {
 			saveNotesButton = new JButton("Save changes to notes");
@@ -311,7 +336,84 @@ public class MatchupDetailDialoge extends JDialog implements Runnable {
 		return saveNotesButton;
 	}
 
-	public JPanel getGamePanel() {
+	private JPanel getGameNotesPanel() {
+		logger.trace("getGameNotesPanel() - Entering");
+		if (gameNotesPanel == null) {
+			gameNotesPanel = new JPanel(new GridBagLayout());
+			GridBagConstraints constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 0;
+			gameNotesPanel.add(getGameNotesLabel(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 1;
+			constraints.fill = GridBagConstraints.BOTH;
+			constraints.weightx = 1;
+			constraints.weighty = 1;
+			gameNotesPanel.add(getGameNotesScrollPane(), constraints);
+		}
+		logger.trace("getGameNotesPanel() - Returning");
+		logger.debug("getGameNotesPanel() - Returning: {}", gameNotesPanel);
+		return gameNotesPanel;
+	}
+
+	private JLabel getGameNotesLabel() {
+		logger.trace("getGameNotesLabel() - Entering");
+		if (gameNotesLabel == null) {
+			gameNotesLabel = new JLabel("Notes for the matchup:");
+		}
+		logger.trace("getGameNotesLabel() - Returning");
+		logger.debug("getGameNotesLabel() - Returning: {}", gameNotesLabel);
+		return gameNotesLabel;
+	}
+
+	private JScrollPane getGameNotesScrollPane() {
+		logger.trace("getGameNotesScrollPane() - Entering");
+		if (gameNotesScrollPane == null) {
+			gameNotesScrollPane = new JScrollPane(getGameNotesTextarea());
+			gameNotesScrollPane.setMinimumSize(new Dimension(0, 250));
+			gameNotesScrollPane.setMaximumSize(new Dimension(
+					(int) getMaximumSize().getWidth(), 350));
+		}
+		logger.trace("getGameNotesScrollPane() - Returning");
+		logger.debug("getGameNotesScrollPane() - Returning: {}",
+				gameNotesScrollPane);
+		return gameNotesScrollPane;
+	}
+
+	private JTextArea getGameNotesTextarea() {
+		logger.trace("getGameNotesTextarea() - Entering");
+		if (gameNotesTextarea == null) {
+			gameNotesTextarea = new JTextArea();
+			gameNotesTextarea.setLineWrap(true);
+		}
+		logger.trace("getGameNotesTextarea() - Returning");
+		logger.debug("getGameNotesTextarea() - Returning: {}",
+				gameNotesTextarea);
+		return gameNotesTextarea;
+	}
+
+	private JButton getSaveGameNotesButton() {
+		logger.trace("getSaveGameNotesButton() - Entering");
+		if (saveGameNotesButton == null) {
+			saveGameNotesButton = new JButton("Save changes to notes");
+			saveGameNotesButton.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					matchup.setNotes(getNotesTextarea().getText());
+					GameUtil.saveGame(matchup.getGame());
+				}
+			});
+		}
+		logger.trace("getSaveGameNotesButton() - Returning");
+		logger.debug("getSaveGameNotesButton() - Returning: {}",
+				saveGameNotesButton);
+		return saveGameNotesButton;
+	}
+
+	private JPanel getGamePanel() {
 		logger.trace("getGamePanel() - Entering");
 		if (gamePanel == null) {
 			gamePanel = new JPanel(new GridBagLayout());
@@ -367,7 +469,7 @@ public class MatchupDetailDialoge extends JDialog implements Runnable {
 		return gamePanel;
 	}
 
-	public JLabel getGameStatsLabel() {
+	private JLabel getGameStatsLabel() {
 		logger.trace("getGameStatsLabel() - Entering");
 		if (gameStatsLabel == null) {
 			gameStatsLabel = new JLabel("Game statistics:");
@@ -377,7 +479,7 @@ public class MatchupDetailDialoge extends JDialog implements Runnable {
 		return gameStatsLabel;
 	}
 
-	public JLabel getKillsLabel() {
+	private JLabel getKillsLabel() {
 		logger.trace("getKillsLabel() - Entering");
 		if (killsLabel == null) {
 			killsLabel = new JLabel("Kills:");
@@ -387,7 +489,7 @@ public class MatchupDetailDialoge extends JDialog implements Runnable {
 		return killsLabel;
 	}
 
-	public JLabel getKillsValueLabel() {
+	private JLabel getKillsValueLabel() {
 		logger.trace("getKillsValueLabel() - Entering");
 		if (killsValueLabel == null) {
 			killsValueLabel = new JLabel();
@@ -397,7 +499,7 @@ public class MatchupDetailDialoge extends JDialog implements Runnable {
 		return killsValueLabel;
 	}
 
-	public JLabel getDeathsLabel() {
+	private JLabel getDeathsLabel() {
 		logger.trace("getDeathsLabel() - Entering");
 		if (deathsLabel == null) {
 			deathsLabel = new JLabel("Deaths:");
@@ -407,7 +509,7 @@ public class MatchupDetailDialoge extends JDialog implements Runnable {
 		return deathsLabel;
 	}
 
-	public JLabel getDeathsValueLabel() {
+	private JLabel getDeathsValueLabel() {
 		logger.trace("getDeathsValueLabel() - Entering");
 		if (deathsValueLabel == null) {
 			deathsValueLabel = new JLabel();
@@ -417,7 +519,7 @@ public class MatchupDetailDialoge extends JDialog implements Runnable {
 		return deathsValueLabel;
 	}
 
-	public JLabel getAssistsLabel() {
+	private JLabel getAssistsLabel() {
 		logger.trace("getAssistsLabel() - Entering");
 		if (assistsLabel == null) {
 			assistsLabel = new JLabel("Assists:");
@@ -427,7 +529,7 @@ public class MatchupDetailDialoge extends JDialog implements Runnable {
 		return assistsLabel;
 	}
 
-	public JLabel getAssistsValueLabel() {
+	private JLabel getAssistsValueLabel() {
 		logger.trace("getAssistsValueLabel() - Entering");
 		if (assistsValueLabel == null) {
 			assistsValueLabel = new JLabel();
@@ -438,7 +540,7 @@ public class MatchupDetailDialoge extends JDialog implements Runnable {
 		return assistsValueLabel;
 	}
 
-	public JLabel getCsLabel() {
+	private JLabel getCsLabel() {
 		logger.trace("getCsLabel() - Entering");
 		if (csLabel == null) {
 			csLabel = new JLabel("CS:");
@@ -449,7 +551,7 @@ public class MatchupDetailDialoge extends JDialog implements Runnable {
 		return csLabel;
 	}
 
-	public JLabel getCsValueLabel() {
+	private JLabel getCsValueLabel() {
 		logger.trace("getCsValueLabel() - Entering");
 		if (csLabelValue == null) {
 			csLabelValue = new JLabel();
@@ -459,84 +561,73 @@ public class MatchupDetailDialoge extends JDialog implements Runnable {
 		return csLabelValue;
 	}
 
-	public JPanel getGameChampsPanel() {
-		logger.trace("getGameChampsPanel() - Entering");
-		if (gameChampsPanel == null) {
-			gameChampsPanel = new JPanel(new GridBagLayout());
+	private JPanel getMyTeamPanel() {
+		logger.trace("getMyTeamPanel() - Entering");
+		if (myTeamPanel == null) {
+			myTeamPanel = new JPanel(new GridBagLayout());
 
 			GridBagConstraints constraints = new GridBagConstraints();
 			constraints.gridx = 0;
 			constraints.gridy = 0;
-			constraints.insets = new Insets(0, 0, 1, 0);
-			gameChampsPanel.add(getGameChamp1Label(), constraints);
+			constraints.insets = new Insets(0, 0, 2, 0);
+			myTeamPanel.add(getGameChamp1Label(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 0;
 			constraints.gridy = 1;
-			constraints.insets = new Insets(1, 0, 1, 0);
-			gameChampsPanel.add(getGameChamp2Label(), constraints);
+			constraints.insets = new Insets(0, 0, 2, 0);
+			myTeamPanel.add(getGameChamp2Label(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 0;
 			constraints.gridy = 2;
-			constraints.insets = new Insets(1, 0, 1, 0);
-			gameChampsPanel.add(getGameChamp3Label(), constraints);
+			constraints.insets = new Insets(0, 0, 2, 0);
+			myTeamPanel.add(getGameChamp3Label(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 0;
 			constraints.gridy = 3;
-			constraints.insets = new Insets(1, 0, 1, 0);
-			gameChampsPanel.add(getGameChamp4Label(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 0;
-			constraints.gridy = 4;
-			constraints.insets = new Insets(1, 0, 0, 0);
-			gameChampsPanel.add(getGameChamp5Label(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 1;
-			constraints.gridy = 0;
-			constraints.gridheight = 5;
-			constraints.insets = new Insets(0, 5, 0, 5);
-			gameChampsPanel.add(getGameChampVersusLabel(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 2;
-			constraints.gridy = 0;
-			constraints.insets = new Insets(1, 0, 1, 0);
-			gameChampsPanel.add(getGameChamp6Label(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 2;
-			constraints.gridy = 1;
-			constraints.insets = new Insets(1, 0, 1, 0);
-			gameChampsPanel.add(getGameChamp7Label(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 2;
-			constraints.gridy = 2;
-			constraints.insets = new Insets(1, 0, 1, 0);
-			gameChampsPanel.add(getGameChamp8Label(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 2;
-			constraints.gridy = 3;
-			constraints.insets = new Insets(1, 0, 1, 0);
-			gameChampsPanel.add(getGameChamp9Label(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 2;
-			constraints.gridy = 4;
-			constraints.insets = new Insets(1, 0, 0, 0);
-			gameChampsPanel.add(getGameChamp10Label(), constraints);
+			myTeamPanel.add(getGameChamp4Label(), constraints);
 		}
-		logger.trace("getGameChampsPanel() - Returning");
-		logger.debug("getGameChampsPanel() - Returning: {}", gameChampsPanel);
-		return gameChampsPanel;
+		logger.trace("getMyTeamPanel() - Returning");
+		logger.debug("getMyTeamPanel() - Returning: {}", myTeamPanel);
+		return myTeamPanel;
 	}
 
-	public JLabel getGameChamp1Label() {
+	private JPanel getEnemyTeamPanel() {
+		logger.trace("getEnemyTeamPanel() - Entering");
+		if (enemyTeamPanel == null) {
+			enemyTeamPanel = new JPanel(new GridBagLayout());
+
+			GridBagConstraints constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 0;
+			constraints.insets = new Insets(0, 0, 2, 0);
+			enemyTeamPanel.add(getGameChamp6Label(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 1;
+			constraints.insets = new Insets(0, 0, 2, 0);
+			enemyTeamPanel.add(getGameChamp7Label(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 2;
+			constraints.insets = new Insets(0, 0, 2, 0);
+			enemyTeamPanel.add(getGameChamp8Label(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 3;
+			enemyTeamPanel.add(getGameChamp9Label(), constraints);
+		}
+		logger.trace("getEnemyTeamPanel() - Returning");
+		logger.debug("getEnemyTeamPanel() - Returning: {}", enemyTeamPanel);
+		return enemyTeamPanel;
+	}
+
+	private JLabel getGameChamp1Label() {
 		logger.trace("getGameChamp1Label() - Entering");
 		if (gameChamp1Label == null) {
 			gameChamp1Label = new JLabel();
@@ -546,7 +637,7 @@ public class MatchupDetailDialoge extends JDialog implements Runnable {
 		return gameChamp1Label;
 	}
 
-	public JLabel getGameChamp2Label() {
+	private JLabel getGameChamp2Label() {
 		logger.trace("getGameChamp2Label() - Entering");
 		if (gameChamp2Label == null) {
 			gameChamp2Label = new JLabel();
@@ -556,7 +647,7 @@ public class MatchupDetailDialoge extends JDialog implements Runnable {
 		return gameChamp2Label;
 	}
 
-	public JLabel getGameChamp3Label() {
+	private JLabel getGameChamp3Label() {
 		logger.trace("getGameChamp3Label() - Entering");
 		if (gameChamp3Label == null) {
 			gameChamp3Label = new JLabel();
@@ -566,7 +657,7 @@ public class MatchupDetailDialoge extends JDialog implements Runnable {
 		return gameChamp3Label;
 	}
 
-	public JLabel getGameChamp4Label() {
+	private JLabel getGameChamp4Label() {
 		logger.trace("getGameChamp4Label() - Entering");
 		if (gameChamp4Label == null) {
 			gameChamp4Label = new JLabel();
@@ -576,31 +667,7 @@ public class MatchupDetailDialoge extends JDialog implements Runnable {
 		return gameChamp4Label;
 	}
 
-	public JLabel getGameChamp5Label() {
-		logger.trace("getGameChamp5Label() - Entering");
-		if (gameChamp5Label == null) {
-			gameChamp5Label = new JLabel();
-		}
-		logger.trace("getGameChamp5Label() - Returning");
-		logger.debug("getGameChamp5Label() - Returning: {}", gameChamp5Label);
-		return gameChamp5Label;
-	}
-
-	public JLabel getGameChampVersusLabel() {
-		logger.trace("getGameChampVersusLabel() - Entering");
-		if (gameChampVersusLabel == null) {
-			gameChampVersusLabel = new JLabel(ImageIconFactory.resizeImageIcon(
-					ImageIconFactory
-							.createImageIconFromResourePath("img/versus.png"),
-					30, 30));
-		}
-		logger.trace("getGameChampVersusLabel() - Returning");
-		logger.debug("getGameChampVersusLabel() - Returning: {}",
-				gameChampVersusLabel);
-		return gameChampVersusLabel;
-	}
-
-	public JLabel getGameChamp6Label() {
+	private JLabel getGameChamp6Label() {
 		logger.trace("getGameChamp6Label() - Entering");
 		if (gameChamp6Label == null) {
 			gameChamp6Label = new JLabel();
@@ -610,7 +677,7 @@ public class MatchupDetailDialoge extends JDialog implements Runnable {
 		return gameChamp6Label;
 	}
 
-	public JLabel getGameChamp7Label() {
+	private JLabel getGameChamp7Label() {
 		logger.trace("getGameChamp7Label() - Entering");
 		if (gameChamp7Label == null) {
 			gameChamp7Label = new JLabel();
@@ -620,7 +687,7 @@ public class MatchupDetailDialoge extends JDialog implements Runnable {
 		return gameChamp7Label;
 	}
 
-	public JLabel getGameChamp8Label() {
+	private JLabel getGameChamp8Label() {
 		logger.trace("getGameChamp8Label() - Entering");
 		if (gameChamp8Label == null) {
 			gameChamp8Label = new JLabel();
@@ -630,7 +697,7 @@ public class MatchupDetailDialoge extends JDialog implements Runnable {
 		return gameChamp8Label;
 	}
 
-	public JLabel getGameChamp9Label() {
+	private JLabel getGameChamp9Label() {
 		logger.trace("getGameChamp9Label() - Entering");
 		if (gameChamp9Label == null) {
 			gameChamp9Label = new JLabel();
@@ -640,17 +707,7 @@ public class MatchupDetailDialoge extends JDialog implements Runnable {
 		return gameChamp9Label;
 	}
 
-	public JLabel getGameChamp10Label() {
-		logger.trace("getGameChamp10Label() - Entering");
-		if (gameChamp10Label == null) {
-			gameChamp10Label = new JLabel();
-		}
-		logger.trace("getGameChamp10Label() - Returning");
-		logger.debug("getGameChamp10Label() - Returning: {}", gameChamp10Label);
-		return gameChamp10Label;
-	}
-
-	public JButton getCloseButton() {
+	private JButton getCloseButton() {
 		logger.trace("getCloseButton() - Entering");
 		if (closeButton == null) {
 			closeButton = new JButton("Close");
@@ -686,53 +743,51 @@ public class MatchupDetailDialoge extends JDialog implements Runnable {
 
 			int x = 0;
 			for (Champion champ : g.getMyTeam()) {
-				x++;
-				JLabel l = null;
-				switch (x) {
-				case 1:
-					l = this.getGameChamp1Label();
-					break;
-				case 2:
-					l = this.getGameChamp2Label();
-					break;
-				case 3:
-					l = this.getGameChamp3Label();
-					break;
-				case 4:
-					l = this.getGameChamp4Label();
-					break;
-				case 5:
-					l = this.getGameChamp5Label();
-					break;
+				if (champ != g.getMatchup().getMyChamp()) {
+					x++;
+					JLabel l = null;
+					switch (x) {
+					case 1:
+						l = this.getGameChamp1Label();
+						break;
+					case 2:
+						l = this.getGameChamp2Label();
+						break;
+					case 3:
+						l = this.getGameChamp3Label();
+						break;
+					case 4:
+						l = this.getGameChamp4Label();
+						break;
+					}
+					l.setIcon(ImageIconFactory.resizeImageIcon(champ.getIcon(),
+							30, 30));
+					l.setToolTipText(champ.getName());
 				}
-				l.setIcon(ImageIconFactory.resizeImageIcon(champ.getIcon(), 25,
-						25));
-				l.setToolTipText(champ.getName());
 			}
 			x = 0;
 			for (Champion champ : g.getEnemyTeam()) {
-				x++;
-				JLabel l = null;
-				switch (x) {
-				case 1:
-					l = this.getGameChamp6Label();
-					break;
-				case 2:
-					l = this.getGameChamp7Label();
-					break;
-				case 3:
-					l = this.getGameChamp8Label();
-					break;
-				case 4:
-					l = this.getGameChamp9Label();
-					break;
-				case 5:
-					l = this.getGameChamp10Label();
-					break;
+				if (champ != g.getMatchup().getEnemyChamp()) {
+					x++;
+					JLabel l = null;
+					switch (x) {
+					case 1:
+						l = this.getGameChamp6Label();
+						break;
+					case 2:
+						l = this.getGameChamp7Label();
+						break;
+					case 3:
+						l = this.getGameChamp8Label();
+						break;
+					case 4:
+						l = this.getGameChamp9Label();
+						break;
+					}
+					l.setIcon(ImageIconFactory.resizeImageIcon(champ.getIcon(),
+							30, 30));
+					l.setToolTipText(champ.getName());
 				}
-				l.setIcon(ImageIconFactory.resizeImageIcon(champ.getIcon(), 25,
-						25));
-				l.setToolTipText(champ.getName());
 			}
 		}
 	}

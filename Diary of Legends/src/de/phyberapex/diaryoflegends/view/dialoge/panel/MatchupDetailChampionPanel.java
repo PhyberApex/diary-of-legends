@@ -6,7 +6,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.util.List;
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -15,7 +14,6 @@ import javax.swing.JTabbedPane;
 import javax.swing.border.BevelBorder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import de.phyberapex.diaryoflegends.extra.ImageIconFactory;
 import de.phyberapex.diaryoflegends.model.Champion;
 import de.phyberapex.diaryoflegends.model.MatchupItem;
@@ -109,7 +107,7 @@ public class MatchupDetailChampionPanel extends JPanel {
 		logger.trace("createGUI() - Leaving");
 	}
 
-	public JLabel getMyChampIconLabel() {
+	private JLabel getMyChampIconLabel() {
 		logger.trace("getMyChampIconLabel() - Entering");
 		if (myChampIconLabel == null) {
 			myChampIconLabel = new JLabel();
@@ -119,7 +117,7 @@ public class MatchupDetailChampionPanel extends JPanel {
 		return myChampIconLabel;
 	}
 
-	public JLabel getMyChampNameLabel() {
+	private JLabel getMyChampNameLabel() {
 		logger.trace("getMyChampNameLabel() - Entering");
 		if (myChampNameLabel == null) {
 			myChampNameLabel = new JLabel();
@@ -131,11 +129,15 @@ public class MatchupDetailChampionPanel extends JPanel {
 		return myChampNameLabel;
 	}
 
-	public JTabbedPane getMyChampItemsPanel() {
+	private JTabbedPane getMyChampItemsPanel() {
 		logger.trace("getMyChampItemsPanel() - Entering");
 		if (myChampItemsPanel == null) {
 			myChampItemsPanel = new JTabbedPane();
-			myChampItemsPanel.setTabPlacement(JTabbedPane.LEFT);
+			if (isEnemy) {
+				myChampItemsPanel.setTabPlacement(JTabbedPane.RIGHT);
+			} else {
+				myChampItemsPanel.setTabPlacement(JTabbedPane.LEFT);
+			}
 			myChampItemsPanel.addTab("1", getMyChampStartingItemsPanel());
 			myChampItemsPanel.addTab("2", getMyChampEndingItemsPanel());
 			myChampItemsPanel.addTab("3", getMyChampSpellsPanel());
@@ -146,7 +148,7 @@ public class MatchupDetailChampionPanel extends JPanel {
 		return myChampItemsPanel;
 	}
 
-	public JPanel getMyChampStartingItemsPanel() {
+	private JPanel getMyChampStartingItemsPanel() {
 		logger.trace("getMyChampStartingItemsPanel() - Entering");
 		if (myChampStartingItemsPanel == null) {
 			myChampStartingItemsPanel = new JPanel(new GridBagLayout());
@@ -200,7 +202,7 @@ public class MatchupDetailChampionPanel extends JPanel {
 		return myChampStartingItemsPanel;
 	}
 
-	public JLabel getMyStartingItemsLabel() {
+	private JLabel getMyStartingItemsLabel() {
 		logger.trace("getMyStartingItemsLabel() - Entering");
 		if (myStartingItemsLabel == null) {
 			myStartingItemsLabel = new JLabel("Starting items");
@@ -211,7 +213,7 @@ public class MatchupDetailChampionPanel extends JPanel {
 		return myStartingItemsLabel;
 	}
 
-	public JLabel getMyChampItem1Label() {
+	private JLabel getMyChampItem1Label() {
 		logger.trace("getMyChampItem1Label() - Entering");
 		if (myChampItem1Label == null) {
 			myChampItem1Label = new JLabel(defaultImg);
@@ -222,7 +224,7 @@ public class MatchupDetailChampionPanel extends JPanel {
 		return myChampItem1Label;
 	}
 
-	public JLabel getMyChampItem2Label() {
+	private JLabel getMyChampItem2Label() {
 		logger.trace("getMyChampItem2Label() - Entering");
 		if (myChampItem2Label == null) {
 			myChampItem2Label = new JLabel(defaultImg);
@@ -233,7 +235,7 @@ public class MatchupDetailChampionPanel extends JPanel {
 		return myChampItem2Label;
 	}
 
-	public JLabel getMyChampItem3Label() {
+	private JLabel getMyChampItem3Label() {
 		logger.trace("getMyChampItem3Label() - Entering");
 		if (myChampItem3Label == null) {
 			myChampItem3Label = new JLabel(defaultImg);
@@ -244,7 +246,7 @@ public class MatchupDetailChampionPanel extends JPanel {
 		return myChampItem3Label;
 	}
 
-	public JLabel getMyChampItem4Label() {
+	private JLabel getMyChampItem4Label() {
 		logger.trace("getMyChampItem4Label() - Entering");
 		if (myChampItem4Label == null) {
 			myChampItem4Label = new JLabel(defaultImg);
@@ -255,7 +257,7 @@ public class MatchupDetailChampionPanel extends JPanel {
 		return myChampItem4Label;
 	}
 
-	public JLabel getMyChampItem5Label() {
+	private JLabel getMyChampItem5Label() {
 		logger.trace("getMyChampItem5Label() - Entering");
 		if (myChampItem5Label == null) {
 			myChampItem5Label = new JLabel(defaultImg);
@@ -266,7 +268,7 @@ public class MatchupDetailChampionPanel extends JPanel {
 		return myChampItem5Label;
 	}
 
-	public JLabel getMyChampItem6Label() {
+	private JLabel getMyChampItem6Label() {
 		logger.trace("getMyChampItem6Label() - Entering");
 		if (myChampItem6Label == null) {
 			myChampItem6Label = new JLabel(defaultImg);
@@ -277,7 +279,7 @@ public class MatchupDetailChampionPanel extends JPanel {
 		return myChampItem6Label;
 	}
 
-	public JPanel getMyChampEndingItemsPanel() {
+	private JPanel getMyChampEndingItemsPanel() {
 		logger.trace("getMyChampEndingItemsPanel() - Entering");
 		if (myChampEndingItemsPanel == null) {
 			myChampEndingItemsPanel = new JPanel(new GridBagLayout());
@@ -336,7 +338,7 @@ public class MatchupDetailChampionPanel extends JPanel {
 		return myChampEndingItemsPanel;
 	}
 
-	public JLabel getMyEndingItemsLabel() {
+	private JLabel getMyEndingItemsLabel() {
 		logger.trace("getMyEndingItemsLabel() - Entering");
 		if (myEndingItemsLabel == null) {
 			myEndingItemsLabel = new JLabel("End items");
@@ -347,7 +349,7 @@ public class MatchupDetailChampionPanel extends JPanel {
 		return myEndingItemsLabel;
 	}
 
-	public JLabel getMyChampEndingItem1Label() {
+	private JLabel getMyChampEndingItem1Label() {
 		logger.trace("getMyChampEndingItem1Label() - Entering");
 		if (myChampEndingItem1Label == null) {
 			myChampEndingItem1Label = new JLabel(defaultImg);
@@ -358,7 +360,7 @@ public class MatchupDetailChampionPanel extends JPanel {
 		return myChampEndingItem1Label;
 	}
 
-	public JLabel getMyChampEndingItem2Label() {
+	private JLabel getMyChampEndingItem2Label() {
 		logger.trace("getMyChampEndingItem2Label() - Entering");
 		if (myChampEndingItem2Label == null) {
 			myChampEndingItem2Label = new JLabel(defaultImg);
@@ -369,7 +371,7 @@ public class MatchupDetailChampionPanel extends JPanel {
 		return myChampEndingItem2Label;
 	}
 
-	public JLabel getMyChampEndingItem3Label() {
+	private JLabel getMyChampEndingItem3Label() {
 		logger.trace("getMyChampEndingItem3Label() - Entering");
 		if (myChampEndingItem3Label == null) {
 			myChampEndingItem3Label = new JLabel(defaultImg);
@@ -380,7 +382,7 @@ public class MatchupDetailChampionPanel extends JPanel {
 		return myChampEndingItem3Label;
 	}
 
-	public JLabel getMyChampEndingItem4Label() {
+	private JLabel getMyChampEndingItem4Label() {
 		logger.trace("getMyChampEndingItem4Label() - Entering");
 		if (myChampEndingItem4Label == null) {
 			myChampEndingItem4Label = new JLabel(defaultImg);
@@ -391,7 +393,7 @@ public class MatchupDetailChampionPanel extends JPanel {
 		return myChampEndingItem4Label;
 	}
 
-	public JLabel getMyChampEndingItem5Label() {
+	private JLabel getMyChampEndingItem5Label() {
 		logger.trace("getMyChampEndingItem5Label() - Entering");
 		if (myChampEndingItem5Label == null) {
 			myChampEndingItem5Label = new JLabel(defaultImg);
@@ -402,7 +404,7 @@ public class MatchupDetailChampionPanel extends JPanel {
 		return myChampEndingItem5Label;
 	}
 
-	public JLabel getMyChampEndingItem6Label() {
+	private JLabel getMyChampEndingItem6Label() {
 		logger.trace("getMyChampEndingItem6Label() - Entering");
 		if (myChampEndingItem6Label == null) {
 			myChampEndingItem6Label = new JLabel(defaultImg);
@@ -413,7 +415,7 @@ public class MatchupDetailChampionPanel extends JPanel {
 		return myChampEndingItem6Label;
 	}
 
-	public JPanel getMyChampSpellsPanel() {
+	private JPanel getMyChampSpellsPanel() {
 		logger.trace("getMyChampSpellsPanel() - Entering");
 		if (myChampSpellsPanel == null) {
 			myChampSpellsPanel = new JPanel(new GridBagLayout());
@@ -441,7 +443,7 @@ public class MatchupDetailChampionPanel extends JPanel {
 		return myChampSpellsPanel;
 	}
 
-	public JLabel getMyChampSpellsLabel() {
+	private JLabel getMyChampSpellsLabel() {
 		logger.trace("getMyChampSpellsLabel() - Entering");
 		if (myChampSpellsLabel == null) {
 			myChampSpellsLabel = new JLabel("Summoner spells");
@@ -452,7 +454,7 @@ public class MatchupDetailChampionPanel extends JPanel {
 		return myChampSpellsLabel;
 	}
 
-	public JLabel getMyChampSpell1Label() {
+	private JLabel getMyChampSpell1Label() {
 		logger.trace("getMyChampSpell1Label() - Entering");
 		if (myChampSpell1Label == null) {
 			myChampSpell1Label = new JLabel(defaultImgBig);
@@ -463,7 +465,7 @@ public class MatchupDetailChampionPanel extends JPanel {
 		return myChampSpell1Label;
 	}
 
-	public JLabel getMyChampSpell2Label() {
+	private JLabel getMyChampSpell2Label() {
 		logger.trace("getMyChampSpell2Label() - Entering");
 		if (myChampSpell2Label == null) {
 			myChampSpell2Label = new JLabel(defaultImgBig);

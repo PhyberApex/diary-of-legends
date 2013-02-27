@@ -47,9 +47,9 @@ import de.phyberapex.diaryoflegends.model.util.ItemUtil;
 import de.phyberapex.diaryoflegends.model.util.MatchupUtil;
 import de.phyberapex.diaryoflegends.model.util.SummonerSpellUtil;
 import de.phyberapex.diaryoflegends.view.MainView;
-import de.phyberapex.diaryoflegends.view.dialoge.ComboBox.ChampionComboBox;
-import de.phyberapex.diaryoflegends.view.dialoge.ComboBox.ItemComboBox;
-import de.phyberapex.diaryoflegends.view.dialoge.ComboBox.SummonerSpellComboBox;
+import de.phyberapex.diaryoflegends.view.dialoge.comboBox.ChampionComboBox;
+import de.phyberapex.diaryoflegends.view.dialoge.comboBox.ItemComboBox;
+import de.phyberapex.diaryoflegends.view.dialoge.comboBox.SummonerSpellComboBox;
 
 public class NewEntryDialoge extends JDialog implements Runnable {
 
@@ -295,17 +295,15 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 			GridBagConstraints constraints = new GridBagConstraints();
 			constraints.gridx = 0;
 			constraints.gridy = 0;
-			constraints.fill = GridBagConstraints.BOTH;
+			constraints.fill = GridBagConstraints.HORIZONTAL;
 			constraints.weightx = 0.5;
-			constraints.weighty = 1;
 			gameContentPanel.add(getDatePanel(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 1;
 			constraints.gridy = 0;
-			constraints.fill = GridBagConstraints.BOTH;
+			constraints.fill = GridBagConstraints.HORIZONTAL;
 			constraints.weightx = 0.5;
-			constraints.weighty = 1;
 			gameContentPanel.add(getLengthPanel(), constraints);
 
 			constraints = new GridBagConstraints();
@@ -320,11 +318,17 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 			constraints = new GridBagConstraints();
 			constraints.gridx = 0;
 			constraints.gridy = 2;
-			constraints.gridwidth = 2;
 			constraints.fill = GridBagConstraints.BOTH;
-			constraints.weightx = 1;
-			constraints.weighty = 1;
+			constraints.weightx = 0.5;
 			gameContentPanel.add(getGameNotesPanel(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 1;
+			constraints.gridy = 2;
+			constraints.fill = GridBagConstraints.BOTH;
+			constraints.weightx = 0.5;
+			constraints.weighty = 0.5;
+			gameContentPanel.add(getMatchupNotesPanel(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 1;
@@ -383,33 +387,33 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		logger.trace("getLengthPanel() - Entering");
 		if (lengthPanel == null) {
 			lengthPanel = new JPanel(new GridBagLayout());
+			lengthPanel.setName("LOOOOOOOOOOOOOL");
 			lengthPanel.setBorder(BorderFactory
 					.createBevelBorder(BevelBorder.LOWERED));
 
 			GridBagConstraints constraints = new GridBagConstraints();
 			constraints.gridx = 0;
 			constraints.gridy = 0;
-			constraints.gridwidth = 4;
 			lengthPanel.add(getLengthLabel(), constraints);
 
 			constraints = new GridBagConstraints();
-			constraints.gridx = 0;
-			constraints.gridy = 1;
+			constraints.gridx = 1;
+			constraints.gridy = 0;
 			lengthPanel.add(getLengthMinutesLabel(), constraints);
 
 			constraints = new GridBagConstraints();
-			constraints.gridx = 1;
-			constraints.gridy = 1;
+			constraints.gridx = 2;
+			constraints.gridy = 0;
 			lengthPanel.add(getLengthMinutesSpinner(), constraints);
 
 			constraints = new GridBagConstraints();
-			constraints.gridx = 2;
-			constraints.gridy = 1;
+			constraints.gridx = 3;
+			constraints.gridy = 0;
 			lengthPanel.add(getLengthSecondsLabel(), constraints);
 
 			constraints = new GridBagConstraints();
-			constraints.gridx = 3;
-			constraints.gridy = 1;
+			constraints.gridx = 4;
+			constraints.gridy = 0;
 			lengthPanel.add(getLengthSecondsSpinner(), constraints);
 		}
 		logger.trace("getLengthPanel() - Returning");
@@ -1147,7 +1151,7 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		logger.trace("getGameNotesScrollPane() - Entering");
 		if (gameNotesScrollPane == null) {
 			gameNotesScrollPane = new JScrollPane(getGameNotesTextArea());
-			gameNotesScrollPane.setPreferredSize(new Dimension(0, 100));
+			gameNotesScrollPane.setPreferredSize(new Dimension(0, 80));
 		}
 		logger.trace("getGameNotesScrollPane() - Returning");
 		logger.debug("getGameNotesScrollPane() - Returning: {}",
@@ -1281,43 +1285,18 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 			matchupContentPanel = new JPanel(new GridBagLayout());
 			GridBagConstraints constraints = new GridBagConstraints();
 			constraints.gridx = 0;
-			constraints.gridy = 0;
-			constraints.insets = new Insets(15, 15, 10, 5);
-			constraints.fill = GridBagConstraints.HORIZONTAL;
-			constraints.weightx = 0.5;
-			matchupContentPanel.add(getLanePanel(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 1;
-			constraints.gridy = 0;
-			constraints.insets = new Insets(15, 5, 10, 15);
-			constraints.fill = GridBagConstraints.HORIZONTAL;
-			constraints.weightx = 0.5;
-			matchupContentPanel.add(getDifficultyPanel(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 0;
-			constraints.gridy = 2;
+			constraints.gridy = 1;
 			constraints.gridwidth = 2;
 			matchupContentPanel.add(getChampionsPanel(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 0;
-			constraints.gridy = 3;
-			constraints.fill = GridBagConstraints.BOTH;
-			constraints.weightx = 1;
-			constraints.weighty = 1;
-			constraints.gridwidth = 2;
-			matchupContentPanel.add(getMatchupNotesPanel(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 0;
-			constraints.gridy = 4;
+			constraints.gridy = 2;
 			matchupContentPanel.add(getGoToGameButton(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 1;
-			constraints.gridy = 4;
+			constraints.gridy = 2;
 			matchupContentPanel.add(getFinishButton(), constraints);
 		}
 		logger.trace("getMatchupContentPanel() - Returning");
@@ -1333,18 +1312,34 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 			GridBagConstraints constraints = new GridBagConstraints();
 			constraints.gridx = 0;
 			constraints.gridy = 0;
+			constraints.gridheight = 3;
 			constraints.insets = new Insets(5, 15, 0, 10);
 			championsPanel.add(getMyChampionPanel(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 1;
 			constraints.gridy = 0;
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.weightx = 1;
+			championsPanel.add(getLanePanel(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 1;
+			constraints.gridy = 1;
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.weightx = 1;
+			championsPanel.add(getDifficultyPanel(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 1;
+			constraints.gridy = 2;
 			constraints.insets = new Insets(5, 0, 0, 5);
 			championsPanel.add(getMatchupResultPanel(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 2;
 			constraints.gridy = 0;
+			constraints.gridheight = 3;
 			constraints.insets = new Insets(5, 10, 0, 15);
 			championsPanel.add(getEnemyChampionPanel(), constraints);
 		}
@@ -3388,12 +3383,7 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 0;
-			constraints.gridy = 0;
-			difficultyPanel.add(getDifficultyLabel(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 1;
-			constraints.gridy = 0;
+			constraints.gridy = 1;
 			constraints.fill = GridBagConstraints.HORIZONTAL;
 			constraints.weightx = 1;
 			difficultyPanel.add(getMatchupDifficultyBox(), constraints);
@@ -3407,7 +3397,7 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 	public JLabel getDifficultyLabel() {
 		logger.trace("getDifficultyLabel() - Entering");
 		if (difficultyLabel == null) {
-			difficultyLabel = new JLabel("Diffculty of the matchup:");
+			difficultyLabel = new JLabel("Matchup diffculty:");
 		}
 		logger.trace("getDifficultyLabel() - Returning");
 		logger.debug("getDifficultyLabel() - Returning: {}", difficultyLabel);
@@ -3436,8 +3426,8 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 			lanePanel.add(getLaneLabel(), constraints);
 
 			constraints = new GridBagConstraints();
-			constraints.gridx = 1;
-			constraints.gridy = 0;
+			constraints.gridx = 0;
+			constraints.gridy = 1;
 			constraints.fill = GridBagConstraints.HORIZONTAL;
 			constraints.weightx = 1;
 			lanePanel.add(getLaneBox(), constraints);
@@ -3506,7 +3496,7 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		logger.trace("getMatchupNotesScrollPane() - Entering");
 		if (matchupNotesScrollPane == null) {
 			matchupNotesScrollPane = new JScrollPane(getMatchupNotesTextArea());
-			matchupNotesScrollPane.setPreferredSize(new Dimension(0, 100));
+			matchupNotesScrollPane.setPreferredSize(new Dimension(0, 80));
 		}
 		logger.trace("getMatchupNotesScrollPane() - Returning");
 		logger.debug("getMatchupNotesScrollPane() - Returning: {}",
@@ -3917,7 +3907,8 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 						if (toEdit != null) {
 							MainController.getInstance().updated();
 						} else {
-							MainController.getInstance().saveNewGame(game);
+							MainView.getInstance().getMatchupPanel()
+									.addMatchup(matchup);
 						}
 						MatchupUtil.saveMatchup(game.getMatchup());
 						GameUtil.saveGame(game);

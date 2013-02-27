@@ -9,8 +9,11 @@
     </Console>
   </appenders>
   <loggers>
-  	<root level="debug">
+  <logger name="de.phyberapex.diaryoflegends.controller" level="trace" additivity="false">
       <appender-ref ref="logfile"/>
+    </logger>
+  	<root level="error">
+      <appender-ref ref="STDOUT"/>
     </root>
   </loggers>
 </configuration>

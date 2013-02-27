@@ -38,7 +38,9 @@ public class MatchupController extends Controller {
 	@Override
 	public void loadData() {
 		logger.trace("loadData() - Entering");
-		matchups.addAll(MatchupUtil.getAllMatchups());
+		for (Matchup m : MatchupUtil.getAllMatchups()) {
+			matchups.add(m);
+		}
 		view.refresh();
 		logger.trace("loadData() - Leaving");
 	}
@@ -58,14 +60,10 @@ public class MatchupController extends Controller {
 	/**
 	 * @param matchup
 	 */
-	public void deleteMatchup(Matchup matchup, boolean deleteGame) {
+	public void deleteMatchup(Matchup matchup) {
 		logger.trace("deleteMatchup() - Entering");
 		logger.debug("deleteMatchup() - Parameter: {}", matchup);
-		if (deleteGame) {
-			mainController.deleteGame(matchup.getGame());
-		} else {
-			((MatchupView) view).removeMatchup(matchup);
-		}
+		((MatchupView) view).removeMatchup(matchup);
 		MatchupUtil.deleteMatchup(matchup);
 		logger.trace("deleteMatchup() - Leaving");
 	}

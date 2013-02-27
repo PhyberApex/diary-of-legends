@@ -303,7 +303,6 @@ public class ImportDolexAction implements Runnable {
 				game.setLength(gJo.getLong("length"));
 				MatchupUtil.saveMatchup(matchup);
 				GameUtil.saveGame(game);
-				MainView.getInstance().getGamePanel().addGame(game);
 				MainView.getInstance().getMatchupPanel().addMatchup(matchup);
 			}
 			MainView.getInstance().setStatusText("Import complete");

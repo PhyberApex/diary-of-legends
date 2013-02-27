@@ -2,9 +2,9 @@ package de.phyberapex.diaryoflegends.model;
 
 public enum MatchupDifficulty {
 
-	SUPER_EASY("I had a big advantage"), EASY("I had a small advantage"), DRAW(
-			"It was pretty even"), HARD("He had a small advantage"), SUPER_HARD(
-			"He had a big advantage");
+	SUPER_EASY("Big advantage"), EASY("Small advantage"), DRAW(
+			"Pretty even"), HARD("Small disadvantage"), SUPER_HARD(
+			"Big disadvantage");
 
 	/**
 	 * String representation of the difficulty

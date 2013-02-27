@@ -1,4 +1,4 @@
-package de.phyberapex.diaryoflegends.view.dialoge.ComboBox;
+package de.phyberapex.diaryoflegends.view.dialoge.comboBox;
 
 import javax.accessibility.Accessible;
 import javax.swing.DefaultComboBoxModel;
