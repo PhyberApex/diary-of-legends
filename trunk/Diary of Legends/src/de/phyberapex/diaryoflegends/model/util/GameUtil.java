@@ -62,13 +62,36 @@ public class GameUtil {
 	 */
 	public static void deleteGame(Game game) {
 		logger.trace("deleteItem() - Entering");
-		logger.debug("deleteItem() - Parameter {}", game);
+		logger.debug("deleteItem() - Parameter: {}", game);
 		dbHandle.delete(game);
 		if (game.getMatchup() != null) {
 			game.getMatchup().setGame(null);
 			MatchupUtil.deleteMatchup(game.getMatchup());
 		}
 		logger.trace("deleteItem() - Leaving");
+	}
+
+	public int getAmountOfGamesForChampion(final String search) {
+		logger.trace("getAmountOfGamesForChampion() - Entering");
+		logger.debug("getAmountOfGamesForChampion() - Parameter: {}", search);
+		ObjectSet<Game> set = dbHandle.query(new Predicate<Game>() {
+
+			private static final long serialVersionUID = 1625150373402614414L;
+
+			@Override
+			public boolean match(Game arg0) {
+				boolean returnValue = false;
+				if (arg0.getMatchup().getMyChamp().getName().contains(search)) {
+					returnValue = true;
+				}
+				return returnValue;
+			}
+		});
+		int returnValue = set.size();
+		logger.trace("getAmountOfGamesForChampion() - Returning");
+		logger.debug("getAmountOfGamesForChampion() - Returning: {}",
+				returnValue);
+		return returnValue;
 	}
 
 }

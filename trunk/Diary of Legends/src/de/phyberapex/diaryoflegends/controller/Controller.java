@@ -10,7 +10,7 @@ public abstract class Controller {
 	protected View view;
 	protected MainController mainController;
 	transient private static Logger logger = LogManager
-			.getLogger(Controller.class.getName());
+			.getLogger(MainController.class.getName());
 
 	public Controller(MainController mainController) {
 		this.mainController = mainController;

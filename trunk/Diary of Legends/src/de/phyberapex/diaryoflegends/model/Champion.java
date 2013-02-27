@@ -148,7 +148,9 @@ public class Champion extends Model {
 		int hash = 1;
 		hash = hash * 17 + id;
 		hash = hash * 31 + name.hashCode();
-		hash = hash * 13 + icon.hashCode();
+		if (icon != null) {
+			hash = hash * 13 + icon.hashCode();
+		}
 		return hash;
 	}
 
@@ -156,7 +158,7 @@ public class Champion extends Model {
 	 * @return
 	 */
 	public Icon get30x30Icon() {
-		if (icon30x30 == null) {
+		if (icon30x30 == null && icon != null) {
 			icon30x30 = ImageIconFactory.resizeImageIcon(getIcon(), 30, 30);
 		}
 		return icon30x30;

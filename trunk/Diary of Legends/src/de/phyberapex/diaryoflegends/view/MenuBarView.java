@@ -12,6 +12,10 @@ import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import com.jgoodies.looks.HeaderStyle;
+import com.jgoodies.looks.Options;
+
 import de.phyberapex.diaryoflegends.ExitAction;
 import de.phyberapex.diaryoflegends.export.ExportDolexAction;
 import de.phyberapex.diaryoflegends.export.ImportDolexAction;
@@ -35,6 +39,7 @@ public class MenuBarView extends JMenuBar implements View {
 
 	public MenuBarView() {
 		logger.trace("MenuBarView() - Entering");
+		 this.putClientProperty(Options.HEADER_STYLE_KEY, HeaderStyle.SINGLE);
 		this.add(getFileMenu());
 		this.add(getAboutMenu());
 		logger.trace("MenuBarView() - Leaving");

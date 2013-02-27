@@ -83,9 +83,9 @@ public class ImageIconFactory {
 	public static ImageIcon getRandomLoadingIcon() {
 		logger.trace("getRandomLoadingIcon() - Entering");
 		ImageIcon icon = null;
-		int rand = (int)(Math.random() * 30 + 1);
+		int rand = (int)(Math.random() * 20 + 1);
 		String path = Constants
-				.getResourcePath() + "img/loadingIcons/("+rand+").png";
+				.getResourcePath() + "img/splash/("+rand+").png";
 		URL imgURL = ImageIconFactory.class.getResource(path);
 		if (imgURL != null) {
 			icon = new ImageIcon(imgURL);

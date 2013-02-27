@@ -14,6 +14,9 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableRowSorter;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import de.phyberapex.diaryoflegends.controller.MatchupController;
@@ -31,7 +34,7 @@ public class MatchupView extends JPanel implements View {
 	private JScrollPane matchupTablePane;
 	private JTable matchupTable;
 	private GridBagConstraints constraints;
-	private static Logger logger = LogManager.getLogger(ChampionView.class
+	private static Logger logger = LogManager.getLogger(MatchupView.class
 			.getName());
 
 	public MatchupView(MatchupController controller) {
@@ -85,7 +88,7 @@ public class MatchupView extends JPanel implements View {
 	private JButton getNewButton() {
 		logger.trace("getNewButton() - Entering");
 		if (newButton == null) {
-			newButton = new JButton("new Game & Matchup");
+			newButton = new JButton("new matchup");
 			newButton.addActionListener(new ActionListener() {
 
 				@Override
@@ -107,7 +110,7 @@ public class MatchupView extends JPanel implements View {
 	private JButton getDeleteButton() {
 		logger.trace("getDeleteButton() - Entering");
 		if (deleteButton == null) {
-			deleteButton = new JButton("delete Matchup & Game");
+			deleteButton = new JButton("delete matchup");
 			deleteButton.addActionListener(new ActionListener() {
 
 				@Override
@@ -121,7 +124,7 @@ public class MatchupView extends JPanel implements View {
 						int ok = JOptionPane.showConfirmDialog(null, message,
 								title, JOptionPane.YES_NO_OPTION);
 						if (ok == JOptionPane.OK_OPTION) {
-							controller.deleteMatchup(matchup, true);
+							controller.deleteMatchup(matchup);
 							((MatchupTableModel) matchupTable.getModel())
 									.removeMatchup(matchup);
 							MainView.getInstance().setStatusText(
@@ -166,9 +169,22 @@ public class MatchupView extends JPanel implements View {
 			matchupTable = new JTable();
 			MatchupTableModel m = new MatchupTableModel(
 					controller.getMatchups());
+			matchupTable.getTableHeader().setReorderingAllowed(false);
+			matchupTable.getTableHeader().setResizingAllowed(false);
 			matchupTable.setModel(m);
+			for (int i = 0; i < 3; i++) {
+			    TableColumn column = matchupTable.getColumnModel().getColumn(i);
+			    if (i == 2) {
+			        column.setPreferredWidth(100); //third column is bigger
+			    } else {
+			        column.setPreferredWidth(50);
+			    }
+			}
 			matchupTable.setDefaultRenderer(Object.class,
 					new MatchupTableRenderer());
+			 TableRowSorter<MatchupTableModel> sorter = new TableRowSorter<MatchupTableModel>();
+			 matchupTable.setRowSorter(sorter);
+			 sorter.setModel(m);
 			matchupTable.addMouseListener(new MouseListener() {
 
 				@Override

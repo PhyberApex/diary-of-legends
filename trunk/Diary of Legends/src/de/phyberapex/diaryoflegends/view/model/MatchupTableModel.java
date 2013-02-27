@@ -17,7 +17,7 @@ public class MatchupTableModel extends AbstractTableModel {
 	private String[] columnNames = new String[] { "Date", "Matchup", "Lane",
 			"Notes" };
 	transient private static Logger logger = LogManager
-			.getLogger(ItemTableModel.class.getName());
+			.getLogger(MatchupTableModel.class.getName());
 
 	/**
 	 * Constructor for a new tablemodel

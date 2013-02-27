@@ -51,7 +51,7 @@ public class Splash extends JWindow {
 		setLocationRelativeTo(null);
 		MyPanel myPanel = new MyPanel(getSize());
 
-		Color fgX = new Color(0, 0, 0);
+		Color fgX = Color.BLUE;
 		progress = new JProgressBar(0, 100);
 		progress.setForeground(fgX);
 		progress.setFont(new Font("Verdana", Font.BOLD, 12));
@@ -64,8 +64,8 @@ public class Splash extends JWindow {
 		myPanel.add(progress, BorderLayout.SOUTH);
 		progress.setStringPainted(true); // progressbar mit Beschriftung
 		progress.setPreferredSize(preferredSize); // schmalere progressbar
-		progress.setBorderPainted(false); // progressbar ohne Rand
-		myPanel.setBorder(new BevelBorder(BevelBorder.RAISED));
+		progress.setBorderPainted(true); // progressbar ohne Rand
+		progress.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 		// myPanel.setBorder(new LineBorder(fgX, 2));
 		progress.setBackground(new Color(254, 243, 224));
 		getContentPane().add(myPanel);
