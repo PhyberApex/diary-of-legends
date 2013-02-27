@@ -361,7 +361,7 @@ public class MatchupDetailDialoge extends JDialog implements Runnable {
 	private JLabel getGameNotesLabel() {
 		logger.trace("getGameNotesLabel() - Entering");
 		if (gameNotesLabel == null) {
-			gameNotesLabel = new JLabel("Notes for the matchup:");
+			gameNotesLabel = new JLabel("Notes for the game:");
 		}
 		logger.trace("getGameNotesLabel() - Returning");
 		logger.debug("getGameNotesLabel() - Returning: {}", gameNotesLabel);

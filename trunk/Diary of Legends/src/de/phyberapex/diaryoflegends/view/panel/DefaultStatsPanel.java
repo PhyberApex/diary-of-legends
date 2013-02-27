@@ -1,5 +1,6 @@
 package de.phyberapex.diaryoflegends.view.panel;
 
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.HashMap;
@@ -8,6 +9,8 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import de.phyberapex.diaryoflegends.extra.ImageIconFactory;
@@ -55,7 +58,21 @@ public class DefaultStatsPanel extends JPanel {
 
 	private JPanel champsPanel;
 	private JLabel champsLabel = new JLabel("Champions found:");
+	private JScrollPane champsValuePane;
 	private JList<Champion> champsValueBox;
+
+	private JPanel totalStatsPanel;
+	private JLabel totalStatsLabel = new JLabel("Total stats:");
+	private JLabel gameTotalLabel = new JLabel("Total games:");
+	private JLabel gameTotalValueLabel;
+	private JLabel killsTotalLabel = new JLabel("Total kills:");
+	private JLabel killsTotalValueLabel;
+	private JLabel deathsTotalLabel = new JLabel("Total deaths:");
+	private JLabel deathsTotalValueLabel;
+	private JLabel assistsTotalLabel = new JLabel("Total assists:");
+	private JLabel assistsTotalValueLabel;
+	private JLabel csTotalLabel = new JLabel("Total minions slain:");
+	private JLabel csTotalValueLabel;
 
 	private Statistics stats;
 	private static Logger logger = LogManager.getLogger(DefaultStatsPanel.class
@@ -72,75 +89,87 @@ public class DefaultStatsPanel extends JPanel {
 	private void createGUI() {
 		GridBagConstraints constraints = new GridBagConstraints();
 		constraints.gridx = 0;
-		constraints.gridy = 0;
+		constraints.gridy = 1;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.weightx = 0.3;
 		this.add(getMostKillsOneGamePanel(), constraints);
 
 		constraints = new GridBagConstraints();
 		constraints.gridx = 0;
-		constraints.gridy = 1;
+		constraints.gridy = 2;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.weightx = 0.3;
 		this.add(getMostKillsAvgPanel(), constraints);
 
 		constraints = new GridBagConstraints();
 		constraints.gridx = 1;
-		constraints.gridy = 0;
+		constraints.gridy = 1;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.weightx = 0.3;
 		this.add(getMostDeathsOneGamePanel(), constraints);
 
 		constraints = new GridBagConstraints();
 		constraints.gridx = 1;
-		constraints.gridy = 1;
+		constraints.gridy = 2;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.weightx = 0.3;
 		this.add(getMostDeathsAvgPanel(), constraints);
 
 		constraints = new GridBagConstraints();
-		constraints.gridx = 2;
-		constraints.gridy = 0;
+		constraints.gridx = 1;
+		constraints.gridy = 3;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.weightx = 0.3;
 		this.add(getMostAssistsOneGamePanel(), constraints);
 
 		constraints = new GridBagConstraints();
-		constraints.gridx = 2;
-		constraints.gridy = 1;
+		constraints.gridx = 1;
+		constraints.gridy = 4;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.weightx = 0.3;
 		this.add(getMostAssistsAvgPanel(), constraints);
 
 		constraints = new GridBagConstraints();
 		constraints.gridx = 0;
-		constraints.gridy = 2;
+		constraints.gridy = 3;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.weightx = 0.3;
 		this.add(getMostCSOneGamePanel(), constraints);
 
 		constraints = new GridBagConstraints();
 		constraints.gridx = 0;
-		constraints.gridy = 3;
+		constraints.gridy = 4;
+		constraints.anchor = GridBagConstraints.NORTH;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.weightx = 0.3;
 		this.add(getMostCSAvgPanel(), constraints);
 
 		constraints = new GridBagConstraints();
-		constraints.gridx = 1;
-		constraints.gridy = 2;
+		constraints.gridx = 0;
+		constraints.gridy = 0;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
-		constraints.weightx = 0.3;
+		constraints.gridwidth = 3;
+		constraints.weightx = 1;
+		constraints.weighty = 1;
 		this.add(getMostGamesPanel(), constraints);
 
 		constraints = new GridBagConstraints();
 		constraints.gridx = 2;
-		constraints.gridy = 2;
-		constraints.gridheight = 2;
+		constraints.gridy = 1;
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.weightx = 0.3;
-		constraints.weightx = 1;
+		constraints.weighty = 0;
+		constraints.gridheight = 2;
 		this.add(getChampsPanel(), constraints);
+
+		constraints = new GridBagConstraints();
+		constraints.gridx = 2;
+		constraints.gridy = 3;
+		constraints.fill = GridBagConstraints.BOTH;
+		constraints.weightx = 0.3;
+		constraints.weighty = 0;
+		constraints.gridheight = 2;
+		this.add(getTotalStatsPanel(), constraints);
 
 	}
 
@@ -490,6 +519,8 @@ public class DefaultStatsPanel extends JPanel {
 		logger.trace("getMostGamesValueLabel() - Entering");
 		if (mostGamesValueLabel == null) {
 			mostGamesValueLabel = new JLabel();
+			mostGamesValueLabel.setFont(mostGamesValueLabel.getFont()
+					.deriveFont(Font.PLAIN, 18));
 		}
 		logger.trace("getMostGamesValueLabel() - Returning");
 		logger.debug("getMostGamesValueLabel() - Returning: {}",
@@ -510,7 +541,7 @@ public class DefaultStatsPanel extends JPanel {
 			constraints.fill = GridBagConstraints.BOTH;
 			constraints.weightx = 1;
 			constraints.weighty = 1;
-			champsPanel.add(getChampsValueBox(), constraints);
+			champsPanel.add(getChampsValuePane(), constraints);
 		}
 		logger.trace("getChampsPanel() - Returning");
 		logger.debug("getChampsPanel() - Returning: {}", champsPanel);
@@ -524,15 +555,186 @@ public class DefaultStatsPanel extends JPanel {
 		return champsLabel;
 	}
 
+	public JScrollPane getChampsValuePane() {
+		logger.trace("getChampsValuePane() - Entering");
+		if (champsValuePane == null) {
+			champsValuePane = new JScrollPane(getChampsValueBox());
+		}
+		logger.trace("getChampsValuePane() - Returning");
+		logger.debug("getChampsValuePane() - Returning: {}", champsValuePane);
+		return champsValuePane;
+	}
+
 	public JList<Champion> getChampsValueBox() {
 		logger.trace("getChampsValueBox() - Entering");
 		if (champsValueBox == null) {
 			champsValueBox = new JList<Champion>();
-			
+			champsValueBox.setLayoutOrientation(JList.VERTICAL);
+			champsValueBox.setVisibleRowCount(4);
 		}
 		logger.trace("getChampsValueBox() - Returning");
 		logger.debug("getChampsValueBox() - Returning: {}", champsValueBox);
 		return champsValueBox;
+	}
+
+	public JPanel getTotalStatsPanel() {
+		logger.trace("getTotalStatsPanel() - Entering");
+		if (totalStatsPanel == null) {
+			totalStatsPanel = new JPanel(new GridBagLayout());
+			totalStatsPanel.setBorder(BorderFactory
+					.createTitledBorder(getTotalStatsLabel().getText()));
+
+			GridBagConstraints constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 0;
+			totalStatsPanel.add(getGameTotalLabel(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 1;
+			constraints.gridy = 0;
+			totalStatsPanel.add(getGameTotalValueLabel(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 1;
+			totalStatsPanel.add(getKillsTotalLabel(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 1;
+			constraints.gridy = 1;
+			totalStatsPanel.add(getKillsTotalValueLabel(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 2;
+			totalStatsPanel.add(getDeathsTotalLabel(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 1;
+			constraints.gridy = 2;
+			totalStatsPanel.add(getDeathsTotalValueLabel(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 3;
+			totalStatsPanel.add(getAssistsTotalLabel(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 1;
+			constraints.gridy = 3;
+			totalStatsPanel.add(getAssistsTotalValueLabel(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 4;
+			totalStatsPanel.add(getCsTotalLabel(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 1;
+			constraints.gridy = 4;
+			totalStatsPanel.add(getCsTotalValueLabel(), constraints);
+		}
+		logger.trace("getTotalStatsPanel() - Returning");
+		logger.debug("getTotalStatsPanel() - Returning: {}", totalStatsPanel);
+		return totalStatsPanel;
+	}
+
+	public JLabel getTotalStatsLabel() {
+		logger.trace("getTotalStatsLabel() - Entering");
+		logger.trace("getTotalStatsLabel() - Returning");
+		logger.debug("getTotalStatsLabel() - Returning: {}", totalStatsLabel);
+		return totalStatsLabel;
+	}
+
+	public JLabel getGameTotalLabel() {
+		logger.trace("getGameTotalLabel() - Entering");
+		logger.trace("getGameTotalLabel() - Returning");
+		logger.debug("getGameTotalLabel() - Returning: {}", gameTotalLabel);
+		return gameTotalLabel;
+	}
+
+	public JLabel getGameTotalValueLabel() {
+		logger.trace("getGameTotalValueLabel() - Entering");
+		if (gameTotalValueLabel == null) {
+			gameTotalValueLabel = new JLabel();
+		}
+		logger.trace("getGameTotalValueLabel() - Returning");
+		logger.debug("getGameTotalValueLabel() - Returning: {}",
+				gameTotalValueLabel);
+		return gameTotalValueLabel;
+	}
+
+	public JLabel getKillsTotalLabel() {
+		logger.trace("getKillsTotalLabel() - Entering");
+		logger.trace("getKillsTotalLabel() - Returning");
+		logger.debug("getKillsTotalLabel() - Returning: {}", killsTotalLabel);
+		return killsTotalLabel;
+	}
+
+	public JLabel getKillsTotalValueLabel() {
+		logger.trace("getKillsTotalValueLabel() - Entering");
+		if (killsTotalValueLabel == null) {
+			killsTotalValueLabel = new JLabel();
+		}
+		logger.trace("getKillsTotalValueLabel() - Returning");
+		logger.debug("getKillsTotalValueLabel() - Returning: {}",
+				killsTotalValueLabel);
+		return killsTotalValueLabel;
+	}
+
+	public JLabel getDeathsTotalLabel() {
+		logger.trace("getDeathsTotalLabel() - Entering");
+		logger.trace("getDeathsTotalLabel() - Returning");
+		logger.debug("getDeathsTotalLabel() - Returning: {}", deathsTotalLabel);
+		return deathsTotalLabel;
+	}
+
+	public JLabel getDeathsTotalValueLabel() {
+		logger.trace("getDeathsTotalValueLabel() - Entering");
+		if (deathsTotalValueLabel == null) {
+			deathsTotalValueLabel = new JLabel();
+		}
+		logger.trace("getDeathsTotalValueLabel() - Returning");
+		logger.debug("getDeathsTotalValueLabel() - Returning: {}",
+				deathsTotalValueLabel);
+		return deathsTotalValueLabel;
+	}
+
+	public JLabel getAssistsTotalLabel() {
+		logger.trace("getAssistsTotalLabel() - Entering");
+		logger.trace("getAssistsTotalLabel() - Returning");
+		logger.debug("getAssistsTotalLabel() - Returning: {}",
+				assistsTotalLabel);
+		return assistsTotalLabel;
+	}
+
+	public JLabel getAssistsTotalValueLabel() {
+		logger.trace("getAssistsTotalValueLabel() - Entering");
+		if (assistsTotalValueLabel == null) {
+			assistsTotalValueLabel = new JLabel();
+		}
+		logger.trace("getAssistsTotalValueLabel() - Returning");
+		logger.debug("getAssistsTotalValueLabel() - Returning: {}",
+				assistsTotalValueLabel);
+		return assistsTotalValueLabel;
+	}
+
+	public JLabel getCsTotalLabel() {
+		logger.trace("getCsTotalLabel() - Entering");
+		logger.trace("getCsTotalLabel() - Returning");
+		logger.debug("getCsTotalLabel() - Returning: {}", csTotalLabel);
+		return csTotalLabel;
+	}
+
+	public JLabel getCsTotalValueLabel() {
+		logger.trace("getCsTotalValueLabel() - Entering");
+		if (csTotalValueLabel == null) {
+			csTotalValueLabel = new JLabel();
+		}
+		logger.trace("getCsTotalValueLabel() - Returning");
+		logger.debug("getCsTotalValueLabel() - Returning: {}",
+				csTotalValueLabel);
+		return csTotalValueLabel;
 	}
 
 	private void fillStats() {
@@ -543,7 +745,7 @@ public class DefaultStatsPanel extends JPanel {
 		if (mostKills.getChampion().getId() != 0) {
 			getMostKillsOneGameValueLabel().setIcon(
 					ImageIconFactory.resizeImageIcon(mostKills.getChampion()
-							.getIcon(), 50, 50));
+							.getIcon(), 55, 55));
 			getMostKillsOneGameValueLabel().setToolTipText(
 					mostKills.getChampion().getName());
 			getMostKillsOneGameValueLabel().setText(
@@ -554,7 +756,7 @@ public class DefaultStatsPanel extends JPanel {
 		if (mostAvgKills.getChampion().getId() != 0) {
 			getMostKillsAvgValueLabel().setIcon(
 					ImageIconFactory.resizeImageIcon(mostAvgKills.getChampion()
-							.getIcon(), 50, 50));
+							.getIcon(), 55, 55));
 			getMostKillsAvgValueLabel().setToolTipText(
 					mostAvgKills.getChampion().getName());
 			getMostKillsAvgValueLabel().setText(
@@ -565,7 +767,7 @@ public class DefaultStatsPanel extends JPanel {
 		if (mostDeaths.getChampion().getId() != 0) {
 			getMostDeathsOneGameValueLabel().setIcon(
 					ImageIconFactory.resizeImageIcon(mostDeaths.getChampion()
-							.getIcon(), 50, 50));
+							.getIcon(), 55, 55));
 			getMostDeathsOneGameValueLabel().setToolTipText(
 					mostDeaths.getChampion().getName());
 			getMostDeathsOneGameValueLabel().setText(
@@ -576,7 +778,7 @@ public class DefaultStatsPanel extends JPanel {
 		if (mostAvgDeaths.getChampion().getId() != 0) {
 			getMostDeathsAvgValueLabel().setIcon(
 					ImageIconFactory.resizeImageIcon(mostAvgDeaths
-							.getChampion().getIcon(), 50, 50));
+							.getChampion().getIcon(), 55, 55));
 			getMostDeathsAvgValueLabel().setToolTipText(
 					mostAvgDeaths.getChampion().getName());
 			getMostDeathsAvgValueLabel().setText(
@@ -587,7 +789,7 @@ public class DefaultStatsPanel extends JPanel {
 		if (mostAssists.getChampion().getId() != 0) {
 			getMostAssistsOneGameValueLabel().setIcon(
 					ImageIconFactory.resizeImageIcon(mostAssists.getChampion()
-							.getIcon(), 50, 50));
+							.getIcon(), 55, 55));
 			getMostAssistsOneGameValueLabel().setToolTipText(
 					mostAssists.getChampion().getName());
 			getMostAssistsOneGameValueLabel().setText(
@@ -598,7 +800,7 @@ public class DefaultStatsPanel extends JPanel {
 		if (mostAvgAssists.getChampion().getId() != 0) {
 			getMostAssistsAvgValueLabel().setIcon(
 					ImageIconFactory.resizeImageIcon(mostAvgAssists
-							.getChampion().getIcon(), 50, 50));
+							.getChampion().getIcon(), 55, 55));
 			getMostAssistsAvgValueLabel().setToolTipText(
 					mostAvgAssists.getChampion().getName());
 			getMostAssistsAvgValueLabel().setText(
@@ -609,7 +811,7 @@ public class DefaultStatsPanel extends JPanel {
 		if (mostCS.getChampion().getId() != 0) {
 			getMostCSOneGameValueLabel().setIcon(
 					ImageIconFactory.resizeImageIcon(mostCS.getChampion()
-							.getIcon(), 50, 50));
+							.getIcon(), 55, 55));
 			getMostCSOneGameValueLabel().setToolTipText(
 					mostCS.getChampion().getName());
 			getMostCSOneGameValueLabel().setText(
@@ -620,7 +822,7 @@ public class DefaultStatsPanel extends JPanel {
 		if (mostAvgCS.getChampion().getId() != 0) {
 			getMostCSAvgValueLabel().setIcon(
 					ImageIconFactory.resizeImageIcon(mostAvgCS.getChampion()
-							.getIcon(), 50, 50));
+							.getIcon(), 55, 55));
 			getMostCSAvgValueLabel().setToolTipText(
 					mostAvgCS.getChampion().getName());
 			getMostCSAvgValueLabel().setText(
@@ -631,7 +833,7 @@ public class DefaultStatsPanel extends JPanel {
 		if (mostGames.getChampion().getId() != 0) {
 			getMostGamesValueLabel().setIcon(
 					ImageIconFactory.resizeImageIcon(mostGames.getChampion()
-							.getIcon(), 50, 50));
+							.getIcon(), 65, 65));
 			getMostGamesValueLabel().setToolTipText(
 					mostGames.getChampion().getName());
 			getMostGamesValueLabel().setText(
@@ -641,5 +843,16 @@ public class DefaultStatsPanel extends JPanel {
 		getChampsValueBox().setModel(
 				new DefaultComboBoxModel<Champion>(foundChamps.getFoundChamps()
 						.toArray(new Champion[] {})));
+		getGameTotalValueLabel().setText(
+				String.valueOf(mostStats.get("gamesTotal").getValue()));
+		getKillsTotalValueLabel().setText(
+				String.valueOf(mostStats.get("killsTotal").getValue()));
+		getDeathsTotalValueLabel().setText(
+				String.valueOf(mostStats.get("deathsTotal").getValue()));
+		getAssistsTotalValueLabel().setText(
+				String.valueOf(mostStats.get("assistsTotal").getValue()));
+		getCsTotalValueLabel().setText(
+				String.valueOf(mostStats.get("minionsSlain").getValue()));
+
 	}
 }
