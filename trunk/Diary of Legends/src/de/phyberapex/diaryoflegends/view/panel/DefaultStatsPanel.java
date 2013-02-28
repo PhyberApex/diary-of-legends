@@ -738,6 +738,7 @@ public class DefaultStatsPanel extends JPanel {
 	}
 
 	private void fillStats() {
+		@SuppressWarnings("unchecked")
 		HashMap<String, GameStatistic> mostStats = (HashMap<String, GameStatistic>) stats
 				.getStats().get("mostXXX");
 

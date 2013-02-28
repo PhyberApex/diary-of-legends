@@ -1,12 +1,10 @@
 package de.phyberapex.diaryoflegends.view.dialoge;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
@@ -26,8 +24,7 @@ import de.phyberapex.diaryoflegends.model.Matchup;
 import de.phyberapex.diaryoflegends.model.MatchupDifficulty;
 import de.phyberapex.diaryoflegends.model.MatchupResult;
 import de.phyberapex.diaryoflegends.model.Role;
-import de.phyberapex.diaryoflegends.model.util.GameUtil;
-import de.phyberapex.diaryoflegends.model.util.MatchupUtil;
+import de.phyberapex.diaryoflegends.view.MainView;
 import de.phyberapex.diaryoflegends.view.dialoge.panel.MatchupDetailChampionPanel;
 
 public class MatchupDetailDialoge extends JDialog implements Runnable {
@@ -45,12 +42,10 @@ public class MatchupDetailDialoge extends JDialog implements Runnable {
 	private JLabel gameNotesLabel;
 	private JScrollPane gameNotesScrollPane;
 	private JTextArea gameNotesTextarea;
-	private JButton saveGameNotesButton;
 	private JPanel notesPanel;
 	private JLabel notesLabel;
 	private JScrollPane notesScrollPane;
 	private JTextArea notesTextarea;
-	private JButton saveNotesButton;
 	private JPanel gamePanel;
 	private JLabel gameStatsLabel;
 	private JLabel killsLabel;
@@ -131,6 +126,7 @@ public class MatchupDetailDialoge extends JDialog implements Runnable {
 			constraints.gridx = 0;
 			constraints.gridy = 2;
 			constraints.gridwidth = 2;
+			constraints.gridheight = 2;
 			constraints.fill = GridBagConstraints.BOTH;
 			matchupContentPanel.add(getNotesPanel(), constraints);
 
@@ -139,12 +135,12 @@ public class MatchupDetailDialoge extends JDialog implements Runnable {
 			constraints.gridy = 2;
 			constraints.gridwidth = 2;
 			constraints.fill = GridBagConstraints.BOTH;
+			constraints.gridheight = 2;
 			matchupContentPanel.add(getGameNotesPanel(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 2;
 			constraints.gridy = 2;
-			constraints.anchor = GridBagConstraints.NORTH;
 			matchupContentPanel.add(getGamePanel(), constraints);
 
 			constraints = new GridBagConstraints();
@@ -158,22 +154,11 @@ public class MatchupDetailDialoge extends JDialog implements Runnable {
 			matchupContentPanel.add(getEnemyTeamPanel(), constraints);
 
 			constraints = new GridBagConstraints();
-			constraints.gridx = 0;
-			constraints.gridy = 3;
-			constraints.fill = GridBagConstraints.BOTH;
-			matchupContentPanel.add(getSaveNotesButton(), constraints);
-
-			constraints = new GridBagConstraints();
 			constraints.gridx = 2;
 			constraints.gridy = 3;
-			constraints.fill = GridBagConstraints.BOTH;
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.anchor = GridBagConstraints.SOUTH;
 			matchupContentPanel.add(getCloseButton(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 4;
-			constraints.gridy = 3;
-			constraints.fill = GridBagConstraints.BOTH;
-			matchupContentPanel.add(getSaveGameNotesButton(), constraints);
 		}
 		logger.trace("getMatchupContentPanel() - Returning");
 		logger.debug("getMatchupContentPanel() - Returning: {}",
@@ -233,7 +218,7 @@ public class MatchupDetailDialoge extends JDialog implements Runnable {
 	private JPanel getMyChampPanel() {
 		logger.trace("getMyChampPanel() - Entering");
 		if (myChampPanel == null) {
-			myChampPanel = new MatchupDetailChampionPanel(false);
+			myChampPanel = new MatchupDetailChampionPanel();
 		}
 		logger.trace("getMyChampPanel() - Returning");
 		logger.debug("getMyChampPanel() - Returning: {}", myChampPanel);
@@ -256,7 +241,7 @@ public class MatchupDetailDialoge extends JDialog implements Runnable {
 	private JPanel getEnemyChampPanel() {
 		logger.trace("getEnemyChampPanel() - Entering");
 		if (enemyChampPanel == null) {
-			enemyChampPanel = new MatchupDetailChampionPanel(true);
+			enemyChampPanel = new MatchupDetailChampionPanel();
 		}
 		logger.trace("getEnemyChampPanel() - Returning");
 		logger.debug("getEnemyChampPanel() - Returning: {}", enemyChampPanel);
@@ -300,7 +285,8 @@ public class MatchupDetailDialoge extends JDialog implements Runnable {
 		if (notesScrollPane == null) {
 			notesScrollPane = new JScrollPane(getNotesTextarea());
 			notesScrollPane.setMaximumSize(new Dimension((int) getMaximumSize()
-					.getWidth(), 200));
+					.getWidth(), 80));
+			notesScrollPane.setPreferredSize(new Dimension(0, 80));
 		}
 		logger.trace("getNotesScrollPane() - Returning");
 		logger.debug("getNotesScrollPane() - Returning: {}", notesScrollPane);
@@ -316,24 +302,6 @@ public class MatchupDetailDialoge extends JDialog implements Runnable {
 		logger.trace("getNotesTextarea() - Returning");
 		logger.debug("getNotesTextarea() - Returning: {}", notesTextarea);
 		return notesTextarea;
-	}
-
-	private JButton getSaveNotesButton() {
-		logger.trace("getSaveNotesButton() - Entering");
-		if (saveNotesButton == null) {
-			saveNotesButton = new JButton("Save changes to notes");
-			saveNotesButton.addActionListener(new ActionListener() {
-
-				@Override
-				public void actionPerformed(ActionEvent arg0) {
-					matchup.setNotes(getNotesTextarea().getText());
-					MatchupUtil.saveMatchup(matchup);
-				}
-			});
-		}
-		logger.trace("getSaveNotesButton() - Returning");
-		logger.debug("getSaveNotesButton() - Returning: {}", saveNotesButton);
-		return saveNotesButton;
 	}
 
 	private JPanel getGameNotesPanel() {
@@ -372,9 +340,9 @@ public class MatchupDetailDialoge extends JDialog implements Runnable {
 		logger.trace("getGameNotesScrollPane() - Entering");
 		if (gameNotesScrollPane == null) {
 			gameNotesScrollPane = new JScrollPane(getGameNotesTextarea());
-			gameNotesScrollPane.setMinimumSize(new Dimension(0, 250));
 			gameNotesScrollPane.setMaximumSize(new Dimension(
-					(int) getMaximumSize().getWidth(), 350));
+					(int) getMaximumSize().getWidth(), 80));
+			gameNotesScrollPane.setPreferredSize(new Dimension(0, 80));
 		}
 		logger.trace("getGameNotesScrollPane() - Returning");
 		logger.debug("getGameNotesScrollPane() - Returning: {}",
@@ -394,25 +362,6 @@ public class MatchupDetailDialoge extends JDialog implements Runnable {
 		return gameNotesTextarea;
 	}
 
-	private JButton getSaveGameNotesButton() {
-		logger.trace("getSaveGameNotesButton() - Entering");
-		if (saveGameNotesButton == null) {
-			saveGameNotesButton = new JButton("Save changes to notes");
-			saveGameNotesButton.addActionListener(new ActionListener() {
-
-				@Override
-				public void actionPerformed(ActionEvent arg0) {
-					matchup.setNotes(getNotesTextarea().getText());
-					GameUtil.saveGame(matchup.getGame());
-				}
-			});
-		}
-		logger.trace("getSaveGameNotesButton() - Returning");
-		logger.debug("getSaveGameNotesButton() - Returning: {}",
-				saveGameNotesButton);
-		return saveGameNotesButton;
-	}
-
 	private JPanel getGamePanel() {
 		logger.trace("getGamePanel() - Entering");
 		if (gamePanel == null) {
@@ -422,6 +371,7 @@ public class MatchupDetailDialoge extends JDialog implements Runnable {
 			constraints.gridx = 0;
 			constraints.gridy = 0;
 			constraints.gridwidth = 2;
+			constraints.insets = new Insets(20, 0, 0, 0);
 			gamePanel.add(getGameStatsLabel(), constraints);
 
 			constraints = new GridBagConstraints();
@@ -569,19 +519,19 @@ public class MatchupDetailDialoge extends JDialog implements Runnable {
 			GridBagConstraints constraints = new GridBagConstraints();
 			constraints.gridx = 0;
 			constraints.gridy = 0;
-			constraints.insets = new Insets(0, 0, 2, 0);
+			constraints.insets = new Insets(0, 0, 5, 0);
 			myTeamPanel.add(getGameChamp1Label(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 0;
 			constraints.gridy = 1;
-			constraints.insets = new Insets(0, 0, 2, 0);
+			constraints.insets = new Insets(0, 0, 5, 0);
 			myTeamPanel.add(getGameChamp2Label(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 0;
 			constraints.gridy = 2;
-			constraints.insets = new Insets(0, 0, 2, 0);
+			constraints.insets = new Insets(0, 0, 5, 0);
 			myTeamPanel.add(getGameChamp3Label(), constraints);
 
 			constraints = new GridBagConstraints();
@@ -602,19 +552,19 @@ public class MatchupDetailDialoge extends JDialog implements Runnable {
 			GridBagConstraints constraints = new GridBagConstraints();
 			constraints.gridx = 0;
 			constraints.gridy = 0;
-			constraints.insets = new Insets(0, 0, 2, 0);
+			constraints.insets = new Insets(0, 0, 5, 0);
 			enemyTeamPanel.add(getGameChamp6Label(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 0;
 			constraints.gridy = 1;
-			constraints.insets = new Insets(0, 0, 2, 0);
+			constraints.insets = new Insets(0, 0, 5, 0);
 			enemyTeamPanel.add(getGameChamp7Label(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 0;
 			constraints.gridy = 2;
-			constraints.insets = new Insets(0, 0, 2, 0);
+			constraints.insets = new Insets(0, 0, 5, 0);
 			enemyTeamPanel.add(getGameChamp8Label(), constraints);
 
 			constraints = new GridBagConstraints();
@@ -761,7 +711,7 @@ public class MatchupDetailDialoge extends JDialog implements Runnable {
 						break;
 					}
 					l.setIcon(ImageIconFactory.resizeImageIcon(champ.getIcon(),
-							30, 30));
+							40, 40));
 					l.setToolTipText(champ.getName());
 				}
 			}
@@ -785,7 +735,7 @@ public class MatchupDetailDialoge extends JDialog implements Runnable {
 						break;
 					}
 					l.setIcon(ImageIconFactory.resizeImageIcon(champ.getIcon(),
-							30, 30));
+							40, 40));
 					l.setToolTipText(champ.getName());
 				}
 			}
@@ -813,9 +763,7 @@ public class MatchupDetailDialoge extends JDialog implements Runnable {
 	public void run() {
 		fillFields();
 		this.pack();
-		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-		this.setLocation((d.width - this.getSize().width) / 2,
-				(d.height - this.getSize().height) / 2);
+		setLocationRelativeTo(MainView.getInstance());
 		setVisible(true);
 	}
 
@@ -830,25 +778,8 @@ public class MatchupDetailDialoge extends JDialog implements Runnable {
 		logger.trace("setLane() - Entering");
 		logger.debug("setLane() - Parameter: {}", lane);
 		this.getHeadlineLabel().setText(lane.toString());
-		switch (lane) {
-		case AD_CARRY:
-			this.getHeadlineLabel().setBackground(Color.RED);
-			break;
-		case JUNGLE:
-			this.getHeadlineLabel().setBackground(Color.GREEN);
-			break;
-		case MID:
-			this.getHeadlineLabel().setBackground(Color.BLUE);
-			break;
-		case SUPPORT:
-			this.getHeadlineLabel().setBackground(Color.YELLOW);
-			break;
-		case TOP:
-			this.getHeadlineLabel().setBackground(Color.ORANGE);
-			break;
-		}
+		this.getHeadlineLabel().setBackground(lane.getColor());
 		logger.trace("setLane() - Leaving");
-
 	}
 
 	private void setMyChampionAndItems(Matchup m) {
@@ -863,9 +794,11 @@ public class MatchupDetailDialoge extends JDialog implements Runnable {
 	private void setEnemyChampionAndItems(Matchup m) {
 		logger.trace("setEnemyChampionAndItems() - Entering");
 		logger.debug("setEnemyChampionAndItems() - Parameter: {}", m);
-		MatchupResult r = MatchupResult.WIN;
+		MatchupResult r = MatchupResult.DRAW;
 		if (m.getResult() == MatchupResult.WIN) {
 			r = MatchupResult.LOSS;
+		} else if (m.getResult() == MatchupResult.LOSS) {
+			r = MatchupResult.WIN;
 		}
 		enemyChampPanel.setChampionAndItems(m.getEnemyChamp(),
 				m.getEnemyStartItems(), m.getEnemyEndItems(),

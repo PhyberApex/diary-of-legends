@@ -7,6 +7,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
@@ -17,6 +18,7 @@ import com.jgoodies.looks.HeaderStyle;
 import com.jgoodies.looks.Options;
 
 import de.phyberapex.diaryoflegends.ExitAction;
+import de.phyberapex.diaryoflegends.base.Config;
 import de.phyberapex.diaryoflegends.export.ExportDolexAction;
 import de.phyberapex.diaryoflegends.export.ImportDolexAction;
 import de.phyberapex.diaryoflegends.export.ImportRoflAction;
@@ -27,6 +29,7 @@ public class MenuBarView extends JMenuBar implements View {
 	private static final long serialVersionUID = 4015087253364502577L;
 	private JMenu fileMenu;
 	private JMenuItem newEntryItem;
+	private JMenuItem changeNameItem;
 	private JMenuItem importDolexItem;
 	private JMenuItem importRoflItem;
 	private JMenuItem exportItem;
@@ -39,7 +42,7 @@ public class MenuBarView extends JMenuBar implements View {
 
 	public MenuBarView() {
 		logger.trace("MenuBarView() - Entering");
-		 this.putClientProperty(Options.HEADER_STYLE_KEY, HeaderStyle.SINGLE);
+		this.putClientProperty(Options.HEADER_STYLE_KEY, HeaderStyle.SINGLE);
 		this.add(getFileMenu());
 		this.add(getAboutMenu());
 		logger.trace("MenuBarView() - Leaving");
@@ -52,6 +55,8 @@ public class MenuBarView extends JMenuBar implements View {
 			logger.debug("Creating a new JMenu object");
 			this.fileMenu = new JMenu("File");
 			this.fileMenu.add(getNewEntryItem());
+			this.fileMenu.add(new JSeparator());
+			this.fileMenu.add(getChangeNameItem());
 			this.fileMenu.add(new JSeparator());
 			this.fileMenu.add(getImportDolexItem());
 			this.fileMenu.add(getImportRoflItem());
@@ -81,6 +86,42 @@ public class MenuBarView extends JMenuBar implements View {
 		logger.trace("getNewEntryItem() - Returning");
 		logger.debug("Returned {}", newEntryItem);
 		return newEntryItem;
+	}
+
+	private JMenuItem getChangeNameItem() {
+		logger.trace("getChangeNameItem() - Entering");
+		if (this.changeNameItem == null) {
+			this.changeNameItem = new JMenuItem("Change summoner name");
+			this.changeNameItem.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					CurrentSummonerNameView currSumView = CurrentSummonerNameView
+							.getInstance();
+					Object[] options = { "OK" };
+					int ok = JOptionPane.showOptionDialog(null, currSumView,
+							"Enter your Summoner name",
+							JOptionPane.WARNING_MESSAGE,
+							JOptionPane.INFORMATION_MESSAGE, null, options,
+							"OK");
+					logger.debug("Entered text was '{}'",
+							currSumView.getSummonerName());
+					logger.debug(
+							"Button pressed was '{}' ({} = OK, {} = CLOSED)",
+							ok, JOptionPane.OK_OPTION,
+							JOptionPane.CLOSED_OPTION);
+					Config.getInstance().setProperty("SUMMONER_NAME",
+							currSumView.getSummonerName());
+					Config.getInstance().saveChanges();
+					MainView.getInstance().setStatusText(
+							"Summoner name changed in "
+									+ currSumView.getSummonerName());
+				}
+			});
+		}
+		logger.trace("getChangeNameItem() - Returning");
+		logger.debug("getChangeNameItem() - Returning: {}", changeNameItem);
+		return changeNameItem;
 	}
 
 	private JMenuItem getImportDolexItem() {
@@ -248,7 +289,8 @@ public class MenuBarView extends JMenuBar implements View {
 
 	@Override
 	public void refresh() {
-		// TODO Auto-generated method stub
-
+		boolean summNameSet = Config.getInstance().getProperty("SUMMONER_NAME") != null;
+		boolean regionSet = Config.getInstance().getProperty("REGION") != null;
+		this.importRoflItem.setEnabled(summNameSet && regionSet);
 	}
 }

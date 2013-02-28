@@ -147,7 +147,6 @@ public class StatsView extends JPanel implements View {
 	 */
 	@Override
 	public void refresh() {
-		getCreateButton().doClick();
 	}
 
 	/**

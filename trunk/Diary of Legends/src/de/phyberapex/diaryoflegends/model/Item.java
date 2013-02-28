@@ -1,6 +1,7 @@
 package de.phyberapex.diaryoflegends.model;
 
 import java.io.File;
+import java.net.URL;
 
 import javax.swing.ImageIcon;
 
@@ -13,21 +14,18 @@ public class Item extends Model {
 
 	private int id;
 	private String name;
-	private int price;
 	private byte[] icon;
 	transient private static Logger logger = LogManager.getLogger(Item.class
 			.getName());
 
-	public Item(int id, String name, int price, File icon) {
+	public Item(int id, String name, File icon) {
 		logger.trace("Champion() - Entering");
-		logger.debug("Champion() - Parameter: {}, {}, {}, {}", id, name, price,
-				icon);
+		logger.debug("Champion() - Parameter: {}, {}, {}", id, name, icon);
 		this.id = id;
 		this.setName(name);
 		if (icon != null) {
 			this.setIcon(icon);
 		}
-		this.setPrice(price);
 		logger.trace("Champion() - Leaving");
 	}
 
@@ -86,31 +84,6 @@ public class Item extends Model {
 	}
 
 	/**
-	 * Returns the price of this item
-	 * 
-	 * @return {@link int}
-	 */
-	public int getPrice() {
-		logger.trace("getPrice() - Entering");
-		logger.trace("getPrice() - Returning");
-		logger.debug("getPrice() - Returning: {}", price);
-		return price;
-	}
-
-	/**
-	 * Sets the price of this item
-	 * 
-	 * @param name
-	 *            {@link int} The name to change to
-	 */
-	public void setPrice(int price) {
-		logger.trace("setPrice() - Entering");
-		logger.debug("setPrice() - Parameter: {}", price);
-		this.price = price;
-		logger.trace("setName() - Leaving");
-	}
-
-	/**
 	 * Returns the {@link ImageIcon} for this item
 	 * 
 	 * @return {@link ImageIcon} The image for this item
@@ -136,6 +109,13 @@ public class Item extends Model {
 		logger.trace("setIcon() - Entering");
 		logger.debug("setIcon() - Parameter: {}", file);
 		this.icon = ConvertImage.convertFileToByteArray(file);
+		logger.trace("setIcon() - Leaving");
+	}
+	
+	public void setIcon(URL url) {
+		logger.trace("setIcon() - Entering");
+		logger.debug("setIcon() - Parameter: {}", url);
+		this.icon = ConvertImage.convertUrlToByteArray(url);
 		logger.trace("setIcon() - Leaving");
 	}
 

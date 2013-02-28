@@ -1,244 +1,120 @@
 package de.phyberapex.diaryoflegends.base;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
-
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import com.db4o.ObjectSet;
-import com.db4o.query.Predicate;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import de.phyberapex.diaryoflegends.model.Champion;
 import de.phyberapex.diaryoflegends.model.Item;
-import de.phyberapex.diaryoflegends.model.SummonerSpell;
 import de.phyberapex.diaryoflegends.model.util.ChampionUtil;
 import de.phyberapex.diaryoflegends.model.util.ItemUtil;
-import de.phyberapex.diaryoflegends.model.util.SummonerSpellUtil;
 
 public class Update {
 
 	private static Logger logger = LogManager.getLogger(Update.class.getName());
-	private static File updateFolder;
 
 	public static void update() {
 		logger.trace("update() - Entering");
-		updateFolder = new File(System.getProperty("user.dir") + "\\update");
-		if (updateFolder.isDirectory()) {
-			logger.debug("Update folder found. Searching for update file");
-			File update = new File(updateFolder.getAbsolutePath()
-					+ "\\update.dolup");
-			if (update != null) {
-				logger.debug("Update file found. Reading update file");
-				try {
-					// Open the file that is the first
-					// command line parameter
-					FileInputStream fstream = new FileInputStream(update);
-					// Get the object of DataInputStream
-					BufferedReader br = new BufferedReader(
-							new InputStreamReader(fstream));
-					String strLine;
-					// Read File Line By Line
-					while ((strLine = br.readLine()) != null) {
-						doUpdate(strLine);
-						// Print the content on the console
+		List<Item> allItemsList = ItemUtil.getAllItems();
+		List<Champion> allChampionList = ChampionUtil.getAllChampions();
+		try {
+			JSONArray allItemsArray = getItemsFromElophant().getJSONArray(
+					"data");
+			for (int i = 0; i < allItemsArray.length(); i++) {
+				JSONObject itemObject = allItemsArray.getJSONObject(i);
+				Item tmp = new Item(itemObject.getInt("id"),
+						itemObject.getString("name"), null);
+				boolean already = false;
+				for (Item item : allItemsList) {
+					if (item.getId() == tmp.getId()) {
+						already = true;
+						break;
 					}
-					// Close the input stream
-					br.close();
-					fstream.close();
-					try {
-						deleteDir(updateFolder);
-					} catch (SecurityException e) {
-						e.printStackTrace();
-					}
-				} catch (Exception e) {// Catch exception if any
-					logger.error(e.getMessage());
+				}
+				if (already) {
+					logger.debug(
+							"Item with id {} already in database skipping",
+							tmp.getId());
+				} else {
+					tmp.setIcon(new URL(
+							"http://img.lolking.net/shared/riot/images/items/"
+									+ tmp.getId() + "_64.png"));
+					ItemUtil.saveItem(tmp);
 				}
 			}
-		}
-		logger.trace("update() - Leaving");
-	}
-
-	private static void doUpdate(String strLine) {
-		logger.trace("doUpdate() - Entering");
-		logger.debug("doUpdate() - Parameter: {}", strLine);
-		int first = strLine.indexOf("[");
-		int second = strLine.indexOf("]");
-		String work = strLine.substring(first + 1, second);
-		logger.debug("doUpdate() - work = {}", work);
-		first = strLine.indexOf("[", second);
-		second = strLine.indexOf("]", first);
-		String entity = strLine.substring(first + 1, second);
-		logger.debug("doUpdate() - entity = {}", entity);
-		first = strLine.indexOf("[", second);
-		second = strLine.indexOf("]", first);
-		String[] attributes = strLine.substring(first + 1, second).split(",");
-		logger.debug("doUpdate() - attributes = {}", (Object[]) attributes);
-		switch (work) {
-		case "NEW":
-			updateNew(entity, attributes);
-			break;
-		case "EDIT":
-			updateEdit(entity, attributes);
-			break;
-		}
-		logger.trace("doUpdate() - Leaving");
-	}
-
-	/**
-	 * @param entity
-	 * @param attributes
-	 */
-	private static void updateEdit(String entity, String[] attributes) {
-		switch (entity) {
-		case "CHAMPION":
-			editChamp(attributes);
-			break;
-		case "ITEM":
-			editItem(attributes);
-			break;
-		case "SPELL":
-			editSpell(attributes);
-			break;
-		}
-	}
-
-	/**
-	 * @param attributes
-	 */
-	private static void editItem(final String[] attributes) {
-		ObjectSet<Item> osItem = Config.getInstance().getDBHandle()
-				.query(new Predicate<Item>() {
-
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					public boolean match(Item arg0) {
-						if (arg0.getName().equals(attributes[0])) {
-							return true;
-						} else {
-							return false;
-						}
+			JSONArray allChampionsArray = getChampionsFromElophant()
+					.getJSONArray("data");
+			for (int i = 0; i < allChampionsArray.length(); i++) {
+				JSONObject champObject = allChampionsArray.getJSONObject(i);
+				Champion tmp = new Champion(champObject.getInt("id"),
+						champObject.getString("name"), null);
+				boolean already = false;
+				for (Champion champ : allChampionList) {
+					if (champ.getId() == tmp.getId()) {
+						already = true;
+						break;
 					}
-				});
-		Item item = osItem.next();
-		item.setName(attributes[1]);
-		item.setPrice(Integer.valueOf(attributes[2]));
-		item.setIcon(new File(updateFolder.getAbsolutePath() + "\\"
-				+ attributes[3]));
-		Config.getInstance().getDBHandle().store(item);
-	}
-
-	/**
-	 * @param attributes
-	 */
-	private static void editChamp(final String[] attributes) {
-		ObjectSet<Champion> osChamp = Config.getInstance().getDBHandle()
-				.query(new Predicate<Champion>() {
-
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					public boolean match(Champion arg0) {
-						if (arg0.getId() == Integer.parseInt(attributes[0])) {
-							return true;
-						} else {
-							return false;
-						}
-					}
-				});
-		Champion champ = osChamp.next();
-		champ.setName(attributes[1]);
-		champ.setIcon(new File(updateFolder.getAbsolutePath() + "\\"
-				+ attributes[2]));
-		Config.getInstance().getDBHandle().store(champ);
-	}
-
-	/**
-	 * @param attributes
-	 */
-	private static void editSpell(final String[] attributes) {
-		ObjectSet<SummonerSpell> osSpell = Config.getInstance().getDBHandle()
-				.query(new Predicate<SummonerSpell>() {
-
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					public boolean match(SummonerSpell arg0) {
-						if (arg0.getId() == Integer.parseInt(attributes[0])) {
-							return true;
-						} else {
-							return false;
-						}
-					}
-				});
-		SummonerSpell spell = osSpell.next();
-		spell.setName(attributes[1]);
-		spell.setIcon(new File(updateFolder.getAbsolutePath() + "\\"
-				+ attributes[2]));
-		Config.getInstance().getDBHandle().store(spell);
-	}
-
-	/**
-	 * @param entity
-	 * @param attributes
-	 */
-	private static void updateNew(String entity, String[] attributes) {
-		switch (entity) {
-		case "CHAMPION":
-			Champion champ = ChampionUtil.getChampionById(Integer
-					.parseInt(attributes[0]));
-			if (champ == null) {
-				champ = new Champion(Integer.valueOf(attributes[0]),
-						attributes[1], new File(updateFolder.getAbsolutePath()
-								+ "\\" + attributes[2]));
-				Config.getInstance().getDBHandle().store(champ);
+				}
+				if (already) {
+					logger.debug(
+							"Champion with id {} already in database skipping",
+							tmp.getId());
+				} else {
+					tmp.setIcon(new URL(
+							"http://img.lolking.net/shared/riot/images/champions/"
+									+ tmp.getId() + "_104.png"));
+					ChampionUtil.saveChampion(tmp);
+				}
 			}
-			break;
-		case "ITEM":
-			Item item = ItemUtil.getItemById(Integer.parseInt(attributes[0]));
-			if (item == null) {
-				item = new Item(Integer.valueOf(attributes[0]), attributes[1],
-						Integer.valueOf(attributes[2]), new File(
-								updateFolder.getAbsolutePath() + "\\"
-										+ attributes[3]));
-				Config.getInstance().getDBHandle().store(item);
-			}
-			break;
-		case "SPELL":
-			SummonerSpell spell = SummonerSpellUtil.getSpellById(Integer
-					.valueOf(attributes[0]));
-			if (spell == null) {
-				spell = new SummonerSpell(Integer.valueOf(attributes[0]),
-						attributes[1], new File(updateFolder.getAbsolutePath()
-								+ "\\" + attributes[2]));
-				Config.getInstance().getDBHandle().store(spell);
-			}
-			break;
+			logger.trace("update() - Leaving");
+		} catch (IOException e) {
+
 		}
 	}
 
-	private static void deleteDir(File dir) {
-		// If it is a directory get the child
-		if (dir.isDirectory()) {
-			// List all the contents of the directory
-			File fileList[] = dir.listFiles();
+	/**
+	 * @return
+	 * @throws IOException
+	 * @throws MalformedURLException
+	 */
+	private static JSONObject getItemsFromElophant()
+			throws MalformedURLException, IOException {
+		URLConnection con = new URL("http://api.elophant.com/v2/items?key="
+				+ Config.getInstance().getProperty("API_KEY")).openConnection();
+		BufferedReader in = new BufferedReader(new InputStreamReader(
+				con.getInputStream()));
+		String inputLine;
+		String json = "";
+		while ((inputLine = in.readLine()) != null)
+			json += inputLine;
+		in.close();
+		return new JSONObject(json);
+	}
 
-			// Loop through the list of files/directories
-			for (int index = 0; index < fileList.length; index++) {
-				// Get the current file object.
-				File file = fileList[index];
-
-				// Call deleteDir function once again for deleting all the
-				// directory contents or
-				// sub directories if any present.
-				deleteDir(file);
-			}
-		}
-
-		// Delete the current directory or file.
-		dir.delete();
+	/**
+	 * @return
+	 * @throws IOException
+	 * @throws MalformedURLException
+	 */
+	private static JSONObject getChampionsFromElophant()
+			throws MalformedURLException, IOException {
+		URLConnection con = new URL("http://api.elophant.com/v2/champions?key="
+				+ Config.getInstance().getProperty("API_KEY")).openConnection();
+		BufferedReader in = new BufferedReader(new InputStreamReader(
+				con.getInputStream()));
+		String inputLine;
+		String json = "";
+		while ((inputLine = in.readLine()) != null)
+			json += inputLine;
+		in.close();
+		return new JSONObject(json);
 	}
 }

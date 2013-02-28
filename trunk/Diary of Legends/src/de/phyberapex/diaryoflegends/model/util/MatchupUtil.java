@@ -8,6 +8,7 @@ import com.db4o.ObjectSet;
 import com.db4o.query.Predicate;
 import de.phyberapex.diaryoflegends.base.Config;
 import de.phyberapex.diaryoflegends.model.Matchup;
+import de.phyberapex.diaryoflegends.model.Role;
 
 /**
  * This class is used to save and retrive matchups
@@ -29,15 +30,16 @@ public class MatchupUtil {
 	 */
 	public static List<Matchup> getAllMatchups() {
 		logger.trace("getAllMatchups() - Entering");
-		ObjectSet<Matchup> returnValue = dbHandle.query(new Predicate<Matchup>() {
+		ObjectSet<Matchup> returnValue = dbHandle
+				.query(new Predicate<Matchup>() {
 
-			private static final long serialVersionUID = -6535736734146443615L;
+					private static final long serialVersionUID = -6535736734146443615L;
 
-			@Override
-			public boolean match(Matchup arg0) {
-				return true;
-			}
-		});
+					@Override
+					public boolean match(Matchup arg0) {
+						return true;
+					}
+				});
 		logger.trace("getAllMatchups() - Returning");
 		logger.debug("getAllMatchups() - Returning: {}", returnValue);
 		return returnValue;
@@ -69,5 +71,29 @@ public class MatchupUtil {
 			GameUtil.deleteGame(matchup.getGame());
 		}
 		logger.trace("deleteMatchup() - Leaving");
+	}
+
+	/**
+	 * @param lane
+	 * @return
+	 */
+	public static List<Matchup> getMatchupsByLane(final Role lane) {
+		logger.trace("getMatchupsByLane() - Entering");
+		ObjectSet<Matchup> returnValue = dbHandle
+				.query(new Predicate<Matchup>() {
+
+					private static final long serialVersionUID = -6535736734146443615L;
+
+					@Override
+					public boolean match(Matchup arg0) {
+						if (arg0.getLane() == lane) {
+							return true;
+						}
+						return false;
+					}
+				});
+		logger.trace("getMatchupsByLane() - Returning");
+		logger.debug("getMatchupsByLane() - Returning: {}", returnValue);
+		return returnValue;
 	}
 }

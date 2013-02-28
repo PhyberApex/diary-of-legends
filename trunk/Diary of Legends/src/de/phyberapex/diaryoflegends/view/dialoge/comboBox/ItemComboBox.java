@@ -4,6 +4,8 @@ import javax.accessibility.Accessible;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JList;
+import javax.swing.plaf.basic.ComboPopup;
+
 import de.phyberapex.diaryoflegends.model.Item;
 import de.phyberapex.diaryoflegends.view.renderer.ItemComboBoxRenderer;
 
@@ -18,11 +20,11 @@ public class ItemComboBox extends JComboBox<Item> {
 	}
 
 	private void setPrototype() {
-		setPrototypeDisplayValue(new Item(0, "just some puffer text", 0, null));
+		setPrototypeDisplayValue(new Item(0, "just some puffer text", null));
 		Accessible a = getUI().getAccessibleChild(this, 0);
 		if (a instanceof javax.swing.plaf.basic.ComboPopup) {
-			JList<Item> popupList = ((javax.swing.plaf.basic.ComboPopup) a)
-					.getList();
+			@SuppressWarnings("unchecked")
+			JList<Item> popupList = ((ComboPopup) a).getList();
 			popupList.setPrototypeCellValue(getPrototypeDisplayValue());
 		}
 	}

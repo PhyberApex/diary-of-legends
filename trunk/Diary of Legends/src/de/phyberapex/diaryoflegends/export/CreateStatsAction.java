@@ -8,7 +8,7 @@ import de.phyberapex.diaryoflegends.view.MainView;
 
 public class CreateStatsAction implements Runnable {
 
-	private static Logger logger = LogManager.getLogger(ExportDolexAction.class
+	private static Logger logger = LogManager.getLogger(CreateStatsAction.class
 			.getName());
 	private StatsController controller;
 	private StatisticTypes stat;
