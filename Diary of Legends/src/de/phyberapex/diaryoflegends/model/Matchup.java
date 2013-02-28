@@ -1,5 +1,8 @@
 package de.phyberapex.diaryoflegends.model;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -265,7 +268,9 @@ public class Matchup extends Model {
 	@Override
 	public String toString() {
 		logger.trace("toString() - Entering");
-		String str = myChamp + " vs. " + enemyChamp;
+		Date d = getGame().getDate();
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		String str = df.format(d);
 		logger.trace("toString() - Returning");
 		logger.debug("toString() - Returning: {}", str);
 		return str;

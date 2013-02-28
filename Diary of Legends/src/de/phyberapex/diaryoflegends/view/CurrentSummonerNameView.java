@@ -2,12 +2,16 @@ package de.phyberapex.diaryoflegends.view;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import de.phyberapex.diaryoflegends.base.Initializer;
+import de.phyberapex.diaryoflegends.model.Region;
 
 public class CurrentSummonerNameView extends JPanel implements View {
 
@@ -17,6 +21,8 @@ public class CurrentSummonerNameView extends JPanel implements View {
 			.getLogger(CurrentSummonerNameView.class.getName());
 	private JLabel nameLabel;
 	private JTextField nameTextfield;
+	private JLabel regionLabel;
+	private JComboBox<Region> regionBox;
 
 	private CurrentSummonerNameView() {
 		super();
@@ -30,6 +36,9 @@ public class CurrentSummonerNameView extends JPanel implements View {
 		this.setLayout(new FlowLayout());
 		this.add(getNameLabel());
 		this.add(getNameTextfield());
+
+		this.add(getRegionLabel());
+		this.add(getRegionBox());
 		logger.trace("createGUI() - Leaving");
 	}
 
@@ -39,6 +48,8 @@ public class CurrentSummonerNameView extends JPanel implements View {
 			nameTextfield = new JTextField("...");
 			nameTextfield.setToolTipText("The name you want to be highlighted");
 			nameTextfield.setPreferredSize(new Dimension(150, 30));
+			nameTextfield
+					.setToolTipText("This is only needed for import reasons.");
 		}
 		logger.trace("getNameTextfield() - Returning");
 		logger.debug("getNameTextfield() - Returning: {}", nameTextfield);
@@ -53,6 +64,27 @@ public class CurrentSummonerNameView extends JPanel implements View {
 		logger.trace("getNameLabel() - Returning");
 		logger.debug("getNameLabel() - Returning: {}", nameLabel);
 		return nameLabel;
+	}
+
+	private JLabel getRegionLabel() {
+		logger.trace("getRegionLabel() - Entering");
+		if (regionLabel == null) {
+			regionLabel = new JLabel("Region:");
+		}
+		logger.trace("getRegionLabel() - Returning");
+		logger.debug("getRegionLabel() - Returning: {}", regionLabel);
+		return regionLabel;
+	}
+
+	private JComboBox<Region> getRegionBox() {
+		logger.trace("getRegionBox() - Entering");
+		if (regionBox == null) {
+			regionBox = new JComboBox<Region>(new DefaultComboBoxModel<Region>(
+					Region.values()));
+		}
+		logger.trace("getRegionBox() - Returning");
+		logger.debug("getRegionBox() - Returning: {}", regionBox);
+		return regionBox;
 	}
 
 	/**
@@ -93,8 +125,25 @@ public class CurrentSummonerNameView extends JPanel implements View {
 	public String getSummonerName() {
 		logger.trace("getSummonerName() - Entering");
 		logger.trace("getSummonerName() - Returning");
-		logger.debug("getSummonerName() - Returning: {}", nameTextfield.getText());
+		logger.debug("getSummonerName() - Returning: {}",
+				nameTextfield.getText());
 		return nameTextfield.getText();
+	}
+
+	public Region getRegion() {
+		logger.trace("getRegion() - Entering");
+		Region returnValue = regionBox.getItemAt(regionBox.getSelectedIndex());
+		logger.trace("getRegion() - Returning");
+		logger.debug("getRegion() - Returning: {}", returnValue);
+		return returnValue;
+	}
+
+	public void setRegion(Region region) {
+		logger.trace("setRegion() - Entering");
+		logger.debug("setRegion() - Parameter: {}", region);
+		regionBox.setSelectedItem(region);
+		logger.trace("setRegion() - Returning");
+
 	}
 
 	@Override

@@ -4,7 +4,6 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -57,7 +56,6 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 	private static NewEntryDialoge instance;
 	private List<Champion> allChampions;
 	private Champion[] allChampionsArray;
-	private List<Item> allStartingItems;
 	private List<Item> allItems;
 	private List<SummonerSpell> allSpells;
 	private List<Champion> myTeamChampions;
@@ -76,6 +74,7 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 	private JLabel lengthSecondsLabel;
 	private JSpinner lengthSecondsSpinner;
 	private JPanel teamsPanel;
+	private JTabbedPane teamsPane;
 	private JPanel myTeamPanel;
 	private JLabel myTeamLabel;
 	private JLabel team1Champ1Label;
@@ -115,6 +114,7 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 	private JSpinner ownAssistsTextField;
 	private JLabel ownCSLabel;
 	private JSpinner ownCSTextField;
+	private JTabbedPane notesPane;
 	private JPanel gameNotesPanel;
 	private JLabel gameNotesLabel;
 	private JScrollPane gameNotesScrollPane;
@@ -123,6 +123,7 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 
 	private JPanel matchupContentPanel;
 	private JPanel championsPanel;
+	private JTabbedPane championsPane;
 	private JPanel myChampionPanel;
 	private JLabel myChampionLabel;
 	private ChampionComboBox myChampionBox;
@@ -184,13 +185,7 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 	private SummonerSpellComboBox mySpell2Box;
 	private JPanel matchupResultPanel;
 	private JLabel matchupResultLabel;
-	private ButtonGroup matchupResultGroup = new ButtonGroup();
-	private JLabel matchupResultWonLabel;
-	private JRadioButton matchupResultWonButton;
-	private JLabel matchupResultDrawLabel;
-	private JRadioButton matchupResultDrawButton;
-	private JLabel matchupResultLossLabel;
-	private JRadioButton matchupResultLossButton;
+	private JComboBox<MatchupResult> matchupResultBox;
 	private JPanel enemyChampionPanel;
 	private JLabel enemyChampionLabel;
 	private ChampionComboBox enemyChampionBox;
@@ -308,31 +303,24 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 0;
-			constraints.gridy = 1;
-			constraints.gridwidth = 2;
+			constraints.gridy = 2;
 			constraints.insets = new Insets(5, 10, 5, 10);
 			constraints.fill = GridBagConstraints.HORIZONTAL;
 			constraints.weightx = 1;
+			constraints.gridwidth = 2;
 			gameContentPanel.add(getTeamsPanel(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 0;
-			constraints.gridy = 2;
-			constraints.fill = GridBagConstraints.BOTH;
-			constraints.weightx = 0.5;
-			gameContentPanel.add(getGameNotesPanel(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 1;
-			constraints.gridy = 2;
-			constraints.fill = GridBagConstraints.BOTH;
-			constraints.weightx = 0.5;
-			constraints.weighty = 0.5;
-			gameContentPanel.add(getMatchupNotesPanel(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 1;
 			constraints.gridy = 3;
+			constraints.fill = GridBagConstraints.BOTH;
+			constraints.weightx = 1;
+			constraints.gridwidth = 2;
+			gameContentPanel.add(getNotesPane(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 1;
+			constraints.gridy = 4;
 			gameContentPanel.add(getGoToMatchupButton(), constraints);
 		}
 		logger.trace("getGameContentPanel() - Returning");
@@ -387,7 +375,6 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		logger.trace("getLengthPanel() - Entering");
 		if (lengthPanel == null) {
 			lengthPanel = new JPanel(new GridBagLayout());
-			lengthPanel.setName("LOOOOOOOOOOOOOL");
 			lengthPanel.setBorder(BorderFactory
 					.createBevelBorder(BevelBorder.LOWERED));
 
@@ -397,22 +384,22 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 			lengthPanel.add(getLengthLabel(), constraints);
 
 			constraints = new GridBagConstraints();
-			constraints.gridx = 1;
+			constraints.gridx = 2;
 			constraints.gridy = 0;
 			lengthPanel.add(getLengthMinutesLabel(), constraints);
 
 			constraints = new GridBagConstraints();
-			constraints.gridx = 2;
+			constraints.gridx = 1;
 			constraints.gridy = 0;
 			lengthPanel.add(getLengthMinutesSpinner(), constraints);
 
 			constraints = new GridBagConstraints();
-			constraints.gridx = 3;
+			constraints.gridx = 4;
 			constraints.gridy = 0;
 			lengthPanel.add(getLengthSecondsLabel(), constraints);
 
 			constraints = new GridBagConstraints();
-			constraints.gridx = 4;
+			constraints.gridx = 3;
 			constraints.gridy = 0;
 			lengthPanel.add(getLengthSecondsSpinner(), constraints);
 		}
@@ -424,7 +411,7 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 	public JLabel getLengthLabel() {
 		logger.trace("getLengthLabel() - Entering");
 		if (lengthLabel == null) {
-			lengthLabel = new JLabel("Game Length");
+			lengthLabel = new JLabel("Length:");
 		}
 		logger.trace("getLengthLabel() - Returning");
 		logger.debug("getLengthLabel() - Returning: {}", lengthLabel);
@@ -434,7 +421,7 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 	public JLabel getLengthMinutesLabel() {
 		logger.trace("getLengthMinutesLabel() - Entering");
 		if (lengthMinutesLabel == null) {
-			lengthMinutesLabel = new JLabel("Minutes:");
+			lengthMinutesLabel = new JLabel("minutes");
 		}
 		logger.trace("getLengthMinutesLabel() - Returning");
 		logger.debug("getLengthMinutesLabel() - Returning: {}",
@@ -457,7 +444,7 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 	public JLabel getLengthSecondsLabel() {
 		logger.trace("getLengthSecondsLabel() - Entering");
 		if (lengthSecondsLabel == null) {
-			lengthSecondsLabel = new JLabel("Seconds:");
+			lengthSecondsLabel = new JLabel("seconds");
 		}
 		logger.trace("getLengthSecondsLabel() - Returning");
 		logger.debug("getLengthSecondsLabel() - Returning: {}",
@@ -486,33 +473,37 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 			constraints.gridy = 0;
 			constraints.gridheight = 2;
 			constraints.fill = GridBagConstraints.HORIZONTAL;
-			constraints.weightx = 0.5;
-			teamsPanel.add(getMyTeamPanel(), constraints);
+			constraints.weightx = 1;
+			teamsPanel.add(getTeamsPane(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 1;
-			constraints.gridy = 0;
+			constraints.gridy = 1;
 			constraints.insets = new Insets(25, 0, 0, 0);
 			teamsPanel.add(getGameResultPanel(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 1;
-			constraints.gridy = 1;
-			constraints.anchor = GridBagConstraints.SOUTH;
-			constraints.insets = new Insets(0, 10, 0, 10);
-			teamsPanel.add(getGameStatsPanel(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 2;
 			constraints.gridy = 0;
-			constraints.gridheight = 2;
-			constraints.fill = GridBagConstraints.HORIZONTAL;
-			constraints.weightx = 0.5;
-			teamsPanel.add(getEnemyTeamPanel(), constraints);
+			constraints.insets = new Insets(20, 10, 0, 10);
+			teamsPanel.add(getGameStatsPanel(), constraints);
 		}
 		logger.trace("getTeamsPanel() - Returning");
 		logger.debug("getTeamsPanel() - Returning: {}", teamsPanel);
 		return teamsPanel;
+	}
+
+	private JTabbedPane getTeamsPane() {
+		logger.trace("getTeamsPane() - Entering");
+		if (teamsPane == null) {
+			teamsPane = new JTabbedPane();
+			teamsPane.addTab(getMyTeamLabel().getText(), getMyTeamPanel());
+			teamsPane
+					.addTab(getEnemyTeamLabel().getText(), getEnemyTeamPanel());
+		}
+		logger.trace("getTeamsPane() - Returning");
+		logger.debug("getTeamsPane() - Returning: {}", teamsPane);
+		return teamsPane;
 	}
 
 	public JPanel getMyTeamPanel() {
@@ -522,65 +513,59 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 			GridBagConstraints constraints = new GridBagConstraints();
 			constraints.gridx = 0;
 			constraints.gridy = 0;
-			constraints.gridwidth = 2;
-			myTeamPanel.add(getMyTeamLabel(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 0;
-			constraints.gridy = 1;
 			myTeamPanel.add(getTeam1Champ1Label(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 1;
-			constraints.gridy = 1;
+			constraints.gridy = 0;
 			constraints.fill = GridBagConstraints.HORIZONTAL;
 			constraints.weightx = 1;
 			myTeamPanel.add(getTeam1Champ1Box(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 0;
-			constraints.gridy = 2;
+			constraints.gridy = 1;
 			myTeamPanel.add(getTeam1Champ2Label(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 1;
-			constraints.gridy = 2;
+			constraints.gridy = 1;
 			constraints.fill = GridBagConstraints.HORIZONTAL;
 			constraints.weightx = 1;
 			myTeamPanel.add(getTeam1Champ2Box(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 0;
-			constraints.gridy = 3;
+			constraints.gridy = 2;
 			myTeamPanel.add(getTeam1Champ3Label(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 1;
-			constraints.gridy = 3;
+			constraints.gridy = 2;
 			constraints.fill = GridBagConstraints.HORIZONTAL;
 			constraints.weightx = 1;
 			myTeamPanel.add(getTeam1Champ3Box(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 0;
-			constraints.gridy = 4;
+			constraints.gridy = 3;
 			myTeamPanel.add(getTeam1Champ4Label(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 1;
-			constraints.gridy = 4;
+			constraints.gridy = 3;
 			constraints.fill = GridBagConstraints.HORIZONTAL;
 			constraints.weightx = 1;
 			myTeamPanel.add(getTeam1Champ4Box(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 0;
-			constraints.gridy = 5;
+			constraints.gridy = 4;
 			myTeamPanel.add(getTeam1Champ5Label(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 1;
-			constraints.gridy = 5;
+			constraints.gridy = 4;
 			constraints.fill = GridBagConstraints.HORIZONTAL;
 			constraints.weightx = 1;
 			myTeamPanel.add(getTeam1Champ5Box(), constraints);
@@ -712,65 +697,59 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 			GridBagConstraints constraints = new GridBagConstraints();
 			constraints.gridx = 0;
 			constraints.gridy = 0;
-			constraints.gridwidth = 2;
-			enemyTeamPanel.add(getEnemyTeamLabel(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 1;
-			constraints.gridy = 1;
 			enemyTeamPanel.add(getTeam2Champ1Label(), constraints);
 
 			constraints = new GridBagConstraints();
-			constraints.gridx = 0;
-			constraints.gridy = 1;
+			constraints.gridx = 1;
+			constraints.gridy = 0;
 			constraints.fill = GridBagConstraints.HORIZONTAL;
 			constraints.weightx = 1;
 			enemyTeamPanel.add(getTeam2Champ1Box(), constraints);
 
 			constraints = new GridBagConstraints();
-			constraints.gridx = 1;
-			constraints.gridy = 2;
+			constraints.gridx = 0;
+			constraints.gridy = 1;
 			enemyTeamPanel.add(getTeam2Champ2Label(), constraints);
 
 			constraints = new GridBagConstraints();
-			constraints.gridx = 0;
-			constraints.gridy = 2;
+			constraints.gridx = 1;
+			constraints.gridy = 1;
 			constraints.fill = GridBagConstraints.HORIZONTAL;
 			constraints.weightx = 1;
 			enemyTeamPanel.add(getTeam2Champ2Box(), constraints);
 
 			constraints = new GridBagConstraints();
-			constraints.gridx = 1;
-			constraints.gridy = 3;
+			constraints.gridx = 0;
+			constraints.gridy = 2;
 			enemyTeamPanel.add(getTeam2Champ3Label(), constraints);
 
 			constraints = new GridBagConstraints();
-			constraints.gridx = 0;
-			constraints.gridy = 3;
+			constraints.gridx = 1;
+			constraints.gridy = 2;
 			constraints.fill = GridBagConstraints.HORIZONTAL;
 			constraints.weightx = 1;
 			enemyTeamPanel.add(getTeam2Champ3Box(), constraints);
 
 			constraints = new GridBagConstraints();
-			constraints.gridx = 1;
-			constraints.gridy = 4;
+			constraints.gridx = 0;
+			constraints.gridy = 3;
 			enemyTeamPanel.add(getTeam2Champ4Label(), constraints);
 
 			constraints = new GridBagConstraints();
-			constraints.gridx = 0;
-			constraints.gridy = 4;
+			constraints.gridx = 1;
+			constraints.gridy = 3;
 			constraints.fill = GridBagConstraints.HORIZONTAL;
 			constraints.weightx = 1;
 			enemyTeamPanel.add(getTeam2Champ4Box(), constraints);
 
 			constraints = new GridBagConstraints();
-			constraints.gridx = 1;
-			constraints.gridy = 5;
+			constraints.gridx = 0;
+			constraints.gridy = 4;
 			enemyTeamPanel.add(getTeam2Champ5Label(), constraints);
 
 			constraints = new GridBagConstraints();
-			constraints.gridx = 0;
-			constraints.gridy = 5;
+			constraints.gridx = 1;
+			constraints.gridy = 4;
 			constraints.fill = GridBagConstraints.HORIZONTAL;
 			constraints.weightx = 1;
 			enemyTeamPanel.add(getTeam2Champ5Box(), constraints);
@@ -1114,6 +1093,20 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		return ownCSTextField;
 	}
 
+	private JTabbedPane getNotesPane() {
+		logger.trace("getNotesPane() - Entering");
+		if (notesPane == null) {
+			notesPane = new JTabbedPane();
+			notesPane.addTab(getGameNotesLabel().getText(),
+					getGameNotesScrollPane());
+			notesPane.addTab(getMatchupNotesLabel().getText(),
+					getMatchupNotesScrollPane());
+		}
+		logger.trace("getNotesPane() - Returning");
+		logger.debug("getNotesPane() - Returning: {}", notesPane);
+		return notesPane;
+	}
+
 	public JPanel getGameNotesPanel() {
 		logger.trace("getGameNotesPanel() - Entering");
 		if (gameNotesPanel == null) {
@@ -1287,6 +1280,9 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 			constraints.gridx = 0;
 			constraints.gridy = 1;
 			constraints.gridwidth = 2;
+			constraints.weightx = 1;
+			constraints.weighty = 1;
+			constraints.fill = GridBagConstraints.BOTH;
 			matchupContentPanel.add(getChampionsPanel(), constraints);
 
 			constraints = new GridBagConstraints();
@@ -1311,41 +1307,50 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 			championsPanel = new JPanel(new GridBagLayout());
 			GridBagConstraints constraints = new GridBagConstraints();
 			constraints.gridx = 0;
-			constraints.gridy = 0;
-			constraints.gridheight = 3;
-			constraints.insets = new Insets(5, 15, 0, 10);
-			championsPanel.add(getMyChampionPanel(), constraints);
+			constraints.gridy = 1;
+			constraints.fill = GridBagConstraints.BOTH;
+			constraints.weightx = 1;
+			constraints.gridwidth = 3;
+			championsPanel.add(getChampionsPane(), constraints);
 
 			constraints = new GridBagConstraints();
-			constraints.gridx = 1;
+			constraints.gridx = 0;
 			constraints.gridy = 0;
 			constraints.fill = GridBagConstraints.HORIZONTAL;
-			constraints.weightx = 1;
+			constraints.weightx = 0.3;
 			championsPanel.add(getLanePanel(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 1;
-			constraints.gridy = 1;
+			constraints.gridy = 0;
 			constraints.fill = GridBagConstraints.HORIZONTAL;
-			constraints.weightx = 1;
+			constraints.weightx = 0.3;
 			championsPanel.add(getDifficultyPanel(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 1;
-			constraints.gridy = 2;
-			constraints.insets = new Insets(5, 0, 0, 5);
-			championsPanel.add(getMatchupResultPanel(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 2;
 			constraints.gridy = 0;
-			constraints.gridheight = 3;
-			constraints.insets = new Insets(5, 10, 0, 15);
-			championsPanel.add(getEnemyChampionPanel(), constraints);
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.weightx = 0.3;
+			championsPanel.add(getMatchupResultPanel(), constraints);
 		}
 		logger.trace("getChampionsPanel() - Returning");
 		logger.debug("getChampionsPanel() - Returning: {}", championsPanel);
 		return championsPanel;
+	}
+
+	private JTabbedPane getChampionsPane() {
+		logger.trace("getChampionsPane() - Entering");
+		if (championsPane == null) {
+			championsPane = new JTabbedPane();
+			championsPane.addTab(getMyChampionLabel().getText(),
+					getMyChampionPanel());
+			championsPane.addTab(getEnemyChampionLabel().getText(),
+					getEnemyChampionPanel());
+		}
+		logger.trace("getChampionsPane() - Returning");
+		logger.debug("getChampionsPane() - Returning: {}", championsPane);
+		return championsPane;
 	}
 
 	public JPanel getMyChampionPanel() {
@@ -1357,18 +1362,13 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 			GridBagConstraints constraints = new GridBagConstraints();
 			constraints.gridx = 0;
 			constraints.gridy = 0;
-			myChampionPanel.add(getMyChampionLabel(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 0;
-			constraints.gridy = 1;
 			constraints.fill = GridBagConstraints.HORIZONTAL;
 			constraints.weightx = 1;
 			myChampionPanel.add(getMyChampionBox(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 0;
-			constraints.gridy = 2;
+			constraints.gridy = 1;
 			constraints.fill = GridBagConstraints.HORIZONTAL;
 			constraints.weightx = 1;
 			myChampionPanel.add(getMyItemsPane(), constraints);
@@ -1591,7 +1591,7 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		logger.trace("getMyItem1Box() - Entering");
 		if (myItem1Box == null) {
 			myItem1Box = new ItemComboBox(new DefaultComboBoxModel<Item>(
-					allStartingItems.toArray(new Item[] {})));
+					allItems.toArray(new Item[] {})));
 		}
 		logger.trace("getMyItem1Box() - Returning");
 		logger.debug("getMyItem1Box() - Returning: {}", myItem1Box);
@@ -1634,7 +1634,7 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		logger.trace("getMyItem2Box() - Entering");
 		if (myItem2Box == null) {
 			myItem2Box = new ItemComboBox(new DefaultComboBoxModel<Item>(
-					allStartingItems.toArray(new Item[] {})));
+					allItems.toArray(new Item[] {})));
 		}
 		logger.trace("getMyItem2Box() - Returning");
 		logger.debug("getMyItem2Box() - Returning: {}", myItem2Box);
@@ -1677,7 +1677,7 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		logger.trace("getMyItem3Box() - Entering");
 		if (myItem3Box == null) {
 			myItem3Box = new ItemComboBox(new DefaultComboBoxModel<Item>(
-					allStartingItems.toArray(new Item[] {})));
+					allItems.toArray(new Item[] {})));
 		}
 		logger.trace("getMyItem3Box() - Returning");
 		logger.debug("getMyItem3Box() - Returning: {}", myItem3Box);
@@ -1720,7 +1720,7 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		logger.trace("getMyItem4Box() - Entering");
 		if (myItem4Box == null) {
 			myItem4Box = new ItemComboBox(new DefaultComboBoxModel<Item>(
-					allStartingItems.toArray(new Item[] {})));
+					allItems.toArray(new Item[] {})));
 		}
 		logger.trace("getMyItem4Box() - Returning");
 		logger.debug("getMyItem4Box() - Returning: {}", myItem4Box);
@@ -1763,7 +1763,7 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		logger.trace("getMyItem5Box() - Entering");
 		if (myItem5Box == null) {
 			myItem5Box = new ItemComboBox(new DefaultComboBoxModel<Item>(
-					allStartingItems.toArray(new Item[] {})));
+					allItems.toArray(new Item[] {})));
 		}
 		logger.trace("getMyItem5Box() - Returning");
 		logger.debug("getMyItem5Box() - Returning: {}", myItem5Box);
@@ -1806,7 +1806,7 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		logger.trace("getMyItem6Box() - Entering");
 		if (myItem6Box == null) {
 			myItem6Box = new ItemComboBox(new DefaultComboBoxModel<Item>(
-					allStartingItems.toArray(new Item[] {})));
+					allItems.toArray(new Item[] {})));
 		}
 		logger.trace("getMyItem6Box() - Returning");
 		logger.debug("getMyItem6Box() - Returning: {}", myItem6Box);
@@ -1835,6 +1835,8 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 			constraints = new GridBagConstraints();
 			constraints.gridx = 3;
 			constraints.gridy = 0;
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.weightx = 1;
 			myEndItemsPanel.add(getMyEndItem1Box(), constraints);
 
 			constraints = new GridBagConstraints();
@@ -1855,6 +1857,8 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 			constraints = new GridBagConstraints();
 			constraints.gridx = 3;
 			constraints.gridy = 1;
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.weightx = 1;
 			myEndItemsPanel.add(getMyEndItem2Box(), constraints);
 
 			constraints = new GridBagConstraints();
@@ -1875,6 +1879,8 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 			constraints = new GridBagConstraints();
 			constraints.gridx = 3;
 			constraints.gridy = 2;
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.weightx = 1;
 			myEndItemsPanel.add(getMyEndItem3Box(), constraints);
 
 			constraints = new GridBagConstraints();
@@ -1895,6 +1901,8 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 			constraints = new GridBagConstraints();
 			constraints.gridx = 3;
 			constraints.gridy = 3;
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.weightx = 1;
 			myEndItemsPanel.add(getMyEndItem4Box(), constraints);
 
 			constraints = new GridBagConstraints();
@@ -1915,6 +1923,8 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 			constraints = new GridBagConstraints();
 			constraints.gridx = 3;
 			constraints.gridy = 4;
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.weightx = 1;
 			myEndItemsPanel.add(getMyEndItem5Box(), constraints);
 
 			constraints = new GridBagConstraints();
@@ -1935,6 +1945,8 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 			constraints = new GridBagConstraints();
 			constraints.gridx = 3;
 			constraints.gridy = 5;
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.weightx = 1;
 			myEndItemsPanel.add(getMyEndItem6Box(), constraints);
 
 		}
@@ -2293,18 +2305,13 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 			GridBagConstraints constraints = new GridBagConstraints();
 			constraints.gridx = 0;
 			constraints.gridy = 0;
-			enemyChampionPanel.add(getEnemyChampionLabel(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 0;
-			constraints.gridy = 1;
 			constraints.fill = GridBagConstraints.HORIZONTAL;
 			constraints.weightx = 1;
 			enemyChampionPanel.add(getEnemyChampionBox(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 0;
-			constraints.gridy = 2;
+			constraints.gridy = 1;
 			constraints.fill = GridBagConstraints.HORIZONTAL;
 			constraints.weightx = 1;
 			enemyChampionPanel.add(getEnemyItemsPane(), constraints);
@@ -2530,7 +2537,7 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		logger.trace("getEnemyItem1Box() - Entering");
 		if (enemyItem1Box == null) {
 			enemyItem1Box = new ItemComboBox(new DefaultComboBoxModel<Item>(
-					allStartingItems.toArray(new Item[] {})));
+					allItems.toArray(new Item[] {})));
 		}
 		logger.trace("getEnemyItem1Box() - Returning");
 		logger.debug("getEnemyItem1Box() - Returning: {}", enemyItem1Box);
@@ -2574,7 +2581,7 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		logger.trace("getEnemyItem2Box() - Entering");
 		if (enemyItem2Box == null) {
 			enemyItem2Box = new ItemComboBox(new DefaultComboBoxModel<Item>(
-					allStartingItems.toArray(new Item[] {})));
+					allItems.toArray(new Item[] {})));
 		}
 		logger.trace("getEnemyItem2Box() - Returning");
 		logger.debug("getEnemyItem2Box() - Returning: {}", enemyItem2Box);
@@ -2618,7 +2625,7 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		logger.trace("getEnemyItem3Box() - Entering");
 		if (enemyItem3Box == null) {
 			enemyItem3Box = new ItemComboBox(new DefaultComboBoxModel<Item>(
-					allStartingItems.toArray(new Item[] {})));
+					allItems.toArray(new Item[] {})));
 		}
 		logger.trace("getEnemyItem3Box() - Returning");
 		logger.debug("getEnemyItem3Box() - Returning: {}", enemyItem3Box);
@@ -2662,7 +2669,7 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		logger.trace("getEnemyItem4Box() - Entering");
 		if (enemyItem4Box == null) {
 			enemyItem4Box = new ItemComboBox(new DefaultComboBoxModel<Item>(
-					allStartingItems.toArray(new Item[] {})));
+					allItems.toArray(new Item[] {})));
 		}
 		logger.trace("getEnemyItem4Box() - Returning");
 		logger.debug("getEnemyItem4Box() - Returning: {}", enemyItem4Box);
@@ -2706,7 +2713,7 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		logger.trace("getEnemyItem5Box() - Entering");
 		if (enemyItem5Box == null) {
 			enemyItem5Box = new ItemComboBox(new DefaultComboBoxModel<Item>(
-					allStartingItems.toArray(new Item[] {})));
+					allItems.toArray(new Item[] {})));
 		}
 		logger.trace("getEnemyItem5Box() - Returning");
 		logger.debug("getEnemyItem5Box() - Returning: {}", enemyItem5Box);
@@ -2750,7 +2757,7 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		logger.trace("getEnemyItem6Box() - Entering");
 		if (enemyItem6Box == null) {
 			enemyItem6Box = new ItemComboBox(new DefaultComboBoxModel<Item>(
-					allStartingItems.toArray(new Item[] {})));
+					allItems.toArray(new Item[] {})));
 		}
 		logger.trace("getEnemyItem6Box() - Returning");
 		logger.debug("getEnemyItem6Box() - Returning: {}", enemyItem6Box);
@@ -2780,6 +2787,8 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 			constraints = new GridBagConstraints();
 			constraints.gridx = 3;
 			constraints.gridy = 0;
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.weightx = 1;
 			enemyEndItemsPanel.add(getEnemyEndItem1Box(), constraints);
 
 			constraints = new GridBagConstraints();
@@ -2801,6 +2810,8 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 			constraints = new GridBagConstraints();
 			constraints.gridx = 3;
 			constraints.gridy = 1;
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.weightx = 1;
 			enemyEndItemsPanel.add(getEnemyEndItem2Box(), constraints);
 
 			constraints = new GridBagConstraints();
@@ -2822,6 +2833,8 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 			constraints = new GridBagConstraints();
 			constraints.gridx = 3;
 			constraints.gridy = 2;
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.weightx = 1;
 			enemyEndItemsPanel.add(getEnemyEndItem3Box(), constraints);
 
 			constraints = new GridBagConstraints();
@@ -2843,6 +2856,8 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 			constraints = new GridBagConstraints();
 			constraints.gridx = 3;
 			constraints.gridy = 3;
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.weightx = 1;
 			enemyEndItemsPanel.add(getEnemyEndItem4Box(), constraints);
 
 			constraints = new GridBagConstraints();
@@ -2864,6 +2879,8 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 			constraints = new GridBagConstraints();
 			constraints.gridx = 3;
 			constraints.gridy = 4;
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.weightx = 1;
 			enemyEndItemsPanel.add(getEnemyEndItem5Box(), constraints);
 
 			constraints = new GridBagConstraints();
@@ -2885,6 +2902,8 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 			constraints = new GridBagConstraints();
 			constraints.gridx = 3;
 			constraints.gridy = 5;
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.weightx = 1;
 			enemyEndItemsPanel.add(getEnemyEndItem6Box(), constraints);
 
 		}
@@ -3259,32 +3278,9 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 			constraints = new GridBagConstraints();
 			constraints.gridx = 0;
 			constraints.gridy = 1;
-			matchupResultPanel.add(getMatchupResultWonLabel(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 1;
-			constraints.gridy = 1;
-			matchupResultPanel.add(getMatchupResultWonButton(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 0;
-			constraints.gridy = 2;
-			matchupResultPanel.add(getMatchupResultDrawLabel(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 1;
-			constraints.gridy = 2;
-			matchupResultPanel.add(getMatchupResultDrawButton(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 0;
-			constraints.gridy = 3;
-			matchupResultPanel.add(getMatchupResultLossLabel(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 1;
-			constraints.gridy = 3;
-			matchupResultPanel.add(getMatchupResultLossButton(), constraints);
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.weightx = 1;
+			matchupResultPanel.add(getMatchupResultBox(), constraints);
 		}
 		logger.trace("getMatchupResultPanel() - Returning");
 		logger.debug("getMatchupResultPanel() - Returning: {}",
@@ -3303,73 +3299,16 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		return matchupResultLabel;
 	}
 
-	public JLabel getMatchupResultWonLabel() {
-		logger.trace("getMatchupResultWonLabel() - Entering");
-		if (matchupResultWonLabel == null) {
-			matchupResultWonLabel = new JLabel(MatchupResult.WIN.toString());
+	private JComboBox<MatchupResult> getMatchupResultBox() {
+		logger.trace("getMatchupResultBox() - Entering");
+		if (matchupResultBox == null) {
+			matchupResultBox = new JComboBox<MatchupResult>(
+					new DefaultComboBoxModel<MatchupResult>(
+							MatchupResult.values()));
 		}
-		logger.trace("getMatchupResultWonLabel() - Returning");
-		logger.debug("getMatchupResultWonLabel() - Returning: {}",
-				matchupResultWonLabel);
-		return matchupResultWonLabel;
-	}
-
-	public JRadioButton getMatchupResultWonButton() {
-		logger.trace("getMatchupResultWonButton() - Entering");
-		if (matchupResultWonButton == null) {
-			matchupResultWonButton = new JRadioButton();
-			matchupResultGroup.add(matchupResultWonButton);
-		}
-		logger.trace("getMatchupResultWonButton() - Returning");
-		logger.debug("getMatchupResultWonButton() - Returning: {}",
-				matchupResultWonButton);
-		return matchupResultWonButton;
-	}
-
-	public JLabel getMatchupResultDrawLabel() {
-		logger.trace("getMatchupResultDrawLabel() - Entering");
-		if (matchupResultDrawLabel == null) {
-			matchupResultDrawLabel = new JLabel(MatchupResult.DRAW.toString());
-		}
-		logger.trace("getMatchupResultDrawLabel() - Returning");
-		logger.debug("getMatchupResultDrawLabel() - Returning: {}",
-				matchupResultDrawLabel);
-		return matchupResultDrawLabel;
-	}
-
-	public JRadioButton getMatchupResultDrawButton() {
-		logger.trace("getMatchupResultDrawButton() - Entering");
-		if (matchupResultDrawButton == null) {
-			matchupResultDrawButton = new JRadioButton();
-			matchupResultGroup.add(matchupResultDrawButton);
-		}
-		logger.trace("getMatchupResultDrawButton() - Returning");
-		logger.debug("getMatchupResultDrawButton() - Returning: {}",
-				matchupResultDrawButton);
-		return matchupResultDrawButton;
-	}
-
-	public JLabel getMatchupResultLossLabel() {
-		logger.trace("getMatchupResultLossLabel() - Entering");
-		if (matchupResultLossLabel == null) {
-			matchupResultLossLabel = new JLabel(MatchupResult.LOSS.toString());
-		}
-		logger.trace("getMatchupResultLossLabel() - Returning");
-		logger.debug("getMatchupResultLossLabel() - Returning: {}",
-				matchupResultLossLabel);
-		return matchupResultLossLabel;
-	}
-
-	public JRadioButton getMatchupResultLossButton() {
-		logger.trace("getMatchupResultLossButton() - Entering");
-		if (matchupResultLossButton == null) {
-			matchupResultLossButton = new JRadioButton();
-			matchupResultGroup.add(matchupResultLossButton);
-		}
-		logger.trace("getMatchupResultLossButton() - Returning");
-		logger.debug("getMatchupResultLossButton() - Returning: {}",
-				matchupResultLossButton);
-		return matchupResultLossButton;
+		logger.trace("getMatchupResultBox() - Returning");
+		logger.debug("getMatchupResultBox() - Returning: {}", matchupResultBox);
+		return matchupResultBox;
 	}
 
 	public JPanel getDifficultyPanel() {
@@ -3546,70 +3485,6 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 				public void actionPerformed(ActionEvent arg0) {
 					boolean ok = true;
 					String error = "";
-					if (!getMatchupResultDrawButton().isSelected()
-							&& !getMatchupResultLossButton().isSelected()
-							&& !getMatchupResultWonButton().isSelected()) {
-						ok = false;
-						error += "- Please select if you won the matchup.\n";
-					}
-					int monehz = 500;
-					Item i = allStartingItems.get(getMyItem1Box()
-							.getSelectedIndex());
-					monehz -= (i.getPrice() * (int) getMyItem1AmountSpinner()
-							.getValue());
-					i = allStartingItems
-							.get(getMyItem2Box().getSelectedIndex());
-					monehz -= (i.getPrice() * (int) getMyItem2AmountSpinner()
-							.getValue());
-					i = allStartingItems
-							.get(getMyItem3Box().getSelectedIndex());
-					monehz -= (i.getPrice() * (int) getMyItem3AmountSpinner()
-							.getValue());
-					i = allStartingItems
-							.get(getMyItem4Box().getSelectedIndex());
-					monehz -= (i.getPrice() * (int) getMyItem4AmountSpinner()
-							.getValue());
-					i = allStartingItems
-							.get(getMyItem5Box().getSelectedIndex());
-					monehz -= (i.getPrice() * (int) getMyItem5AmountSpinner()
-							.getValue());
-					i = allStartingItems
-							.get(getMyItem6Box().getSelectedIndex());
-					monehz -= (i.getPrice() * (int) getMyItem6AmountSpinner()
-							.getValue());
-					if (monehz < 0) {
-						ok = false;
-						error += "- Please dont exceed 500g with your items.\n";
-					}
-					monehz = 500;
-					i = allStartingItems.get(getEnemyItem1Box()
-							.getSelectedIndex());
-					monehz -= (i.getPrice() * (int) getEnemyItem1AmountSpinner()
-							.getValue());
-					i = allStartingItems.get(getEnemyItem2Box()
-							.getSelectedIndex());
-					monehz -= (i.getPrice() * (int) getEnemyItem2AmountSpinner()
-							.getValue());
-					i = allStartingItems.get(getEnemyItem3Box()
-							.getSelectedIndex());
-					monehz -= (i.getPrice() * (int) getEnemyItem3AmountSpinner()
-							.getValue());
-					i = allStartingItems.get(getEnemyItem4Box()
-							.getSelectedIndex());
-					monehz -= (i.getPrice() * (int) getEnemyItem4AmountSpinner()
-							.getValue());
-					i = allStartingItems.get(getEnemyItem5Box()
-							.getSelectedIndex());
-					monehz -= (i.getPrice() * (int) getEnemyItem5AmountSpinner()
-							.getValue());
-					i = allStartingItems.get(getEnemyItem6Box()
-							.getSelectedIndex());
-					monehz -= (i.getPrice() * (int) getEnemyItem6AmountSpinner()
-							.getValue());
-					if (monehz < 0) {
-						ok = false;
-						error += "- Please dont exceed 500g with your opponents items.\n";
-					}
 					if (getMySpell1Box().getItemAt(
 							getMySpell1Box().getSelectedIndex()).getId() == 0) {
 						ok = false;
@@ -3673,15 +3548,10 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 								.getItemAt(
 										getMatchupDifficultyBox()
 												.getSelectedIndex()));
-						if (getMatchupResultLossButton().isSelected()) {
-							matchup.setResult(MatchupResult.LOSS);
-						} else if (getMatchupResultDrawButton().isSelected()) {
-							matchup.setResult(MatchupResult.DRAW);
-						} else {
-							matchup.setResult(MatchupResult.WIN);
-						}
+						matchup.setResult(getMatchupResultBox().getItemAt(
+								getMatchupResultBox().getSelectedIndex()));
 						ArrayList<MatchupItem> mis = new ArrayList<MatchupItem>();
-						i = getMyItem1Box().getItemAt(
+						Item i = getMyItem1Box().getItemAt(
 								getMyItem1Box().getSelectedIndex());
 						if (i.getId() != 0
 								&& (int) getMyItem1AmountSpinner().getValue() != 0) {
@@ -3966,15 +3836,8 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 			allChampions.add(champ);
 		}
 		allChampionsArray = allChampions.toArray(new Champion[] {});
-		allStartingItems = new ArrayList<Item>();
-		Item i = new Item(0, "no item", 0, null);
-		allStartingItems.add(i);
-		for (Item item : ItemUtil.getAllStartingItems()) {
-			allStartingItems.add(item);
-		}
-
 		allItems = new ArrayList<Item>();
-		i = new Item(0, "no item", 0, null);
+		Item i = new Item(0, "no item", null);
 		allItems.add(i);
 		for (Item item : ItemUtil.getAllItems()) {
 			allItems.add(item);
@@ -3988,9 +3851,7 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		this.setResizable(false);
 		this.setContentPane(getNewEntryContentPane());
 		this.pack();
-		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-		this.setLocation((d.width - this.getSize().width) / 2,
-				(d.height - this.getSize().height) / 2);
+		this.setLocationRelativeTo(MainView.getInstance());
 		logger.trace("createGUI() - Leaving");
 	}
 
@@ -4020,9 +3881,7 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		getGameNotesTextArea().setText("");
 		getLaneBox().setSelectedIndex(0);
 		getMatchupDifficultyBox().setSelectedIndex(0);
-		getMatchupResultWonButton().setSelected(false);
-		getMatchupResultLossButton().setSelected(false);
-		getMatchupResultDrawButton().setSelected(false);
+		getMatchupResultBox().setSelectedIndex(0);
 		getMyItem1AmountSpinner().setValue(0);
 		getMyItem1Box().setSelectedIndex(0);
 		getMyItem2AmountSpinner().setValue(0);
@@ -4111,13 +3970,7 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		if (!isImport) {
 			getLaneBox().setSelectedItem(m.getLane());
 			getMatchupDifficultyBox().setSelectedItem(m.getDifficulty());
-			if (m.getResult() == MatchupResult.WIN) {
-				getMatchupResultWonButton().setSelected(true);
-			} else if (m.getResult() == MatchupResult.LOSS) {
-				getMatchupResultLossButton().setSelected(true);
-			} else {
-				getMatchupResultDrawButton().setSelected(true);
-			}
+			getMatchupResultBox().setSelectedItem(m.getResult());
 		}
 		if (m.getMyStartItems().size() >= 1) {
 			getMyItem1AmountSpinner().setValue(

@@ -60,7 +60,7 @@ public class MainController {
 			matchupController.loadData();
 			statsController.loadData();
 			mainView.setMatchupPanel((MatchupView) matchupController.getView());
-			mainView.setStatsPanel((StatsView)statsController.getView());
+			mainView.setStatsPanel((StatsView) statsController.getView());
 			splash.showStatus("Preparing to start", 100);
 			splash.close();
 			if (initAction.contains(InitializeAction.CREATE_SUMMONER)) {
@@ -70,25 +70,34 @@ public class MainController {
 				int ok = JOptionPane.showOptionDialog(null, currSumView,
 						"Enter your Summoner name",
 						JOptionPane.WARNING_MESSAGE,
-						JOptionPane.INFORMATION_MESSAGE,
-						ImageIconFactory.createImageIcon("C:\\1.png"), options,
-						"OK");
+						JOptionPane.INFORMATION_MESSAGE, null, options, "OK");
 				logger.debug("Entered text was '{}'",
 						currSumView.getSummonerName());
 				logger.debug("Button pressed was '{}' ({} = OK, {} = CLOSED)",
 						ok, JOptionPane.OK_OPTION, JOptionPane.CLOSED_OPTION);
-				if (ok == JOptionPane.CLOSED_OPTION) {
-					JOptionPane
-							.showMessageDialog(
-									null,
-									"Appliaction can not operate without a summoner name.",
-									"Error", JOptionPane.ERROR_MESSAGE);
-					logger.info("Appliaction can not operate a without summoner name.");
-					exit();
+				if (ok == JOptionPane.OK_OPTION) {
+					Config.getInstance().setProperty("SUMMONER_NAME",
+							currSumView.getSummonerName());
+					Config.getInstance().setProperty("REGION",
+							currSumView.getRegion().name());
+					Config.getInstance().setProperty(
+							"SUMMONER_ID",
+							String.valueOf(Config.getInstance()
+									.getSummonerIdByNameAndRegion(
+											currSumView.getSummonerName(),
+											currSumView.getRegion())));
+					Config.getInstance().setProperty(
+							"ACCOUNT_ID",
+							String.valueOf(Config.getInstance()
+									.getAccountIdByNameAndRegion(
+											currSumView.getSummonerName(),
+											currSumView.getRegion())));
+					Config.getInstance().saveChanges();
+					mainView.refresh();
 				}
-				Config.getInstance().setProperty("SUMMONER_NAME",
-						currSumView.getSummonerName());
-				Config.getInstance().saveChanges();
+			} else {
+				CurrentSummonerNameView.getInstance().setSummonerName(
+						Config.getInstance().getProperty("SUMMONER_NAME"));
 			}
 			SwingUtilities.invokeLater(mainView);
 

@@ -1,6 +1,5 @@
 package de.phyberapex.diaryoflegends.view.dialoge.panel;
 
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -46,7 +45,6 @@ public class MatchupDetailChampionPanel extends JPanel {
 	private JLabel myChampSpellsLabel;
 	private JLabel myChampSpell1Label;
 	private JLabel myChampSpell2Label;
-	private boolean isEnemy;
 	private static Logger logger = LogManager
 			.getLogger(MatchupDetailChampionPanel.class.getName());
 	private ImageIcon defaultImg = ImageIconFactory.resizeImageIcon(
@@ -58,11 +56,9 @@ public class MatchupDetailChampionPanel extends JPanel {
 					.createImageIconFromResourePath("img/empty_60x60.png"), 50,
 			50);
 
-	public MatchupDetailChampionPanel(boolean isEnemy) {
+	public MatchupDetailChampionPanel() {
 		super(new GridBagLayout());
 		logger.trace("MatchupDetailChampionPanel() - Entering");
-		logger.debug("MatchupDetailChampionPanel() - Parameter: {}", isEnemy);
-		this.isEnemy = isEnemy;
 		createGUI();
 		logger.trace("MatchupDetailChampionPanel() - Leaving");
 	}
@@ -78,31 +74,17 @@ public class MatchupDetailChampionPanel extends JPanel {
 		this.add(getMyChampNameLabel(), constraints);
 
 		constraints = new GridBagConstraints();
-		if (isEnemy) {
-			constraints.gridx = 0;
-			constraints.gridy = 1;
-			constraints.insets = new Insets(0, 0, 0, 1);
-		} else {
-			constraints.gridx = 1;
-			constraints.gridy = 1;
-			constraints.insets = new Insets(0, 1, 0, 0);
-		}
+		constraints.gridx = 0;
+		constraints.gridy = 1;
+		constraints.insets = new Insets(0, 1, 0, 0);
 		this.add(getMyChampIconLabel(), constraints);
 
 		constraints = new GridBagConstraints();
-		if (isEnemy) {
-			constraints.gridx = 1;
-			constraints.gridy = 1;
-			constraints.fill = GridBagConstraints.BOTH;
-			constraints.weightx = 1;
-			constraints.weighty = 1;
-		} else {
-			constraints.gridx = 0;
-			constraints.gridy = 1;
-			constraints.fill = GridBagConstraints.BOTH;
-			constraints.weightx = 1;
-			constraints.weighty = 1;
-		}
+		constraints.gridx = 0;
+		constraints.gridy = 2;
+		constraints.fill = GridBagConstraints.BOTH;
+		constraints.weightx = 1;
+		constraints.weighty = 1;
 		this.add(getMyChampItemsPanel(), constraints);
 		logger.trace("createGUI() - Leaving");
 	}
@@ -133,11 +115,7 @@ public class MatchupDetailChampionPanel extends JPanel {
 		logger.trace("getMyChampItemsPanel() - Entering");
 		if (myChampItemsPanel == null) {
 			myChampItemsPanel = new JTabbedPane();
-			if (isEnemy) {
-				myChampItemsPanel.setTabPlacement(JTabbedPane.RIGHT);
-			} else {
-				myChampItemsPanel.setTabPlacement(JTabbedPane.LEFT);
-			}
+			myChampItemsPanel.setTabPlacement(JTabbedPane.BOTTOM);
 			myChampItemsPanel.addTab("1", getMyChampStartingItemsPanel());
 			myChampItemsPanel.addTab("2", getMyChampEndingItemsPanel());
 			myChampItemsPanel.addTab("3", getMyChampSpellsPanel());
@@ -163,7 +141,7 @@ public class MatchupDetailChampionPanel extends JPanel {
 			constraints = new GridBagConstraints();
 			constraints.gridx = 0;
 			constraints.gridy = 1;
-			constraints.insets = new Insets(2, 5, 1, 1);
+			constraints.insets = new Insets(2, 1, 1, 1);
 			myChampStartingItemsPanel.add(getMyChampItem1Label(), constraints);
 
 			constraints = new GridBagConstraints();
@@ -181,7 +159,7 @@ public class MatchupDetailChampionPanel extends JPanel {
 			constraints = new GridBagConstraints();
 			constraints.gridx = 0;
 			constraints.gridy = 2;
-			constraints.insets = new Insets(1, 5, 5, 1);
+			constraints.insets = new Insets(1, 1, 5, 1);
 			myChampStartingItemsPanel.add(getMyChampItem4Label(), constraints);
 
 			constraints = new GridBagConstraints();
@@ -293,7 +271,7 @@ public class MatchupDetailChampionPanel extends JPanel {
 			constraints = new GridBagConstraints();
 			constraints.gridx = 0;
 			constraints.gridy = 1;
-			constraints.insets = new Insets(2, 5, 1, 1);
+			constraints.insets = new Insets(2, 1, 1, 1);
 			myChampEndingItemsPanel.add(getMyChampEndingItem1Label(),
 					constraints);
 
@@ -314,7 +292,7 @@ public class MatchupDetailChampionPanel extends JPanel {
 			constraints = new GridBagConstraints();
 			constraints.gridx = 0;
 			constraints.gridy = 2;
-			constraints.insets = new Insets(1, 5, 5, 1);
+			constraints.insets = new Insets(1, 1, 5, 1);
 			myChampEndingItemsPanel.add(getMyChampEndingItem4Label(),
 					constraints);
 
@@ -486,14 +464,8 @@ public class MatchupDetailChampionPanel extends JPanel {
 				champ, matchupStartItems, matchupEndItems, spell1, spell2,
 				result);
 		this.getMyChampNameLabel().setText(champ.getName());
-		Color c = Color.GREEN;
-		if (result == MatchupResult.LOSS) {
-			c = Color.RED;
-		} else if (result == MatchupResult.DRAW) {
-			c = Color.WHITE;
-		}
 		this.getMyChampNameLabel().setOpaque(true);
-		this.getMyChampNameLabel().setBackground(c);
+		this.getMyChampNameLabel().setBackground(result.getColor());
 		this.getMyChampIconLabel().setIcon(champ.getIcon());
 		int x = 0;
 		for (MatchupItem mi : matchupStartItems) {
@@ -552,9 +524,9 @@ public class MatchupDetailChampionPanel extends JPanel {
 			l.setToolTipText(mi.getAmount() + "x " + mi.getItem().getName());
 		}
 		getMyChampSpell1Label().setIcon(
-				ImageIconFactory.resizeImageIcon(spell1.getIcon(), 50, 50));
+				ImageIconFactory.resizeImageIcon(spell1.getIcon(), 40, 40));
 		getMyChampSpell2Label().setIcon(
-				ImageIconFactory.resizeImageIcon(spell2.getIcon(), 50, 50));
+				ImageIconFactory.resizeImageIcon(spell2.getIcon(), 40, 40));
 		logger.trace("setChampionAndItems() - Leaving");
 	}
 }

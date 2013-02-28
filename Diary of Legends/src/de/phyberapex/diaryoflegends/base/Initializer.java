@@ -1,6 +1,5 @@
 package de.phyberapex.diaryoflegends.base;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.UIManager;
@@ -21,7 +20,6 @@ import de.phyberapex.diaryoflegends.model.Summoner;
 public class Initializer {
 
 	private static Initializer instance;
-	private File updateFolder;
 	transient private static Logger logger = LogManager
 			.getLogger(MainController.class.getName());
 
@@ -82,17 +80,7 @@ public class Initializer {
 
 	private boolean update() {
 		logger.trace("update() - Entering");
-		boolean returnValue = false;
-		updateFolder = new File(System.getProperty("user.dir") + "\\update");
-		if (updateFolder.isDirectory()) {
-			logger.debug("Update folder found. Searching for update file");
-			File update = new File(updateFolder.getAbsolutePath()
-					+ "\\update.dolup");
-			if (update != null) {
-				logger.debug("Update file found.");
-				returnValue = true;
-			}
-		}
+		boolean returnValue = true;
 		logger.trace("update() - Returning");
 		logger.debug("update() - Returning: {}", returnValue);
 		return returnValue;

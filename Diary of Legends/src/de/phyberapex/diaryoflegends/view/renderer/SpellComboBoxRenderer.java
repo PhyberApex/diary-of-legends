@@ -38,6 +38,7 @@ public class SpellComboBoxRenderer extends JLabel implements
 			setBackground(list.getBackground());
 			setForeground(list.getForeground());
 		}
+		setOpaque(true);
 		if (value.getIcon() == null) {
 			setIcon(defaultIcon);
 		} else {

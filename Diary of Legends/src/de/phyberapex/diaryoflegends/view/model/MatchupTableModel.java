@@ -1,10 +1,6 @@
 package de.phyberapex.diaryoflegends.view.model;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-
 import javax.swing.table.AbstractTableModel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,8 +10,8 @@ public class MatchupTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = -7653762677922814674L;
 	private List<Matchup> matchups;
-	private String[] columnNames = new String[] { "Date", "Matchup", "Lane",
-			"Notes" };
+	private String[] columnNames = new String[] { "Date", "Lane", "Me",
+			"Opponent", "Game" };
 	transient private static Logger logger = LogManager
 			.getLogger(MatchupTableModel.class.getName());
 
@@ -81,7 +77,7 @@ public class MatchupTableModel extends AbstractTableModel {
 	 */
 	@Override
 	public int getColumnCount() {
-		int columns = 4;
+		int columns = 5;
 		return columns;
 	}
 
@@ -110,19 +106,19 @@ public class MatchupTableModel extends AbstractTableModel {
 		Object returnValue = null;
 		switch (columnIndex) {
 		case 0:
-			Date d = matchups.get(rowIndex).getGame().getDate();
-			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-			String str = df.format(d);
-			returnValue = str;
-			break;
-		case 1:
 			returnValue = matchups.get(rowIndex);
 			break;
-		case 2:
+		case 1:
 			returnValue = matchups.get(rowIndex).getLane();
 			break;
+		case 2:
+			returnValue = matchups.get(rowIndex).getMyChamp();
+			break;
 		case 3:
-			returnValue = matchups.get(rowIndex).getNotes();
+			returnValue = matchups.get(rowIndex).getEnemyChamp();
+			break;
+		case 4:
+			returnValue = matchups.get(rowIndex).getGame().getResult();
 			break;
 		}
 		return returnValue;

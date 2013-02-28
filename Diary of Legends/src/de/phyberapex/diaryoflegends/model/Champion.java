@@ -1,6 +1,7 @@
 package de.phyberapex.diaryoflegends.model;
 
 import java.io.File;
+import java.net.URL;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -110,6 +111,13 @@ public class Champion extends Model {
 		logger.trace("setIcon() - Entering");
 		logger.debug("setIcon() - Parameter: {}", file);
 		this.icon = ConvertImage.convertFileToByteArray(file);
+		logger.trace("setIcon() - Leaving");
+	}
+
+	public void setIcon(URL url) {
+		logger.trace("setIcon() - Entering");
+		logger.debug("setIcon() - Parameter: {}", url);
+		this.icon = ConvertImage.convertUrlToByteArray(url);
 		logger.trace("setIcon() - Leaving");
 	}
 

@@ -42,6 +42,7 @@ public class MainView extends JFrame implements View, Runnable {
 		logger.trace("createGui() - Entering");
 		this.setTitle(Constants.getAppName() + " - v"
 				+ Constants.getAppVersion());
+		this.setMinimumSize(new Dimension(420, 520));
 		this.setJMenuBar(getMenuBarView());
 		this.setLayout(new BorderLayout());
 		this.add(getContentTabbedPane(), BorderLayout.CENTER);
@@ -125,7 +126,7 @@ public class MainView extends JFrame implements View, Runnable {
 
 	@Override
 	public void refresh() {
-
+		menu.refresh();
 	}
 
 	/**
@@ -140,7 +141,6 @@ public class MainView extends JFrame implements View, Runnable {
 		return returnValue;
 	}
 
-	
 	public void setStatsPanel(StatsView view) {
 		logger.trace("setStatsPanel() - Entering");
 		logger.debug("setStatsPanel() - Parameter: {}", view);

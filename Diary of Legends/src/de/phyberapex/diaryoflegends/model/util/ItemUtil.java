@@ -128,29 +128,4 @@ public class ItemUtil {
 		logger.debug("getItemById() - Returning {}", returnValue);
 		return returnValue;
 	}
-
-	/**
-	 * Returns all items for which the price is under 500
-	 * 
-	 * @return {@link List<Item>}
-	 */
-	public static List<Item> getAllStartingItems() {
-		logger.trace("getAllStartingItems() - Entering");
-		ObjectSet<Item> returnValue = dbHandle.query(new Predicate<Item>() {
-
-			private static final long serialVersionUID = -6535736734146443615L;
-
-			@Override
-			public boolean match(Item arg0) {
-				if (arg0.getPrice() <= 500) {
-					return true;
-				} else {
-					return false;
-				}
-			}
-		});
-		logger.trace("getAllStartingItems() - Returning");
-		logger.debug("getAllStartingItems() - Returning {}", returnValue);
-		return returnValue;
-	}
 }
