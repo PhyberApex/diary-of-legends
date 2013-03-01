@@ -34,7 +34,8 @@ public class ExportDolexAction implements Runnable {
 			int x = 0;
 			for (Game game : games) {
 				x++;
-				MainView.getInstance().setStatusText("Exporting game "+x+" of "+games.size()+"...");
+				MainView.getInstance().setStatusText(
+						"Exporting game " + x + " of " + games.size() + "...");
 				logger.debug("Exporting ", game);
 				jw.object();
 				jw.key("date");
@@ -85,10 +86,12 @@ public class ExportDolexAction implements Runnable {
 					jw.endObject();
 				}
 				jw.endArray();
-				jw.key("mySpell1");
-				jw.value(game.getMatchup().getMySpell1().getId());
-				jw.key("mySpell2");
-				jw.value(game.getMatchup().getMySpell2().getId());
+				if (game.getMatchup().getMySpell1() != null) {
+					jw.key("mySpell1");
+					jw.value(game.getMatchup().getMySpell1().getId());
+					jw.key("mySpell2");
+					jw.value(game.getMatchup().getMySpell2().getId());
+				}
 				jw.key("enemyChampion");
 				jw.value(game.getMatchup().getEnemyChamp().getId());
 				jw.key("enemyStartItems");
@@ -113,10 +116,12 @@ public class ExportDolexAction implements Runnable {
 					jw.endObject();
 				}
 				jw.endArray();
-				jw.key("enemySpell1");
-				jw.value(game.getMatchup().getMySpell1().getId());
-				jw.key("enemySpell2");
-				jw.value(game.getMatchup().getMySpell2().getId());
+				if (game.getMatchup().getEnemySpell1() != null) {
+					jw.key("enemySpell1");
+					jw.value(game.getMatchup().getMySpell1().getId());
+					jw.key("enemySpell2");
+					jw.value(game.getMatchup().getMySpell2().getId());
+				}
 				jw.key("matchupResult");
 				jw.value(game.getMatchup().getResult().name());
 				jw.key("lane");

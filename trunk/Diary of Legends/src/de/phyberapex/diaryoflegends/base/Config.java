@@ -198,11 +198,13 @@ public class Config {
 			while ((inputLine = in.readLine()) != null)
 				json += inputLine;
 			in.close();
-			returnValue = new JSONObject(json).getJSONObject("data").getInt(
-					"summonerId");
+			JSONObject data = new JSONObject(json);
+			if (data.getBoolean("success")) {
+				returnValue = data.getJSONObject("data").getInt("summonerId");
+			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.debug("Error: {}" + e.getMessage());
+			logger.error("Couldn't connect to api.elophant.com summonerID and accountID not set");
 		}
 		logger.trace("getSummonerIdByNameAndRegion() - Returning");
 		logger.debug("getSummonerIdByNameAndRegion() - Returning: {}",
@@ -232,11 +234,12 @@ public class Config {
 			while ((inputLine = in.readLine()) != null)
 				json += inputLine;
 			in.close();
-			returnValue = new JSONObject(json).getJSONObject("data").getInt(
-					"acctId");
+			JSONObject data = new JSONObject(json);
+			if (data.getBoolean("success")) {
+				returnValue = data.getJSONObject("data").getInt("acctId");
+			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 		logger.trace("getAccountIdByNameAndRegion() - Returning");
 		logger.debug("getAccountIdByNameAndRegion() - Returning: {}",

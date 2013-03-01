@@ -14,7 +14,9 @@ import de.phyberapex.diaryoflegends.base.Update;
 import de.phyberapex.diaryoflegends.exception.InitializeException;
 import de.phyberapex.diaryoflegends.extra.ImageIconFactory;
 import de.phyberapex.diaryoflegends.extra.Splash;
-import de.phyberapex.diaryoflegends.view.CurrentSummonerNameView;
+import de.phyberapex.diaryoflegends.model.Region;
+import de.phyberapex.diaryoflegends.view.APIKeyViewPanel;
+import de.phyberapex.diaryoflegends.view.SummonerNameViewPanel;
 import de.phyberapex.diaryoflegends.view.MainView;
 import de.phyberapex.diaryoflegends.view.MatchupView;
 import de.phyberapex.diaryoflegends.view.StatsView;
@@ -42,6 +44,29 @@ public class MainController {
 			List<InitializeAction> initAction = Initializer.getInstance()
 					.initializeApp();
 			logger.debug("Value of initAction {}", initAction);
+			if (initAction.contains(InitializeAction.API_KEY)) {
+				APIKeyViewPanel apiKeyView = APIKeyViewPanel.getInstance();
+				Object[] options = { "OK" };
+				int ok = JOptionPane.showOptionDialog(null, apiKeyView,
+						"Enter your Elophant API-Key",
+						JOptionPane.WARNING_MESSAGE,
+						JOptionPane.INFORMATION_MESSAGE, null, options, "OK");
+				logger.debug("Entered text was '{}'", apiKeyView.getAPIKey());
+				logger.debug("Button pressed was '{}' ({} = OK, {} = CLOSED)",
+						ok, JOptionPane.OK_OPTION, JOptionPane.CLOSED_OPTION);
+				if (ok == JOptionPane.OK_OPTION) {
+					Config.getInstance().setProperty("API_KEY",
+							apiKeyView.getAPIKey());
+				} else {
+					JOptionPane
+							.showMessageDialog(
+									null,
+									"This application can't run without an API-Key.\nExiting application now",
+									"Error", JOptionPane.ERROR_MESSAGE);
+					exit();
+				}
+				Config.getInstance().saveChanges();
+			}
 			splash.showStatus("Updating", 20);
 			if (initAction.contains(InitializeAction.UPDATE)) {
 				Update.update();
@@ -64,7 +89,7 @@ public class MainController {
 			splash.showStatus("Preparing to start", 100);
 			splash.close();
 			if (initAction.contains(InitializeAction.CREATE_SUMMONER)) {
-				CurrentSummonerNameView currSumView = CurrentSummonerNameView
+				SummonerNameViewPanel currSumView = SummonerNameViewPanel
 						.getInstance();
 				Object[] options = { "OK" };
 				int ok = JOptionPane.showOptionDialog(null, currSumView,
@@ -80,25 +105,30 @@ public class MainController {
 							currSumView.getSummonerName());
 					Config.getInstance().setProperty("REGION",
 							currSumView.getRegion().name());
-					Config.getInstance().setProperty(
-							"SUMMONER_ID",
-							String.valueOf(Config.getInstance()
-									.getSummonerIdByNameAndRegion(
-											currSumView.getSummonerName(),
-											currSumView.getRegion())));
-					Config.getInstance().setProperty(
-							"ACCOUNT_ID",
-							String.valueOf(Config.getInstance()
-									.getAccountIdByNameAndRegion(
-											currSumView.getSummonerName(),
-											currSumView.getRegion())));
+					int id = Config.getInstance().getSummonerIdByNameAndRegion(
+							currSumView.getSummonerName(),
+							currSumView.getRegion());
+					if (id != 0) {
+						Config.getInstance().setProperty("SUMMONER_ID",
+								String.valueOf(id));
+					}
+					id = Config.getInstance().getAccountIdByNameAndRegion(
+							currSumView.getSummonerName(),
+							currSumView.getRegion());
+					if (id != 0) {
+						Config.getInstance().setProperty("ACCOUNT_ID",
+								String.valueOf(id));
+					}
 					Config.getInstance().saveChanges();
-					mainView.refresh();
 				}
 			} else {
-				CurrentSummonerNameView.getInstance().setSummonerName(
+				SummonerNameViewPanel.getInstance().setSummonerName(
 						Config.getInstance().getProperty("SUMMONER_NAME"));
+				SummonerNameViewPanel.getInstance().setRegion(
+						Region.valueOf(Config.getInstance().getProperty(
+								"REGION")));
 			}
+			mainView.refresh();
 			SwingUtilities.invokeLater(mainView);
 
 		} catch (InitializeException e) {

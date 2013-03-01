@@ -24,7 +24,6 @@ public class ConvertImage {
 			bytes = bos.toByteArray();
 			fis.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return bytes;
@@ -53,7 +52,6 @@ public class ConvertImage {
 			bytes = bos.toByteArray();
 			in.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return bytes;

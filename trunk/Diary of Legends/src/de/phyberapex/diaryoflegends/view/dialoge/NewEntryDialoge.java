@@ -3485,26 +3485,28 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 				public void actionPerformed(ActionEvent arg0) {
 					boolean ok = true;
 					String error = "";
-					if (getMySpell1Box().getItemAt(
-							getMySpell1Box().getSelectedIndex()).getId() == 0) {
-						ok = false;
-						error += "- Please select your first summoner spell\n";
-					}
-					if (getMySpell2Box().getItemAt(
-							getMySpell2Box().getSelectedIndex()).getId() == 0) {
-						ok = false;
-						error += "- Please select your second summoner spell\n";
-					}
-					if (getEnemySpell1Box().getItemAt(
-							getEnemySpell1Box().getSelectedIndex()).getId() == 0) {
-						ok = false;
-						error += "- Please select your opponents first summoner spell\n";
-					}
-					if (getEnemySpell2Box().getItemAt(
-							getEnemySpell2Box().getSelectedIndex()).getId() == 0) {
-						ok = false;
-						error += "- Please select your opponents second summoner spell\n";
-					}
+					// if (getMySpell1Box().getItemAt(
+					// getMySpell1Box().getSelectedIndex()).getId() == 0) {
+					// ok = false;
+					// error += "- Please select your first summoner spell\n";
+					// }
+					// if (getMySpell2Box().getItemAt(
+					// getMySpell2Box().getSelectedIndex()).getId() == 0) {
+					// ok = false;
+					// error += "- Please select your second summoner spell\n";
+					// }
+					// if (getEnemySpell1Box().getItemAt(
+					// getEnemySpell1Box().getSelectedIndex()).getId() == 0) {
+					// ok = false;
+					// error +=
+					// "- Please select your opponents first summoner spell\n";
+					// }
+					// if (getEnemySpell2Box().getItemAt(
+					// getEnemySpell2Box().getSelectedIndex()).getId() == 0) {
+					// ok = false;
+					// error +=
+					// "- Please select your opponents second summoner spell\n";
+					// }
 					if (!ok) {
 						JOptionPane.showMessageDialog(MainView.getInstance(),
 								error);
@@ -3774,7 +3776,7 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 						matchup.setEnemySpell2(getEnemySpell2Box().getItemAt(
 								getEnemySpell2Box().getSelectedIndex()));
 						game.setMatchup(matchup);
-						if (toEdit != null) {
+						if (toEdit != null && !isImport) {
 							MainController.getInstance().updated();
 						} else {
 							MainView.getInstance().getMatchupPanel()
@@ -3817,6 +3819,8 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 		if (this.toEdit != null) {
 			fillFields();
 		}
+		getNewEntryContentPane().setEnabledAt(0, true);
+		getNewEntryContentPane().setEnabledAt(1, false);
 		setVisible(true);
 		logger.trace("run() - Leaving");
 	}
