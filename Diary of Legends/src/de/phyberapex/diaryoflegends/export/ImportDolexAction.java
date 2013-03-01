@@ -15,7 +15,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import de.phyberapex.diaryoflegends.exception.ChampionNotFoundException;
 import de.phyberapex.diaryoflegends.exception.ItemNotFoundException;
-import de.phyberapex.diaryoflegends.exception.SummonerSpellNotFoundException;
 import de.phyberapex.diaryoflegends.model.Champion;
 import de.phyberapex.diaryoflegends.model.Game;
 import de.phyberapex.diaryoflegends.model.GameResult;
@@ -64,7 +63,9 @@ public class ImportDolexAction implements Runnable {
 			fstream.close();
 			JSONArray gArray = new JSONArray(imp);
 			for (int i = 0; i < gArray.length(); i++) {
-				MainView.getInstance().setStatusText("Importing game "+(int)(i+1)+" of "+gArray.length()+"...");
+				MainView.getInstance().setStatusText(
+						"Importing game " + (int) (i + 1) + " of "
+								+ gArray.length() + "...");
 				JSONObject gJo = gArray.getJSONObject(i);
 
 				Game game = new Game();
@@ -186,21 +187,17 @@ public class ImportDolexAction implements Runnable {
 				matchup.setMyEndItems(matchupItems);
 
 				SummonerSpell spell1 = SummonerSpellUtil.getSpellById(mJo
-						.getInt("mySpell1"));
+						.optInt("mySpell1"));
 				if (spell1 == null) {
 					logger.error("Summoner spell with id {} not found",
-							mJo.getInt("mySpell1"));
-					throw new SummonerSpellNotFoundException(
-							"Summoner spell not found. Maybe your champions are outdated.");
+							mJo.optInt("mySpell1"));
 				}
 				matchup.setMySpell1(spell1);
 				SummonerSpell spell2 = SummonerSpellUtil.getSpellById(mJo
-						.getInt("mySpell2"));
+						.optInt("mySpell2"));
 				if (spell2 == null) {
 					logger.error("Summoner spell with id {} not found",
-							mJo.getInt("mySpell2"));
-					throw new SummonerSpellNotFoundException(
-							"Summoner spell not found. Maybe your champions are outdated.");
+							mJo.optInt("mySpell2"));
 				}
 				matchup.setMySpell2(spell2);
 				chmp = null;
@@ -270,21 +267,17 @@ public class ImportDolexAction implements Runnable {
 				}
 				matchup.setEnemyEndItems(matchupItems);
 				SummonerSpell enemySpell1 = SummonerSpellUtil.getSpellById(mJo
-						.getInt("enemySpell1"));
+						.optInt("enemySpell1"));
 				if (enemySpell1 == null) {
 					logger.error("Summoner spell with id {} not found",
-							mJo.getInt("enemySpell1"));
-					throw new SummonerSpellNotFoundException(
-							"Summoner spell not found. Maybe your champions are outdated.");
+							mJo.optInt("enemySpell1"));
 				}
 				matchup.setEnemySpell1(enemySpell1);
 				SummonerSpell enemySpell2 = SummonerSpellUtil.getSpellById(mJo
-						.getInt("enemySpell2"));
+						.optInt("enemySpell2"));
 				if (enemySpell2 == null) {
 					logger.error("Summoner spell with id {} not found",
-							mJo.getInt("enemySpell2"));
-					throw new SummonerSpellNotFoundException(
-							"Summoner spell not found. Maybe your champions are outdated.");
+							mJo.optInt("enemySpell2"));
 				}
 				matchup.setEnemySpell2(enemySpell2);
 				matchup.setResult(MatchupResult.valueOf(mJo

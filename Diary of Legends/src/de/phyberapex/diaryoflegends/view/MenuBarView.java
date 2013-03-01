@@ -19,8 +19,10 @@ import com.jgoodies.looks.Options;
 
 import de.phyberapex.diaryoflegends.ExitAction;
 import de.phyberapex.diaryoflegends.base.Config;
+import de.phyberapex.diaryoflegends.base.Update;
 import de.phyberapex.diaryoflegends.export.ExportDolexAction;
 import de.phyberapex.diaryoflegends.export.ImportDolexAction;
+import de.phyberapex.diaryoflegends.export.ImportLastMatchAction;
 import de.phyberapex.diaryoflegends.export.ImportRoflAction;
 import de.phyberapex.diaryoflegends.view.dialoge.NewEntryDialoge;
 
@@ -32,6 +34,7 @@ public class MenuBarView extends JMenuBar implements View {
 	private JMenuItem changeNameItem;
 	private JMenuItem importDolexItem;
 	private JMenuItem importRoflItem;
+	private JMenuItem importLastMatchItem;
 	private JMenuItem exportItem;
 	private JMenuItem exitItem;
 	private JMenu aboutMenu;
@@ -60,6 +63,7 @@ public class MenuBarView extends JMenuBar implements View {
 			this.fileMenu.add(new JSeparator());
 			this.fileMenu.add(getImportDolexItem());
 			this.fileMenu.add(getImportRoflItem());
+			this.fileMenu.add(getImportLastMatchItem());
 			this.fileMenu.add(getExportItem());
 			this.fileMenu.add(new JSeparator());
 			this.fileMenu.add(getExitItem());
@@ -96,7 +100,7 @@ public class MenuBarView extends JMenuBar implements View {
 
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
-					CurrentSummonerNameView currSumView = CurrentSummonerNameView
+					SummonerNameViewPanel currSumView = SummonerNameViewPanel
 							.getInstance();
 					Object[] options = { "OK" };
 					int ok = JOptionPane.showOptionDialog(null, currSumView,
@@ -116,6 +120,7 @@ public class MenuBarView extends JMenuBar implements View {
 					MainView.getInstance().setStatusText(
 							"Summoner name changed in "
 									+ currSumView.getSummonerName());
+					refresh();
 				}
 			});
 		}
@@ -175,6 +180,8 @@ public class MenuBarView extends JMenuBar implements View {
 		logger.trace("getImportRoflItem() - Entering");
 		if (this.importRoflItem == null) {
 			this.importRoflItem = new JMenuItem("Import *.rofl...");
+			this.importRoflItem
+					.setToolTipText("Only available if you entered your summonername");
 			this.importRoflItem.addActionListener(new ActionListener() {
 
 				@Override
@@ -215,6 +222,29 @@ public class MenuBarView extends JMenuBar implements View {
 		logger.trace("getImportRoflItem() - Returning");
 		logger.debug("getImportRoflItem() - Returning {}", importRoflItem);
 		return importRoflItem;
+	}
+
+	private JMenuItem getImportLastMatchItem() {
+		logger.trace("getImportLastMatchItem() - Entering");
+		if (this.importLastMatchItem == null) {
+			this.importLastMatchItem = new JMenuItem(
+					"Import most recent match...");
+			this.importLastMatchItem
+					.setToolTipText("Only available if you entered your summonername and your summoner id and account id have been fetched(online)");
+			this.importLastMatchItem.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					ImportLastMatchAction imp = new ImportLastMatchAction();
+					Thread tr = new Thread(imp);
+					tr.start();
+				}
+			});
+		}
+		logger.trace("getImportLastMatchItem() - Returning");
+		logger.debug("getImportLastMatchItem() - Returning {}",
+				importLastMatchItem);
+		return importLastMatchItem;
 	}
 
 	private JMenuItem getExportItem() {
@@ -280,7 +310,14 @@ public class MenuBarView extends JMenuBar implements View {
 		if (this.updateItem == null) {
 			logger.debug("Creating a new JMenuItem object");
 			this.updateItem = new JMenuItem("Check for Updates");
-			this.updateItem.setEnabled(false);
+			this.updateItem.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					Thread tr = new Thread(new Update());
+					tr.start();
+				}
+			});
 		}
 		logger.trace("getUpdateItem() - Returning");
 		logger.debug("Returned {}", updateItem);
@@ -291,6 +328,10 @@ public class MenuBarView extends JMenuBar implements View {
 	public void refresh() {
 		boolean summNameSet = Config.getInstance().getProperty("SUMMONER_NAME") != null;
 		boolean regionSet = Config.getInstance().getProperty("REGION") != null;
-		this.importRoflItem.setEnabled(summNameSet && regionSet);
+		boolean summIdSet = Config.getInstance().getProperty("SUMMONER_ID") != null;
+		boolean accountIdSet = Config.getInstance().getProperty("ACCOUNT_ID") != null;
+		this.importRoflItem.setEnabled(summNameSet);
+		this.importLastMatchItem.setEnabled(summNameSet && regionSet
+				&& summIdSet && accountIdSet);
 	}
 }

@@ -13,18 +13,18 @@ import org.apache.logging.log4j.Logger;
 import de.phyberapex.diaryoflegends.base.Initializer;
 import de.phyberapex.diaryoflegends.model.Region;
 
-public class CurrentSummonerNameView extends JPanel implements View {
+public class SummonerNameViewPanel extends JPanel implements View {
 
 	private static final long serialVersionUID = -3649794292915604043L;
-	private static CurrentSummonerNameView instance;
+	private static SummonerNameViewPanel instance;
 	private static Logger logger = LogManager
-			.getLogger(CurrentSummonerNameView.class.getName());
+			.getLogger(SummonerNameViewPanel.class.getName());
 	private JLabel nameLabel;
 	private JTextField nameTextfield;
 	private JLabel regionLabel;
 	private JComboBox<Region> regionBox;
 
-	private CurrentSummonerNameView() {
+	private SummonerNameViewPanel() {
 		super();
 		logger.trace("CurrentSummonerNameView() - Entering");
 		createGUI();
@@ -46,7 +46,6 @@ public class CurrentSummonerNameView extends JPanel implements View {
 		logger.trace("getNameTextfield() - Entering");
 		if (nameTextfield == null) {
 			nameTextfield = new JTextField("...");
-			nameTextfield.setToolTipText("The name you want to be highlighted");
 			nameTextfield.setPreferredSize(new Dimension(150, 30));
 			nameTextfield
 					.setToolTipText("This is only needed for import reasons.");
@@ -93,10 +92,10 @@ public class CurrentSummonerNameView extends JPanel implements View {
 	 * 
 	 * @return {@link Initializer} an instance of this class
 	 */
-	public static synchronized CurrentSummonerNameView getInstance() {
+	public static synchronized SummonerNameViewPanel getInstance() {
 		logger.trace("getInstance() - Entering");
 		if (instance == null) {
-			instance = new CurrentSummonerNameView();
+			instance = new SummonerNameViewPanel();
 		}
 		logger.trace("getInstance() - Returning");
 		logger.debug("getInstance() - Returning: {}", instance);

@@ -16,7 +16,6 @@ import org.json.JSONObject;
 import de.phyberapex.diaryoflegends.base.Config;
 import de.phyberapex.diaryoflegends.exception.ChampionNotFoundException;
 import de.phyberapex.diaryoflegends.exception.ItemNotFoundException;
-import de.phyberapex.diaryoflegends.exception.SummonerSpellNotFoundException;
 import de.phyberapex.diaryoflegends.model.Champion;
 import de.phyberapex.diaryoflegends.model.Game;
 import de.phyberapex.diaryoflegends.model.GameResult;
@@ -83,8 +82,6 @@ public class ImportRoflAction implements Runnable {
 					if (mySumm == null) {
 						logger.error("Summoner spell with id {} not found",
 								partsJoAr.getJSONObject(i).getInt("spell1Id"));
-						throw new SummonerSpellNotFoundException(
-								"Summoner spell not found. Maybe your summoner spells are outdated.");
 					}
 					matchup.setMySpell1(mySumm);
 					int mySpell2id = partsJoAr.getJSONObject(i).getInt(
@@ -95,8 +92,6 @@ public class ImportRoflAction implements Runnable {
 					if (mySumm == null) {
 						logger.error("Summoner spell with id {} not found",
 								partsJoAr.getJSONObject(i).getInt("spell2Id"));
-						throw new SummonerSpellNotFoundException(
-								"Summoner spell not found. Maybe your summoner spells are outdated.");
 					}
 					matchup.setMySpell2(mySumm);
 					break;
@@ -151,8 +146,8 @@ public class ImportRoflAction implements Runnable {
 					enemySpells2.add(enemySpell2);
 				}
 			}
-			// TODO datum rausfinden
-			game.setDate(new Date());
+			game.setDate(new Date(jo.getLong("gameStartTime")));
+			game.setLength(jo.getLong("gameLength") / 1000);
 			game.setMyTeam(myTeam);
 			game.setEnemyTeam(enemyTeam);
 			JComboBox<Champion> enemyChmps = new JComboBox<Champion>(
@@ -176,8 +171,6 @@ public class ImportRoflAction implements Runnable {
 			if (enemySumm == null) {
 				logger.error("Summoner spell with id {} not found",
 						enemySpells1.get(enemyChmps.getSelectedIndex()));
-				throw new SummonerSpellNotFoundException(
-						"Summoner spell not found. Maybe your summoner spells are outdated.");
 			}
 			matchup.setEnemySpell1(enemySumm);
 			enemySumm = SummonerSpellUtil.getSpellById(enemySpells2
@@ -186,8 +179,6 @@ public class ImportRoflAction implements Runnable {
 			if (enemySumm == null) {
 				logger.error("Summoner spell with id {} not found",
 						enemySpells2.get(enemyChmps.getSelectedIndex()));
-				throw new SummonerSpellNotFoundException(
-						"Summoner spell not found. Maybe your summoner spells are outdated.");
 			}
 			matchup.setEnemySpell2(enemySumm);
 			String enemySummName = enemyTeamSumms.get(enemyChmps
@@ -272,14 +263,11 @@ public class ImportRoflAction implements Runnable {
 					break;
 				}
 			}
-			// TODO längerausfinden
-			game.setLength(0);
 			MainView.getInstance().setStatusText("Import complete");
 			NewEntryDialoge nd = NewEntryDialoge.getInstance();
 			nd.setToEdit(game, true);
 			SwingUtilities.invokeLater(nd);
-		} catch (ChampionNotFoundException | ItemNotFoundException
-				| SummonerSpellNotFoundException e) {
+		} catch (ChampionNotFoundException | ItemNotFoundException e) {
 			logger.error(e.getMessage());
 			MainView.getInstance().setStatusText(
 					"Import failed. Please read the logfile.");
