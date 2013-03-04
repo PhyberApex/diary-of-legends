@@ -181,11 +181,11 @@ public class Config {
 	 * @param region
 	 * @return
 	 */
-	public int getSummonerIdByNameAndRegion(String summonerName, Region region) {
+	public int[] getSummonerIdByNameAndRegion(String summonerName, Region region) {
 		logger.trace("getSummonerIdByNameAndRegion() - Entering");
 		logger.debug("getSummonerIdByNameAndRegion() - Parameter: {}, {}",
 				summonerName, region);
-		int returnValue = 0;
+		int[] returnValue = {0,0};
 		try {
 			URLConnection con = new URL("http://api.elophant.com/v2/"
 					+ region.name() + "/summoner/" + summonerName + "?key="
@@ -200,7 +200,8 @@ public class Config {
 			in.close();
 			JSONObject data = new JSONObject(json);
 			if (data.getBoolean("success")) {
-				returnValue = data.getJSONObject("data").getInt("summonerId");
+				returnValue[0] = data.getJSONObject("data").getInt("summonerId");
+				returnValue[1] = data.getJSONObject("data").getInt("acctId");
 			}
 		} catch (IOException e) {
 			logger.debug("Error: {}" + e.getMessage());
@@ -208,41 +209,6 @@ public class Config {
 		}
 		logger.trace("getSummonerIdByNameAndRegion() - Returning");
 		logger.debug("getSummonerIdByNameAndRegion() - Returning: {}",
-				returnValue);
-		return returnValue;
-	}
-
-	/**
-	 * @param summonerName
-	 * @param region
-	 * @return
-	 */
-	public int getAccountIdByNameAndRegion(String summonerName, Region region) {
-		logger.trace("getAccountIdByNameAndRegion() - Entering");
-		logger.debug("getAccountIdByNameAndRegion() - Parameter: {}, {}",
-				summonerName, region);
-		int returnValue = 0;
-		try {
-			URLConnection con = new URL("http://api.elophant.com/v2/"
-					+ region.name() + "/summoner/" + summonerName + "?key="
-					+ Config.getInstance().getProperty("API_KEY"))
-					.openConnection();
-			BufferedReader in = new BufferedReader(new InputStreamReader(
-					con.getInputStream()));
-			String inputLine;
-			String json = "";
-			while ((inputLine = in.readLine()) != null)
-				json += inputLine;
-			in.close();
-			JSONObject data = new JSONObject(json);
-			if (data.getBoolean("success")) {
-				returnValue = data.getJSONObject("data").getInt("acctId");
-			}
-		} catch (IOException e) {
-			logger.error(e.getMessage());
-		}
-		logger.trace("getAccountIdByNameAndRegion() - Returning");
-		logger.debug("getAccountIdByNameAndRegion() - Returning: {}",
 				returnValue);
 		return returnValue;
 	}

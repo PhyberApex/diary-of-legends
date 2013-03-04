@@ -11,6 +11,7 @@
 			</manifest>
 			<fileset dir="bin" />
 		</jar>
+		<mkdir dir="${folder-to-zip}/db"/>
 		<copy todir="${folder-to-zip}" overwrite="true">
 			<fileset dir="">
 				<include name="gpl-3.0.txt" />
