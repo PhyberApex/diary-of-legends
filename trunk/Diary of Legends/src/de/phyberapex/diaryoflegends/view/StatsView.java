@@ -15,8 +15,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import de.phyberapex.diaryoflegends.action.CreateStatsAction;
 import de.phyberapex.diaryoflegends.controller.StatsController;
-import de.phyberapex.diaryoflegends.export.CreateStatsAction;
 import de.phyberapex.diaryoflegends.model.StatisticTypes;
 
 public class StatsView extends JPanel implements View {

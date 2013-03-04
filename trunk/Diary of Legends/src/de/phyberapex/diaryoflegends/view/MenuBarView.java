@@ -17,13 +17,13 @@ import org.apache.logging.log4j.Logger;
 import com.jgoodies.looks.HeaderStyle;
 import com.jgoodies.looks.Options;
 
-import de.phyberapex.diaryoflegends.ExitAction;
+import de.phyberapex.diaryoflegends.action.ExitAction;
+import de.phyberapex.diaryoflegends.action.ExportDolexAction;
+import de.phyberapex.diaryoflegends.action.ImportDolexAction;
+import de.phyberapex.diaryoflegends.action.ImportLastMatchAction;
+import de.phyberapex.diaryoflegends.action.ImportRoflAction;
 import de.phyberapex.diaryoflegends.base.Config;
 import de.phyberapex.diaryoflegends.base.Update;
-import de.phyberapex.diaryoflegends.export.ExportDolexAction;
-import de.phyberapex.diaryoflegends.export.ImportDolexAction;
-import de.phyberapex.diaryoflegends.export.ImportLastMatchAction;
-import de.phyberapex.diaryoflegends.export.ImportRoflAction;
 import de.phyberapex.diaryoflegends.view.dialoge.NewEntryDialoge;
 
 public class MenuBarView extends JMenuBar implements View {

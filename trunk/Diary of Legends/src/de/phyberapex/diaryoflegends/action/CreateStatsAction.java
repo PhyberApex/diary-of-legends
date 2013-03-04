@@ -1,4 +1,4 @@
-package de.phyberapex.diaryoflegends.export;
+package de.phyberapex.diaryoflegends.action;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

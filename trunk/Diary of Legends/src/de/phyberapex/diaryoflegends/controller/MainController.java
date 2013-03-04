@@ -6,7 +6,8 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import de.phyberapex.diaryoflegends.ExitAction;
+
+import de.phyberapex.diaryoflegends.action.ExitAction;
 import de.phyberapex.diaryoflegends.base.Config;
 import de.phyberapex.diaryoflegends.base.InitializeAction;
 import de.phyberapex.diaryoflegends.base.Initializer;
@@ -105,17 +106,15 @@ public class MainController {
 							currSumView.getSummonerName());
 					Config.getInstance().setProperty("REGION",
 							currSumView.getRegion().name());
-					int id = Config.getInstance().getSummonerIdByNameAndRegion(
-							currSumView.getSummonerName(),
-							currSumView.getRegion());
-					if (id != 0) {
+					int[] id = Config.getInstance()
+							.getSummonerIdByNameAndRegion(
+									currSumView.getSummonerName(),
+									currSumView.getRegion());
+					if (id[0] != 0) {
 						Config.getInstance().setProperty("SUMMONER_ID",
 								String.valueOf(id));
 					}
-					id = Config.getInstance().getAccountIdByNameAndRegion(
-							currSumView.getSummonerName(),
-							currSumView.getRegion());
-					if (id != 0) {
+					if (id[1] != 0) {
 						Config.getInstance().setProperty("ACCOUNT_ID",
 								String.valueOf(id));
 					}
@@ -127,6 +126,20 @@ public class MainController {
 				SummonerNameViewPanel.getInstance().setRegion(
 						Region.valueOf(Config.getInstance().getProperty(
 								"REGION")));
+			}
+			if (initAction.contains(InitializeAction.FETCH_IDS)) {
+				int[] id = Config.getInstance().getSummonerIdByNameAndRegion(
+						Config.getInstance().getProperty("SUMMONER_NAME"),
+						Region.valueOf(Config.getInstance().getProperty("REGION")));
+				if (id[0] != 0) {
+					Config.getInstance().setProperty("SUMMONER_ID",
+							String.valueOf(id[0]));
+				}
+				if (id[1] != 0) {
+					Config.getInstance().setProperty("ACCOUNT_ID",
+							String.valueOf(id[1]));
+				}
+				Config.getInstance().saveChanges();
 			}
 			mainView.refresh();
 			SwingUtilities.invokeLater(mainView);

@@ -1,4 +1,4 @@
-package de.phyberapex.diaryoflegends.export;
+package de.phyberapex.diaryoflegends.action;
 
 import java.io.File;
 import java.io.FileWriter;

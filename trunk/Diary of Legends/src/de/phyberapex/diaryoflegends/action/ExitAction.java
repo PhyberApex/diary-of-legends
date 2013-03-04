@@ -1,4 +1,4 @@
-package de.phyberapex.diaryoflegends;
+package de.phyberapex.diaryoflegends.action;
 
 import java.awt.event.ActionEvent;
 

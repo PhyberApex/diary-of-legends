@@ -4001,7 +4001,7 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 									m.getMyStartItems().get(4).getAmount());
 							getMyItem5Box().setSelectedItem(
 									m.getMyStartItems().get(4).getItem());
-							if (m.getMyStartItems().size() >= 5) {
+							if (m.getMyStartItems().size() >= 6) {
 								getMyItem6AmountSpinner().setValue(
 										m.getMyStartItems().get(5).getAmount());
 								getMyItem6Box().setSelectedItem(
@@ -4037,7 +4037,7 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 									m.getMyEndItems().get(4).getAmount());
 							getMyEndItem5Box().setSelectedItem(
 									m.getMyEndItems().get(4).getItem());
-							if (m.getMyEndItems().size() >= 5) {
+							if (m.getMyEndItems().size() >= 6) {
 								getMyEndItem6AmountSpinner().setValue(
 										m.getMyEndItems().get(5).getAmount());
 								getMyEndItem6Box().setSelectedItem(
