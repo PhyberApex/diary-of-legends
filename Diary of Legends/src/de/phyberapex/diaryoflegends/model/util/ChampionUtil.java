@@ -15,6 +15,8 @@ import de.phyberapex.diaryoflegends.base.Config;
 import de.phyberapex.diaryoflegends.model.Champion;
 import de.phyberapex.diaryoflegends.model.GameStatistic;
 import de.phyberapex.diaryoflegends.model.Game;
+import de.phyberapex.diaryoflegends.model.Statistics;
+import de.phyberapex.diaryoflegends.model.Top3EnemyStatistics;
 
 /**
  * This class is used to save and retrive champions
@@ -143,7 +145,7 @@ public class ChampionUtil {
 	/**
 	 * @return
 	 */
-	public static HashMap<String, GameStatistic> getMostXXXStat(
+	public static HashMap<String, GameStatistic> getGameStats(
 			final String search) {
 		logger.trace("getMostXXXStat() - Entering");
 		logger.debug("getMostXXXStat() - Parameter: {}", search);
@@ -269,6 +271,16 @@ public class ChampionUtil {
 		returnValue.put("champsFound", stat);
 		logger.trace("getMostXXXStat() - Returning");
 		logger.debug("getMostXXXStat() - Returning {}", returnValue);
+		return returnValue;
+	}
+
+	/**
+	 * @param parameter
+	 * @return
+	 */
+	public static Top3EnemyStatistics getTop3Enemies(String parameter) {
+		Top3EnemyStatistics returnValue = new Top3EnemyStatistics();
+		
 		return returnValue;
 	}
 }

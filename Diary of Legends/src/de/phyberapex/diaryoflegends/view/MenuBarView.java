@@ -228,7 +228,7 @@ public class MenuBarView extends JMenuBar implements View {
 		logger.trace("getImportLastMatchItem() - Entering");
 		if (this.importLastMatchItem == null) {
 			this.importLastMatchItem = new JMenuItem(
-					"Import most recent match...");
+					"Import last 10 matches...");
 			this.importLastMatchItem
 					.setToolTipText("Only available if you entered your summonername and your summoner id and account id have been fetched(online)");
 			this.importLastMatchItem.addActionListener(new ActionListener() {
@@ -250,7 +250,7 @@ public class MenuBarView extends JMenuBar implements View {
 	private JMenuItem getExportItem() {
 		logger.trace("getExportItem() - Entering");
 		if (this.exportItem == null) {
-			this.exportItem = new JMenuItem("Export");
+			this.exportItem = new JMenuItem("Export...");
 			this.exportItem.addActionListener(new ActionListener() {
 
 				@Override
