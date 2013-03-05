@@ -143,6 +143,8 @@ public class ImportLastMatchAction implements Runnable {
 						y++;
 					}
 				}
+			}else{
+				MainView.getInstance().setStatusText("Import not possible, API may be under maintenance");
 			}
 		} catch (ChampionNotFoundException | ItemNotFoundException
 				| IOException e) {
