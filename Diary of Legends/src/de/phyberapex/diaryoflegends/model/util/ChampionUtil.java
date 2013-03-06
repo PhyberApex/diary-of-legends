@@ -13,10 +13,10 @@ import com.db4o.query.Predicate;
 
 import de.phyberapex.diaryoflegends.base.Config;
 import de.phyberapex.diaryoflegends.model.Champion;
-import de.phyberapex.diaryoflegends.model.GameStatistic;
 import de.phyberapex.diaryoflegends.model.Game;
-import de.phyberapex.diaryoflegends.model.Statistics;
-import de.phyberapex.diaryoflegends.model.Top3EnemyStatistics;
+import de.phyberapex.diaryoflegends.model.Matchup;
+import de.phyberapex.diaryoflegends.model.stats.GameStatistic;
+import de.phyberapex.diaryoflegends.model.stats.Top3EnemyStatistics;
 
 /**
  * This class is used to save and retrive champions
@@ -147,8 +147,8 @@ public class ChampionUtil {
 	 */
 	public static HashMap<String, GameStatistic> getGameStats(
 			final String search) {
-		logger.trace("getMostXXXStat() - Entering");
-		logger.debug("getMostXXXStat() - Parameter: {}", search);
+		logger.trace("getGameStats() - Entering");
+		logger.debug("getGameStats() - Parameter: {}", search);
 		HashMap<String, GameStatistic> returnValue = new HashMap<>();
 		Champion chmpCS = new Champion(0, "no champion found", null);
 		int cs = 0;
@@ -269,8 +269,8 @@ public class ChampionUtil {
 		GameStatistic stat = new GameStatistic(null, avgCS.size());
 		stat.setFoundChamps(list);
 		returnValue.put("champsFound", stat);
-		logger.trace("getMostXXXStat() - Returning");
-		logger.debug("getMostXXXStat() - Returning {}", returnValue);
+		logger.trace("getGameStats() - Returning");
+		logger.debug("getGameStats() - Returning {}", returnValue);
 		return returnValue;
 	}
 
@@ -278,9 +278,136 @@ public class ChampionUtil {
 	 * @param parameter
 	 * @return
 	 */
-	public static Top3EnemyStatistics getTop3Enemies(String parameter) {
-		Top3EnemyStatistics returnValue = new Top3EnemyStatistics();
-		
+	public static Top3EnemyStatistics getTop3Enemies(final String parameter) {
+		logger.trace("getTop3Enemies() - Entering");
+		logger.debug("getTop3Enemies() - Parameter: {}", parameter);
+		ObjectSet<Matchup> set = dbHandle.query(new Predicate<Matchup>() {
+
+			private static final long serialVersionUID = -6535736734146443615L;
+
+			@Override
+			public boolean match(Matchup arg0) {
+				for (String s : parameter.split(";")) {
+					if (arg0.getMyChamp().getName().contains((s))) {
+						return true;
+					}
+				}
+				return false;
+			}
+		});
+		HashMap<Champion, String> myChamps = new HashMap<>();
+		HashMap<Champion, double[]> champsWithDiff = new HashMap<>();
+		while (set.hasNext()) {
+			Matchup matchup = set.next();
+			myChamps.put(matchup.getMyChamp(), "");
+			logger.debug("Current own champion {} added to list",
+					matchup.getMyChamp());
+			if (champsWithDiff.containsKey(matchup.getEnemyChamp())) {
+				logger.debug(
+						"Enemy champion {} already in list calculating new avg difficulty",
+						matchup.getEnemyChamp());
+				double currentDifficulty = champsWithDiff.get(matchup
+						.getEnemyChamp())[0];
+				logger.debug("Current avg difficulty of this champ {}",
+						currentDifficulty);
+				double matches = champsWithDiff.get(matchup.getEnemyChamp())[1];
+				logger.debug("Current amount of matches of this champ {}",
+						matches);
+				currentDifficulty = (currentDifficulty + matchup
+						.getDifficulty().getValue() / matches) / 2;
+				logger.debug("New difficulty of this champ {}",
+						currentDifficulty);
+				matches++;
+				logger.debug("New amount of matches of this champ {}", matches);
+				champsWithDiff.put(matchup.getEnemyChamp(), new double[] {
+						currentDifficulty, matches });
+			} else {
+				logger.debug(
+						"Enemy champion {} not in list adding with 1 match and difficulty {}",
+						matchup.getEnemyChamp(), matchup.getDifficulty()
+								.getValue());
+				champsWithDiff.put(matchup.getEnemyChamp(), new double[] {
+						matchup.getDifficulty().getValue(), 1 });
+			}
+		}
+		List<Champion> top3 = new ArrayList<>();
+		for (Entry<Champion, double[]> e : champsWithDiff.entrySet()) {
+			if (top3.size() < 3) {
+				logger.debug("Top3 smaller then 3");
+				if (top3.size() < 2) {
+					logger.debug("Top3 smaller then 2");
+					if (top3.size() < 1) {
+						logger.debug("Top3 smaller then 1 adding");
+						top3.add(e.getKey());
+					} else {
+						if (champsWithDiff.get(top3.get(0))[0] < e.getValue()[0]) {
+							logger.debug("new champions difficulty is higher then the one of currently number 1. Switching places");
+							top3.add(top3.get(0));
+							top3.set(0, e.getKey());
+						} else {
+							logger.debug("new champions difficulty is lower then the one of currently number 1. Adding");
+							top3.add(e.getKey());
+						}
+					}
+				} else {
+					if (champsWithDiff.get(top3.get(1))[0] < e.getValue()[0]) {
+						logger.debug("new champions difficulty is higher then the one of currently number 2. Adding number 2 as number 3");
+						top3.add(top3.get(1));
+						if (champsWithDiff.get(top3.get(0))[0] < e.getValue()[0]) {
+							logger.debug("new champions difficulty is higher then the one of currently number 1. Setting currently number 1 as number 2 and the new one as number 1");
+							top3.set(1, top3.get(0));
+							top3.set(0, e.getKey());
+						} else {
+							logger.debug("new champions difficulty is lower then the one of currently number 1. Setting the new one as 2");
+							top3.set(1, e.getKey());
+						}
+					} else {
+						logger.debug("new champions difficulty is lower then the one of currently number 2. Adding");
+						top3.add(e.getKey());
+					}
+				}
+			} else if (e.getValue()[0] > champsWithDiff.get(top3.get(2))[0]) {
+				logger.debug("new champions difficulty is higher then the one of currently number 3");
+				if (e.getValue()[0] > champsWithDiff.get(top3.get(1))[0]) {
+					logger.debug("new champions difficulty is higher then the one of currently number 2");
+					if (e.getValue()[0] > champsWithDiff.get(top3.get(0))[0]) {
+						logger.debug("new champions difficulty is higher then the one of currently number 1. Setting number 2 as 3, 1 as 2 and the new one as 1");
+						top3.set(2, top3.get(1));
+						top3.set(1, top3.get(0));
+						top3.set(0, e.getKey());
+					} else {
+						logger.debug("new champions difficulty is lower then the one of currently number 1. Setting number 2 as 3 and the new one as 2");
+						top3.set(2, top3.get(1));
+						top3.set(1, e.getKey());
+					}
+				} else {
+					logger.debug("new champions difficulty is lower then the one of currently number 2. Setting the new one as 3");
+					top3.set(2, e.getKey());
+				}
+			}
+		}
+		List<Champion> myChampsList = new ArrayList<>();
+		for (Entry<Champion, String> e : myChamps.entrySet()) {
+			myChampsList.add(e.getKey());
+		}
+		Top3EnemyStatistics returnValue = null;
+		if (top3.size() == 3) {
+			returnValue = new Top3EnemyStatistics(myChampsList, top3.get(0),
+					champsWithDiff.get(top3.get(0))[0], top3.get(1),
+					champsWithDiff.get(top3.get(1))[0], top3.get(2),
+					champsWithDiff.get(top3.get(2))[0]);
+		}
+		logger.trace("getTop3Enemies() - Returning");
+		logger.debug("getTop3Enemies() - Returning {}", returnValue);
 		return returnValue;
+	}
+
+	/**
+	 * @param parameter
+	 * @return
+	 */
+	public static List<Top3EnemyStatistics> getTop3EnemiesPerChamp(String parameter) {
+		
+		return null;
 	}
 }

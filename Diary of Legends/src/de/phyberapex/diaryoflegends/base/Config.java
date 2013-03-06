@@ -31,7 +31,7 @@ public class Config {
 	private static Config instance;
 	private Properties prop;
 	private ObjectContainer dbHandle;
-	private Summoner currentSummoner;
+	private Summoner currentSummoner = new Summoner("");
 	private ObjectServer server;
 	transient private static Logger logger = LogManager.getLogger(Config.class
 			.getName());
@@ -67,6 +67,7 @@ public class Config {
 		try {
 			logger.info("Configuration file found loading it");
 			this.prop.load(reader);
+			this.currentSummoner.setName(getProperty("SUMMONER_NAME"));
 		} catch (IOException e) {
 			logger.error(e.getMessage());
 		}
@@ -85,6 +86,9 @@ public class Config {
 		logger.trace("setProperty() - Entering");
 		logger.debug("setProperty() - Parameter: key = {}, value = {}", key,
 				value);
+		if (key == "SUMMONER_NAME") {
+			this.currentSummoner.setName(value);
+		}
 		prop.setProperty(key, value);
 		logger.trace("setProperty() - Leaving");
 	}
@@ -185,7 +189,7 @@ public class Config {
 		logger.trace("getSummonerIdByNameAndRegion() - Entering");
 		logger.debug("getSummonerIdByNameAndRegion() - Parameter: {}, {}",
 				summonerName, region);
-		int[] returnValue = {0,0};
+		int[] returnValue = { 0, 0 };
 		try {
 			URLConnection con = new URL("http://api.elophant.com/v2/"
 					+ region.name() + "/summoner/" + summonerName + "?key="
@@ -200,7 +204,8 @@ public class Config {
 			in.close();
 			JSONObject data = new JSONObject(json);
 			if (data.getBoolean("success")) {
-				returnValue[0] = data.getJSONObject("data").getInt("summonerId");
+				returnValue[0] = data.getJSONObject("data")
+						.getInt("summonerId");
 				returnValue[1] = data.getJSONObject("data").getInt("acctId");
 			}
 		} catch (IOException e) {

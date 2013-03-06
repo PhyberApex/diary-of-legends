@@ -1,14 +1,16 @@
 package de.phyberapex.diaryoflegends.controller;
 
 import java.util.HashMap;
+import java.util.List;
+
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import de.phyberapex.diaryoflegends.model.GameStatistic;
-import de.phyberapex.diaryoflegends.model.StatisticTypes;
-import de.phyberapex.diaryoflegends.model.Statistics;
-import de.phyberapex.diaryoflegends.model.Top3EnemyStatistics;
+
+import de.phyberapex.diaryoflegends.model.stats.GameStatistic;
+import de.phyberapex.diaryoflegends.model.stats.StatisticTypes;
+import de.phyberapex.diaryoflegends.model.stats.Top3EnemyStatistics;
 import de.phyberapex.diaryoflegends.model.util.ChampionUtil;
 import de.phyberapex.diaryoflegends.view.StatsView;
 import de.phyberapex.diaryoflegends.view.panel.stats.DefaultStatsPanel;
@@ -57,17 +59,17 @@ public class StatsController extends Controller {
 		result.add(new JLabel("Comming soon(TM)"));
 		switch (itemAt) {
 		case TOP_3_HARDEST_ENEMY_MULTIPLE_CHAMPS:
-			Top3EnemyStatistics stats = ChampionUtil.getTop3Enemies(parameter);
-			result = new Top3EnemiesPanel(stats);
+			Top3EnemyStatistics statsTop3 = ChampionUtil.getTop3Enemies(parameter);
+			result = new Top3EnemiesPanel(statsTop3);
 			break;
 		case TOP_3_HARDEST_ENEMY_PER_CHAMPS:
+			List<Top3EnemyStatistics> statsTop3Champ = ChampionUtil.getTop3EnemiesPerChamp(parameter);
+			//result = new Top3EnemiesPerChampPanel(statsTop3Champ);
 			break;
 		case DEFAULT_STATS:
 		default:
-			Statistics statsGame = new Statistics();
-			HashMap<String, GameStatistic> mostXXX = ChampionUtil
+			HashMap<String, GameStatistic> statsGame = ChampionUtil
 					.getGameStats(parameter);
-			statsGame.addStats("mostXXX", mostXXX);
 			result = new DefaultStatsPanel(statsGame);
 			break;
 		}
