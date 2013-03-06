@@ -3,7 +3,7 @@ package de.phyberapex.diaryoflegends.action;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import de.phyberapex.diaryoflegends.controller.StatsController;
-import de.phyberapex.diaryoflegends.model.StatisticTypes;
+import de.phyberapex.diaryoflegends.model.stats.StatisticTypes;
 import de.phyberapex.diaryoflegends.view.MainView;
 
 public class CreateStatsAction implements Runnable {

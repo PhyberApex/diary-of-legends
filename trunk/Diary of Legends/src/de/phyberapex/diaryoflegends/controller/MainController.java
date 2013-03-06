@@ -8,6 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import de.phyberapex.diaryoflegends.action.ExitAction;
+import de.phyberapex.diaryoflegends.action.RefreshSummonerInfoAction;
 import de.phyberapex.diaryoflegends.base.Config;
 import de.phyberapex.diaryoflegends.base.InitializeAction;
 import de.phyberapex.diaryoflegends.base.Initializer;
@@ -130,7 +131,8 @@ public class MainController {
 			if (initAction.contains(InitializeAction.FETCH_IDS)) {
 				int[] id = Config.getInstance().getSummonerIdByNameAndRegion(
 						Config.getInstance().getProperty("SUMMONER_NAME"),
-						Region.valueOf(Config.getInstance().getProperty("REGION")));
+						Region.valueOf(Config.getInstance().getProperty(
+								"REGION")));
 				if (id[0] != 0) {
 					Config.getInstance().setProperty("SUMMONER_ID",
 							String.valueOf(id[0]));
@@ -142,6 +144,8 @@ public class MainController {
 				Config.getInstance().saveChanges();
 			}
 			mainView.refresh();
+			Thread tr = new Thread(RefreshSummonerInfoAction.getInstance());
+			tr.start();
 			SwingUtilities.invokeLater(mainView);
 
 		} catch (InitializeException e) {
@@ -178,6 +182,7 @@ public class MainController {
 	 * Exits the appliaction
 	 */
 	public static void exit() {
+		RefreshSummonerInfoAction.getInstance().destroy();
 		ExitAction.getInstance().actionPerformed(null);
 	}
 

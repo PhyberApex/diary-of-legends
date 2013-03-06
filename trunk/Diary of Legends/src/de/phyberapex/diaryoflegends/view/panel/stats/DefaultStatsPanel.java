@@ -15,8 +15,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import de.phyberapex.diaryoflegends.extra.ImageIconFactory;
 import de.phyberapex.diaryoflegends.model.Champion;
-import de.phyberapex.diaryoflegends.model.GameStatistic;
-import de.phyberapex.diaryoflegends.model.Statistics;
+import de.phyberapex.diaryoflegends.model.stats.GameStatistic;
 
 public class DefaultStatsPanel extends JPanel {
 
@@ -74,14 +73,14 @@ public class DefaultStatsPanel extends JPanel {
 	private JLabel csTotalLabel = new JLabel("Total minions slain:");
 	private JLabel csTotalValueLabel;
 
-	private Statistics stats;
+	private HashMap<String, GameStatistic> stats;
 	private static Logger logger = LogManager.getLogger(DefaultStatsPanel.class
 			.getName());
 	private static final long serialVersionUID = 1L;
 
-	public DefaultStatsPanel(Statistics stats) {
+	public DefaultStatsPanel(HashMap<String, GameStatistic> statsGame) {
 		super(new GridBagLayout());
-		this.stats = stats;
+		this.stats = statsGame;
 		createGUI();
 		fillStats();
 	}
@@ -571,6 +570,7 @@ public class DefaultStatsPanel extends JPanel {
 			champsValueBox = new JList<Champion>();
 			champsValueBox.setLayoutOrientation(JList.VERTICAL);
 			champsValueBox.setVisibleRowCount(4);
+			champsValueBox.setEnabled(false);
 		}
 		logger.trace("getChampsValueBox() - Returning");
 		logger.debug("getChampsValueBox() - Returning: {}", champsValueBox);
@@ -738,11 +738,7 @@ public class DefaultStatsPanel extends JPanel {
 	}
 
 	private void fillStats() {
-		@SuppressWarnings("unchecked")
-		HashMap<String, GameStatistic> mostStats = (HashMap<String, GameStatistic>) stats
-				.getStats().get("mostXXX");
-
-		GameStatistic mostKills = mostStats.get("mostKills");
+		GameStatistic mostKills = stats.get("mostKills");
 		if (mostKills.getChampion().getId() != 0) {
 			getMostKillsOneGameValueLabel().setIcon(
 					ImageIconFactory.resizeImageIcon(mostKills.getChampion()
@@ -753,7 +749,7 @@ public class DefaultStatsPanel extends JPanel {
 					String.valueOf(mostKills.getValue()) + " kill(s)");
 		}
 
-		GameStatistic mostAvgKills = mostStats.get("mostAvgKills");
+		GameStatistic mostAvgKills = stats.get("mostAvgKills");
 		if (mostAvgKills.getChampion().getId() != 0) {
 			getMostKillsAvgValueLabel().setIcon(
 					ImageIconFactory.resizeImageIcon(mostAvgKills.getChampion()
@@ -764,7 +760,7 @@ public class DefaultStatsPanel extends JPanel {
 					String.valueOf(mostAvgKills.getValue()) + " kill(s)");
 		}
 
-		GameStatistic mostDeaths = mostStats.get("mostDeaths");
+		GameStatistic mostDeaths = stats.get("mostDeaths");
 		if (mostDeaths.getChampion().getId() != 0) {
 			getMostDeathsOneGameValueLabel().setIcon(
 					ImageIconFactory.resizeImageIcon(mostDeaths.getChampion()
@@ -775,7 +771,7 @@ public class DefaultStatsPanel extends JPanel {
 					String.valueOf(mostDeaths.getValue()) + " death(s)");
 		}
 
-		GameStatistic mostAvgDeaths = mostStats.get("mostAvgDeaths");
+		GameStatistic mostAvgDeaths = stats.get("mostAvgDeaths");
 		if (mostAvgDeaths.getChampion().getId() != 0) {
 			getMostDeathsAvgValueLabel().setIcon(
 					ImageIconFactory.resizeImageIcon(mostAvgDeaths
@@ -786,7 +782,7 @@ public class DefaultStatsPanel extends JPanel {
 					String.valueOf(mostAvgDeaths.getValue()) + " deaths(s)");
 		}
 
-		GameStatistic mostAssists = mostStats.get("mostAssists");
+		GameStatistic mostAssists = stats.get("mostAssists");
 		if (mostAssists.getChampion().getId() != 0) {
 			getMostAssistsOneGameValueLabel().setIcon(
 					ImageIconFactory.resizeImageIcon(mostAssists.getChampion()
@@ -797,7 +793,7 @@ public class DefaultStatsPanel extends JPanel {
 					String.valueOf(mostAssists.getValue()) + " assist(s)");
 		}
 
-		GameStatistic mostAvgAssists = mostStats.get("mostAvgAssists");
+		GameStatistic mostAvgAssists = stats.get("mostAvgAssists");
 		if (mostAvgAssists.getChampion().getId() != 0) {
 			getMostAssistsAvgValueLabel().setIcon(
 					ImageIconFactory.resizeImageIcon(mostAvgAssists
@@ -808,7 +804,7 @@ public class DefaultStatsPanel extends JPanel {
 					String.valueOf(mostAvgAssists.getValue()) + " assist(s)");
 		}
 
-		GameStatistic mostCS = mostStats.get("mostCS");
+		GameStatistic mostCS = stats.get("mostCS");
 		if (mostCS.getChampion().getId() != 0) {
 			getMostCSOneGameValueLabel().setIcon(
 					ImageIconFactory.resizeImageIcon(mostCS.getChampion()
@@ -819,7 +815,7 @@ public class DefaultStatsPanel extends JPanel {
 					String.valueOf(mostCS.getValue()) + " creep kills");
 		}
 
-		GameStatistic mostAvgCS = mostStats.get("mostAvgCS");
+		GameStatistic mostAvgCS = stats.get("mostAvgCS");
 		if (mostAvgCS.getChampion().getId() != 0) {
 			getMostCSAvgValueLabel().setIcon(
 					ImageIconFactory.resizeImageIcon(mostAvgCS.getChampion()
@@ -830,7 +826,7 @@ public class DefaultStatsPanel extends JPanel {
 					String.valueOf(mostAvgCS.getValue()) + " creep kills");
 		}
 
-		GameStatistic mostGames = mostStats.get("mostGames");
+		GameStatistic mostGames = stats.get("mostGames");
 		if (mostGames.getChampion().getId() != 0) {
 			getMostGamesValueLabel().setIcon(
 					ImageIconFactory.resizeImageIcon(mostGames.getChampion()
@@ -840,20 +836,20 @@ public class DefaultStatsPanel extends JPanel {
 			getMostGamesValueLabel().setText(
 					String.valueOf(mostGames.getValue()) + " game(s) played");
 		}
-		GameStatistic foundChamps = mostStats.get("champsFound");
+		GameStatistic foundChamps = stats.get("champsFound");
 		getChampsValueBox().setModel(
 				new DefaultComboBoxModel<Champion>(foundChamps.getFoundChamps()
 						.toArray(new Champion[] {})));
 		getGameTotalValueLabel().setText(
-				String.valueOf(mostStats.get("gamesTotal").getValue()));
+				String.valueOf(stats.get("gamesTotal").getValue()));
 		getKillsTotalValueLabel().setText(
-				String.valueOf(mostStats.get("killsTotal").getValue()));
+				String.valueOf(stats.get("killsTotal").getValue()));
 		getDeathsTotalValueLabel().setText(
-				String.valueOf(mostStats.get("deathsTotal").getValue()));
+				String.valueOf(stats.get("deathsTotal").getValue()));
 		getAssistsTotalValueLabel().setText(
-				String.valueOf(mostStats.get("assistsTotal").getValue()));
+				String.valueOf(stats.get("assistsTotal").getValue()));
 		getCsTotalValueLabel().setText(
-				String.valueOf(mostStats.get("minionsSlain").getValue()));
+				String.valueOf(stats.get("minionsSlain").getValue()));
 
 	}
 }

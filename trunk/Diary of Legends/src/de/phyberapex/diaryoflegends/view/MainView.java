@@ -1,7 +1,8 @@
 package de.phyberapex.diaryoflegends.view;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -11,6 +12,8 @@ import javax.swing.JLabel;
 import javax.swing.JTabbedPane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import de.phyberapex.diaryoflegends.base.Config;
 import de.phyberapex.diaryoflegends.base.Constants;
 import de.phyberapex.diaryoflegends.controller.MainController;
 
@@ -21,6 +24,7 @@ public class MainView extends JFrame implements View, Runnable {
 	private static MainView instance;
 	private MenuBarView menu;
 	private JLabel statusLabel;
+	private JLabel summonerInfoLabel;
 	private JTabbedPane contentPane;
 	private static Logger logger = LogManager.getLogger(MainView.class
 			.getName());
@@ -44,9 +48,27 @@ public class MainView extends JFrame implements View, Runnable {
 				+ Constants.getAppVersion());
 		this.setMinimumSize(new Dimension(420, 520));
 		this.setJMenuBar(getMenuBarView());
-		this.setLayout(new BorderLayout());
-		this.add(getContentTabbedPane(), BorderLayout.CENTER);
-		this.add(getStatusLabel(), BorderLayout.SOUTH);
+		this.setLayout(new GridBagLayout());
+		GridBagConstraints constraints = new GridBagConstraints();
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		constraints.gridwidth = 2;
+		constraints.fill = GridBagConstraints.BOTH;
+		constraints.weightx = 1;
+		constraints.weighty = 1;
+		this.add(getContentTabbedPane(), constraints);
+
+		constraints = new GridBagConstraints();
+		constraints.gridx = 0;
+		constraints.gridy = 1;
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.weightx = 1;
+		this.add(getStatusLabel(), constraints);
+
+		constraints = new GridBagConstraints();
+		constraints.gridx = 1;
+		constraints.gridy = 1;
+		this.add(getSummonerInfoLabel(), constraints);
 		logger.trace("createGui() - Leaving");
 	}
 
@@ -101,6 +123,19 @@ public class MainView extends JFrame implements View, Runnable {
 		return statusLabel;
 	}
 
+	public JLabel getSummonerInfoLabel() {
+		logger.trace("getSummonerInfoLabel() - Entering");
+		if (summonerInfoLabel == null) {
+			summonerInfoLabel = new JLabel(Config.getInstance()
+					.getCurrentSummoner().getSummonerInfoString());
+			summonerInfoLabel.setBorder(BorderFactory.createBevelBorder(1));
+		}
+		logger.trace("getSummonerInfoLabel() - Returning");
+		logger.debug("getSummonerInfoLabel() - Returning: {}",
+				summonerInfoLabel);
+		return summonerInfoLabel;
+	}
+
 	public void setMatchupPanel(MatchupView comp) {
 		logger.trace("setMatchupPanel() - Entering");
 		logger.debug("setMatchupPanel() - Parameter: {}", comp);
@@ -146,5 +181,15 @@ public class MainView extends JFrame implements View, Runnable {
 		logger.debug("setStatsPanel() - Parameter: {}", view);
 		getContentTabbedPane().setComponentAt(1, view);
 		logger.trace("setStatsPanel() - Leaving");
+	}
+
+	/**
+	 * @param summonerInfoString
+	 */
+	public void setSummonerInfo(String summonerInfoString) {
+		logger.trace("getSummonerInfoLabel() - Entering");
+		logger.debug("getSummonerInfoLabel() - Parameter: {}",
+				summonerInfoString);
+		getSummonerInfoLabel().setText(summonerInfoString);
 	}
 }
