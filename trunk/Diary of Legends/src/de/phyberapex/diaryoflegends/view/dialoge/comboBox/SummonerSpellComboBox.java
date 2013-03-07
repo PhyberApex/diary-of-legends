@@ -21,7 +21,7 @@ public class SummonerSpellComboBox extends JComboBox<SummonerSpell> {
 
 	private void setPrototype() {
 		setPrototypeDisplayValue(new SummonerSpell(0,
-				"just some puffer textxxxxx", null));
+				"just some puffer textxxxxx"));
 		Accessible a = getUI().getAccessibleChild(this, 0);
 		if (a instanceof javax.swing.plaf.basic.ComboPopup) {
 			@SuppressWarnings("unchecked")

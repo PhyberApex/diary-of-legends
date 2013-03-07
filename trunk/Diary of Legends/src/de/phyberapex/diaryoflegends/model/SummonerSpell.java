@@ -1,6 +1,9 @@
 package de.phyberapex.diaryoflegends.model;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.URL;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -15,19 +18,15 @@ public class SummonerSpell extends Model {
 
 	private int id;
 	private String name;
-	private byte[] icon;
-	transient ImageIcon icon30x30;
+	transient ImageIcon icon;
 	transient private static Logger logger = LogManager
 			.getLogger(SummonerSpell.class.getName());
 
-	public SummonerSpell(int id, String name, File icon) {
+	public SummonerSpell(int id, String name) {
 		logger.trace("SummonerSpell() - Entering");
 		logger.debug("SummonerSpell() - Parameter: {}, {}, {}", id, name, icon);
 		this.id = id;
 		this.setName(name);
-		if (icon != null) {
-			this.setIcon(icon);
-		}
 		logger.trace("SummonerSpell() - Leaving");
 	}
 
@@ -90,26 +89,46 @@ public class SummonerSpell extends Model {
 	 * @return {@link ImageIcon} The image for this spell
 	 */
 	public ImageIcon getIcon() {
-		logger.trace("getName() - Entering");
+		logger.trace("getIcon() - Entering");
 		ImageIcon img = null;
-		if (icon != null) {
-			img = ConvertImage.convertByteArrayToImageIcon(icon);
+		if (id != 0) {
+			if (icon != null) {
+				img = icon;
+			} else {
+				img = ImageIconFactory.createImageIcon(System
+						.getProperty("user.dir")
+						+ "/img/summonerspells/"
+						+ this.getId() + ".png");
+			}
+			if (img.getIconHeight() <= 0) {
+				try {
+					byte[] tmp = ConvertImage.convertUrlToByteArray(new URL(
+							"http://img.lolking.net/images/spells/" + getId()
+									+ ".png"));
+					File f = new File(System.getProperty("user.dir")
+							+ "/img/items/" + getId() + ".png");
+					FileOutputStream fou = new FileOutputStream(f);
+					fou.write(tmp);
+					fou.close();
+				} catch (IOException e) {
+					logger.error("Couln't write icon:" + e.getMessage());
+				}
+				img = ImageIconFactory.createImageIcon(System
+						.getProperty("user.dir")
+						+ "/img/summonerspells/"
+						+ this.getId() + ".png");
+				if (img.getIconHeight() <= 0) {
+					img = ImageIconFactory
+							.createImageIconFromResourePath("img/empty_60x60.png");
+				}
+			}
+		} else {
+			img = ImageIconFactory
+					.createImageIconFromResourePath("img/empty_60x60.png");
 		}
-		logger.trace("getName() - Returning");
-		logger.debug("getName() - Returning: {}", img);
+		logger.trace("getIcon() - Returning");
+		logger.debug("getIcon() - Returning: {}", img);
 		return img;
-	}
-
-	/**
-	 * Returns the raw byte array of the icon
-	 * 
-	 * @return {@link byte[]}
-	 */
-	public byte[] getIconRaw() {
-		logger.trace("getIconRaw() - Entering");
-		logger.trace("getIconRaw() - Returning");
-		logger.debug("getIconRaw() - Returning: {}", icon);
-		return icon;
 	}
 
 	/**
@@ -118,10 +137,22 @@ public class SummonerSpell extends Model {
 	 * @param file
 	 *            {@link File} The file from which the image will be created
 	 */
-	public void setIcon(File file) {
+	public void setIcon(URL url) {
 		logger.trace("setIcon() - Entering");
-		logger.debug("setIcon() - Parameter: {}", file);
-		this.icon = ConvertImage.convertFileToByteArray(file);
+		logger.debug("setIcon() - Parameter: {}", url);
+		if (id != 0) {
+			byte[] tmp = ConvertImage.convertUrlToByteArray(url);
+			File f = new File(System.getProperty("user.dir")
+					+ "/img/summonerspells/" + getId() + ".png");
+			try {
+				FileOutputStream fou = new FileOutputStream(f);
+				fou.write(tmp);
+				fou.close();
+			} catch (IOException e) {
+				logger.error("Couln't write icon:" + e.getMessage());
+			}
+		}
+		this.icon = new ImageIcon(url);
 		logger.trace("setIcon() - Leaving");
 	}
 
@@ -155,10 +186,7 @@ public class SummonerSpell extends Model {
 	/**
 	 * @return
 	 */
-	public Icon get30x30Icon() {
-		if (icon30x30 == null) {
-			icon30x30 = ImageIconFactory.resizeImageIcon(getIcon(), 30, 30);
-		}
-		return icon30x30;
+	public Icon getResizeIcon(int res) {
+		return ImageIconFactory.resizeImageIcon(getIcon(), res, res);
 	}
 }

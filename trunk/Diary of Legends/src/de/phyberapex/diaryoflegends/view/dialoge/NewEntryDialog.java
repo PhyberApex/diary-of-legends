@@ -3849,10 +3849,10 @@ public class NewEntryDialog extends JDialog implements Runnable {
 			allItems.add(item);
 		}
 		allSpells = new ArrayList<SummonerSpell>();
-		SummonerSpell s = new SummonerSpell(0, "no spell", null);
+		SummonerSpell s = new SummonerSpell(0, "no spell");
 		allSpells.add(s);
 		allSpells.addAll(SummonerSpellUtil.getAllSpells());
-		this.setTitle("New Game");
+		this.setTitle("New game");
 		this.setModal(true);
 		this.setResizable(false);
 		this.setContentPane(getNewEntryContentPane());
@@ -3862,6 +3862,7 @@ public class NewEntryDialog extends JDialog implements Runnable {
 	}
 
 	private void clearFields() {
+		this.setTitle("New game");
 		toEdit = null;
 		isImport = false;
 		getNewEntryContentPane().setSelectedIndex(0);
@@ -3945,6 +3946,11 @@ public class NewEntryDialog extends JDialog implements Runnable {
 
 	private void fillFields() {
 		logger.trace("fillFields() - Entering");
+		if (isImport) {
+			this.setTitle("Import game");
+		} else {
+			this.setTitle("Edit game");
+		}
 		getDateChooser().setDate(toEdit.getDate());
 		long lengthFull = toEdit.getLenght();
 		int lengthMin = (int) lengthFull / 60;
