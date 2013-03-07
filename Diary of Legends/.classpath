@@ -9,5 +9,6 @@
 	<classpathentry kind="lib" path="lib/db4o-8.0.249.16098-all-java5.jar"/>
 	<classpathentry kind="lib" path="lib/jgoodies-common-1.6.0.jar"/>
 	<classpathentry kind="lib" path="lib/jgoodies-looks-2.5.3.jar"/>
+	<classpathentry kind="lib" path="lib/json.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
