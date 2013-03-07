@@ -1,0 +1,2 @@
+= Export =
+You can export all your matches to import them later or for backup reasons. It will create a file called backup.dolex(*D* iary *O* f *L* egends *EX* port) in the directory of the application which contains all your data in the JSON format.
