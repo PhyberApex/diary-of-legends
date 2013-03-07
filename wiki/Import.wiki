@@ -1,0 +1,5 @@
+= Import =
+There are three import possibilities.
+ * Import a backup.dolex [ImportDolex more]
+ * Import from a `*`.rofl file(*R* eplay *OF* *L* egends) [ImportRofl more]
+ * Import form recent 10 matches [ImportRecent more]
