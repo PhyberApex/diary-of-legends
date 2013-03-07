@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="create_run_jar" name="Create Runnable Jar for Project Diary of Legends with libraries in sub-folder">
+	<property name="project-name" value="DiaryOfLegends" />
+	<property name="version" value="0.1" />
+	<property name="folder-to-zip" value="build/${version}/content/" />
+	<target name="create_run_jar">
+		<jar destfile="build/${version}/content/DiaryOfLegends.jar">
+			<manifest>
+				<attribute name="Main-Class" value="de.phyberapex.diaryoflegends.controller.MainController" />
+				<attribute name="Class-Path" value=". lib/log4j-api-2.0-beta3.jar lib/log4j-core-2.0-beta3.jar lib/db4o-8.0.249.16098-all-java5.jar lib/jcalendar-1.4.jar lib/jgoodies-common-1.6.0.jar lib/jgoodies-looks-2.5.3.jar" />
+			</manifest>
+			<fileset dir="bin" />
+		</jar>
+		<mkdir dir="${folder-to-zip}/db" />
+		<mkdir dir="${folder-to-zip}/img/champions" />
+		<mkdir dir="${folder-to-zip}/img/items" />
+		<mkdir dir="${folder-to-zip}/img/summonerspells" />
+		<copy todir="${folder-to-zip}" overwrite="true">
+			<fileset dir="">
+				<include name="gpl-3.0.txt" />
+				<include name="logconfig.xml" />
+				<include name="lib/*" />
+			</fileset>
+		</copy>
+		<delete file="build/${version}/${project-name}-${version}.zip" />
+		<zip destfile="build/${version}/${project-name}-${version}.zip" basedir="${folder-to-zip}" />
+	</target>
+</project>
