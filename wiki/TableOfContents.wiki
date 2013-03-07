@@ -6,3 +6,4 @@
      * [Top3MultChampStat Top 3 enemies for multiple champions]
    * [Export]
    * [Import]
+ * [Screenshots]
