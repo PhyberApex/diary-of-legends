@@ -684,6 +684,7 @@ public class MatchupDetailDialog extends JDialog implements Runnable {
 			setEnemyChampionAndItems(m);
 			this.getNotesTextarea().setText(m.getNotes());
 			Game g = m.getGame();
+			this.getGameNotesTextarea().setText(g.getNotes());
 			this.getKillsValueLabel().setText(String.valueOf(g.getOwnKills()));
 			this.getDeathsValueLabel()
 					.setText(String.valueOf(g.getOwnDeaths()));

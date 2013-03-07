@@ -3,6 +3,8 @@ package de.phyberapex.diaryoflegends.model;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -59,129 +61,151 @@ public class Summoner extends Model {
 		logger.trace("getSummonerInfoString() - Entering");
 		logger.trace("getSummonerInfoString() - Returning");
 		String returnValue = "";
-		if (this.getName() == null
-				|| Config.getInstance().getProperty("REGION") == null
-				|| Config.getInstance().getProperty("SUMMONER_ID") == null) {
-			returnValue = "no info available";
-		} else {
-			int[] id = Config.getInstance().getSummonerIdByNameAndRegion(
-					Config.getInstance().getProperty("SUMMONER_NAME"),
-					Region.valueOf(Config.getInstance().getProperty(
-							"REGION")));
-			if (id[0] != 0) {
-				Config.getInstance().setProperty("SUMMONER_ID",
-						String.valueOf(id[0]));
-			}
-			if (id[1] != 0) {
-				Config.getInstance().setProperty("ACCOUNT_ID",
-						String.valueOf(id[1]));
-			}
-			Config.getInstance().saveChanges();
-			returnValue += this.getName() + " | ";
-			returnValue += this.getLeagueForSummoner() + " | ";
-			int streak = this.getStreakForSummoner();
-			if (streak < 0) {
-				returnValue += "L" + streak;
-			} else if (streak > 0) {
-				returnValue += "W" + streak;
+		if (isInternetReachable()) {
+			if (this.getName() == null
+					|| Config.getInstance().getProperty("REGION") == null
+					|| Config.getInstance().getProperty("SUMMONER_ID") == null) {
+				returnValue = "no info available";
 			} else {
-				returnValue += "No streak";
+				if (Config.getInstance().getProperty("REGION") == null
+						|| Config.getInstance().getProperty("SUMMONER_ID") == null) {
+					int[] id = Config.getInstance()
+							.getSummonerIdByNameAndRegion(
+									Config.getInstance().getProperty(
+											"SUMMONER_NAME"),
+									Region.valueOf(Config.getInstance()
+											.getProperty("REGION")));
+					if (id[0] != 0) {
+						Config.getInstance().setProperty("SUMMONER_ID",
+								String.valueOf(id[0]));
+					}
+					if (id[1] != 0) {
+						Config.getInstance().setProperty("ACCOUNT_ID",
+								String.valueOf(id[1]));
+					}
+					Config.getInstance().saveChanges();
+				}
+				returnValue += this.getName() + " | ";
+				try {
+					returnValue += this.getLeagueForSummoner() + " | ";
+					int streak = this.getStreakForSummoner();
+					if (streak < 0) {
+						returnValue += "L" + streak;
+					} else if (streak > 0) {
+						returnValue += "W" + streak;
+					} else {
+						returnValue += "No streak";
+					}
+				} catch (IOException e) {
+					logger.error("Couldn't connect to the elophant api");
+					returnValue = "no info available";
+				}
 			}
 		}
+
 		logger.debug("getSummonerInfoString() - Returning: {}", returnValue);
 		return returnValue;
 	}
 
-	public int getStreakForSummoner() {
+	public int getStreakForSummoner() throws MalformedURLException, IOException {
 		int returnValue = 0;
-		try {
-			URLConnection con = new URL("http://api.elophant.com/v2/"
-					+ Config.getInstance().getProperty("REGION")
-					+ "/recent_games/"
-					+ Config.getInstance().getProperty("ACCOUNT_ID") + "?key="
-					+ Config.getInstance().getProperty("API_KEY"))
-					.openConnection();
-			BufferedReader in = new BufferedReader(new InputStreamReader(
-					con.getInputStream()));
-			String inputLine;
-			String json = "";
-			while ((inputLine = in.readLine()) != null)
-				json += inputLine;
-			in.close();
-			JSONObject data = new JSONObject(json);
-			if (data.getBoolean("success")) {
-				JSONArray games = data.getJSONObject("data").getJSONArray(
-						"gameStatistics");
-				for (int i = games.length() - 1; i >= 0; i--) {
-					if (games.getJSONObject(i).getBoolean("ranked")) {
-						for (int j = 0; j < games.getJSONObject(i)
-								.getJSONArray("statistics").length(); j++) {
+		URLConnection con = new URL("http://api.elophant.com/v2/"
+				+ Config.getInstance().getProperty("REGION") + "/recent_games/"
+				+ Config.getInstance().getProperty("ACCOUNT_ID") + "?key="
+				+ Config.getInstance().getProperty("API_KEY")).openConnection();
+		BufferedReader in = new BufferedReader(new InputStreamReader(
+				con.getInputStream()));
+		String inputLine;
+		String json = "";
+		while ((inputLine = in.readLine()) != null)
+			json += inputLine;
+		in.close();
+		JSONObject data = new JSONObject(json);
+		if (data.getBoolean("success")) {
+			JSONArray games = data.getJSONObject("data").getJSONArray(
+					"gameStatistics");
+			for (int i = games.length() - 1; i >= 0; i--) {
+				if (games.getJSONObject(i).getBoolean("ranked")) {
+					for (int j = 0; j < games.getJSONObject(i)
+							.getJSONArray("statistics").length(); j++) {
+						if (games.getJSONObject(i).getJSONArray("statistics")
+								.getJSONObject(j).getString("statType")
+								.equals("WIN")) {
 							if (games.getJSONObject(i)
 									.getJSONArray("statistics")
-									.getJSONObject(j).getString("statType")
-									.equals("WIN")) {
-								if (games.getJSONObject(i)
-										.getJSONArray("statistics")
-										.getJSONObject(j).getInt("value") == 1) {
-									if (returnValue < 0) {
-										returnValue = 0;
-									}
-									returnValue++;
-								} else {
-									if (returnValue > 0) {
-										returnValue = 0;
-									}
-									returnValue--;
+									.getJSONObject(j).getInt("value") == 1) {
+								if (returnValue < 0) {
+									returnValue = 0;
 								}
+								returnValue++;
+							} else {
+								if (returnValue > 0) {
+									returnValue = 0;
+								}
+								returnValue--;
 							}
 						}
 					}
 				}
 			}
-		} catch (Exception e) {
-			logger.debug("Error: {}" + e.getMessage());
-			logger.error("Couldn't connect to api.elophant.com summonerID and accountID not set");
 		}
 		return returnValue;
 	}
 
-	public String getLeagueForSummoner() {
+	public String getLeagueForSummoner() throws IOException {
 		logger.trace("getLeagueForSummoner() - Entering");
 		String returnValue = "";
-		try {
-			URLConnection con = new URL("http://api.elophant.com/v2/"
-					+ Config.getInstance().getProperty("REGION") + "/leagues/"
-					+ Config.getInstance().getProperty("SUMMONER_ID") + "?key="
-					+ Config.getInstance().getProperty("API_KEY"))
-					.openConnection();
-			BufferedReader in = new BufferedReader(new InputStreamReader(
-					con.getInputStream()));
-			String inputLine;
-			String json = "";
-			while ((inputLine = in.readLine()) != null)
-				json += inputLine;
-			in.close();
-			JSONObject data = new JSONObject(json);
-			if (data.getBoolean("success")) {
-				JSONArray leagues = data.getJSONObject("data").getJSONArray(
-						"summonerLeagues");
-				for (int i = 0; i < leagues.length(); i++) {
-					if (leagues.getJSONObject(i).getString("queue")
-							.equals("RANKED_SOLO_5x5")) {
-						returnValue += leagues.getJSONObject(i).getString(
-								"tier")
-								+ " ";
-						returnValue += leagues.getJSONObject(i).getString(
-								"requestorsRank");
-					}
+		URLConnection con = new URL("http://api.elophant.com/v2/"
+				+ Config.getInstance().getProperty("REGION") + "/leagues/"
+				+ Config.getInstance().getProperty("SUMMONER_ID") + "?key="
+				+ Config.getInstance().getProperty("API_KEY")).openConnection();
+		BufferedReader in = new BufferedReader(new InputStreamReader(
+				con.getInputStream()));
+		String inputLine;
+		String json = "";
+		while ((inputLine = in.readLine()) != null)
+			json += inputLine;
+		in.close();
+		JSONObject data = new JSONObject(json);
+		if (data.getBoolean("success")) {
+			JSONArray leagues = data.getJSONObject("data").getJSONArray(
+					"summonerLeagues");
+			for (int i = 0; i < leagues.length(); i++) {
+				if (leagues.getJSONObject(i).getString("queue")
+						.equals("RANKED_SOLO_5x5")) {
+					returnValue += leagues.getJSONObject(i).getString("tier")
+							+ " ";
+					returnValue += leagues.getJSONObject(i).getString(
+							"requestorsRank");
 				}
 			}
-		} catch (IOException e) {
-			logger.debug("Error: {}" + e.getMessage());
-			logger.error("Couldn't connect to api.elophant.com summonerID and accountID not set");
 		}
 		logger.trace("getLeagueForSummoner() - Returning");
 		logger.debug("getLeagueForSummoner() - Returning: {}", returnValue);
+		return returnValue;
+	}
+
+	public static boolean isInternetReachable() {
+		logger.trace("isInternetReachable() - Entering");
+		boolean returnValue = true;
+		try {
+			// make a URL to a known source
+			URL url = new URL("http://www.google.com");
+
+			// open a connection to that source
+			HttpURLConnection urlConnect = (HttpURLConnection) url
+					.openConnection();
+
+			// trying to retrieve data from the source. If there
+			// is no connection, this line will fail
+			urlConnect.getContent();
+
+		} catch (IOException e) {
+			logger.debug("No internet connection");
+			returnValue = false;
+		}
+		logger.trace("isInternetReachable() - Returning");
+		logger.debug("isInternetReachable() - Returning: {}", returnValue);
 		return returnValue;
 	}
 }
