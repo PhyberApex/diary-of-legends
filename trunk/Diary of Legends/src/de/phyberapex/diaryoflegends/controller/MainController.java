@@ -22,8 +22,8 @@ import de.phyberapex.diaryoflegends.view.SummonerNameViewPanel;
 import de.phyberapex.diaryoflegends.view.MainView;
 import de.phyberapex.diaryoflegends.view.MatchupView;
 import de.phyberapex.diaryoflegends.view.StatsView;
-import de.phyberapex.diaryoflegends.view.dialoge.MatchupDetailDialoge;
-import de.phyberapex.diaryoflegends.view.dialoge.NewEntryDialoge;
+import de.phyberapex.diaryoflegends.view.dialoge.MatchupDetailDialog;
+import de.phyberapex.diaryoflegends.view.dialoge.NewEntryDialog;
 
 public class MainController {
 
@@ -81,8 +81,8 @@ public class MainController {
 			mainView.setMainController(this);
 			matchupController.loadGUI();
 			statsController.loadGUI();
-			NewEntryDialoge.getInstance();
-			MatchupDetailDialoge.getInstance();
+			NewEntryDialog.getInstance();
+			MatchupDetailDialog.getInstance();
 			splash.showStatus("Loading data", 40);
 			matchupController.loadData();
 			statsController.loadData();

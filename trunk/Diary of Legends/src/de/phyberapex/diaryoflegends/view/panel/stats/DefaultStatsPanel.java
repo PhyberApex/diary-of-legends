@@ -66,12 +66,22 @@ public class DefaultStatsPanel extends JPanel {
 	private JLabel gameTotalValueLabel;
 	private JLabel killsTotalLabel = new JLabel("Total kills:");
 	private JLabel killsTotalValueLabel;
+	private JLabel killsAvgLabel = new JLabel("Average kills:");
+	private JLabel killsAvgValueLabel;
 	private JLabel deathsTotalLabel = new JLabel("Total deaths:");
 	private JLabel deathsTotalValueLabel;
+	private JLabel deathsAvgLabel = new JLabel("Average deaths:");
+	private JLabel deathsAvgValueLabel;
 	private JLabel assistsTotalLabel = new JLabel("Total assists:");
 	private JLabel assistsTotalValueLabel;
+	private JLabel assistsAvgLabel = new JLabel("Average assists:");
+	private JLabel assistsAvgValueLabel;
 	private JLabel csTotalLabel = new JLabel("Total minions slain:");
 	private JLabel csTotalValueLabel;
+	private JLabel csAvgLabel = new JLabel("Average minions slain:");
+	private JLabel csAvgValueLabel;
+	private JLabel kdaTotalLabel = new JLabel("KDA:");
+	private JLabel kdaTotalValueLabel;
 
 	private HashMap<String, GameStatistic> stats;
 	private static Logger logger = LogManager.getLogger(DefaultStatsPanel.class
@@ -124,7 +134,8 @@ public class DefaultStatsPanel extends JPanel {
 		constraints = new GridBagConstraints();
 		constraints.gridx = 1;
 		constraints.gridy = 4;
-		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.fill = GridBagConstraints.BOTH;
+		constraints.anchor = GridBagConstraints.NORTH;
 		constraints.weightx = 0.3;
 		this.add(getMostAssistsAvgPanel(), constraints);
 
@@ -139,7 +150,7 @@ public class DefaultStatsPanel extends JPanel {
 		constraints.gridx = 0;
 		constraints.gridy = 4;
 		constraints.anchor = GridBagConstraints.NORTH;
-		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.fill = GridBagConstraints.BOTH;
 		constraints.weightx = 0.3;
 		this.add(getMostCSAvgPanel(), constraints);
 
@@ -587,6 +598,8 @@ public class DefaultStatsPanel extends JPanel {
 			GridBagConstraints constraints = new GridBagConstraints();
 			constraints.gridx = 0;
 			constraints.gridy = 0;
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.weightx = 1;
 			totalStatsPanel.add(getGameTotalLabel(), constraints);
 
 			constraints = new GridBagConstraints();
@@ -597,6 +610,8 @@ public class DefaultStatsPanel extends JPanel {
 			constraints = new GridBagConstraints();
 			constraints.gridx = 0;
 			constraints.gridy = 1;
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.weightx = 1;
 			totalStatsPanel.add(getKillsTotalLabel(), constraints);
 
 			constraints = new GridBagConstraints();
@@ -607,32 +622,99 @@ public class DefaultStatsPanel extends JPanel {
 			constraints = new GridBagConstraints();
 			constraints.gridx = 0;
 			constraints.gridy = 2;
-			totalStatsPanel.add(getDeathsTotalLabel(), constraints);
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.weightx = 1;
+			totalStatsPanel.add(getKillsAvgLabel(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 1;
 			constraints.gridy = 2;
+			totalStatsPanel.add(getKillsAvgValueLabel(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 3;
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.weightx = 1;
+			totalStatsPanel.add(getDeathsTotalLabel(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 1;
+			constraints.gridy = 3;
+
 			totalStatsPanel.add(getDeathsTotalValueLabel(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 0;
-			constraints.gridy = 3;
+			constraints.gridy = 4;
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.weightx = 1;
+			totalStatsPanel.add(getDeathsAvgLabel(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 1;
+			constraints.gridy = 4;
+			totalStatsPanel.add(getDeathsAvgValueLabel(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 5;
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.weightx = 1;
 			totalStatsPanel.add(getAssistsTotalLabel(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 1;
-			constraints.gridy = 3;
+			constraints.gridy = 5;
 			totalStatsPanel.add(getAssistsTotalValueLabel(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 0;
-			constraints.gridy = 4;
+			constraints.gridy = 6;
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.weightx = 1;
+			totalStatsPanel.add(getAssistsAvgLabel(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 1;
+			constraints.gridy = 6;
+			totalStatsPanel.add(getAssistsAvgValueLabel(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 7;
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.weightx = 1;
 			totalStatsPanel.add(getCsTotalLabel(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 1;
-			constraints.gridy = 4;
+			constraints.gridy = 7;
 			totalStatsPanel.add(getCsTotalValueLabel(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 8;
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.weightx = 1;
+			totalStatsPanel.add(getCsAvgLabel(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 1;
+			constraints.gridy = 8;
+			totalStatsPanel.add(getCsAvgValueLabel(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 9;
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.weightx = 1;
+			totalStatsPanel.add(getKdaTotalLabel(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 1;
+			constraints.gridy = 9;
+			totalStatsPanel.add(getKdaTotalValueLabel(), constraints);
 		}
 		logger.trace("getTotalStatsPanel() - Returning");
 		logger.debug("getTotalStatsPanel() - Returning: {}", totalStatsPanel);
@@ -682,6 +764,24 @@ public class DefaultStatsPanel extends JPanel {
 		return killsTotalValueLabel;
 	}
 
+	public JLabel getKillsAvgLabel() {
+		logger.trace("getKillsAvgLabel() - Entering");
+		logger.trace("getKillsAvgLabel() - Returning");
+		logger.debug("getKillsAvgLabel() - Returning: {}", killsAvgLabel);
+		return killsAvgLabel;
+	}
+
+	public JLabel getKillsAvgValueLabel() {
+		logger.trace("getKillsAvgValueLabel() - Entering");
+		if (killsAvgValueLabel == null) {
+			killsAvgValueLabel = new JLabel();
+		}
+		logger.trace("getKillsAvgValueLabel() - Returning");
+		logger.debug("getKillsAvgValueLabel() - Returning: {}",
+				killsAvgValueLabel);
+		return killsAvgValueLabel;
+	}
+
 	public JLabel getDeathsTotalLabel() {
 		logger.trace("getDeathsTotalLabel() - Entering");
 		logger.trace("getDeathsTotalLabel() - Returning");
@@ -698,6 +798,24 @@ public class DefaultStatsPanel extends JPanel {
 		logger.debug("getDeathsTotalValueLabel() - Returning: {}",
 				deathsTotalValueLabel);
 		return deathsTotalValueLabel;
+	}
+
+	public JLabel getDeathsAvgLabel() {
+		logger.trace("getDeathsAvgLabel() - Entering");
+		logger.trace("getDeathsAvgLabel() - Returning");
+		logger.debug("getDeathsAvgLabel() - Returning: {}", deathsAvgLabel);
+		return deathsAvgLabel;
+	}
+
+	public JLabel getDeathsAvgValueLabel() {
+		logger.trace("getDeathsAvgValueLabel() - Entering");
+		if (deathsAvgValueLabel == null) {
+			deathsAvgValueLabel = new JLabel();
+		}
+		logger.trace("getDeathsAvgValueLabel() - Returning");
+		logger.debug("getDeathsAvgValueLabel() - Returning: {}",
+				deathsAvgValueLabel);
+		return deathsAvgValueLabel;
 	}
 
 	public JLabel getAssistsTotalLabel() {
@@ -719,6 +837,24 @@ public class DefaultStatsPanel extends JPanel {
 		return assistsTotalValueLabel;
 	}
 
+	public JLabel getAssistsAvgLabel() {
+		logger.trace("getAssistsAvgLabel() - Entering");
+		logger.trace("getAssistsAvgLabel() - Returning");
+		logger.debug("getAssistsAvgLabel() - Returning: {}", assistsAvgLabel);
+		return assistsAvgLabel;
+	}
+
+	public JLabel getAssistsAvgValueLabel() {
+		logger.trace("getAssistsAvgValueLabel() - Entering");
+		if (assistsAvgValueLabel == null) {
+			assistsAvgValueLabel = new JLabel();
+		}
+		logger.trace("getAssistsAvgValueLabel() - Returning");
+		logger.debug("getAssistsAvgValueLabel() - Returning: {}",
+				assistsAvgValueLabel);
+		return assistsAvgValueLabel;
+	}
+
 	public JLabel getCsTotalLabel() {
 		logger.trace("getCsTotalLabel() - Entering");
 		logger.trace("getCsTotalLabel() - Returning");
@@ -735,6 +871,41 @@ public class DefaultStatsPanel extends JPanel {
 		logger.debug("getCsTotalValueLabel() - Returning: {}",
 				csTotalValueLabel);
 		return csTotalValueLabel;
+	}
+
+	public JLabel getCsAvgLabel() {
+		logger.trace("getCsAvgLabel() - Entering");
+		logger.trace("getCsAvgLabel() - Returning");
+		logger.debug("getCsAvgLabel() - Returning: {}", assistsAvgLabel);
+		return csAvgLabel;
+	}
+
+	public JLabel getCsAvgValueLabel() {
+		logger.trace("getCsAvgValueLabel() - Entering");
+		if (csAvgValueLabel == null) {
+			csAvgValueLabel = new JLabel();
+		}
+		logger.trace("getCsAvgValueLabel() - Returning");
+		logger.debug("getCsAvgValueLabel() - Returning: {}", csAvgValueLabel);
+		return csAvgValueLabel;
+	}
+
+	public JLabel getKdaTotalLabel() {
+		logger.trace("getKdaTotalLabel() - Entering");
+		logger.trace("getKdaTotalLabel() - Returning");
+		logger.debug("getKdaTotalLabel() - Returning: {}", kdaTotalLabel);
+		return kdaTotalLabel;
+	}
+
+	public JLabel getKdaTotalValueLabel() {
+		logger.trace("getKdaTotalValueLabel() - Entering");
+		if (kdaTotalValueLabel == null) {
+			kdaTotalValueLabel = new JLabel();
+		}
+		logger.trace("getKdaTotalValueLabel() - Returning");
+		logger.debug("getKdaTotalValueLabel() - Returning: {}",
+				kdaTotalValueLabel);
+		return kdaTotalValueLabel;
 	}
 
 	private void fillStats() {
@@ -844,12 +1015,30 @@ public class DefaultStatsPanel extends JPanel {
 				String.valueOf(stats.get("gamesTotal").getValue()));
 		getKillsTotalValueLabel().setText(
 				String.valueOf(stats.get("killsTotal").getValue()));
+		getKillsAvgValueLabel().setText(
+				String.valueOf(stats.get("killsTotal").getValue()
+						/ stats.get("gamesTotal").getValue()));
 		getDeathsTotalValueLabel().setText(
 				String.valueOf(stats.get("deathsTotal").getValue()));
+		getDeathsAvgValueLabel().setText(
+				String.valueOf(stats.get("deathsTotal").getValue()
+						/ stats.get("gamesTotal").getValue()));
 		getAssistsTotalValueLabel().setText(
 				String.valueOf(stats.get("assistsTotal").getValue()));
+		getAssistsAvgValueLabel().setText(
+				String.valueOf(stats.get("assistsTotal").getValue()
+						/ stats.get("gamesTotal").getValue()));
 		getCsTotalValueLabel().setText(
 				String.valueOf(stats.get("minionsSlain").getValue()));
+		getCsAvgValueLabel().setText(
+				String.valueOf(stats.get("minionsSlain").getValue()
+						/ stats.get("gamesTotal").getValue()));
+		double deaths = stats.get("deathsTotal").getValue();
+		double kills = stats.get("killsTotal").getValue();
+		double assists = stats.get("assistsTotal").getValue();
+		double kda = (kills + assists) / deaths;
+		kda = Math.round(kda * 1000) / 1000.0;
 
+		getKdaTotalValueLabel().setText(String.valueOf(kda));
 	}
 }

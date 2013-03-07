@@ -15,6 +15,7 @@ import de.phyberapex.diaryoflegends.model.util.ChampionUtil;
 import de.phyberapex.diaryoflegends.view.StatsView;
 import de.phyberapex.diaryoflegends.view.panel.stats.DefaultStatsPanel;
 import de.phyberapex.diaryoflegends.view.panel.stats.Top3EnemiesPanel;
+import de.phyberapex.diaryoflegends.view.panel.stats.Top3EnemiesPerChampPanel;
 
 public class StatsController extends Controller {
 

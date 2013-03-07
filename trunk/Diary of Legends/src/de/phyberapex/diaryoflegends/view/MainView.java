@@ -45,7 +45,7 @@ public class MainView extends JFrame implements View, Runnable {
 	private void createGui() {
 		logger.trace("createGui() - Entering");
 		this.setTitle(Constants.getAppName() + " - v"
-				+ Constants.getAppVersion());
+				+ Constants.getAppVersion() + " powered by Elophant.com");
 		this.setMinimumSize(new Dimension(420, 520));
 		this.setJMenuBar(getMenuBarView());
 		this.setLayout(new GridBagLayout());

@@ -28,7 +28,7 @@ import de.phyberapex.diaryoflegends.model.MatchupItem;
 import de.phyberapex.diaryoflegends.model.util.ChampionUtil;
 import de.phyberapex.diaryoflegends.model.util.ItemUtil;
 import de.phyberapex.diaryoflegends.view.MainView;
-import de.phyberapex.diaryoflegends.view.dialoge.NewEntryDialoge;
+import de.phyberapex.diaryoflegends.view.dialoge.NewEntryDialog;
 import de.phyberapex.diaryoflegends.view.panel.ElophantImportPanel;
 
 public class ImportLastMatchAction implements Runnable {
@@ -136,7 +136,7 @@ public class ImportLastMatchAction implements Runnable {
 							game.setLength(0);
 							MainView.getInstance().setStatusText(
 									"Import complete");
-							NewEntryDialoge nd = NewEntryDialoge.getInstance();
+							NewEntryDialog nd = NewEntryDialog.getInstance();
 							nd.setToEdit(game, true);
 							nd.run();
 						}
