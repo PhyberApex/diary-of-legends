@@ -1,5 +1,6 @@
 = Features =
-== Information saved ==
+
+== [InformationSaved Information saved] ==
 You are able to log following information:
  * Your teams champions
  * Enemy teams champions
@@ -18,45 +19,3 @@ You are able to log following information:
  * The result of that matchup(won/loss/draw)
  * The items you and your enemy started with/ended with
  * Notes for this matchup
-
-== Statistics ==
-For every statistic you are able to insert a parameter into the textfield next to the dropdown menu. This is e.g. for champion names which you can seperate using ";". So an input for Game Statistics with "Lee;Elise" would return the statistics for Lee Sind and Elise where for an input like "u;e" it would give you the statistic for every champion that has a "u" or an "e" in his name.
-
-
-You are able to create following statistics:
- * Game statistics
- * Top 3 enemies per champion
- * Top 3 enemies for multiple champions
-
-=== Game statistics ===
-Information shown:
- * Champions included in this calculation
- * With which champion do you have
-   * Most games
-   * Most kills overall
-   * Highest kills average
-   * Most assists
-   * Highest assist average
-   * Most deaths
-   * Highest deaths average
-   * Most creep kills
-   * Highest creep kill average
- * Total games played
- * Total kills
- * Average kills
- * Total assists
- * Average assists
- * Total deaths
- * Average deaths
- * Total minions slain
- * Average minions slain
- * Your KDA((Kills+Assists)/Deaths) 
-
-=== Top 3 enemies per champion ===
-Information show:
- * For each champion found the top 3 enemies and their average difficulty
-
-=== Top 3 enemies for multiple champions ===
-Information shown:
- * Champions included in this calculation
- * The top 3 enemies for all those champions together with their average difficulty
