@@ -12,7 +12,7 @@
 			<fileset dir="bin" />
 		</jar>
 		<mkdir dir="${folder-to-zip}/db" />
-		<mkdir dir="${folder-to-zip}/img/champs" />
+		<mkdir dir="${folder-to-zip}/img/champions" />
 		<mkdir dir="${folder-to-zip}/img/items" />
 		<mkdir dir="${folder-to-zip}/img/summonerspells" />
 		<copy todir="${folder-to-zip}" overwrite="true">
