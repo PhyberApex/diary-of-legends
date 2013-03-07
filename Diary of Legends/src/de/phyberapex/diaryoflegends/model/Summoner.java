@@ -64,6 +64,19 @@ public class Summoner extends Model {
 				|| Config.getInstance().getProperty("SUMMONER_ID") == null) {
 			returnValue = "no info available";
 		} else {
+			int[] id = Config.getInstance().getSummonerIdByNameAndRegion(
+					Config.getInstance().getProperty("SUMMONER_NAME"),
+					Region.valueOf(Config.getInstance().getProperty(
+							"REGION")));
+			if (id[0] != 0) {
+				Config.getInstance().setProperty("SUMMONER_ID",
+						String.valueOf(id[0]));
+			}
+			if (id[1] != 0) {
+				Config.getInstance().setProperty("ACCOUNT_ID",
+						String.valueOf(id[1]));
+			}
+			Config.getInstance().saveChanges();
 			returnValue += this.getName() + " | ";
 			returnValue += this.getLeagueForSummoner() + " | ";
 			int streak = this.getStreakForSummoner();

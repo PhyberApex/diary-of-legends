@@ -24,7 +24,8 @@ import de.phyberapex.diaryoflegends.action.ImportLastMatchAction;
 import de.phyberapex.diaryoflegends.action.ImportRoflAction;
 import de.phyberapex.diaryoflegends.base.Config;
 import de.phyberapex.diaryoflegends.base.Update;
-import de.phyberapex.diaryoflegends.view.dialoge.NewEntryDialoge;
+import de.phyberapex.diaryoflegends.view.dialoge.AboutDialog;
+import de.phyberapex.diaryoflegends.view.dialoge.NewEntryDialog;
 
 public class MenuBarView extends JMenuBar implements View {
 
@@ -83,7 +84,7 @@ public class MenuBarView extends JMenuBar implements View {
 
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
-					SwingUtilities.invokeLater(NewEntryDialoge.getInstance());
+					SwingUtilities.invokeLater(NewEntryDialog.getInstance());
 				}
 			});
 		}
@@ -120,6 +121,12 @@ public class MenuBarView extends JMenuBar implements View {
 					MainView.getInstance().setStatusText(
 							"Summoner name changed in "
 									+ currSumView.getSummonerName());
+					Config.getInstance().setProperty("SUMMONER_ID", "0");
+					Config.getInstance().setProperty("ACCOUNT_ID", "0");
+					Config.getInstance().saveChanges();
+					MainView.getInstance().setSummonerInfo(
+							Config.getInstance().getCurrentSummoner()
+									.getSummonerInfoString());
 					refresh();
 				}
 			});
@@ -297,12 +304,12 @@ public class MenuBarView extends JMenuBar implements View {
 		logger.debug("helpItem currently {}", helpItem);
 		if (this.helpItem == null) {
 			logger.debug("Creating a new JMenuItem object");
-			this.helpItem = new JMenuItem("Help");
+			this.helpItem = new JMenuItem("About");
 			this.helpItem.addActionListener(new ActionListener() {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					// TODO
+					AboutDialog.getInstance().setVisible(true);
 				}
 			});
 		}

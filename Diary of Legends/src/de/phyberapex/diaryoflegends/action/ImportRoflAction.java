@@ -27,7 +27,7 @@ import de.phyberapex.diaryoflegends.model.util.ChampionUtil;
 import de.phyberapex.diaryoflegends.model.util.ItemUtil;
 import de.phyberapex.diaryoflegends.model.util.SummonerSpellUtil;
 import de.phyberapex.diaryoflegends.view.MainView;
-import de.phyberapex.diaryoflegends.view.dialoge.NewEntryDialoge;
+import de.phyberapex.diaryoflegends.view.dialoge.NewEntryDialog;
 
 public class ImportRoflAction implements Runnable {
 
@@ -264,7 +264,7 @@ public class ImportRoflAction implements Runnable {
 				}
 			}
 			MainView.getInstance().setStatusText("Import complete");
-			NewEntryDialoge nd = NewEntryDialoge.getInstance();
+			NewEntryDialog nd = NewEntryDialog.getInstance();
 			nd.setToEdit(game, true);
 			SwingUtilities.invokeLater(nd);
 		} catch (ChampionNotFoundException | ItemNotFoundException e) {

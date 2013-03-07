@@ -98,7 +98,7 @@ public class Item extends Model {
 			} else {
 				img = ImageIconFactory.createImageIcon(System
 						.getProperty("user.dir")
-						+ "/img/champs/"
+						+ "/img/items/"
 						+ this.getId() + ".png");
 			}
 			if (img.getIconHeight() <= 0) {
@@ -116,7 +116,7 @@ public class Item extends Model {
 				}
 				img = ImageIconFactory.createImageIcon(System
 						.getProperty("user.dir")
-						+ "/img/champs/"
+						+ "/img/items/"
 						+ this.getId() + ".png");
 				if (img.getIconHeight() <= 0) {
 					img = ImageIconFactory

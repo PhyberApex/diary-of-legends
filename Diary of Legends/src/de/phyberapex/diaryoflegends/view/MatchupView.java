@@ -25,8 +25,8 @@ import de.phyberapex.diaryoflegends.controller.MatchupController;
 import de.phyberapex.diaryoflegends.model.GameResult;
 import de.phyberapex.diaryoflegends.model.Matchup;
 import de.phyberapex.diaryoflegends.model.MatchupResult;
-import de.phyberapex.diaryoflegends.view.dialoge.MatchupDetailDialoge;
-import de.phyberapex.diaryoflegends.view.dialoge.NewEntryDialoge;
+import de.phyberapex.diaryoflegends.view.dialoge.MatchupDetailDialog;
+import de.phyberapex.diaryoflegends.view.dialoge.NewEntryDialog;
 import de.phyberapex.diaryoflegends.view.model.MatchupTableModel;
 import de.phyberapex.diaryoflegends.view.renderer.MatchupTableRenderer;
 
@@ -123,7 +123,7 @@ public class MatchupView extends JPanel implements View {
 
 							@Override
 							public void actionPerformed(ActionEvent e) {
-								SwingUtilities.invokeLater(NewEntryDialoge
+								SwingUtilities.invokeLater(NewEntryDialog
 										.getInstance());
 							}
 						});
@@ -133,7 +133,7 @@ public class MatchupView extends JPanel implements View {
 						edit.addActionListener(new ActionListener() {
 							@Override
 							public void actionPerformed(ActionEvent e) {
-								NewEntryDialoge nd = NewEntryDialoge
+								NewEntryDialog nd = NewEntryDialog
 										.getInstance();
 								nd.setToEdit(matchup.getGame(), false);
 								SwingUtilities.invokeLater(nd);
@@ -145,7 +145,7 @@ public class MatchupView extends JPanel implements View {
 
 							@Override
 							public void actionPerformed(ActionEvent e) {
-								MatchupDetailDialoge dd = MatchupDetailDialoge
+								MatchupDetailDialog dd = MatchupDetailDialog
 										.getInstance();
 								dd.setMatchup(matchup);
 								SwingUtilities.invokeLater(dd);
@@ -283,7 +283,7 @@ public class MatchupView extends JPanel implements View {
 						menu.add(resetFilter);
 						menu.show(matchupTable, e.getX(), e.getY());
 					} else if (e.getClickCount() == 2) {
-						MatchupDetailDialoge dd = MatchupDetailDialoge
+						MatchupDetailDialog dd = MatchupDetailDialog
 								.getInstance();
 						dd.setMatchup(matchup);
 						SwingUtilities.invokeLater(dd);
