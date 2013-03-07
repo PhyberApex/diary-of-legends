@@ -7,4 +7,3 @@
    * [Export]
    * [Import]
  * [Screenshots]
-   * [https://diary-of-legends.googlecode.com/svn/wiki/screen1.JPG Game overview]
