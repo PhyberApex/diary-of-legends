@@ -1,4 +1,4 @@
-= [Information saved] =
+= Information saved =
 You are able to log following information:
  * Your teams champions
  * Enemy teams champions
