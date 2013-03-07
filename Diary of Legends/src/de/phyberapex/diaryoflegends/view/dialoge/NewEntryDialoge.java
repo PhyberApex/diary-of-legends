@@ -3834,14 +3834,14 @@ public class NewEntryDialoge extends JDialog implements Runnable {
 			}
 		});
 		allChampions = new ArrayList<Champion>();
-		Champion c = new Champion(0, "no champion", null);
+		Champion c = new Champion(0, "no champion");
 		allChampions.add(c);
 		for (Champion champ : ChampionUtil.getAllChampions()) {
 			allChampions.add(champ);
 		}
 		allChampionsArray = allChampions.toArray(new Champion[] {});
 		allItems = new ArrayList<Item>();
-		Item i = new Item(0, "no item", null);
+		Item i = new Item(0, "no item");
 		allItems.add(i);
 		for (Item item : ItemUtil.getAllItems()) {
 			allItems.add(item);

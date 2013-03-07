@@ -20,7 +20,7 @@ public class ItemComboBox extends JComboBox<Item> {
 	}
 
 	private void setPrototype() {
-		setPrototypeDisplayValue(new Item(0, "just some puffer text", null));
+		setPrototypeDisplayValue(new Item(0, "just some puffer text"));
 		Accessible a = getUI().getAccessibleChild(this, 0);
 		if (a instanceof javax.swing.plaf.basic.ComboPopup) {
 			@SuppressWarnings("unchecked")

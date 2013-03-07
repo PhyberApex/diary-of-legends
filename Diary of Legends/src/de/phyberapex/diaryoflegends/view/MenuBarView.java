@@ -298,6 +298,13 @@ public class MenuBarView extends JMenuBar implements View {
 		if (this.helpItem == null) {
 			logger.debug("Creating a new JMenuItem object");
 			this.helpItem = new JMenuItem("Help");
+			this.helpItem.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO
+				}
+			});
 		}
 		logger.trace("getHelpItem() - Returning");
 		logger.debug("Returned {}", helpItem);

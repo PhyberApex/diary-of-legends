@@ -64,7 +64,7 @@ public class StatsController extends Controller {
 			break;
 		case TOP_3_HARDEST_ENEMY_PER_CHAMPS:
 			List<Top3EnemyStatistics> statsTop3Champ = ChampionUtil.getTop3EnemiesPerChamp(parameter);
-			//result = new Top3EnemiesPerChampPanel(statsTop3Champ);
+			result = new Top3EnemiesPerChampPanel(statsTop3Champ);
 			break;
 		case DEFAULT_STATS:
 		default:

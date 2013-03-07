@@ -69,9 +69,9 @@ public class MainController {
 				}
 				Config.getInstance().saveChanges();
 			}
-			splash.showStatus("Updating", 20);
 			if (initAction.contains(InitializeAction.UPDATE)) {
-				Update.update();
+				splash.showStatus("Updating", 20);
+				Update.update(false);
 			}
 			splash.showStatus("Preparing controller", 25);
 			matchupController = new MatchupController(this);

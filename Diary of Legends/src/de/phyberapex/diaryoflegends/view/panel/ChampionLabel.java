@@ -10,7 +10,7 @@ public class ChampionLabel extends JLabel {
 
 	public ChampionLabel(Champion champion) {
 		super(champion.getName());
-		this.setIcon(champion.get30x30Icon());
+		this.setIcon(champion.getResizeIcon(30));
 	}
 
 }

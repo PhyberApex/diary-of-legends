@@ -7,11 +7,15 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
+
+import javax.swing.JOptionPane;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import de.phyberapex.diaryoflegends.controller.MainController;
 import de.phyberapex.diaryoflegends.model.Champion;
 import de.phyberapex.diaryoflegends.model.Item;
 import de.phyberapex.diaryoflegends.model.util.ChampionUtil;
@@ -22,7 +26,7 @@ public class Update implements Runnable {
 
 	private static Logger logger = LogManager.getLogger(Update.class.getName());
 
-	public static void update() {
+	public static void update(boolean restart) {
 		logger.trace("update() - Entering");
 		try {
 			JSONObject itemJSON = getItemsFromElophant();
@@ -32,7 +36,7 @@ public class Update implements Runnable {
 				for (int i = 0; i < allItemsArray.length(); i++) {
 					JSONObject itemObject = allItemsArray.getJSONObject(i);
 					Item tmp = new Item(itemObject.getInt("id"),
-							itemObject.getString("name"), null);
+							itemObject.getString("name"));
 					boolean already = false;
 					for (Item item : allItemsList) {
 						if (item.getId() == tmp.getId()) {
@@ -59,7 +63,7 @@ public class Update implements Runnable {
 				for (int i = 0; i < allChampionsArray.length(); i++) {
 					JSONObject champObject = allChampionsArray.getJSONObject(i);
 					Champion tmp = new Champion(champObject.getInt("id"),
-							champObject.getString("name"), null);
+							champObject.getString("name"));
 					boolean already = false;
 					for (Champion champ : allChampionList) {
 						if (champ.getId() == tmp.getId()) {
@@ -78,6 +82,15 @@ public class Update implements Runnable {
 						ChampionUtil.saveChampion(tmp);
 					}
 				}
+			}
+			if (restart) {
+				JOptionPane
+						.showMessageDialog(
+								null,
+								"Update complete application will exit now.\nPlease restart.",
+								"Update successful",
+								JOptionPane.INFORMATION_MESSAGE);
+				MainController.exit();
 			}
 			logger.trace("update() - Leaving");
 		} catch (IOException e) {
@@ -132,7 +145,7 @@ public class Update implements Runnable {
 	@Override
 	public void run() {
 		MainView.getInstance().setStatusText("Updating champions and items...");
-		update();
+		update(true);
 		MainView.getInstance().setStatusText("Update complete");
 	}
 }

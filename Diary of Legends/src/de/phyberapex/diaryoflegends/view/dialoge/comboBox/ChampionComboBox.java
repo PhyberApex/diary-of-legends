@@ -25,7 +25,7 @@ public class ChampionComboBox extends JComboBox<Champion> {
 	}
 
 	private void setPrototype() {
-		setPrototypeDisplayValue(new Champion(0, "Just some puffer text", null));
+		setPrototypeDisplayValue(new Champion(0, "Just some puffer text"));
 		Accessible a = getUI().getAccessibleChild(this, 0);
 		if (a instanceof javax.swing.plaf.basic.ComboPopup) {
 			@SuppressWarnings("unchecked")
