@@ -1,5 +1,5 @@
  * [Features]
-   * [InformationSaved]
+   * [InformationSaved Information saved]
    * [Statistics]
      * [GameStatistics Game statistics]
      * [Top3PerChampStat Top 3 enemies per champion]
