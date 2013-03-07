@@ -2,8 +2,10 @@ package de.phyberapex.diaryoflegends.model.util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,6 +19,7 @@ import de.phyberapex.diaryoflegends.model.Game;
 import de.phyberapex.diaryoflegends.model.Matchup;
 import de.phyberapex.diaryoflegends.model.stats.GameStatistic;
 import de.phyberapex.diaryoflegends.model.stats.Top3EnemyStatistics;
+import de.phyberapex.diaryoflegends.view.MainView;
 
 /**
  * This class is used to save and retrive champions
@@ -150,13 +153,13 @@ public class ChampionUtil {
 		logger.trace("getGameStats() - Entering");
 		logger.debug("getGameStats() - Parameter: {}", search);
 		HashMap<String, GameStatistic> returnValue = new HashMap<>();
-		Champion chmpCS = new Champion(0, "no champion found", null);
+		Champion chmpCS = new Champion(0, "no champion found");
 		int cs = 0;
-		Champion chmpKills = new Champion(0, "no champion found", null);
+		Champion chmpKills = new Champion(0, "no champion found");
 		int kills = 0;
-		Champion chmpAssists = new Champion(0, "no champion found", null);
+		Champion chmpAssists = new Champion(0, "no champion found");
 		int assists = 0;
-		Champion chmpDeaths = new Champion(0, "no champion found", null);
+		Champion chmpDeaths = new Champion(0, "no champion found");
 		int deaths = 0;
 		HashMap<Champion, Integer[]> avgCS = new HashMap<>();
 		ObjectSet<Game> set = dbHandle.query(new Predicate<Game>() {
@@ -209,19 +212,19 @@ public class ChampionUtil {
 		returnValue.put("mostKills", new GameStatistic(chmpKills, kills));
 		returnValue.put("mostAssists", new GameStatistic(chmpAssists, assists));
 		returnValue.put("mostDeaths", new GameStatistic(chmpDeaths, deaths));
-		Champion chmpAvgKills = new Champion(0, "no champion found", null);
+		Champion chmpAvgKills = new Champion(0, "no champion found");
 		Integer avgKillsValue = 0;
 		Integer killsTotal = 0;
-		Champion chmpAvgDeaths = new Champion(0, "no champion found", null);
+		Champion chmpAvgDeaths = new Champion(0, "no champion found");
 		Integer avgDeathsValue = 0;
 		Integer deathsTotal = 0;
-		Champion chmpAvgAssists = new Champion(0, "no champion found", null);
+		Champion chmpAvgAssists = new Champion(0, "no champion found");
 		Integer avgAssistsValue = 0;
 		Integer assistsTotal = 0;
-		Champion chmpAvgCS = new Champion(0, "no champion found", null);
+		Champion chmpAvgCS = new Champion(0, "no champion found");
 		Integer avgCsValue = 0;
 		Integer minionsSlain = 0;
-		Champion chmpGames = new Champion(0, "no champion found", null);
+		Champion chmpGames = new Champion(0, "no champion found");
 		Integer gamesValue = 0;
 		Integer gamesTotal = 0;
 		ArrayList<Champion> list = new ArrayList<>();
@@ -406,8 +409,39 @@ public class ChampionUtil {
 	 * @param parameter
 	 * @return
 	 */
-	public static List<Top3EnemyStatistics> getTop3EnemiesPerChamp(String parameter) {
-		
-		return null;
+	public static List<Top3EnemyStatistics> getTop3EnemiesPerChamp(
+			final String parameter) {
+		logger.trace("getTop3EnemiesPerChamp() - Entering");
+		logger.debug("getTop3EnemiesPerChamp() - Parameter: {}", parameter);
+		ObjectSet<Matchup> set = dbHandle.query(new Predicate<Matchup>() {
+
+			private static final long serialVersionUID = -6535736734146443615L;
+
+			@Override
+			public boolean match(Matchup arg0) {
+				for (String s : parameter.split(";")) {
+					if (arg0.getMyChamp().getName().contains((s))) {
+						return true;
+					}
+				}
+				return false;
+			}
+		});
+		List<Top3EnemyStatistics> returnValue = new ArrayList<>();
+		Set<Champion> champs = new HashSet<Champion>();
+		while (set.hasNext()) {
+			champs.add(set.next().getMyChamp());
+		}
+		MainView.getInstance().setStatusText("Found "+champs.size()+" champions");
+		for (Champion e : champs) {
+			MainView.getInstance().setStatusText("Calculating stats for "+e.getName());
+			Top3EnemyStatistics tmp = getTop3Enemies(e.getName());
+			if (tmp != null) {
+				returnValue.add(tmp);
+			}
+		}
+		logger.trace("getTop3EnemiesPerChamp() - Returning");
+		logger.debug("getTop3EnemiesPerChamp() - Returning {}", returnValue);
+		return returnValue;
 	}
 }

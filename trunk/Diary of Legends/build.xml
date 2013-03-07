@@ -11,7 +11,10 @@
 			</manifest>
 			<fileset dir="bin" />
 		</jar>
-		<mkdir dir="${folder-to-zip}/db"/>
+		<mkdir dir="${folder-to-zip}/db" />
+		<mkdir dir="${folder-to-zip}/img/champs" />
+		<mkdir dir="${folder-to-zip}/img/items" />
+		<mkdir dir="${folder-to-zip}/img/summonerspells" />
 		<copy todir="${folder-to-zip}" overwrite="true">
 			<fileset dir="">
 				<include name="gpl-3.0.txt" />

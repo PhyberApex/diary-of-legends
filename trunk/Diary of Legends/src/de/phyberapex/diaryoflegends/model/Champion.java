@@ -1,6 +1,8 @@
 package de.phyberapex.diaryoflegends.model;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URL;
 
 import javax.swing.Icon;
@@ -16,19 +18,15 @@ public class Champion extends Model {
 
 	private int id;
 	private String name;
-	private byte[] icon;
-	transient ImageIcon icon30x30;
+	transient ImageIcon icon;
 	transient private static Logger logger = LogManager
 			.getLogger(Champion.class.getName());
 
-	public Champion(int id, String name, File icon) {
+	public Champion(int id, String name) {
 		logger.trace("Champion() - Entering");
-		logger.debug("Champion() - Parameter: {}, {}, {}", id, name, icon);
+		logger.debug("Champion() - Parameter: {}, {}", id, name);
 		this.id = id;
 		this.setName(name);
-		if (icon != null) {
-			this.setIcon(icon);
-		}
 		logger.trace("Champion() - Leaving");
 	}
 
@@ -91,33 +89,64 @@ public class Champion extends Model {
 	 * @return {@link ImageIcon} The image for this champion
 	 */
 	public ImageIcon getIcon() {
-		logger.trace("getName() - Entering");
+		logger.trace("getIcon() - Entering");
 		ImageIcon img = null;
-		if (icon != null) {
-			img = ConvertImage.convertByteArrayToImageIcon(icon);
+		if (id != 0) {
+			if (icon != null) {
+				img = icon;
+			} else {
+				img = ImageIconFactory.createImageIcon(System
+						.getProperty("user.dir")
+						+ "/img/champions/"
+						+ this.getId() + ".png");
+			}
+			if (img.getIconHeight() <= 0) {
+				try {
+					byte[] tmp = ConvertImage.convertUrlToByteArray(new URL(
+							"http://img.lolking.net/shared/riot/images/champions/"
+									+ getId() + "_104.png"));
+					File f = new File(System.getProperty("user.dir")
+							+ "/img/champions/" + getId() + ".png");
+					FileOutputStream fou = new FileOutputStream(f);
+					fou.write(tmp);
+					fou.close();
+				} catch (IOException e) {
+					logger.error("Couln't write icon:" + e.getMessage());
+				}
+				img = ImageIconFactory.createImageIcon(System
+						.getProperty("user.dir")
+						+ "/img/champions/"
+						+ this.getId() + ".png");
+				if (img.getIconHeight() <= 0) {
+					img = ImageIconFactory
+							.createImageIconFromResourePath("img/empty_104x104.png");
+				}
+			}
+		} else {
+			img = ImageIconFactory
+					.createImageIconFromResourePath("img/empty_104x104.png");
 		}
-		logger.trace("getName() - Returning");
-		logger.debug("getName() - Returning: {}", img);
+		logger.trace("getIcon() - Returning");
+		logger.debug("getIcon() - Returning: {}", img);
 		return img;
-	}
-
-	/**
-	 * The file that represents the icon
-	 * 
-	 * @param file
-	 *            {@link File} The file from which the image will be created
-	 */
-	public void setIcon(File file) {
-		logger.trace("setIcon() - Entering");
-		logger.debug("setIcon() - Parameter: {}", file);
-		this.icon = ConvertImage.convertFileToByteArray(file);
-		logger.trace("setIcon() - Leaving");
 	}
 
 	public void setIcon(URL url) {
 		logger.trace("setIcon() - Entering");
 		logger.debug("setIcon() - Parameter: {}", url);
-		this.icon = ConvertImage.convertUrlToByteArray(url);
+		if (id != 0) {
+			byte[] tmp = ConvertImage.convertUrlToByteArray(url);
+			File f = new File(System.getProperty("user.dir")
+					+ "/img/champions/" + getId() + ".png");
+			try {
+				FileOutputStream fou = new FileOutputStream(f);
+				fou.write(tmp);
+				fou.close();
+			} catch (IOException e) {
+				logger.error("Couln't write icon:" + e.getMessage());
+			}
+		}
+		this.icon = new ImageIcon(url);
 		logger.trace("setIcon() - Leaving");
 	}
 
@@ -133,10 +162,6 @@ public class Champion extends Model {
 		logger.trace("toString() - Returning");
 		logger.debug("toString() - Returning: {}", str);
 		return str;
-	}
-
-	public byte[] getIconreal() {
-		return this.icon;
 	}
 
 	@Override
@@ -165,10 +190,7 @@ public class Champion extends Model {
 	/**
 	 * @return
 	 */
-	public Icon get30x30Icon() {
-		if (icon30x30 == null && icon != null) {
-			icon30x30 = ImageIconFactory.resizeImageIcon(getIcon(), 30, 30);
-		}
-		return icon30x30;
+	public Icon getResizeIcon(int res) {
+		return ImageIconFactory.resizeImageIcon(getIcon(), res, res);
 	}
 }
