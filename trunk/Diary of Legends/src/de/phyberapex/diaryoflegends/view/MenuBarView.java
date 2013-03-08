@@ -27,6 +27,7 @@ import de.phyberapex.diaryoflegends.base.Update;
 import de.phyberapex.diaryoflegends.view.dialoge.AboutDialog;
 import de.phyberapex.diaryoflegends.view.dialoge.NewChampionDialog;
 import de.phyberapex.diaryoflegends.view.dialoge.NewEntryDialog;
+import de.phyberapex.diaryoflegends.view.panel.APIKeyViewPanel;
 
 public class MenuBarView extends JMenuBar implements View {
 
@@ -34,6 +35,7 @@ public class MenuBarView extends JMenuBar implements View {
 	private JMenu fileMenu;
 	private JMenuItem newEntryItem;
 	private JMenuItem changeNameItem;
+	private JMenuItem changeAPIKeyItem;
 	private JMenuItem importDolexItem;
 	private JMenuItem importRoflItem;
 	private JMenuItem importLastMatchItem;
@@ -63,6 +65,7 @@ public class MenuBarView extends JMenuBar implements View {
 			this.fileMenu.add(getNewEntryItem());
 			this.fileMenu.add(new JSeparator());
 			this.fileMenu.add(getChangeNameItem());
+			this.fileMenu.add(getChangeAPIKeyItem());
 			this.fileMenu.add(new JSeparator());
 			this.fileMenu.add(getImportDolexItem());
 			this.fileMenu.add(getImportRoflItem());
@@ -136,6 +139,40 @@ public class MenuBarView extends JMenuBar implements View {
 		logger.trace("getChangeNameItem() - Returning");
 		logger.debug("getChangeNameItem() - Returning: {}", changeNameItem);
 		return changeNameItem;
+	}
+
+	private JMenuItem getChangeAPIKeyItem() {
+		logger.trace("getChangeAPIKeyItem() - Entering");
+		if (this.changeAPIKeyItem == null) {
+			this.changeAPIKeyItem = new JMenuItem("Change summoner name");
+			this.changeAPIKeyItem.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					APIKeyViewPanel apiKeyView = APIKeyViewPanel.getInstance();
+					Object[] options = { "OK" };
+					int ok = JOptionPane.showOptionDialog(null, apiKeyView,
+							"Enter your Elophant API-Key",
+							JOptionPane.WARNING_MESSAGE,
+							JOptionPane.INFORMATION_MESSAGE, null, options,
+							"OK");
+					logger.debug("Entered text was '{}'",
+							apiKeyView.getAPIKey());
+					logger.debug(
+							"Button pressed was '{}' ({} = OK, {} = CLOSED)",
+							ok, JOptionPane.OK_OPTION,
+							JOptionPane.CLOSED_OPTION);
+					if (ok == JOptionPane.OK_OPTION) {
+						Config.getInstance().setProperty("API_KEY",
+								apiKeyView.getAPIKey());
+					}
+					Config.getInstance().saveChanges();
+				}
+			});
+		}
+		logger.trace("getChangeAPIKeyItem() - Returning");
+		logger.debug("getChangeAPIKeyItem() - Returning: {}", changeAPIKeyItem);
+		return changeAPIKeyItem;
 	}
 
 	private JMenuItem getImportDolexItem() {

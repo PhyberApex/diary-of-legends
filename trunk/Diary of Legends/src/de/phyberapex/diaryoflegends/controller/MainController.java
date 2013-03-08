@@ -17,13 +17,13 @@ import de.phyberapex.diaryoflegends.exception.InitializeException;
 import de.phyberapex.diaryoflegends.extra.ImageIconFactory;
 import de.phyberapex.diaryoflegends.extra.Splash;
 import de.phyberapex.diaryoflegends.model.Region;
-import de.phyberapex.diaryoflegends.view.APIKeyViewPanel;
 import de.phyberapex.diaryoflegends.view.SummonerNameViewPanel;
 import de.phyberapex.diaryoflegends.view.MainView;
 import de.phyberapex.diaryoflegends.view.MatchupView;
 import de.phyberapex.diaryoflegends.view.StatsView;
 import de.phyberapex.diaryoflegends.view.dialoge.MatchupDetailDialog;
 import de.phyberapex.diaryoflegends.view.dialoge.NewEntryDialog;
+import de.phyberapex.diaryoflegends.view.panel.APIKeyViewPanel;
 
 public class MainController {
 

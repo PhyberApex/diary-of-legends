@@ -1,9 +1,25 @@
-*****************************************
-*			Diary of Legends			*
-*****************************************
+*********************************
+*       Diary of Legends        *
+*********************************
+Version: 0.2
 
-Version 0.2
--
+=====   Version History     =====
 
-Version 0.1
-- Initial release
+Version 0.2 - 
+* New Features
+    - Added this file
+    - Added possibilty to add champions for offline reasons
+    - Rearranged the layout of the dialog for new entries/import entries to be better looking 
+    - Added a ping to api.elophant.com to shorten waiting times at startup
+    - Exported the JSON classes from json.org in a own .jar file
+    - Added possibilty to change the API-Key via GUI
+
+* Bug fixes
+    - Fixed the naming of the database(no longer includes version)
+    - Fixed a bug where summoner spell icons wouldn't show up
+    - Fixed a bug where placeholder summoner spells(id:0 name:"no spell") where added to the database
+    - Fixed a bug where notes for games would not be shown in the detail view
+    - Fixed a bug where the application was exiting after an update even if it failed
+
+Version 0.1 - 2013-03-07
+* Initial release

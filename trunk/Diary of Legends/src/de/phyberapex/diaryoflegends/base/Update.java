@@ -16,6 +16,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import de.phyberapex.diaryoflegends.controller.MainController;
+import de.phyberapex.diaryoflegends.exception.APINoSuccessException;
 import de.phyberapex.diaryoflegends.model.Champion;
 import de.phyberapex.diaryoflegends.model.Item;
 import de.phyberapex.diaryoflegends.model.util.ChampionUtil;
@@ -55,6 +56,8 @@ public class Update implements Runnable {
 						ItemUtil.saveItem(tmp);
 					}
 				}
+			} else {
+				throw new APINoSuccessException(itemJSON.getString("error"));
 			}
 			JSONObject champsJSON = getChampionsFromElophant();
 			if (itemJSON.getBoolean("success")) {
@@ -82,6 +85,8 @@ public class Update implements Runnable {
 						ChampionUtil.saveChampion(tmp);
 					}
 				}
+			} else {
+				throw new APINoSuccessException(itemJSON.getString("error"));
 			}
 			if (restart) {
 				JOptionPane
@@ -95,6 +100,13 @@ public class Update implements Runnable {
 			logger.trace("update() - Leaving");
 		} catch (IOException e) {
 			logger.error("Couldn't reach " + e.getMessage());
+		} catch (APINoSuccessException e) {
+			if (restart) {
+				MainView.getInstance()
+						.setStatusText(
+								"Update failed. Please view the log file for further information");
+			}
+			logger.error("API returned no success reason: {}", e.getMessage());
 		}
 	}
 
@@ -146,6 +158,5 @@ public class Update implements Runnable {
 	public void run() {
 		MainView.getInstance().setStatusText("Updating champions and items...");
 		update(true);
-		MainView.getInstance().setStatusText("Update complete");
 	}
 }
