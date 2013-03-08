@@ -1,4 +1,4 @@
-package de.phyberapex.diaryoflegends.view;
+package de.phyberapex.diaryoflegends.view.panel;
 
 import java.awt.Desktop;
 import java.awt.Dimension;
@@ -15,6 +15,7 @@ import javax.swing.JTextField;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import de.phyberapex.diaryoflegends.base.Initializer;
+import de.phyberapex.diaryoflegends.view.View;
 
 public class APIKeyViewPanel extends JPanel implements View {
 
