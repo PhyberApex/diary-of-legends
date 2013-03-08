@@ -195,7 +195,7 @@ public class Summoner extends Model {
 			// open a connection to that source
 			HttpURLConnection urlConnect = (HttpURLConnection) url
 					.openConnection();
-
+			urlConnect.setConnectTimeout(1000);
 			// trying to retrieve data from the source. If there
 			// is no connection, this line will fail
 			urlConnect.getContent();

@@ -292,6 +292,7 @@ public class NewEntryDialog extends JDialog implements Runnable {
 			constraints.gridy = 0;
 			constraints.fill = GridBagConstraints.HORIZONTAL;
 			constraints.weightx = 0.5;
+			constraints.insets = new Insets(5, 10, 0, 0);
 			gameContentPanel.add(getDatePanel(), constraints);
 
 			constraints = new GridBagConstraints();
@@ -299,6 +300,7 @@ public class NewEntryDialog extends JDialog implements Runnable {
 			constraints.gridy = 0;
 			constraints.fill = GridBagConstraints.HORIZONTAL;
 			constraints.weightx = 0.5;
+			constraints.insets = new Insets(5, 5, 0, 10);
 			gameContentPanel.add(getLengthPanel(), constraints);
 
 			constraints = new GridBagConstraints();
@@ -316,11 +318,14 @@ public class NewEntryDialog extends JDialog implements Runnable {
 			constraints.fill = GridBagConstraints.BOTH;
 			constraints.weightx = 1;
 			constraints.gridwidth = 2;
+			constraints.insets = new Insets(0, 10, 0, 10);
 			gameContentPanel.add(getNotesPane(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 1;
 			constraints.gridy = 4;
+			constraints.anchor = GridBagConstraints.EAST;
+			constraints.insets = new Insets(10, 0, 10, 10);
 			gameContentPanel.add(getGoToMatchupButton(), constraints);
 		}
 		logger.trace("getGameContentPanel() - Returning");
@@ -1280,21 +1285,26 @@ public class NewEntryDialog extends JDialog implements Runnable {
 			matchupContentPanel = new JPanel(new GridBagLayout());
 			GridBagConstraints constraints = new GridBagConstraints();
 			constraints.gridx = 0;
-			constraints.gridy = 1;
+			constraints.gridy = 0;
 			constraints.gridwidth = 2;
 			constraints.weightx = 1;
 			constraints.weighty = 1;
 			constraints.fill = GridBagConstraints.BOTH;
+			constraints.insets = new Insets(5, 10, 0, 10);
 			matchupContentPanel.add(getChampionsPanel(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 0;
 			constraints.gridy = 2;
+			constraints.anchor = GridBagConstraints.LINE_START;
+			constraints.insets = new Insets(10, 10, 10, 0);
 			matchupContentPanel.add(getGoToGameButton(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 1;
 			constraints.gridy = 2;
+			constraints.anchor = GridBagConstraints.LINE_END;
+			constraints.insets = new Insets(10, 0, 10, 10);
 			matchupContentPanel.add(getFinishButton(), constraints);
 		}
 		logger.trace("getMatchupContentPanel() - Returning");
@@ -1312,7 +1322,9 @@ public class NewEntryDialog extends JDialog implements Runnable {
 			constraints.gridy = 1;
 			constraints.fill = GridBagConstraints.BOTH;
 			constraints.weightx = 1;
+			constraints.weighty = 1;
 			constraints.gridwidth = 3;
+			constraints.anchor = GridBagConstraints.FIRST_LINE_START;
 			championsPanel.add(getChampionsPane(), constraints);
 
 			constraints = new GridBagConstraints();
@@ -1320,6 +1332,7 @@ public class NewEntryDialog extends JDialog implements Runnable {
 			constraints.gridy = 0;
 			constraints.fill = GridBagConstraints.HORIZONTAL;
 			constraints.weightx = 0.3;
+			constraints.insets = new Insets(0, 0, 5, 0);
 			championsPanel.add(getLanePanel(), constraints);
 
 			constraints = new GridBagConstraints();
@@ -1327,6 +1340,7 @@ public class NewEntryDialog extends JDialog implements Runnable {
 			constraints.gridy = 0;
 			constraints.fill = GridBagConstraints.HORIZONTAL;
 			constraints.weightx = 0.3;
+			constraints.insets = new Insets(0, 5, 5, 0);
 			championsPanel.add(getDifficultyPanel(), constraints);
 
 			constraints = new GridBagConstraints();
@@ -1334,6 +1348,7 @@ public class NewEntryDialog extends JDialog implements Runnable {
 			constraints.gridy = 0;
 			constraints.fill = GridBagConstraints.HORIZONTAL;
 			constraints.weightx = 0.3;
+			constraints.insets = new Insets(0, 5, 5, 0);
 			championsPanel.add(getMatchupResultPanel(), constraints);
 		}
 		logger.trace("getChampionsPanel() - Returning");
@@ -1359,13 +1374,12 @@ public class NewEntryDialog extends JDialog implements Runnable {
 		logger.trace("getMyChampionPanel() - Entering");
 		if (myChampionPanel == null) {
 			myChampionPanel = new JPanel(new GridBagLayout());
-			myChampionPanel.setBorder(BorderFactory
-					.createBevelBorder(BevelBorder.LOWERED));
 			GridBagConstraints constraints = new GridBagConstraints();
 			constraints.gridx = 0;
 			constraints.gridy = 0;
 			constraints.fill = GridBagConstraints.HORIZONTAL;
 			constraints.weightx = 1;
+			constraints.insets = new Insets(0, 0, 5, 0);
 			myChampionPanel.add(getMyChampionBox(), constraints);
 
 			constraints = new GridBagConstraints();
@@ -2302,13 +2316,12 @@ public class NewEntryDialog extends JDialog implements Runnable {
 		logger.trace("getEnemyChampionPanel() - Entering");
 		if (enemyChampionPanel == null) {
 			enemyChampionPanel = new JPanel(new GridBagLayout());
-			enemyChampionPanel.setBorder(BorderFactory
-					.createBevelBorder(BevelBorder.LOWERED));
 			GridBagConstraints constraints = new GridBagConstraints();
 			constraints.gridx = 0;
 			constraints.gridy = 0;
 			constraints.fill = GridBagConstraints.HORIZONTAL;
 			constraints.weightx = 1;
+			constraints.insets = new Insets(0, 0, 5, 0);
 			enemyChampionPanel.add(getEnemyChampionBox(), constraints);
 
 			constraints = new GridBagConstraints();
@@ -3769,14 +3782,14 @@ public class NewEntryDialog extends JDialog implements Runnable {
 											.getValue()));
 						}
 						matchup.setEnemyEndItems(mis);
-						matchup.setMySpell1(getMySpell1Box().getItemAt(
-								getMySpell1Box().getSelectedIndex()));
-						matchup.setMySpell2(getMySpell2Box().getItemAt(
-								getMySpell2Box().getSelectedIndex()));
-						matchup.setEnemySpell1(getEnemySpell1Box().getItemAt(
-								getEnemySpell1Box().getSelectedIndex()));
-						matchup.setEnemySpell2(getEnemySpell2Box().getItemAt(
-								getEnemySpell2Box().getSelectedIndex()));
+						// matchup.setMySpell1(getMySpell1Box().getItemAt(
+						// getMySpell1Box().getSelectedIndex()));
+						// matchup.setMySpell2(getMySpell2Box().getItemAt(
+						// getMySpell2Box().getSelectedIndex()));
+						// matchup.setEnemySpell1(getEnemySpell1Box().getItemAt(
+						// getEnemySpell1Box().getSelectedIndex()));
+						// matchup.setEnemySpell2(getEnemySpell2Box().getItemAt(
+						// getEnemySpell2Box().getSelectedIndex()));
 						game.setMatchup(matchup);
 						if (toEdit != null && !isImport) {
 							MainController.getInstance().updated();
@@ -3865,6 +3878,11 @@ public class NewEntryDialog extends JDialog implements Runnable {
 		this.setTitle("New game");
 		toEdit = null;
 		isImport = false;
+		getTeamsPane().setSelectedIndex(0);
+		getNotesPane().setSelectedIndex(0);
+		getChampionsPane().setSelectedIndex(0);
+		getMyItemsPane().setSelectedIndex(0);
+		getEnemyItemsPane().setSelectedIndex(0);
 		getNewEntryContentPane().setSelectedIndex(0);
 		getDateChooser().setDate(null);
 		getLengthMinutesSpinner().setValue(0);
