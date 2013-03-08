@@ -25,6 +25,7 @@ import de.phyberapex.diaryoflegends.action.ImportRoflAction;
 import de.phyberapex.diaryoflegends.base.Config;
 import de.phyberapex.diaryoflegends.base.Update;
 import de.phyberapex.diaryoflegends.view.dialoge.AboutDialog;
+import de.phyberapex.diaryoflegends.view.dialoge.NewChampionDialog;
 import de.phyberapex.diaryoflegends.view.dialoge.NewEntryDialog;
 
 public class MenuBarView extends JMenuBar implements View {
@@ -41,6 +42,7 @@ public class MenuBarView extends JMenuBar implements View {
 	private JMenu aboutMenu;
 	private JMenuItem helpItem;
 	private JMenuItem updateItem;
+	private JMenuItem addChampionItem;
 	private static Logger logger = LogManager.getLogger(MenuBarView.class
 			.getName());
 
@@ -293,6 +295,8 @@ public class MenuBarView extends JMenuBar implements View {
 			this.aboutMenu = new JMenu("?");
 			this.aboutMenu.add(getHelpItem());
 			this.aboutMenu.add(getUpdateItem());
+			this.aboutMenu.add(new JSeparator());
+			this.aboutMenu.add(getAddChampion());
 		}
 		logger.trace("getAboutMenu() - Returning");
 		logger.debug("Returned {}", aboutMenu);
@@ -336,6 +340,23 @@ public class MenuBarView extends JMenuBar implements View {
 		logger.trace("getUpdateItem() - Returning");
 		logger.debug("Returned {}", updateItem);
 		return updateItem;
+	}
+
+	private JMenuItem getAddChampion() {
+		logger.trace("getAddChampion() - Entering");
+		if (this.addChampionItem == null) {
+			this.addChampionItem = new JMenuItem("Add a new champion...");
+			this.addChampionItem.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					new NewChampionDialog().setVisible(true);
+				}
+			});
+		}
+		logger.trace("getAddChampion() - Returning");
+		logger.debug("getAddChampion() - Returning: {}", addChampionItem);
+		return addChampionItem;
 	}
 
 	@Override

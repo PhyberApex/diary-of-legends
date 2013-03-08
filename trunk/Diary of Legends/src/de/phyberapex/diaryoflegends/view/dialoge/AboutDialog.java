@@ -40,33 +40,22 @@ public class AboutDialog extends JDialog {
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setTitle("About");
 		setModal(true);
-		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		GridBagLayout gbl_contentPanel = new GridBagLayout();
-		gbl_contentPanel.columnWidths = new int[] { 216, 10, 0 };
-		gbl_contentPanel.rowHeights = new int[] { 10, 0, 0 };
-		gbl_contentPanel.columnWeights = new double[] { 1.0, 0.0,
-				Double.MIN_VALUE };
-		gbl_contentPanel.rowWeights = new double[] { 1.0, 0.0, Double.MIN_VALUE };
 		contentPanel.setLayout(gbl_contentPanel);
 		{
 			JPanel panel = new JPanel();
 			panel.setBorder(new TitledBorder(null, "Application:",
 					TitledBorder.LEADING, TitledBorder.TOP, null, null));
 			GridBagConstraints gbc_panel = new GridBagConstraints();
-			gbc_panel.insets = new Insets(0, 0, 5, 5);
+			gbc_panel.insets = new Insets(0, 0, 5, 0);
 			gbc_panel.fill = GridBagConstraints.BOTH;
 			gbc_panel.gridx = 0;
 			gbc_panel.gridy = 0;
 			contentPanel.add(panel, gbc_panel);
 			GridBagLayout gbl_panel = new GridBagLayout();
-			gbl_panel.columnWidths = new int[] { 0, 0, 0 };
-			gbl_panel.rowHeights = new int[] { 0, 0, 0, 0, 0, 0 };
-			gbl_panel.columnWeights = new double[] { 0.0, 0.0, Double.MIN_VALUE };
-			gbl_panel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0,
-					Double.MIN_VALUE };
 			panel.setLayout(gbl_panel);
 			{
 				JLabel lblName = new JLabel("Name:");
@@ -151,12 +140,14 @@ public class AboutDialog extends JDialog {
 				panel.add(lblLicense, gbc_lblLicense);
 			}
 			{
-				JLabel lblHttpwwwgnudedocumentsgpldehtml = new JLabel("GPL 3.0 - http://www.gnu.de/documents/gpl.de.html");
+				JLabel lblHttpwwwgnudedocumentsgpldehtml = new JLabel(
+						"GPL 3.0 - http://www.gnu.de/documents/gpl.de.html");
 				GridBagConstraints gbc_lblHttpwwwgnudedocumentsgpldehtml = new GridBagConstraints();
 				gbc_lblHttpwwwgnudedocumentsgpldehtml.anchor = GridBagConstraints.WEST;
 				gbc_lblHttpwwwgnudedocumentsgpldehtml.gridx = 1;
 				gbc_lblHttpwwwgnudedocumentsgpldehtml.gridy = 4;
-				panel.add(lblHttpwwwgnudedocumentsgpldehtml, gbc_lblHttpwwwgnudedocumentsgpldehtml);
+				panel.add(lblHttpwwwgnudedocumentsgpldehtml,
+						gbc_lblHttpwwwgnudedocumentsgpldehtml);
 			}
 		}
 		{
@@ -165,7 +156,7 @@ public class AboutDialog extends JDialog {
 					TitledBorder.LEADING, TitledBorder.TOP, null, null));
 			GridBagConstraints gbc_panel = new GridBagConstraints();
 			gbc_panel.fill = GridBagConstraints.HORIZONTAL;
-			gbc_panel.insets = new Insets(0, 0, 0, 5);
+			gbc_panel.insets = new Insets(0, 0, 0, 0);
 			gbc_panel.gridx = 0;
 			gbc_panel.gridy = 1;
 			contentPanel.add(panel, gbc_panel);
@@ -176,7 +167,7 @@ public class AboutDialog extends JDialog {
 				lblLoadingIcons.setHorizontalAlignment(SwingConstants.LEFT);
 				GridBagConstraints gbc_lblLoadingIcons = new GridBagConstraints();
 				gbc_lblLoadingIcons.anchor = GridBagConstraints.WEST;
-				gbc_lblLoadingIcons.insets = new Insets(0, 0, 5, 5);
+				gbc_lblLoadingIcons.insets = new Insets(0, 0, 5, 0);
 				gbc_lblLoadingIcons.gridx = 0;
 				gbc_lblLoadingIcons.gridy = 0;
 				panel.add(lblLoadingIcons, gbc_lblLoadingIcons);
@@ -196,13 +187,14 @@ public class AboutDialog extends JDialog {
 				JLabel lblChampionItemAnd = new JLabel(
 						"Champion, item and match API:");
 				GridBagConstraints gbc_lblChampionItemAnd = new GridBagConstraints();
-				gbc_lblChampionItemAnd.insets = new Insets(0, 0, 5, 5);
+				gbc_lblChampionItemAnd.insets = new Insets(0, 0, 5, 0);
 				gbc_lblChampionItemAnd.gridx = 0;
 				gbc_lblChampionItemAnd.gridy = 1;
 				panel.add(lblChampionItemAnd, gbc_lblChampionItemAnd);
 			}
 			{
-				JLabel lblHttpelophantcom = new JLabel("Elophant - http://elophant.com");
+				JLabel lblHttpelophantcom = new JLabel(
+						"Elophant - http://elophant.com");
 				lblHttpelophantcom.setHorizontalAlignment(SwingConstants.LEFT);
 				GridBagConstraints gbc_lblHttpelophantcom = new GridBagConstraints();
 				gbc_lblHttpelophantcom.insets = new Insets(0, 0, 5, 0);
@@ -215,13 +207,14 @@ public class AboutDialog extends JDialog {
 				JLabel lblDatabase = new JLabel("Database:");
 				GridBagConstraints gbc_lblDatabase = new GridBagConstraints();
 				gbc_lblDatabase.anchor = GridBagConstraints.WEST;
-				gbc_lblDatabase.insets = new Insets(0, 0, 5, 5);
+				gbc_lblDatabase.insets = new Insets(0, 0, 5, 0);
 				gbc_lblDatabase.gridx = 0;
 				gbc_lblDatabase.gridy = 2;
 				panel.add(lblDatabase, gbc_lblDatabase);
 			}
 			{
-				JLabel lblHttpwwwdbocom = new JLabel("DB4O - http://www.db4o.com/");
+				JLabel lblHttpwwwdbocom = new JLabel(
+						"DB4O - http://www.db4o.com/");
 				GridBagConstraints gbc_lblHttpwwwdbocom = new GridBagConstraints();
 				gbc_lblHttpwwwdbocom.insets = new Insets(0, 0, 5, 0);
 				gbc_lblHttpwwwdbocom.anchor = GridBagConstraints.WEST;
@@ -234,7 +227,7 @@ public class AboutDialog extends JDialog {
 				lblImportExport.setHorizontalAlignment(SwingConstants.LEFT);
 				GridBagConstraints gbc_lblImportExport = new GridBagConstraints();
 				gbc_lblImportExport.anchor = GridBagConstraints.WEST;
-				gbc_lblImportExport.insets = new Insets(0, 0, 5, 5);
+				gbc_lblImportExport.insets = new Insets(0, 0, 5, 0);
 				gbc_lblImportExport.gridx = 0;
 				gbc_lblImportExport.gridy = 3;
 				panel.add(lblImportExport, gbc_lblImportExport);
@@ -252,13 +245,14 @@ public class AboutDialog extends JDialog {
 				JLabel lblLookAndFeel = new JLabel("Look and Feel:");
 				GridBagConstraints gbc_lblLookAndFeel = new GridBagConstraints();
 				gbc_lblLookAndFeel.anchor = GridBagConstraints.WEST;
-				gbc_lblLookAndFeel.insets = new Insets(0, 0, 5, 5);
+				gbc_lblLookAndFeel.insets = new Insets(0, 0, 5, 0);
 				gbc_lblLookAndFeel.gridx = 0;
 				gbc_lblLookAndFeel.gridy = 4;
 				panel.add(lblLookAndFeel, gbc_lblLookAndFeel);
 			}
 			{
-				JLabel lblHttpwwwjgoodiescom = new JLabel("WindowsLookAndFeel - http://www.jgoodies.com/");
+				JLabel lblHttpwwwjgoodiescom = new JLabel(
+						"WindowsLookAndFeel - http://www.jgoodies.com/");
 				GridBagConstraints gbc_lblHttpwwwjgoodiescom = new GridBagConstraints();
 				gbc_lblHttpwwwjgoodiescom.insets = new Insets(0, 0, 5, 0);
 				gbc_lblHttpwwwjgoodiescom.anchor = GridBagConstraints.WEST;
@@ -276,12 +270,14 @@ public class AboutDialog extends JDialog {
 				panel.add(lblLogging, gbc_lblLogging);
 			}
 			{
-				JLabel lblHttploggingapacheorglogjx = new JLabel("Log4j2 - http://logging.apache.org/log4j/2.x/");
+				JLabel lblHttploggingapacheorglogjx = new JLabel(
+						"Log4j2 - http://logging.apache.org/log4j/2.x/");
 				GridBagConstraints gbc_lblHttploggingapacheorglogjx = new GridBagConstraints();
 				gbc_lblHttploggingapacheorglogjx.anchor = GridBagConstraints.WEST;
 				gbc_lblHttploggingapacheorglogjx.gridx = 1;
 				gbc_lblHttploggingapacheorglogjx.gridy = 5;
-				panel.add(lblHttploggingapacheorglogjx, gbc_lblHttploggingapacheorglogjx);
+				panel.add(lblHttploggingapacheorglogjx,
+						gbc_lblHttploggingapacheorglogjx);
 			}
 		}
 		{
@@ -299,6 +295,7 @@ public class AboutDialog extends JDialog {
 			buttonPane.add(okButton);
 			getRootPane().setDefaultButton(okButton);
 		}
+		setResizable(false);
 		pack();
 		setLocationRelativeTo(MainView.getInstance());
 	}

@@ -33,9 +33,10 @@ public class SpellComboBoxRenderer extends JLabel implements
 			setForeground(list.getForeground());
 		}
 		setOpaque(true);
-		if (value.getIcon() == null) {
-			setIcon(value.getResizeIcon(30));
+		if (value == null) {
+			value = new SummonerSpell(0, "no spell");
 		}
+		setIcon(value.getResizeIcon(40));
 		setText(value.getName());
 		return this;
 	}

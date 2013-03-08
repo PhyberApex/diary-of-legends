@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project default="create_run_jar" name="Create Runnable Jar for Project Diary of Legends with libraries in sub-folder">
 	<property name="project-name" value="DiaryOfLegends" />
-	<property name="version" value="0.1" />
+	<property name="version" value="0.2" />
 	<property name="folder-to-zip" value="build/${version}/content/" />
 	<target name="create_run_jar">
 		<jar destfile="build/${version}/content/DiaryOfLegends.jar">
@@ -19,6 +19,7 @@
 			<fileset dir="">
 				<include name="gpl-3.0.txt" />
 				<include name="logconfig.xml" />
+				<include name="patchnotes.txt" />
 				<include name="lib/*" />
 			</fileset>
 		</copy>

@@ -52,8 +52,7 @@ public class Config {
 				prop.createNewFile();
 				reader = new FileReader("diary.cfg");
 				logger.info("Setting databasename to {}",
-						Constants.getAppName() + Constants.getAppVersion()
-								+ ".db");
+						Constants.getAppName() + ".db");
 				new File("db").mkdir();
 				this.setProperty(
 						"DATABASENAME",
