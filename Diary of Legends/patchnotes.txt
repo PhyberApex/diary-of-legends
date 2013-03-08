@@ -2,6 +2,7 @@
 *       Diary of Legends        *
 *********************************
 Version: 0.2
+Requirements: Java Runtime Environment 1.7 or above
 
 =====   Version History     =====
 

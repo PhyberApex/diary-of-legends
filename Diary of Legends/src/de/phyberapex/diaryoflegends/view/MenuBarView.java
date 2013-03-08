@@ -144,7 +144,7 @@ public class MenuBarView extends JMenuBar implements View {
 	private JMenuItem getChangeAPIKeyItem() {
 		logger.trace("getChangeAPIKeyItem() - Entering");
 		if (this.changeAPIKeyItem == null) {
-			this.changeAPIKeyItem = new JMenuItem("Change summoner name");
+			this.changeAPIKeyItem = new JMenuItem("Change API-Key");
 			this.changeAPIKeyItem.addActionListener(new ActionListener() {
 
 				@Override
