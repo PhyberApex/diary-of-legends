@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 import de.phyberapex.diaryoflegends.action.ExitAction;
 import de.phyberapex.diaryoflegends.action.RefreshSummonerInfoAction;
 import de.phyberapex.diaryoflegends.base.Config;
+import de.phyberapex.diaryoflegends.base.Constants;
 import de.phyberapex.diaryoflegends.base.InitializeAction;
 import de.phyberapex.diaryoflegends.base.Initializer;
 import de.phyberapex.diaryoflegends.base.Update;
@@ -146,6 +147,9 @@ public class MainController {
 			mainView.refresh();
 			Thread tr = new Thread(RefreshSummonerInfoAction.getInstance());
 			tr.start();
+			if(Constants.getAppVersion().endsWith("a")){
+				JOptionPane.showMessageDialog(null, "This is a alpha version some functionality may be broken and/or may not work intentionally\nIt is highly recommended to wait for an offical release. Use at your own risk.", "WARNING ALPHA", JOptionPane.INFORMATION_MESSAGE);
+			}
 			SwingUtilities.invokeLater(mainView);
 
 		} catch (InitializeException e) {
