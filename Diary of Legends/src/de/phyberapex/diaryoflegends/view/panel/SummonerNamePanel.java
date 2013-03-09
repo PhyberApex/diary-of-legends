@@ -1,4 +1,4 @@
-package de.phyberapex.diaryoflegends.view;
+package de.phyberapex.diaryoflegends.view.panel;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -12,19 +12,20 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import de.phyberapex.diaryoflegends.base.Initializer;
 import de.phyberapex.diaryoflegends.model.Region;
+import de.phyberapex.diaryoflegends.view.View;
 
-public class SummonerNameViewPanel extends JPanel implements View {
+public class SummonerNamePanel extends JPanel implements View {
 
 	private static final long serialVersionUID = -3649794292915604043L;
-	private static SummonerNameViewPanel instance;
+	private static SummonerNamePanel instance;
 	private static Logger logger = LogManager
-			.getLogger(SummonerNameViewPanel.class.getName());
+			.getLogger(SummonerNamePanel.class.getName());
 	private JLabel nameLabel;
 	private JTextField nameTextfield;
 	private JLabel regionLabel;
 	private JComboBox<Region> regionBox;
 
-	private SummonerNameViewPanel() {
+	private SummonerNamePanel() {
 		super();
 		logger.trace("CurrentSummonerNameView() - Entering");
 		createGUI();
@@ -45,7 +46,7 @@ public class SummonerNameViewPanel extends JPanel implements View {
 	private JTextField getNameTextfield() {
 		logger.trace("getNameTextfield() - Entering");
 		if (nameTextfield == null) {
-			nameTextfield = new JTextField("...");
+			nameTextfield = new JTextField();
 			nameTextfield.setPreferredSize(new Dimension(150, 30));
 			nameTextfield
 					.setToolTipText("This is only needed for import reasons.");
@@ -92,10 +93,10 @@ public class SummonerNameViewPanel extends JPanel implements View {
 	 * 
 	 * @return {@link Initializer} an instance of this class
 	 */
-	public static synchronized SummonerNameViewPanel getInstance() {
+	public static synchronized SummonerNamePanel getInstance() {
 		logger.trace("getInstance() - Entering");
 		if (instance == null) {
-			instance = new SummonerNameViewPanel();
+			instance = new SummonerNamePanel();
 		}
 		logger.trace("getInstance() - Returning");
 		logger.debug("getInstance() - Returning: {}", instance);

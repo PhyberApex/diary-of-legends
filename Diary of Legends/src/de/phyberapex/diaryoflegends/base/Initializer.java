@@ -10,7 +10,7 @@ import com.jgoodies.looks.windows.WindowsLookAndFeel;
 
 import de.phyberapex.diaryoflegends.controller.MainController;
 import de.phyberapex.diaryoflegends.exception.InitializeException;
-import de.phyberapex.diaryoflegends.view.SummonerNameViewPanel;
+import de.phyberapex.diaryoflegends.view.panel.SummonerNamePanel;
 
 /**
  * Class to initialize the application on the start
@@ -67,7 +67,7 @@ public class Initializer {
 				|| conf.getProperty("REGION") == null) {
 			returnValue.add(InitializeAction.CREATE_SUMMONER);
 			if (conf.getProperty("SUMMONER_NAME") != null) {
-				SummonerNameViewPanel.getInstance().setSummonerName(
+				SummonerNamePanel.getInstance().setSummonerName(
 						conf.getProperty("SUMMONER_NAME"));
 			}
 		}

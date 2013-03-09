@@ -106,7 +106,7 @@ public class SummonerSpell extends Model {
 							"http://img.lolking.net/images/spells/" + getId()
 									+ ".png"));
 					File f = new File(System.getProperty("user.dir")
-							+ "/img/items/" + getId() + ".png");
+							+ "/img/summonerspells/" + getId() + ".png");
 					FileOutputStream fou = new FileOutputStream(f);
 					fou.write(tmp);
 					fou.close();
