@@ -5,7 +5,8 @@ Version: 0.2
 Requirements: Java Runtime Environment 1.7 or above
 
 =====     Known issues      =====
-* Summonerspells not working(no fix for now as there is no API for those)
+* If the icons could be loaded after a failed attempt earlier it will only show them
+after a restart of the application
 
 =====   Version history     =====
 
