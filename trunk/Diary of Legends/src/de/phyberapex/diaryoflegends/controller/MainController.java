@@ -17,13 +17,13 @@ import de.phyberapex.diaryoflegends.exception.InitializeException;
 import de.phyberapex.diaryoflegends.extra.ImageIconFactory;
 import de.phyberapex.diaryoflegends.extra.Splash;
 import de.phyberapex.diaryoflegends.model.Region;
-import de.phyberapex.diaryoflegends.view.SummonerNameViewPanel;
 import de.phyberapex.diaryoflegends.view.MainView;
 import de.phyberapex.diaryoflegends.view.MatchupView;
 import de.phyberapex.diaryoflegends.view.StatsView;
 import de.phyberapex.diaryoflegends.view.dialoge.MatchupDetailDialog;
 import de.phyberapex.diaryoflegends.view.dialoge.NewEntryDialog;
 import de.phyberapex.diaryoflegends.view.panel.APIKeyViewPanel;
+import de.phyberapex.diaryoflegends.view.panel.SummonerNamePanel;
 
 public class MainController {
 
@@ -91,7 +91,7 @@ public class MainController {
 			splash.showStatus("Preparing to start", 100);
 			splash.close();
 			if (initAction.contains(InitializeAction.CREATE_SUMMONER)) {
-				SummonerNameViewPanel currSumView = SummonerNameViewPanel
+				SummonerNamePanel currSumView = SummonerNamePanel
 						.getInstance();
 				Object[] options = { "OK" };
 				int ok = JOptionPane.showOptionDialog(null, currSumView,
@@ -122,9 +122,9 @@ public class MainController {
 					Config.getInstance().saveChanges();
 				}
 			} else {
-				SummonerNameViewPanel.getInstance().setSummonerName(
+				SummonerNamePanel.getInstance().setSummonerName(
 						Config.getInstance().getProperty("SUMMONER_NAME"));
-				SummonerNameViewPanel.getInstance().setRegion(
+				SummonerNamePanel.getInstance().setRegion(
 						Region.valueOf(Config.getInstance().getProperty(
 								"REGION")));
 			}

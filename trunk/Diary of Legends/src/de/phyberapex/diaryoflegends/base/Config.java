@@ -12,6 +12,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Properties;
@@ -33,6 +34,8 @@ public class Config {
 	private ObjectContainer dbHandle;
 	private Summoner currentSummoner = new Summoner("");
 	private ObjectServer server;
+	private static boolean internetAvailable;
+	private static long lastCheck = 0;
 	transient private static Logger logger = LogManager.getLogger(Config.class
 			.getName());
 
@@ -54,10 +57,8 @@ public class Config {
 				logger.info("Setting databasename to {}",
 						Constants.getAppName() + ".db");
 				new File("db").mkdir();
-				this.setProperty(
-						"DATABASENAME",
-						"db\\" + Constants.getAppName()
-								+ Constants.getAppVersion() + ".db");
+				this.setProperty("DATABASENAME",
+						"db\\" + Constants.getAppName() + ".db");
 				saveChanges();
 			} catch (IOException e1) {
 				logger.error(e1.getMessage());
@@ -66,6 +67,11 @@ public class Config {
 		try {
 			logger.info("Configuration file found loading it");
 			this.prop.load(reader);
+			if (this.getProperty("DATABASENAME") == null) {
+				this.setProperty("DATABASENAME",
+						"db\\" + Constants.getAppName() + ".db");
+				saveChanges();
+			}
 			this.currentSummoner.setName(getProperty("SUMMONER_NAME"));
 		} catch (IOException e) {
 			logger.error(e.getMessage());
@@ -148,16 +154,46 @@ public class Config {
 	 */
 	public synchronized ObjectContainer getDBHandle() {
 		logger.trace("getDBHandle() - Entering");
-		logger.debug("Database handle is {}", dbHandle);
-		if (dbHandle == null) {
-			logger.debug("Creating a new instance of ObjectContainer");
+		if (server == null) {
 			server = Db4oClientServer.openServer(
 					prop.getProperty("DATABASENAME"), 0);
+		}
+		if (dbHandle == null) {
+			logger.debug("Creating a new instance of ObjectContainer");
 			dbHandle = server.openClient();
 		}
 		logger.trace("getDBHandle() - Returning");
 		logger.debug("getDBHandle() - Returning: {}", dbHandle);
 		return dbHandle;
+	}
+
+	public static boolean isInternetReachable() {
+		logger.trace("isInternetReachable() - Entering");
+		boolean returnValue = true;
+		try {
+			if (lastCheck != 0
+					&& System.currentTimeMillis() - lastCheck < 100000) {
+				returnValue = internetAvailable;
+			} else {
+				// make a URL to a known source
+				URL url = new URL("http://www.google.de");
+				// open a connection to that source
+				HttpURLConnection urlConnect = (HttpURLConnection)url.openConnection();
+				// trying to retrieve data from the source. If there
+				// is no connection, this line will fail
+				//TODO WARUM GEHT TIMEOUT NICHT?
+				urlConnect.getContent();
+				lastCheck = System.currentTimeMillis();
+			}
+		} catch (IOException e) {
+			lastCheck = System.currentTimeMillis();
+			logger.debug("No internet connection");
+			returnValue = false;
+		}
+		internetAvailable = returnValue;
+		logger.trace("isInternetReachable() - Returning");
+		logger.debug("isInternetReachable() - Returning: {}", returnValue);
+		return returnValue;
 	}
 
 	public Summoner getCurrentSummoner() {
@@ -189,27 +225,30 @@ public class Config {
 		logger.debug("getSummonerIdByNameAndRegion() - Parameter: {}, {}",
 				summonerName, region);
 		int[] returnValue = { 0, 0 };
-		try {
-			URLConnection con = new URL("http://api.elophant.com/v2/"
-					+ region.name() + "/summoner/" + summonerName + "?key="
-					+ Config.getInstance().getProperty("API_KEY"))
-					.openConnection();
-			BufferedReader in = new BufferedReader(new InputStreamReader(
-					con.getInputStream()));
-			String inputLine;
-			String json = "";
-			while ((inputLine = in.readLine()) != null)
-				json += inputLine;
-			in.close();
-			JSONObject data = new JSONObject(json);
-			if (data.getBoolean("success")) {
-				returnValue[0] = data.getJSONObject("data")
-						.getInt("summonerId");
-				returnValue[1] = data.getJSONObject("data").getInt("acctId");
+		if (isInternetReachable()) {
+			try {
+				URLConnection con = new URL("http://api.elophant.com/v2/"
+						+ region.name() + "/summoner/" + summonerName + "?key="
+						+ Config.getInstance().getProperty("API_KEY"))
+						.openConnection();
+				BufferedReader in = new BufferedReader(new InputStreamReader(
+						con.getInputStream()));
+				String inputLine;
+				String json = "";
+				while ((inputLine = in.readLine()) != null)
+					json += inputLine;
+				in.close();
+				JSONObject data = new JSONObject(json);
+				if (data.getBoolean("success")) {
+					returnValue[0] = data.getJSONObject("data").getInt(
+							"summonerId");
+					returnValue[1] = data.getJSONObject("data")
+							.getInt("acctId");
+				}
+			} catch (IOException e) {
+				logger.debug("Error: {}" + e.getMessage());
+				logger.error("Couldn't connect to api.elophant.com summonerID and accountID not set");
 			}
-		} catch (IOException e) {
-			logger.debug("Error: {}" + e.getMessage());
-			logger.error("Couldn't connect to api.elophant.com summonerID and accountID not set");
 		}
 		logger.trace("getSummonerIdByNameAndRegion() - Returning");
 		logger.debug("getSummonerIdByNameAndRegion() - Returning: {}",

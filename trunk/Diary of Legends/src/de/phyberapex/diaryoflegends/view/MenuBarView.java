@@ -28,6 +28,7 @@ import de.phyberapex.diaryoflegends.view.dialoge.AboutDialog;
 import de.phyberapex.diaryoflegends.view.dialoge.NewChampionDialog;
 import de.phyberapex.diaryoflegends.view.dialoge.NewEntryDialog;
 import de.phyberapex.diaryoflegends.view.panel.APIKeyViewPanel;
+import de.phyberapex.diaryoflegends.view.panel.SummonerNamePanel;
 
 public class MenuBarView extends JMenuBar implements View {
 
@@ -106,7 +107,7 @@ public class MenuBarView extends JMenuBar implements View {
 
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
-					SummonerNameViewPanel currSumView = SummonerNameViewPanel
+					SummonerNamePanel currSumView = SummonerNamePanel
 							.getInstance();
 					Object[] options = { "OK" };
 					int ok = JOptionPane.showOptionDialog(null, currSumView,
