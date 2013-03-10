@@ -3782,14 +3782,26 @@ public class NewEntryDialog extends JDialog implements Runnable {
 											.getValue()));
 						}
 						matchup.setEnemyEndItems(mis);
-						// matchup.setMySpell1(getMySpell1Box().getItemAt(
-						// getMySpell1Box().getSelectedIndex()));
-						// matchup.setMySpell2(getMySpell2Box().getItemAt(
-						// getMySpell2Box().getSelectedIndex()));
-						// matchup.setEnemySpell1(getEnemySpell1Box().getItemAt(
-						// getEnemySpell1Box().getSelectedIndex()));
-						// matchup.setEnemySpell2(getEnemySpell2Box().getItemAt(
-						// getEnemySpell2Box().getSelectedIndex()));
+						if (getMySpell1Box().getSelectedIndex() != 0) {
+							matchup.setMySpell1(getMySpell1Box().getItemAt(
+									getMySpell1Box().getSelectedIndex()));
+						}
+						if (getMySpell2Box().getSelectedIndex() != 0) {
+							matchup.setMySpell2(getMySpell2Box().getItemAt(
+									getMySpell2Box().getSelectedIndex()));
+						}
+						if (getEnemySpell1Box().getSelectedIndex() != 0) {
+							matchup.setEnemySpell1(getEnemySpell1Box()
+									.getItemAt(
+											getEnemySpell1Box()
+													.getSelectedIndex()));
+						}
+						if (getEnemySpell2Box().getSelectedIndex() != 0) {
+							matchup.setEnemySpell2(getEnemySpell2Box()
+									.getItemAt(
+											getEnemySpell2Box()
+													.getSelectedIndex()));
+						}
 						game.setMatchup(matchup);
 						if (toEdit != null && !isImport) {
 							MainController.getInstance().updated();
