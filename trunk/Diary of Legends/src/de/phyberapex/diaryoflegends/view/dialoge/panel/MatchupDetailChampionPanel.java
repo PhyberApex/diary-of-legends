@@ -523,11 +523,11 @@ public class MatchupDetailChampionPanel extends JPanel {
 					30, 30));
 			l.setToolTipText(mi.getAmount() + "x " + mi.getItem().getName());
 		}
-		if(spell1 != null){
-		getMyChampSpell1Label().setIcon(
-				ImageIconFactory.resizeImageIcon(spell1.getIcon(), 40, 40));
-		getMyChampSpell2Label().setIcon(
-				ImageIconFactory.resizeImageIcon(spell2.getIcon(), 40, 40));
+		if (spell1 != null) {
+			getMyChampSpell1Label().setIcon(
+					ImageIconFactory.resizeImageIcon(spell1.getIcon(), 40, 40));
+			getMyChampSpell2Label().setIcon(
+					ImageIconFactory.resizeImageIcon(spell2.getIcon(), 40, 40));
 		}
 		logger.trace("setChampionAndItems() - Leaving");
 	}

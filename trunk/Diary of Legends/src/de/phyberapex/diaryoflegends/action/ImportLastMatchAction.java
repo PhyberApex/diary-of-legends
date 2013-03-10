@@ -18,6 +18,7 @@ import org.json.JSONObject;
 import de.phyberapex.diaryoflegends.base.Config;
 import de.phyberapex.diaryoflegends.exception.ChampionNotFoundException;
 import de.phyberapex.diaryoflegends.exception.ItemNotFoundException;
+import de.phyberapex.diaryoflegends.exception.SummonerSpellNotFoundException;
 import de.phyberapex.diaryoflegends.model.Champion;
 import de.phyberapex.diaryoflegends.model.Game;
 import de.phyberapex.diaryoflegends.model.GameElophantImport;
@@ -25,8 +26,10 @@ import de.phyberapex.diaryoflegends.model.GameResult;
 import de.phyberapex.diaryoflegends.model.Item;
 import de.phyberapex.diaryoflegends.model.Matchup;
 import de.phyberapex.diaryoflegends.model.MatchupItem;
+import de.phyberapex.diaryoflegends.model.SummonerSpell;
 import de.phyberapex.diaryoflegends.model.util.ChampionUtil;
 import de.phyberapex.diaryoflegends.model.util.ItemUtil;
+import de.phyberapex.diaryoflegends.model.util.SummonerSpellUtil;
 import de.phyberapex.diaryoflegends.view.MainView;
 import de.phyberapex.diaryoflegends.view.dialoge.NewEntryDialog;
 import de.phyberapex.diaryoflegends.view.panel.ElophantImportPanel;
@@ -37,6 +40,7 @@ public class ImportLastMatchAction implements Runnable {
 			false, false, false, false };
 	private List<Champion> allChampions = ChampionUtil.getAllChampions();
 	private List<Item> allItems = ItemUtil.getAllItems();
+	private List<SummonerSpell> allSpells = SummonerSpellUtil.getAllSpells();
 	private List<GameElophantImport> impGames;
 	private static Logger logger = LogManager
 			.getLogger(ImportLastMatchAction.class.getName());
@@ -68,8 +72,40 @@ public class ImportLastMatchAction implements Runnable {
 							JSONObject gameStats = jo.getJSONObject("data")
 									.getJSONArray("gameStatistics")
 									.getJSONObject(x);
-							// int spell1 = gameStats.getInt("spell1");
-							// int spell2 = gameStats.getInt("spell2");
+							int spell1 = gameStats.getInt("spell1");
+							SummonerSpell spell = null;
+							Iterator<SummonerSpell> spl = allSpells.iterator();
+							while (spl.hasNext()) {
+								SummonerSpell tmp = spl.next();
+								if (tmp.getId() == spell1) {
+									spell = tmp;
+									break;
+								}
+							}
+							if (spell == null) {
+								logger.error("Spell with id {} not found",
+										spell1);
+								throw new SummonerSpellNotFoundException(
+										"Spell not found. Maybe your spells are outdated.");
+							}
+							matchup.setMySpell1(spell);
+							int spell2 = gameStats.getInt("spell2");
+							spell = null;
+							Iterator<SummonerSpell> spl2 = allSpells.iterator();
+							while (spl2.hasNext()) {
+								SummonerSpell tmp = spl2.next();
+								if (tmp.getId() == spell2) {
+									spell = tmp;
+									break;
+								}
+							}
+							if (spell == null) {
+								logger.error("Spell with id {} not found",
+										spell2);
+								throw new SummonerSpellNotFoundException(
+										"Spell not found. Maybe your spells are outdated.");
+							}
+							matchup.setMySpell2(spell);
 							JSONArray statArray = gameStats
 									.getJSONArray("statistics");
 							List<MatchupItem> myEndItems = new ArrayList<>();
@@ -143,8 +179,9 @@ public class ImportLastMatchAction implements Runnable {
 						y++;
 					}
 				}
-			}else{
-				MainView.getInstance().setStatusText("Import not possible, API may be under maintenance");
+			} else {
+				MainView.getInstance().setStatusText(
+						"Import not possible, API may be under maintenance");
 			}
 		} catch (ChampionNotFoundException | ItemNotFoundException
 				| IOException e) {

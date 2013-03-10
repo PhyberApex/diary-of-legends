@@ -31,8 +31,7 @@ public class RefreshSummonerInfoAction implements Runnable {
 						Config.getInstance().getCurrentSummoner()
 								.getSummonerInfoString());
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.error(e.getMessage());
 			}
 		}
 	}
