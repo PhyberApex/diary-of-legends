@@ -9,7 +9,7 @@
     </Console>
   </appenders>
   <loggers>
-  <logger name="de.phyberapex.diaryoflegends" level="error" additivity="false">
+  <logger name="de.phyberapex.diaryoflegends.model.util" level="debug" additivity="false">
       <appender-ref ref="logfile"/>
     </logger>
   	<root level="error">

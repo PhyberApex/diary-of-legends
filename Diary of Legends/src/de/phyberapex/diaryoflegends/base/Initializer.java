@@ -103,7 +103,8 @@ public class Initializer {
 
 	private boolean update() {
 		logger.trace("update() - Entering");
-		boolean returnValue = Config.getInstance().getProperty("AUTO_UPDATE") != null;
+		boolean returnValue = !Config.getInstance().getProperty("AUTO_UPDATE")
+				.equals("0");
 		logger.trace("update() - Returning");
 		logger.debug("update() - Returning: {}", returnValue);
 		return returnValue;

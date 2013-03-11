@@ -59,6 +59,7 @@ public class Config {
 				new File("db").mkdir();
 				this.setProperty("DATABASENAME",
 						"db\\" + Constants.getAppName() + ".db");
+				this.setProperty("AUTO_UPDATE", "0");
 				saveChanges();
 			} catch (IOException e1) {
 				logger.error(e1.getMessage());
@@ -178,10 +179,11 @@ public class Config {
 				// make a URL to a known source
 				URL url = new URL("http://www.google.de");
 				// open a connection to that source
-				HttpURLConnection urlConnect = (HttpURLConnection)url.openConnection();
+				HttpURLConnection urlConnect = (HttpURLConnection) url
+						.openConnection();
 				// trying to retrieve data from the source. If there
 				// is no connection, this line will fail
-				//TODO WARUM GEHT TIMEOUT NICHT?
+				// TODO WARUM GEHT TIMEOUT NICHT?
 				urlConnect.getContent();
 				lastCheck = System.currentTimeMillis();
 			}
