@@ -130,26 +130,29 @@ public class Summoner extends Model {
 				if (streakOver) {
 					break;
 				}
-				for (int j = 0; j < games.getJSONObject(i)
-						.getJSONArray("statistics").length(); j++) {
-					if (games.getJSONObject(i).getJSONArray("statistics")
-							.getJSONObject(j).getString("statType")
-							.equals("WIN")) {
-						if (returnValue >= 0) {
-							returnValue++;
-						} else {
-							streakOver = true;
+				String type = games.getJSONObject(i).getString("queueType");
+				if (type.equals("NORMAL") || type.equals("RANKED_SOLO_5x5")) {
+					for (int j = 0; j < games.getJSONObject(i)
+							.getJSONArray("statistics").length(); j++) {
+						if (games.getJSONObject(i).getJSONArray("statistics")
+								.getJSONObject(j).getString("statType")
+								.equals("WIN")) {
+							if (returnValue >= 0) {
+								returnValue++;
+							} else {
+								streakOver = true;
+							}
+							break;
+						} else if (games.getJSONObject(i)
+								.getJSONArray("statistics").getJSONObject(j)
+								.getString("statType").equals("LOSE")) {
+							if (returnValue <= 0) {
+								returnValue--;
+							} else {
+								streakOver = true;
+							}
+							break;
 						}
-						break;
-					} else if (games.getJSONObject(i)
-							.getJSONArray("statistics").getJSONObject(j)
-							.getString("statType").equals("LOSE")) {
-						if (returnValue <= 0) {
-							returnValue--;
-						} else {
-							streakOver = true;
-						}
-						break;
 					}
 				}
 			}
