@@ -21,7 +21,8 @@ Version 0.2 -
     - Exported the JSON classes from json.org in a own .jar file
     - Added possibility to change the API-Key via GUI
     - Summoner Spells now active but they do not update if any changes are made by riot
-    - Added a warning if alpha version is used
+    - Added a warning if developer version is used
+    - Added a tooltip to the summoner info panel at the bottom right
 
 * Bug fixes
     - Fixed the naming of the database(no longer includes version)
