@@ -370,6 +370,7 @@ public class NewEntryDialog extends JDialog implements Runnable {
 		logger.trace("getDateChooser() - Entering");
 		if (dateChooser == null) {
 			dateChooser = new JDateChooser();
+			dateChooser.setDateFormatString("yyyy-MM-dd HH:mm");
 		}
 		logger.trace("getDateChooser() - Returning");
 		logger.debug("getDateChooser() - Returning: {}", dateChooser);

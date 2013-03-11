@@ -3,8 +3,6 @@ package de.phyberapex.diaryoflegends.action;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -39,11 +37,8 @@ public class ExportDolexAction implements Runnable {
 				logger.debug("Exporting ", game);
 				jw.object();
 				jw.key("date");
-				Date date = game.getDate();
-				SimpleDateFormat sdfToDate = new SimpleDateFormat(
-						"dd.MM.yyyy HH:mm:ss");
-				String strDate = sdfToDate.format(date);
-				jw.value(strDate);
+				long date = game.getDate().getTime();
+				jw.value(date);
 				jw.key("myTeam");
 				jw.array();
 				jw.value(game.getMyTeam().get(0).getId());

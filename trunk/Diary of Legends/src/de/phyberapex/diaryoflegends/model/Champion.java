@@ -92,7 +92,7 @@ public class Champion extends Model {
 		logger.trace("getIcon() - Entering");
 		ImageIcon img = null;
 		if (id != 0) {
-			if (icon != null) {
+			if (icon != null ) {
 				img = icon;
 			} else {
 				img = ImageIconFactory.createImageIcon(System

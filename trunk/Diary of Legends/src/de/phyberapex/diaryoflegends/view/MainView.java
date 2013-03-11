@@ -129,6 +129,7 @@ public class MainView extends JFrame implements View, Runnable {
 			summonerInfoLabel = new JLabel(Config.getInstance()
 					.getCurrentSummoner().getSummonerInfoString());
 			summonerInfoLabel.setBorder(BorderFactory.createBevelBorder(1));
+			summonerInfoLabel.setToolTipText("Summoner name | Ranked tier and devision | Winning/Losing streak(last 10 games ranked and normal)");
 		}
 		logger.trace("getSummonerInfoLabel() - Returning");
 		logger.debug("getSummonerInfoLabel() - Returning: {}",

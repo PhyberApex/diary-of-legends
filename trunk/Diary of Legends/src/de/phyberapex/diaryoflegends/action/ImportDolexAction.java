@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -69,9 +68,7 @@ public class ImportDolexAction implements Runnable {
 				JSONObject gJo = gArray.getJSONObject(i);
 
 				Game game = new Game();
-				SimpleDateFormat sdfToDate = new SimpleDateFormat(
-						"dd.MM.yyyy HH:mm:ss");
-				Date date = sdfToDate.parse(gJo.getString("date"));
+				Date date = new Date(gJo.getLong("date"));
 				game.setDate(date);
 				List<Champion> teams = new ArrayList<Champion>();
 				JSONArray myTeamArray = gJo.getJSONArray("myTeam");

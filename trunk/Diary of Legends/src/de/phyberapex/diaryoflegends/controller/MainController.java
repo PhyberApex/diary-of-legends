@@ -60,6 +60,8 @@ public class MainController {
 				if (ok == JOptionPane.OK_OPTION) {
 					Config.getInstance().setProperty("API_KEY",
 							apiKeyView.getAPIKey());
+					splash.showStatus("Updating", 20);
+					Update.update(false);
 				} else {
 					JOptionPane
 							.showMessageDialog(
@@ -92,8 +94,7 @@ public class MainController {
 			splash.showStatus("Preparing to start", 100);
 			splash.close();
 			if (initAction.contains(InitializeAction.CREATE_SUMMONER)) {
-				SummonerNamePanel currSumView = SummonerNamePanel
-						.getInstance();
+				SummonerNamePanel currSumView = SummonerNamePanel.getInstance();
 				Object[] options = { "OK" };
 				int ok = JOptionPane.showOptionDialog(null, currSumView,
 						"Enter your Summoner name",
@@ -147,8 +148,13 @@ public class MainController {
 			mainView.refresh();
 			Thread tr = new Thread(RefreshSummonerInfoAction.getInstance());
 			tr.start();
-			if(Constants.getAppVersion().endsWith("a")){
-				JOptionPane.showMessageDialog(null, "This is a alpha version some functionality may be broken and/or may not work intentionally\nIt is highly recommended to wait for an offical release. Use at your own risk.", "WARNING ALPHA", JOptionPane.INFORMATION_MESSAGE);
+			if (Constants.getAppVersion().endsWith("a")) {
+				JOptionPane
+						.showMessageDialog(
+								null,
+								"This is a alpha version some functionality may be broken and/or may not work intentionally\nIt is highly recommended to wait for an offical release. Use at your own risk.",
+								"WARNING ALPHA",
+								JOptionPane.INFORMATION_MESSAGE);
 			}
 			SwingUtilities.invokeLater(mainView);
 
