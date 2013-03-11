@@ -316,11 +316,10 @@ public class ChampionUtil {
 				double matches = champsWithDiff.get(matchup.getEnemyChamp())[1];
 				logger.debug("Current amount of matches of this champ {}",
 						matches);
-				currentDifficulty = (currentDifficulty + matchup
-						.getDifficulty().getValue() / matches) / 2;
+				currentDifficulty = (currentDifficulty * matches + matchup
+						.getDifficulty().getValue()) / ++matches;
 				logger.debug("New difficulty of this champ {}",
 						currentDifficulty);
-				matches++;
 				logger.debug("New amount of matches of this champ {}", matches);
 				champsWithDiff.put(matchup.getEnemyChamp(), new double[] {
 						currentDifficulty, matches });
@@ -432,9 +431,11 @@ public class ChampionUtil {
 		while (set.hasNext()) {
 			champs.add(set.next().getMyChamp());
 		}
-		MainView.getInstance().setStatusText("Found "+champs.size()+" champions");
+		MainView.getInstance().setStatusText(
+				"Found " + champs.size() + " champions");
 		for (Champion e : champs) {
-			MainView.getInstance().setStatusText("Calculating stats for "+e.getName());
+			MainView.getInstance().setStatusText(
+					"Calculating stats for " + e.getName());
 			Top3EnemyStatistics tmp = getTop3Enemies(e.getName());
 			if (tmp != null) {
 				returnValue.add(tmp);

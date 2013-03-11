@@ -3,6 +3,8 @@ package de.phyberapex.diaryoflegends.view;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -45,6 +47,7 @@ public class MenuBarView extends JMenuBar implements View {
 	private JMenu aboutMenu;
 	private JMenuItem helpItem;
 	private JMenuItem updateItem;
+	private JCheckBoxMenuItem autoUpdateItem;
 	private JMenuItem addChampionItem;
 	private static Logger logger = LogManager.getLogger(MenuBarView.class
 			.getName());
@@ -333,6 +336,7 @@ public class MenuBarView extends JMenuBar implements View {
 			this.aboutMenu = new JMenu("?");
 			this.aboutMenu.add(getHelpItem());
 			this.aboutMenu.add(getUpdateItem());
+			this.aboutMenu.add(getAutoUpdateItem());
 			this.aboutMenu.add(new JSeparator());
 			this.aboutMenu.add(getAddChampion());
 		}
@@ -378,6 +382,32 @@ public class MenuBarView extends JMenuBar implements View {
 		logger.trace("getUpdateItem() - Returning");
 		logger.debug("Returned {}", updateItem);
 		return updateItem;
+	}
+
+	public JCheckBoxMenuItem getAutoUpdateItem() {
+		logger.trace("getAutoUpdateItem() - Entering");
+		if (autoUpdateItem == null) {
+			autoUpdateItem = new JCheckBoxMenuItem(
+					"Update champions/items on startup");
+			autoUpdateItem.setSelected(Config.getInstance()
+					.getProperty("AUTO_UPDATE").equals("1"));
+			autoUpdateItem.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					Config conf = Config.getInstance();
+					if (!autoUpdateItem.isSelected()) {
+						conf.setProperty("AUTO_UPDATE", "0");
+					} else {
+						conf.setProperty("AUTO_UPDATE", "1");
+					}
+					conf.saveChanges();
+				}
+			});
+		}
+		logger.trace("getAutoUpdateItem() - Returning");
+		logger.debug("getAutoUpdateItem() - Returning: {}", autoUpdateItem);
+		return autoUpdateItem;
 	}
 
 	private JMenuItem getAddChampion() {

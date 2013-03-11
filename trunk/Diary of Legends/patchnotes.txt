@@ -13,12 +13,13 @@ To fix this you have to restart the application a few times.
 Version 0.2 - 
 * New Features
     - Added this file
+    - Added option to automatically update the application on startup(champions/items)
     - The date of the matchup is now with time and not only a date
     - Ranked matches are now marked in the import from most recent matches
-    - Added possibilty to add champions while beeing offline or if the elophant api is not up to date
+    - Added possibility to add champions while being offline or if the elophant-API is not up to date
     - Rearranged the layout of the dialog for new entries/import entries to be better looking 
     - Exported the JSON classes from json.org in a own .jar file
-    - Added possibilty to change the API-Key via GUI
+    - Added possibility to change the API-Key via GUI
     - Summoner Spells now active but they do not update if any changes are made by riot
     - Added a warning if alpha version is used
 
@@ -33,6 +34,7 @@ Version 0.2 -
     - Fixed a bug where the application was exiting after an update even if it failed
     - Fixed a bug where the application would crash if the diary.cfg file exists but does not contain "DATABASENAME"
     - Removed the "..." from the initial summoner name dialog
+    - Fixed a bug in the calculation of the statistics for the top 3 enemy champions
 
 Version 0.1 - 2013-03-07
 * Initial release
