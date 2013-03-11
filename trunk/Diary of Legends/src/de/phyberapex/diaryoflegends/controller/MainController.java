@@ -148,13 +148,16 @@ public class MainController {
 			mainView.refresh();
 			Thread tr = new Thread(RefreshSummonerInfoAction.getInstance());
 			tr.start();
-			if (Constants.getAppVersion().endsWith("a")) {
+			if (Constants.getAppVersion().endsWith("dev")) {
 				JOptionPane
 						.showMessageDialog(
 								null,
-								"This is a alpha version some functionality may be broken and/or may not work intentionally\nIt is highly recommended to wait for an offical release. Use at your own risk.",
-								"WARNING ALPHA",
-								JOptionPane.INFORMATION_MESSAGE);
+								"This is a developer version of "
+										+ Constants.getAppName()
+										+ " some functionality may be broken\nand/or may not work as intended. There may be new features please check the\npatchnotes for that. It is highly recommended to wait for an offical release. Use\nat your own risk.\n\nRegards "
+										+ Constants.getAppAuthor(),
+								"WARNING DEVELOPER VERSION",
+								JOptionPane.WARNING_MESSAGE);
 			}
 			SwingUtilities.invokeLater(mainView);
 

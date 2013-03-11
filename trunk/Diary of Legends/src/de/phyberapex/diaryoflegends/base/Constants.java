@@ -17,7 +17,7 @@ import org.apache.logging.log4j.Logger;
 public class Constants {
 
 	private static final String APP_NAME = "Diary of Legends";
-	private static final String APP_VERSION = "0.2a";
+	private static final String APP_VERSION = "0.2dev";
 	private static final String APP_AUTHOR = "PhyberApex";
 	private static final String RESOURCE_PATH = "/resource/";
 	transient private static Logger logger = LogManager
