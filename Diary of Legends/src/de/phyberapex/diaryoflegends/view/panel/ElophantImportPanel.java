@@ -23,7 +23,8 @@ public class ElophantImportPanel extends JScrollPane {
 		JPanel panel = new JPanel(new GridBagLayout());
 		GridBagConstraints constraints;
 		int y = 0;
-		for (GameElophantImport imp : games) {
+		for (int i = games.size()-1; i >= 0; i--) {
+			GameElophantImport imp = games.get(i);
 			ElophantImportGamePanel tmp = new ElophantImportGamePanel(imp);
 			panels.add(tmp);
 			constraints = new GridBagConstraints();

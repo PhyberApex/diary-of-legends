@@ -27,6 +27,7 @@ public class ElophantImportGamePanel extends JPanel {
 	private JLabel enemyChamp1Label, enemyChamp2Label, enemyChamp3Label,
 			enemyChamp4Label, enemyChamp5Label;
 	private JLabel vsLabel;
+	private JCheckBox isRankedBox;
 	transient private static Logger logger = LogManager
 			.getLogger(ElophantImportGamePanel.class.getName());
 
@@ -41,6 +42,7 @@ public class ElophantImportGamePanel extends JPanel {
 
 	private void createGUI() {
 		this.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+
 		GridBagConstraints constraints = new GridBagConstraints();
 		constraints.gridx = 0;
 		constraints.gridy = 0;
@@ -126,9 +128,15 @@ public class ElophantImportGamePanel extends JPanel {
 		constraints = new GridBagConstraints();
 		constraints.gridx = 0;
 		constraints.gridy = 1;
-		constraints.gridheight = 3;
 		constraints.insets = new Insets(0, 5, 0, 5);
 		this.add(getToImportBox(), constraints);
+
+		constraints = new GridBagConstraints();
+		constraints.gridx = 0;
+		constraints.gridy = 3;
+		constraints.insets = new Insets(0, 5, 0, 5);
+		this.add(getIsRankedBox(), constraints);
+
 	}
 
 	public JCheckBox getToImportBox() {
@@ -274,5 +282,17 @@ public class ElophantImportGamePanel extends JPanel {
 	 */
 	public void setSelection() {
 		game.setSelected(isSelected());
+	}
+
+	public JCheckBox getIsRankedBox() {
+		logger.trace("getIsRankedBox() - Entering");
+		if (isRankedBox == null) {
+			isRankedBox = new JCheckBox("Ranked");
+			isRankedBox.setSelected(game.isRanked());
+			isRankedBox.setEnabled(false);
+		}
+		logger.trace("getIsRankedBox() - Returning");
+		logger.debug("getIsRankedBox() - Returning: {}", isRankedBox);
+		return isRankedBox;
 	}
 }

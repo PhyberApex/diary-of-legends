@@ -215,6 +215,9 @@ public class ImportLastMatchAction implements Runnable {
 			String type = tryM.getString("queueType");
 			if (type.equals("NORMAL") || type.equals("RANKED_SOLO_5x5")) {
 				toImport[i] = true;
+				if (type.equals("RANKED_SOLO_5x5")) {
+					currGame.setRanked(true);
+				}
 				JSONObject gameStats = jo.getJSONObject("data")
 						.getJSONArray("gameStatistics").getJSONObject(i);
 				int teamId = gameStats.getInt("teamId");

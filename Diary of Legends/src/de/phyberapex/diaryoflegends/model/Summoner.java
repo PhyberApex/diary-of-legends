@@ -89,7 +89,7 @@ public class Summoner extends Model {
 					returnValue += this.getLeagueForSummoner() + " | ";
 					int streak = this.getStreakForSummoner();
 					if (streak < 0) {
-						returnValue += "L" + streak;
+						returnValue += "L" + Math.abs(streak);
 					} else if (streak > 0) {
 						returnValue += "W" + streak;
 					} else {
@@ -125,27 +125,31 @@ public class Summoner extends Model {
 		if (data.getBoolean("success")) {
 			JSONArray games = data.getJSONObject("data").getJSONArray(
 					"gameStatistics");
-			for (int i = games.length() - 1; i >= 0; i--) {
-				if (games.getJSONObject(i).getBoolean("ranked")) {
-					for (int j = 0; j < games.getJSONObject(i)
-							.getJSONArray("statistics").length(); j++) {
-						if (games.getJSONObject(i).getJSONArray("statistics")
-								.getJSONObject(j).getString("statType")
-								.equals("WIN")) {
-							if (games.getJSONObject(i)
-									.getJSONArray("statistics")
-									.getJSONObject(j).getInt("value") == 1) {
-								if (returnValue < 0) {
-									returnValue = 0;
-								}
-								returnValue++;
-							} else {
-								if (returnValue > 0) {
-									returnValue = 0;
-								}
-								returnValue--;
-							}
+			boolean streakOver = false;
+			for (int i = games.length() - 1; i > 0; i--) {
+				if (streakOver) {
+					break;
+				}
+				for (int j = 0; j < games.getJSONObject(i)
+						.getJSONArray("statistics").length(); j++) {
+					if (games.getJSONObject(i).getJSONArray("statistics")
+							.getJSONObject(j).getString("statType")
+							.equals("WIN")) {
+						if (returnValue >= 0) {
+							returnValue++;
+						} else {
+							streakOver = true;
 						}
+						break;
+					} else if (games.getJSONObject(i)
+							.getJSONArray("statistics").getJSONObject(j)
+							.getString("statType").equals("LOSE")) {
+						if (returnValue <= 0) {
+							returnValue--;
+						} else {
+							streakOver = true;
+						}
+						break;
 					}
 				}
 			}

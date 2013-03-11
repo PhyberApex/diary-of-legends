@@ -5,8 +5,8 @@ Version: 0.2
 Requirements: Java Runtime Environment 1.7 or above
 
 =====     Known issues      =====
-* If the icons(Champion/Item/SummonerSpell could be downloaded after a failed attempt earlier it
-will only show them after a restart of the application
+* Even if all icons are present(Items/Champions/Summoner Spells) they may not show correctly.
+To fix this you have to restart the application a few times.
 
 =====   Version history     =====
 

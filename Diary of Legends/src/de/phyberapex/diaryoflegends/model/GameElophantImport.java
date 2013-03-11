@@ -15,6 +15,7 @@ public class GameElophantImport {
 	private Date date;
 	private Champion myChampion;
 	private boolean selected = false;
+	private boolean ranked = false;
 	transient private static Logger logger = LogManager
 			.getLogger(GameElophantImport.class.getName());
 
@@ -97,11 +98,22 @@ public class GameElophantImport {
 		return selected;
 	}
 
+	public void setRanked(boolean ran) {
+		this.ranked = ran;
+	}
+
+	/**
+	 * @return
+	 */
+	public boolean isRanked() {
+		return ranked;
+	}
+
 	@Override
 	public String toString() {
 		logger.trace("toString() - Entering");
 		Date d = getDate();
-		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		String str = df.format(d);
 		logger.trace("toString() - Returning");
 		logger.debug("toString() - Returning: {}", str);
