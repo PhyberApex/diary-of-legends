@@ -605,6 +605,7 @@ public class DefaultStatsPanel extends JPanel {
 			constraints = new GridBagConstraints();
 			constraints.gridx = 1;
 			constraints.gridy = 0;
+			constraints.anchor = GridBagConstraints.WEST;
 			totalStatsPanel.add(getGameTotalValueLabel(), constraints);
 
 			constraints = new GridBagConstraints();
@@ -617,6 +618,7 @@ public class DefaultStatsPanel extends JPanel {
 			constraints = new GridBagConstraints();
 			constraints.gridx = 1;
 			constraints.gridy = 1;
+			constraints.anchor = GridBagConstraints.WEST;
 			totalStatsPanel.add(getKillsTotalValueLabel(), constraints);
 
 			constraints = new GridBagConstraints();
@@ -629,6 +631,7 @@ public class DefaultStatsPanel extends JPanel {
 			constraints = new GridBagConstraints();
 			constraints.gridx = 1;
 			constraints.gridy = 2;
+			constraints.anchor = GridBagConstraints.WEST;
 			totalStatsPanel.add(getKillsAvgValueLabel(), constraints);
 
 			constraints = new GridBagConstraints();
@@ -641,7 +644,7 @@ public class DefaultStatsPanel extends JPanel {
 			constraints = new GridBagConstraints();
 			constraints.gridx = 1;
 			constraints.gridy = 3;
-
+			constraints.anchor = GridBagConstraints.WEST;
 			totalStatsPanel.add(getDeathsTotalValueLabel(), constraints);
 
 			constraints = new GridBagConstraints();
@@ -654,6 +657,7 @@ public class DefaultStatsPanel extends JPanel {
 			constraints = new GridBagConstraints();
 			constraints.gridx = 1;
 			constraints.gridy = 4;
+			constraints.anchor = GridBagConstraints.WEST;
 			totalStatsPanel.add(getDeathsAvgValueLabel(), constraints);
 
 			constraints = new GridBagConstraints();
@@ -666,6 +670,7 @@ public class DefaultStatsPanel extends JPanel {
 			constraints = new GridBagConstraints();
 			constraints.gridx = 1;
 			constraints.gridy = 5;
+			constraints.anchor = GridBagConstraints.WEST;
 			totalStatsPanel.add(getAssistsTotalValueLabel(), constraints);
 
 			constraints = new GridBagConstraints();
@@ -678,6 +683,7 @@ public class DefaultStatsPanel extends JPanel {
 			constraints = new GridBagConstraints();
 			constraints.gridx = 1;
 			constraints.gridy = 6;
+			constraints.anchor = GridBagConstraints.WEST;
 			totalStatsPanel.add(getAssistsAvgValueLabel(), constraints);
 
 			constraints = new GridBagConstraints();
@@ -690,6 +696,7 @@ public class DefaultStatsPanel extends JPanel {
 			constraints = new GridBagConstraints();
 			constraints.gridx = 1;
 			constraints.gridy = 7;
+			constraints.anchor = GridBagConstraints.WEST;
 			totalStatsPanel.add(getCsTotalValueLabel(), constraints);
 
 			constraints = new GridBagConstraints();
@@ -702,6 +709,7 @@ public class DefaultStatsPanel extends JPanel {
 			constraints = new GridBagConstraints();
 			constraints.gridx = 1;
 			constraints.gridy = 8;
+			constraints.anchor = GridBagConstraints.WEST;
 			totalStatsPanel.add(getCsAvgValueLabel(), constraints);
 
 			constraints = new GridBagConstraints();
