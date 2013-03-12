@@ -1,7 +1,7 @@
 *********************************
 *       Diary of Legends        *
 *********************************
-Version: 0.2
+Version: 0.3
 Requirements: Java Runtime Environment 1.7 or above
 
 =====     Known issues      =====
@@ -10,7 +10,9 @@ To fix this you have to restart the application a few times.
 
 =====   Version history     =====
 
-Version 0.2 - 
+Version 0.3
+
+Version 0.2 - 2013-03-12
 * New Features
     - Added this file
     - Added option to automatically update the application on startup(champions/items)
