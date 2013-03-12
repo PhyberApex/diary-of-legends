@@ -11,6 +11,14 @@ To fix this you have to restart the application a few times.
 =====   Version history     =====
 
 Version 0.3
+* New Features
+
+* Changes
+    - Rearranged the layout for the match detail view
+
+* Bug fixes
+    - Fixed a bug where the tabs on the detailview of a matchup weren't reset properly
+
 
 Version 0.2 - 2013-03-12
 * New Features

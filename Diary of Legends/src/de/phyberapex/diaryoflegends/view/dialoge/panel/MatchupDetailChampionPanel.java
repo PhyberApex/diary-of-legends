@@ -531,4 +531,8 @@ public class MatchupDetailChampionPanel extends JPanel {
 		}
 		logger.trace("setChampionAndItems() - Leaving");
 	}
+
+	public void clear() {
+		getMyChampItemsPanel().setSelectedIndex(0);
+	}
 }
