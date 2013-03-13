@@ -7,8 +7,6 @@
 	<classpathentry kind="lib" path="lib/log4j-core-2.0-beta3.jar"/>
 	<classpathentry kind="lib" path="lib/jcalendar-1.4.jar"/>
 	<classpathentry kind="lib" path="lib/db4o-8.0.249.16098-all-java5.jar"/>
-	<classpathentry kind="lib" path="lib/jgoodies-common-1.6.0.jar"/>
-	<classpathentry kind="lib" path="lib/jgoodies-looks-2.5.3.jar"/>
 	<classpathentry kind="lib" path="lib/json.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

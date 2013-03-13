@@ -6,8 +6,6 @@ import javax.swing.UIManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import com.db4o.ext.DatabaseFileLockedException;
-import com.jgoodies.looks.windows.WindowsLookAndFeel;
-
 import de.phyberapex.diaryoflegends.controller.MainController;
 import de.phyberapex.diaryoflegends.exception.InitializeException;
 import de.phyberapex.diaryoflegends.view.panel.SummonerNamePanel;
@@ -113,9 +111,8 @@ public class Initializer {
 	private void changeLaF() {
 		logger.trace("changeLaF() - Entering");
 		try {
-			UIManager.setLookAndFeel(new WindowsLookAndFeel());
-			// UIManager.setLookAndFeel(
-			// UIManager.getSystemLookAndFeelClassName());
+			 UIManager.setLookAndFeel(
+			 UIManager.getSystemLookAndFeelClassName());
 			logger.debug("Iterating through LaFs");
 		} catch (Exception e) {
 			logger.info("Unable to find look and feel nimbus. Using default.");

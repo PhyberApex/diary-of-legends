@@ -1,6 +1,7 @@
 package de.phyberapex.diaryoflegends.model.util;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -31,14 +32,20 @@ public class SummonerSpellUtil {
 	 */
 	public static List<SummonerSpell> getAllSpells() {
 		logger.trace("getAllSpells() - Entering");
-		List<SummonerSpell> returnValue = dbHandle
-				.query(new Predicate<SummonerSpell>() {
+		List<SummonerSpell> returnValue = dbHandle.query(
+				new Predicate<SummonerSpell>() {
 
 					private static final long serialVersionUID = -6535736734146443615L;
 
 					@Override
 					public boolean match(SummonerSpell arg0) {
 						return true;
+					}
+				}, new Comparator<SummonerSpell>() {
+
+					@Override
+					public int compare(SummonerSpell o1, SummonerSpell o2) {
+						return o1.getName().compareTo(o2.getName());
 					}
 				});
 		if (returnValue.size() == 0) {

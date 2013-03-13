@@ -70,7 +70,7 @@ public class AboutDialog extends JDialog {
 				JLabel lblAppname = new JLabel(Constants.getAppName());
 				GridBagConstraints gbc_lblAppname = new GridBagConstraints();
 				gbc_lblAppname.anchor = GridBagConstraints.WEST;
-				gbc_lblAppname.insets = new Insets(0, 0, 5, 0);
+				gbc_lblAppname.insets = new Insets(0, 0, 5, 5);
 				gbc_lblAppname.gridx = 1;
 				gbc_lblAppname.gridy = 0;
 				panel.add(lblAppname, gbc_lblAppname);
@@ -87,7 +87,7 @@ public class AboutDialog extends JDialog {
 			{
 				JLabel lblAppversion = new JLabel(Constants.getAppVersion());
 				GridBagConstraints gbc_lblAppversion = new GridBagConstraints();
-				gbc_lblAppversion.insets = new Insets(0, 0, 5, 0);
+				gbc_lblAppversion.insets = new Insets(0, 0, 5, 5);
 				gbc_lblAppversion.anchor = GridBagConstraints.WEST;
 				gbc_lblAppversion.gridx = 1;
 				gbc_lblAppversion.gridy = 1;
@@ -105,7 +105,7 @@ public class AboutDialog extends JDialog {
 			{
 				JLabel lblAppauthor = new JLabel(Constants.getAppAuthor());
 				GridBagConstraints gbc_lblAppauthor = new GridBagConstraints();
-				gbc_lblAppauthor.insets = new Insets(0, 0, 5, 0);
+				gbc_lblAppauthor.insets = new Insets(0, 0, 5, 5);
 				gbc_lblAppauthor.anchor = GridBagConstraints.WEST;
 				gbc_lblAppauthor.gridx = 1;
 				gbc_lblAppauthor.gridy = 2;
@@ -124,7 +124,7 @@ public class AboutDialog extends JDialog {
 				JLabel lblProjhome = new JLabel(
 						"https://code.google.com/p/diary-of-legends");
 				GridBagConstraints gbc_lblProjhome = new GridBagConstraints();
-				gbc_lblProjhome.insets = new Insets(0, 0, 5, 0);
+				gbc_lblProjhome.insets = new Insets(0, 0, 5, 5);
 				gbc_lblProjhome.anchor = GridBagConstraints.WEST;
 				gbc_lblProjhome.gridx = 1;
 				gbc_lblProjhome.gridy = 3;
@@ -143,6 +143,7 @@ public class AboutDialog extends JDialog {
 				JLabel lblHttpwwwgnudedocumentsgpldehtml = new JLabel(
 						"GPL 3.0 - http://www.gnu.de/documents/gpl.de.html");
 				GridBagConstraints gbc_lblHttpwwwgnudedocumentsgpldehtml = new GridBagConstraints();
+				gbc_lblHttpwwwgnudedocumentsgpldehtml.insets = new Insets(0, 0, 0, 5);
 				gbc_lblHttpwwwgnudedocumentsgpldehtml.anchor = GridBagConstraints.WEST;
 				gbc_lblHttpwwwgnudedocumentsgpldehtml.gridx = 1;
 				gbc_lblHttpwwwgnudedocumentsgpldehtml.gridy = 4;
@@ -167,7 +168,7 @@ public class AboutDialog extends JDialog {
 				lblLoadingIcons.setHorizontalAlignment(SwingConstants.LEFT);
 				GridBagConstraints gbc_lblLoadingIcons = new GridBagConstraints();
 				gbc_lblLoadingIcons.anchor = GridBagConstraints.WEST;
-				gbc_lblLoadingIcons.insets = new Insets(0, 0, 5, 0);
+				gbc_lblLoadingIcons.insets = new Insets(0, 0, 5, 5);
 				gbc_lblLoadingIcons.gridx = 0;
 				gbc_lblLoadingIcons.gridy = 0;
 				panel.add(lblLoadingIcons, gbc_lblLoadingIcons);
@@ -187,7 +188,7 @@ public class AboutDialog extends JDialog {
 				JLabel lblChampionItemAnd = new JLabel(
 						"Champion, item and match API:");
 				GridBagConstraints gbc_lblChampionItemAnd = new GridBagConstraints();
-				gbc_lblChampionItemAnd.insets = new Insets(0, 0, 5, 0);
+				gbc_lblChampionItemAnd.insets = new Insets(0, 0, 5, 5);
 				gbc_lblChampionItemAnd.gridx = 0;
 				gbc_lblChampionItemAnd.gridy = 1;
 				panel.add(lblChampionItemAnd, gbc_lblChampionItemAnd);
@@ -207,7 +208,7 @@ public class AboutDialog extends JDialog {
 				JLabel lblDatabase = new JLabel("Database:");
 				GridBagConstraints gbc_lblDatabase = new GridBagConstraints();
 				gbc_lblDatabase.anchor = GridBagConstraints.WEST;
-				gbc_lblDatabase.insets = new Insets(0, 0, 5, 0);
+				gbc_lblDatabase.insets = new Insets(0, 0, 5, 5);
 				gbc_lblDatabase.gridx = 0;
 				gbc_lblDatabase.gridy = 2;
 				panel.add(lblDatabase, gbc_lblDatabase);
@@ -227,7 +228,7 @@ public class AboutDialog extends JDialog {
 				lblImportExport.setHorizontalAlignment(SwingConstants.LEFT);
 				GridBagConstraints gbc_lblImportExport = new GridBagConstraints();
 				gbc_lblImportExport.anchor = GridBagConstraints.WEST;
-				gbc_lblImportExport.insets = new Insets(0, 0, 5, 0);
+				gbc_lblImportExport.insets = new Insets(0, 0, 5, 5);
 				gbc_lblImportExport.gridx = 0;
 				gbc_lblImportExport.gridy = 3;
 				panel.add(lblImportExport, gbc_lblImportExport);
@@ -242,40 +243,22 @@ public class AboutDialog extends JDialog {
 				panel.add(lblHttpjsonorg, gbc_lblHttpjsonorg);
 			}
 			{
-				JLabel lblLookAndFeel = new JLabel("Look and Feel:");
-				GridBagConstraints gbc_lblLookAndFeel = new GridBagConstraints();
-				gbc_lblLookAndFeel.anchor = GridBagConstraints.WEST;
-				gbc_lblLookAndFeel.insets = new Insets(0, 0, 5, 0);
-				gbc_lblLookAndFeel.gridx = 0;
-				gbc_lblLookAndFeel.gridy = 4;
-				panel.add(lblLookAndFeel, gbc_lblLookAndFeel);
-			}
-			{
-				JLabel lblHttpwwwjgoodiescom = new JLabel(
-						"WindowsLookAndFeel - http://www.jgoodies.com/");
-				GridBagConstraints gbc_lblHttpwwwjgoodiescom = new GridBagConstraints();
-				gbc_lblHttpwwwjgoodiescom.insets = new Insets(0, 0, 5, 0);
-				gbc_lblHttpwwwjgoodiescom.anchor = GridBagConstraints.WEST;
-				gbc_lblHttpwwwjgoodiescom.gridx = 1;
-				gbc_lblHttpwwwjgoodiescom.gridy = 4;
-				panel.add(lblHttpwwwjgoodiescom, gbc_lblHttpwwwjgoodiescom);
-			}
-			{
 				JLabel lblLogging = new JLabel("Logging:");
 				GridBagConstraints gbc_lblLogging = new GridBagConstraints();
 				gbc_lblLogging.anchor = GridBagConstraints.WEST;
-				gbc_lblLogging.insets = new Insets(0, 0, 0, 5);
+				gbc_lblLogging.insets = new Insets(0, 0, 5, 5);
 				gbc_lblLogging.gridx = 0;
-				gbc_lblLogging.gridy = 5;
+				gbc_lblLogging.gridy = 4;
 				panel.add(lblLogging, gbc_lblLogging);
 			}
 			{
 				JLabel lblHttploggingapacheorglogjx = new JLabel(
 						"Log4j2 - http://logging.apache.org/log4j/2.x/");
 				GridBagConstraints gbc_lblHttploggingapacheorglogjx = new GridBagConstraints();
+				gbc_lblHttploggingapacheorglogjx.insets = new Insets(0, 0, 5, 0);
 				gbc_lblHttploggingapacheorglogjx.anchor = GridBagConstraints.WEST;
 				gbc_lblHttploggingapacheorglogjx.gridx = 1;
-				gbc_lblHttploggingapacheorglogjx.gridy = 5;
+				gbc_lblHttploggingapacheorglogjx.gridy = 4;
 				panel.add(lblHttploggingapacheorglogjx,
 						gbc_lblHttploggingapacheorglogjx);
 			}
