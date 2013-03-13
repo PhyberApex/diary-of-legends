@@ -73,7 +73,13 @@ public class Config {
 						"db\\" + Constants.getAppName() + ".db");
 				saveChanges();
 			}
-			this.currentSummoner.setName(getProperty("SUMMONER_NAME"));
+			if (this.getProperty("AUTO_UPDATE") == null) {
+				this.setProperty("AUTO_UPDATE", "0");
+				saveChanges();
+			}
+			if (getProperty("SUMMONER_NAME") != null) {
+				this.currentSummoner.setName(getProperty("SUMMONER_NAME"));
+			}
 		} catch (IOException e) {
 			logger.error(e.getMessage());
 		}

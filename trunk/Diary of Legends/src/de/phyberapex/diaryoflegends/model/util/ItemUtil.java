@@ -1,5 +1,6 @@
 package de.phyberapex.diaryoflegends.model.util;
 
+import java.util.Comparator;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -36,6 +37,12 @@ public class ItemUtil {
 			@Override
 			public boolean match(Item arg0) {
 				return true;
+			}
+		}, new Comparator<Item>() {
+
+			@Override
+			public int compare(Item o1, Item o2) {
+				return o1.getName().compareTo(o2.getName());
 			}
 		});
 		logger.trace("getAllItems() - Returning");

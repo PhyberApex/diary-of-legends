@@ -1,6 +1,7 @@
 package de.phyberapex.diaryoflegends.model.util;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -42,14 +43,20 @@ public class ChampionUtil {
 	 */
 	public static List<Champion> getAllChampions() {
 		logger.trace("getAllChampions() - Entering");
-		ObjectSet<Champion> returnValue = dbHandle
-				.query(new Predicate<Champion>() {
+		ObjectSet<Champion> returnValue = dbHandle.query(
+				new Predicate<Champion>() {
 
 					private static final long serialVersionUID = -6535736734146443615L;
 
 					@Override
 					public boolean match(Champion arg0) {
 						return true;
+					}
+				}, new Comparator<Champion>() {
+
+					@Override
+					public int compare(Champion o1, Champion o2) {
+						return o1.getName().compareTo(o2.getName());
 					}
 				});
 		logger.trace("getAllChampions() - Returning");

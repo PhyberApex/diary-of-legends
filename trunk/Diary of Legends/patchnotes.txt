@@ -1,12 +1,14 @@
 *********************************
 *       Diary of Legends        *
 *********************************
-Version: 0.3
+Version: 0.3dev
 Requirements: Java Runtime Environment 1.7 or above
 
 =====     Known issues      =====
+
 * Even if all icons are present(Items/Champions/Summoner Spells) they may not show correctly.
 To fix this you have to restart the application a few times.
+
 
 =====   Version history     =====
 
@@ -15,9 +17,12 @@ Version 0.3
 
 * Changes
     - Rearranged the layout for the match detail view
+    - Changed the Look and Feel of the application to "SystemLookAndFeel" should be more appealing to linux/mac users now
+    - Champions/items/summonerspells are now ordered alphabetically
 
 * Bug fixes
     - Fixed a bug where the tabs on the detailview of a matchup weren't reset properly
+    - Fixed a bug where the application wouldn't start if the "AUTO_UPDATE" entry wasn't set in the diary.cfg
 
 
 Version 0.2 - 2013-03-12
