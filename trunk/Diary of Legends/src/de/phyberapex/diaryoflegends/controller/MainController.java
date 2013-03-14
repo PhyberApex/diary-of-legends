@@ -9,11 +9,11 @@ import org.apache.logging.log4j.Logger;
 
 import de.phyberapex.diaryoflegends.action.ExitAction;
 import de.phyberapex.diaryoflegends.action.RefreshSummonerInfoAction;
+import de.phyberapex.diaryoflegends.action.UpdateAction;
 import de.phyberapex.diaryoflegends.base.Config;
 import de.phyberapex.diaryoflegends.base.Constants;
 import de.phyberapex.diaryoflegends.base.InitializeAction;
 import de.phyberapex.diaryoflegends.base.Initializer;
-import de.phyberapex.diaryoflegends.base.Update;
 import de.phyberapex.diaryoflegends.exception.InitializeException;
 import de.phyberapex.diaryoflegends.extra.ImageIconFactory;
 import de.phyberapex.diaryoflegends.extra.Splash;
@@ -61,7 +61,7 @@ public class MainController {
 					Config.getInstance().setProperty("API_KEY",
 							apiKeyView.getAPIKey());
 					splash.showStatus("Updating", 20);
-					Update.update(false);
+					UpdateAction.update(false);
 				} else {
 					JOptionPane
 							.showMessageDialog(
@@ -74,7 +74,7 @@ public class MainController {
 			}
 			if (initAction.contains(InitializeAction.UPDATE)) {
 				splash.showStatus("Updating", 20);
-				Update.update(false);
+				UpdateAction.update(false);
 			}
 			splash.showStatus("Preparing controller", 25);
 			matchupController = new MatchupController(this);

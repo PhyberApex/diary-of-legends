@@ -21,8 +21,8 @@ import de.phyberapex.diaryoflegends.action.ExportDolexAction;
 import de.phyberapex.diaryoflegends.action.ImportDolexAction;
 import de.phyberapex.diaryoflegends.action.ImportLastMatchAction;
 import de.phyberapex.diaryoflegends.action.ImportRoflAction;
+import de.phyberapex.diaryoflegends.action.UpdateAction;
 import de.phyberapex.diaryoflegends.base.Config;
-import de.phyberapex.diaryoflegends.base.Update;
 import de.phyberapex.diaryoflegends.view.dialoge.AboutDialog;
 import de.phyberapex.diaryoflegends.view.dialoge.NewChampionDialog;
 import de.phyberapex.diaryoflegends.view.dialoge.NewEntryDialog;
@@ -370,7 +370,7 @@ public class MenuBarView extends JMenuBar implements View {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					Thread tr = new Thread(new Update());
+					Thread tr = new Thread(new UpdateAction());
 					tr.start();
 				}
 			});
