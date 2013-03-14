@@ -183,13 +183,14 @@ public class Config {
 				returnValue = internetAvailable;
 			} else {
 				// make a URL to a known source
-				URL url = new URL("http://www.google.de");
+				URL url = new URL("http://elophant.com/developers/docs");
 				// open a connection to that source
 				HttpURLConnection urlConnect = (HttpURLConnection) url
 						.openConnection();
 				// trying to retrieve data from the source. If there
 				// is no connection, this line will fail
 				// TODO WARUM GEHT TIMEOUT NICHT?
+				urlConnect.setConnectTimeout(300);
 				urlConnect.getContent();
 				lastCheck = System.currentTimeMillis();
 			}

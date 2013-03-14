@@ -1,4 +1,4 @@
-package de.phyberapex.diaryoflegends.base;
+package de.phyberapex.diaryoflegends.action;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,6 +15,7 @@ import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import de.phyberapex.diaryoflegends.base.Config;
 import de.phyberapex.diaryoflegends.controller.MainController;
 import de.phyberapex.diaryoflegends.exception.APINoSuccessException;
 import de.phyberapex.diaryoflegends.model.Champion;
@@ -23,9 +24,9 @@ import de.phyberapex.diaryoflegends.model.util.ChampionUtil;
 import de.phyberapex.diaryoflegends.model.util.ItemUtil;
 import de.phyberapex.diaryoflegends.view.MainView;
 
-public class Update implements Runnable {
+public class UpdateAction implements Runnable {
 
-	private static Logger logger = LogManager.getLogger(Update.class.getName());
+	private static Logger logger = LogManager.getLogger(UpdateAction.class.getName());
 
 	public static void update(boolean restart) {
 		logger.trace("update() - Entering");
@@ -156,7 +157,14 @@ public class Update implements Runnable {
 	 */
 	@Override
 	public void run() {
-		MainView.getInstance().setStatusText("Updating champions and items...");
-		update(true);
+		if (Config.isInternetReachable()) {
+			MainView.getInstance().setStatusText(
+					"Updating champions and items...");
+			update(true);
+		} else {
+			JOptionPane.showMessageDialog(MainView.getInstance(),
+					"The API is not reachable sorry", "Error - API",
+					JOptionPane.ERROR_MESSAGE);
+		}
 	}
 }

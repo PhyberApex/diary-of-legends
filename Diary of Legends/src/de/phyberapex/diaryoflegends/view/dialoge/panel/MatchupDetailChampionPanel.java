@@ -533,6 +533,19 @@ public class MatchupDetailChampionPanel extends JPanel {
 	}
 
 	public void clear() {
+		myChampItem1Label.setIcon(defaultImg);
+		myChampItem2Label.setIcon(defaultImg);
+		myChampItem3Label.setIcon(defaultImg);
+		myChampItem4Label.setIcon(defaultImg);
+		myChampItem5Label.setIcon(defaultImg);
+		myChampItem6Label.setIcon(defaultImg);
+
+		myChampEndingItem1Label.setIcon(defaultImg);
+		myChampEndingItem2Label.setIcon(defaultImg);
+		myChampEndingItem3Label.setIcon(defaultImg);
+		myChampEndingItem4Label.setIcon(defaultImg);
+		myChampEndingItem5Label.setIcon(defaultImg);
+		myChampEndingItem6Label.setIcon(defaultImg);
 		getMyChampItemsPanel().setSelectedIndex(0);
 	}
 }

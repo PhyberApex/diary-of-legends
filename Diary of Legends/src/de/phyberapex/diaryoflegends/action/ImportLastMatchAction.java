@@ -335,6 +335,12 @@ public class ImportLastMatchAction implements Runnable {
 	 */
 	@Override
 	public void run() {
-		doImport();
+		if (Config.isInternetReachable()) {
+			doImport();
+		} else {
+			JOptionPane.showMessageDialog(MainView.getInstance(),
+					"The API is not reachable sorry", "Error - API",
+					JOptionPane.ERROR_MESSAGE);
+		}
 	}
 }
