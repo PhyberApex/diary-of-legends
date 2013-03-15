@@ -25,6 +25,7 @@ import javax.swing.border.BevelBorder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import de.phyberapex.diaryoflegends.extra.ImageIconFactory;
 import de.phyberapex.diaryoflegends.model.Champion;
 import de.phyberapex.diaryoflegends.model.util.ChampionUtil;
 import de.phyberapex.diaryoflegends.view.MainView;
@@ -51,6 +52,8 @@ public class NewChampionDialog extends JDialog {
 	}
 
 	private void creatGUI() {
+		this.setIconImage(ImageIconFactory
+				.createImageIconFromResourePath("img/icon_128.png").getImage());
 		setLayout(new GridBagLayout());
 		setTitle("Add a new champion");
 		GridBagConstraints constraints = new GridBagConstraints();

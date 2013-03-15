@@ -1,6 +1,3 @@
-/**
- * 
- */
 package de.phyberapex.diaryoflegends.view.dialoge;
 
 import java.awt.BorderLayout;
@@ -20,13 +17,10 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 import de.phyberapex.diaryoflegends.base.Constants;
+import de.phyberapex.diaryoflegends.extra.ImageIconFactory;
 import de.phyberapex.diaryoflegends.view.MainView;
 import java.awt.GridLayout;
 
-/**
- * @author WALLIJ01
- * 
- */
 public class AboutDialog extends JDialog {
 
 	private static final long serialVersionUID = 1L;
@@ -58,11 +52,21 @@ public class AboutDialog extends JDialog {
 			GridBagLayout gbl_panel = new GridBagLayout();
 			panel.setLayout(gbl_panel);
 			{
+				JLabel lblNewLabel = new JLabel("");
+				lblNewLabel.setIcon(ImageIconFactory.resizeImageIcon(ImageIconFactory.createImageIconFromResourePath("/img/icon_128.png"), 60, 60));
+				GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
+				gbc_lblNewLabel.gridheight = 5;
+				gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
+				gbc_lblNewLabel.gridx = 0;
+				gbc_lblNewLabel.gridy = 0;
+				panel.add(lblNewLabel, gbc_lblNewLabel);
+			}
+			{
 				JLabel lblName = new JLabel("Name:");
 				GridBagConstraints gbc_lblName = new GridBagConstraints();
 				gbc_lblName.insets = new Insets(0, 0, 5, 5);
 				gbc_lblName.anchor = GridBagConstraints.WEST;
-				gbc_lblName.gridx = 0;
+				gbc_lblName.gridx = 1;
 				gbc_lblName.gridy = 0;
 				panel.add(lblName, gbc_lblName);
 			}
@@ -70,8 +74,8 @@ public class AboutDialog extends JDialog {
 				JLabel lblAppname = new JLabel(Constants.getAppName());
 				GridBagConstraints gbc_lblAppname = new GridBagConstraints();
 				gbc_lblAppname.anchor = GridBagConstraints.WEST;
-				gbc_lblAppname.insets = new Insets(0, 0, 5, 5);
-				gbc_lblAppname.gridx = 1;
+				gbc_lblAppname.insets = new Insets(0, 0, 5, 0);
+				gbc_lblAppname.gridx = 2;
 				gbc_lblAppname.gridy = 0;
 				panel.add(lblAppname, gbc_lblAppname);
 			}
@@ -80,16 +84,16 @@ public class AboutDialog extends JDialog {
 				GridBagConstraints gbc_lblVersion = new GridBagConstraints();
 				gbc_lblVersion.anchor = GridBagConstraints.WEST;
 				gbc_lblVersion.insets = new Insets(0, 0, 5, 5);
-				gbc_lblVersion.gridx = 0;
+				gbc_lblVersion.gridx = 1;
 				gbc_lblVersion.gridy = 1;
 				panel.add(lblVersion, gbc_lblVersion);
 			}
 			{
 				JLabel lblAppversion = new JLabel(Constants.getAppVersion());
 				GridBagConstraints gbc_lblAppversion = new GridBagConstraints();
-				gbc_lblAppversion.insets = new Insets(0, 0, 5, 5);
+				gbc_lblAppversion.insets = new Insets(0, 0, 5, 0);
 				gbc_lblAppversion.anchor = GridBagConstraints.WEST;
-				gbc_lblAppversion.gridx = 1;
+				gbc_lblAppversion.gridx = 2;
 				gbc_lblAppversion.gridy = 1;
 				panel.add(lblAppversion, gbc_lblAppversion);
 			}
@@ -98,16 +102,16 @@ public class AboutDialog extends JDialog {
 				GridBagConstraints gbc_lblAuthor = new GridBagConstraints();
 				gbc_lblAuthor.anchor = GridBagConstraints.WEST;
 				gbc_lblAuthor.insets = new Insets(0, 0, 5, 5);
-				gbc_lblAuthor.gridx = 0;
+				gbc_lblAuthor.gridx = 1;
 				gbc_lblAuthor.gridy = 2;
 				panel.add(lblAuthor, gbc_lblAuthor);
 			}
 			{
 				JLabel lblAppauthor = new JLabel(Constants.getAppAuthor());
 				GridBagConstraints gbc_lblAppauthor = new GridBagConstraints();
-				gbc_lblAppauthor.insets = new Insets(0, 0, 5, 5);
+				gbc_lblAppauthor.insets = new Insets(0, 0, 5, 0);
 				gbc_lblAppauthor.anchor = GridBagConstraints.WEST;
-				gbc_lblAppauthor.gridx = 1;
+				gbc_lblAppauthor.gridx = 2;
 				gbc_lblAppauthor.gridy = 2;
 				panel.add(lblAppauthor, gbc_lblAppauthor);
 			}
@@ -116,7 +120,7 @@ public class AboutDialog extends JDialog {
 				GridBagConstraints gbc_lblProjectHome = new GridBagConstraints();
 				gbc_lblProjectHome.anchor = GridBagConstraints.WEST;
 				gbc_lblProjectHome.insets = new Insets(0, 0, 5, 5);
-				gbc_lblProjectHome.gridx = 0;
+				gbc_lblProjectHome.gridx = 1;
 				gbc_lblProjectHome.gridy = 3;
 				panel.add(lblProjectHome, gbc_lblProjectHome);
 			}
@@ -124,9 +128,9 @@ public class AboutDialog extends JDialog {
 				JLabel lblProjhome = new JLabel(
 						"https://code.google.com/p/diary-of-legends");
 				GridBagConstraints gbc_lblProjhome = new GridBagConstraints();
-				gbc_lblProjhome.insets = new Insets(0, 0, 5, 5);
+				gbc_lblProjhome.insets = new Insets(0, 0, 5, 0);
 				gbc_lblProjhome.anchor = GridBagConstraints.WEST;
-				gbc_lblProjhome.gridx = 1;
+				gbc_lblProjhome.gridx = 2;
 				gbc_lblProjhome.gridy = 3;
 				panel.add(lblProjhome, gbc_lblProjhome);
 			}
@@ -135,7 +139,7 @@ public class AboutDialog extends JDialog {
 				GridBagConstraints gbc_lblLicense = new GridBagConstraints();
 				gbc_lblLicense.anchor = GridBagConstraints.WEST;
 				gbc_lblLicense.insets = new Insets(0, 0, 0, 5);
-				gbc_lblLicense.gridx = 0;
+				gbc_lblLicense.gridx = 1;
 				gbc_lblLicense.gridy = 4;
 				panel.add(lblLicense, gbc_lblLicense);
 			}
@@ -143,9 +147,8 @@ public class AboutDialog extends JDialog {
 				JLabel lblHttpwwwgnudedocumentsgpldehtml = new JLabel(
 						"GPL 3.0 - http://www.gnu.de/documents/gpl.de.html");
 				GridBagConstraints gbc_lblHttpwwwgnudedocumentsgpldehtml = new GridBagConstraints();
-				gbc_lblHttpwwwgnudedocumentsgpldehtml.insets = new Insets(0, 0, 0, 5);
 				gbc_lblHttpwwwgnudedocumentsgpldehtml.anchor = GridBagConstraints.WEST;
-				gbc_lblHttpwwwgnudedocumentsgpldehtml.gridx = 1;
+				gbc_lblHttpwwwgnudedocumentsgpldehtml.gridx = 2;
 				gbc_lblHttpwwwgnudedocumentsgpldehtml.gridy = 4;
 				panel.add(lblHttpwwwgnudedocumentsgpldehtml,
 						gbc_lblHttpwwwgnudedocumentsgpldehtml);
@@ -261,6 +264,23 @@ public class AboutDialog extends JDialog {
 				gbc_lblHttploggingapacheorglogjx.gridy = 4;
 				panel.add(lblHttploggingapacheorglogjx,
 						gbc_lblHttploggingapacheorglogjx);
+			}
+			{
+				JLabel lblChampionItem = new JLabel("Champion / item icons:");
+				GridBagConstraints gbc_lblChampionItem = new GridBagConstraints();
+				gbc_lblChampionItem.anchor = GridBagConstraints.WEST;
+				gbc_lblChampionItem.insets = new Insets(0, 0, 0, 5);
+				gbc_lblChampionItem.gridx = 0;
+				gbc_lblChampionItem.gridy = 5;
+				panel.add(lblChampionItem, gbc_lblChampionItem);
+			}
+			{
+				JLabel lblAllIconsOf = new JLabel("All icons of champions and items belong to riot");
+				GridBagConstraints gbc_lblAllIconsOf = new GridBagConstraints();
+				gbc_lblAllIconsOf.anchor = GridBagConstraints.WEST;
+				gbc_lblAllIconsOf.gridx = 1;
+				gbc_lblAllIconsOf.gridy = 5;
+				panel.add(lblAllIconsOf, gbc_lblAllIconsOf);
 			}
 		}
 		{
