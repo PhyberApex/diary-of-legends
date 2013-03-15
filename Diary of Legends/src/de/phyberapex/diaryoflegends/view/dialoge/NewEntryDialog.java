@@ -48,6 +48,7 @@ import de.phyberapex.diaryoflegends.view.dialoge.comboBox.ChampionComboBox;
 import de.phyberapex.diaryoflegends.view.dialoge.comboBox.SummonerSpellComboBox;
 import de.phyberapex.diaryoflegends.view.dialoge.panel.NewEntryItemPanel;
 import de.phyberapex.diaryoflegends.view.dialoge.panel.NewEntryTeamListPanel;
+import de.phyberapex.diaryoflegends.view.renderer.ChampionBigComboBoxRenderer;
 
 public class NewEntryDialog extends JDialog implements Runnable {
 
@@ -179,30 +180,46 @@ public class NewEntryDialog extends JDialog implements Runnable {
 			constraints.gridx = 0;
 			constraints.gridy = 0;
 			constraints.fill = GridBagConstraints.HORIZONTAL;
-			constraints.weightx = 0.5;
-			constraints.insets = new Insets(5, 10, 0, 0);
+			constraints.weightx = 1;
+			constraints.gridwidth = 2;
+			constraints.insets = new Insets(5, 10, 0, 10);
 			gameContentPanel.add(getDatePanel(), constraints);
 
 			constraints = new GridBagConstraints();
-			constraints.gridx = 1;
-			constraints.gridy = 0;
+			constraints.gridx = 0;
+			constraints.gridy = 1;
 			constraints.fill = GridBagConstraints.HORIZONTAL;
-			constraints.weightx = 0.5;
-			constraints.insets = new Insets(5, 5, 0, 10);
+			constraints.weightx = 1;
+			constraints.insets = new Insets(5, 10, 0, 10);
 			gameContentPanel.add(getLengthPanel(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 0;
 			constraints.gridy = 2;
-			constraints.insets = new Insets(5, 10, 5, 10);
+			constraints.insets = new Insets(5, 10, 5, 0);
 			constraints.fill = GridBagConstraints.HORIZONTAL;
 			constraints.weightx = 1;
 			constraints.gridwidth = 2;
 			gameContentPanel.add(getTeamsPanel(), constraints);
 
 			constraints = new GridBagConstraints();
+			constraints.gridx = 1;
+			constraints.gridy = 1;
+			constraints.insets = new Insets(5, 5, 0, 10);
+			gameContentPanel.add(getGameResultPanel(), constraints);
+
+			constraints = new GridBagConstraints();
 			constraints.gridx = 0;
 			constraints.gridy = 3;
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.weightx = 1;
+			constraints.gridwidth = 2;
+			constraints.insets = new Insets(5, 10, 5, 10);
+			gameContentPanel.add(getGameStatsPanel(), constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 4;
 			constraints.fill = GridBagConstraints.BOTH;
 			constraints.weightx = 1;
 			constraints.gridwidth = 2;
@@ -211,7 +228,7 @@ public class NewEntryDialog extends JDialog implements Runnable {
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 1;
-			constraints.gridy = 4;
+			constraints.gridy = 5;
 			constraints.anchor = GridBagConstraints.EAST;
 			constraints.insets = new Insets(10, 0, 10, 10);
 			gameContentPanel.add(getGoToMatchupButton(), constraints);
@@ -365,22 +382,9 @@ public class NewEntryDialog extends JDialog implements Runnable {
 			GridBagConstraints constraints = new GridBagConstraints();
 			constraints.gridx = 0;
 			constraints.gridy = 0;
-			constraints.gridheight = 2;
 			constraints.fill = GridBagConstraints.HORIZONTAL;
 			constraints.weightx = 1;
 			teamsPanel.add(getTeamsPane(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 1;
-			constraints.gridy = 1;
-			constraints.insets = new Insets(25, 0, 0, 0);
-			teamsPanel.add(getGameResultPanel(), constraints);
-
-			constraints = new GridBagConstraints();
-			constraints.gridx = 1;
-			constraints.gridy = 0;
-			constraints.insets = new Insets(20, 10, 0, 10);
-			teamsPanel.add(getGameStatsPanel(), constraints);
 		}
 		logger.trace("getTeamsPanel() - Returning");
 		logger.debug("getTeamsPanel() - Returning: {}", teamsPanel);
@@ -444,6 +448,7 @@ public class NewEntryDialog extends JDialog implements Runnable {
 		logger.trace("getGameResultPanel() - Entering");
 		if (gameResultPanel == null) {
 			gameResultPanel = new JPanel(new GridBagLayout());
+
 			GridBagConstraints constraints = new GridBagConstraints();
 			constraints.gridx = 0;
 			constraints.gridy = 0;
@@ -455,13 +460,13 @@ public class NewEntryDialog extends JDialog implements Runnable {
 			gameResultPanel.add(getGameResultWonBox(), constraints);
 
 			constraints = new GridBagConstraints();
-			constraints.gridx = 0;
-			constraints.gridy = 1;
+			constraints.gridx = 2;
+			constraints.gridy = 0;
 			gameResultPanel.add(getGameResultLossLabel(), constraints);
 
 			constraints = new GridBagConstraints();
-			constraints.gridx = 1;
-			constraints.gridy = 1;
+			constraints.gridx = 3;
+			constraints.gridy = 0;
 			gameResultPanel.add(getGameResultLossBox(), constraints);
 		}
 		logger.trace("getGameResultPanel() - Returning");
@@ -526,44 +531,44 @@ public class NewEntryDialog extends JDialog implements Runnable {
 			constraints = new GridBagConstraints();
 			constraints.gridx = 1;
 			constraints.gridy = 0;
-			constraints.fill = GridBagConstraints.BOTH;
-			constraints.weightx = 1;
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.weightx = 0.25;
 			gameStatsPanel.add(getOwnKillsSpinner(), constraints);
 
 			constraints = new GridBagConstraints();
-			constraints.gridx = 0;
-			constraints.gridy = 1;
+			constraints.gridx = 2;
+			constraints.gridy = 0;
 			gameStatsPanel.add(getOwnDeathsLabel(), constraints);
 
 			constraints = new GridBagConstraints();
-			constraints.gridx = 1;
-			constraints.gridy = 1;
-			constraints.fill = GridBagConstraints.BOTH;
-			constraints.weightx = 1;
+			constraints.gridx = 3;
+			constraints.gridy = 0;
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.weightx = 0.25;
 			gameStatsPanel.add(getOwnDeathsSpinner(), constraints);
 
 			constraints = new GridBagConstraints();
-			constraints.gridx = 0;
-			constraints.gridy = 2;
+			constraints.gridx = 4;
+			constraints.gridy = 0;
 			gameStatsPanel.add(getOwnAssistsLabel(), constraints);
 
 			constraints = new GridBagConstraints();
-			constraints.gridx = 1;
-			constraints.gridy = 2;
-			constraints.fill = GridBagConstraints.BOTH;
-			constraints.weightx = 1;
+			constraints.gridx = 5;
+			constraints.gridy = 0;
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.weightx = 0.25;
 			gameStatsPanel.add(getOwnAssistsSpinner(), constraints);
 
 			constraints = new GridBagConstraints();
-			constraints.gridx = 0;
-			constraints.gridy = 3;
+			constraints.gridx = 6;
+			constraints.gridy = 0;
 			gameStatsPanel.add(getOwnCSLabel(), constraints);
 
 			constraints = new GridBagConstraints();
-			constraints.gridx = 1;
-			constraints.gridy = 3;
-			constraints.fill = GridBagConstraints.BOTH;
-			constraints.weightx = 1;
+			constraints.gridx = 7;
+			constraints.gridy = 0;
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.weightx = 0.25;
 			gameStatsPanel.add(getOwnCSSpinner(), constraints);
 		}
 		logger.trace("getGameStatsPanel() - Returning");
@@ -788,20 +793,32 @@ public class NewEntryDialog extends JDialog implements Runnable {
 			constraints.gridwidth = 2;
 			constraints.weightx = 1;
 			constraints.weighty = 1;
-			constraints.fill = GridBagConstraints.BOTH;
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.anchor = GridBagConstraints.NORTH;
 			constraints.insets = new Insets(5, 10, 0, 10);
 			matchupContentPanel.add(getChampionsPanel(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 0;
 			constraints.gridy = 2;
+			constraints.gridwidth = 2;
+			constraints.anchor = GridBagConstraints.LINE_START;
+			constraints.insets = new Insets(10, 10, 10, 0);
+			matchupContentPanel
+					.add(new JLabel(
+							"<html>Warning: If you click the \"Game\" Button the selected enemy<br>may change all items and spells will still be set.</html>"),
+							constraints);
+
+			constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 3;
 			constraints.anchor = GridBagConstraints.LINE_START;
 			constraints.insets = new Insets(10, 10, 10, 0);
 			matchupContentPanel.add(getGoToGameButton(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 1;
-			constraints.gridy = 2;
+			constraints.gridy = 3;
 			constraints.anchor = GridBagConstraints.LINE_END;
 			constraints.insets = new Insets(10, 0, 10, 10);
 			matchupContentPanel.add(getFinishButton(), constraints);
@@ -907,6 +924,7 @@ public class NewEntryDialog extends JDialog implements Runnable {
 		logger.trace("getMyChampionBox() - Entering");
 		if (myChampionBox == null) {
 			myChampionBox = new ChampionComboBox();
+			myChampionBox.setRenderer(new ChampionBigComboBoxRenderer());
 		}
 		logger.trace("getMyChampionBox() - Returning");
 		logger.debug("getMyChampionBox() - Returning: {}", myChampionBox);
@@ -1114,6 +1132,7 @@ public class NewEntryDialog extends JDialog implements Runnable {
 		logger.trace("getEnemyChampionBox() - Entering");
 		if (enemyChampionBox == null) {
 			enemyChampionBox = new ChampionComboBox();
+			enemyChampionBox.setRenderer(new ChampionBigComboBoxRenderer());
 		}
 		logger.trace("getEnemyChampionBox() - Returning");
 		logger.debug("getEnemyChampionBox() - Returning: {}", enemyChampionBox);

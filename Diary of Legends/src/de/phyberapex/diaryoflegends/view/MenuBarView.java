@@ -185,6 +185,7 @@ public class MenuBarView extends JMenuBar implements View {
 				public void actionPerformed(ActionEvent e) {
 					JFileChooser fc = new JFileChooser(System
 							.getProperty("user.dir"));
+					fc.setAcceptAllFileFilterUsed(false);
 					fc.setFileFilter(new FileFilter() {
 
 						@Override
@@ -301,8 +302,15 @@ public class MenuBarView extends JMenuBar implements View {
 
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
-					Thread tr = new Thread(new ExportDolexAction());
-					tr.start();
+					JFileChooser fc = new JFileChooser(System
+							.getProperty("user.dir"));
+					fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+					int ok = fc.showOpenDialog(MainView.getInstance());
+					if (ok == JFileChooser.APPROVE_OPTION) {
+						Thread tr = new Thread(new ExportDolexAction(fc
+								.getSelectedFile()));
+						tr.start();
+					}
 				}
 			});
 		}
