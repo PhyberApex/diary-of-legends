@@ -26,6 +26,7 @@ Version 0.3
 * Bug fixes
     - Fixed a bug where the tabs and icons of items on the detailview of a matchup weren't reset properly
     - Fixed a bug where the application wouldn't start if the "AUTO_UPDATE" entry wasn't set in the diary.cfg
+    - Fixed a bug where the internet connection was not checked on updating at startup
 
 
 Version 0.2 - 2013-03-12

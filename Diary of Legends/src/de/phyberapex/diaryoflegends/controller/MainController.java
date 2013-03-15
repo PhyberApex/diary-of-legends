@@ -73,8 +73,10 @@ public class MainController {
 				Config.getInstance().saveChanges();
 			}
 			if (initAction.contains(InitializeAction.UPDATE)) {
-				splash.showStatus("Updating", 20);
-				UpdateAction.update(false);
+				if (Config.isInternetReachable()) {
+					splash.showStatus("Updating", 20);
+					UpdateAction.update(false);
+				}
 			}
 			splash.showStatus("Preparing controller", 25);
 			matchupController = new MatchupController(this);
