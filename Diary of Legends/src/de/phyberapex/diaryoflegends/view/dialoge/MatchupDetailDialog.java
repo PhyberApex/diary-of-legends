@@ -82,6 +82,8 @@ public class MatchupDetailDialog extends JDialog implements Runnable {
 	}
 
 	private void createGUI() {
+		this.setIconImage(ImageIconFactory
+				.createImageIconFromResourePath("img/icon_128.png").getImage());
 		this.setContentPane(getMatchupContentPanel());
 		this.setUndecorated(true);
 		this.setResizable(false);

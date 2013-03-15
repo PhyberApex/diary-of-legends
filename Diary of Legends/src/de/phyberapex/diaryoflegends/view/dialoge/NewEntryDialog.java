@@ -30,6 +30,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import com.toedter.calendar.JDateChooser;
 import de.phyberapex.diaryoflegends.controller.MainController;
+import de.phyberapex.diaryoflegends.extra.ImageIconFactory;
 import de.phyberapex.diaryoflegends.model.Champion;
 import de.phyberapex.diaryoflegends.model.Game;
 import de.phyberapex.diaryoflegends.model.GameResult;
@@ -146,6 +147,12 @@ public class NewEntryDialog extends JDialog implements Runnable {
 	private NewEntryDialog() {
 		super(MainView.getInstance());
 		logger.trace("NewEntryDialoge() - Entering");
+		this.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				dispose();
+			}
+		});
 		createGUI();
 		logger.trace("NewEntryDialoge() - Leaving");
 	}
@@ -1619,12 +1626,8 @@ public class NewEntryDialog extends JDialog implements Runnable {
 
 	private void createGUI() {
 		logger.trace("createGUI() - Entering");
-		this.addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				dispose();
-			}
-		});
+		this.setIconImage(ImageIconFactory.createImageIconFromResourePath(
+				"img/icon_128.png").getImage());
 		allSpells = new ArrayList<SummonerSpell>();
 		SummonerSpell s = new SummonerSpell(0, "no spell");
 		allSpells.add(s);

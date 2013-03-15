@@ -16,6 +16,7 @@ import org.apache.logging.log4j.Logger;
 import de.phyberapex.diaryoflegends.base.Config;
 import de.phyberapex.diaryoflegends.base.Constants;
 import de.phyberapex.diaryoflegends.controller.MainController;
+import de.phyberapex.diaryoflegends.extra.ImageIconFactory;
 
 public class MainView extends JFrame implements View, Runnable {
 
@@ -44,6 +45,8 @@ public class MainView extends JFrame implements View, Runnable {
 
 	private void createGui() {
 		logger.trace("createGui() - Entering");
+		this.setIconImage(ImageIconFactory
+				.createImageIconFromResourePath("img/icon_128.png").getImage());
 		this.setTitle(Constants.getAppName() + " - v"
 				+ Constants.getAppVersion() + " powered by Elophant.com");
 		this.setMinimumSize(new Dimension(420, 520));
@@ -129,7 +132,8 @@ public class MainView extends JFrame implements View, Runnable {
 			summonerInfoLabel = new JLabel(Config.getInstance()
 					.getCurrentSummoner().getSummonerInfoString());
 			summonerInfoLabel.setBorder(BorderFactory.createBevelBorder(1));
-			summonerInfoLabel.setToolTipText("Summoner name | Ranked tier and devision | Winning/Losing streak(last 10 games ranked and normal)");
+			summonerInfoLabel
+					.setToolTipText("Summoner name | Ranked tier and devision | Winning/Losing streak(last 10 games ranked and normal)");
 		}
 		logger.trace("getSummonerInfoLabel() - Returning");
 		logger.debug("getSummonerInfoLabel() - Returning: {}",

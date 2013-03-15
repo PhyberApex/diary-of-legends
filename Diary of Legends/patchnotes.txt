@@ -22,6 +22,7 @@ Version 0.3
     - Champions/items/summonerspells are now ordered alphabetically
     - Internet connectivity is now checked before importing latest matches
     - Made length of the game optional
+    - Added an icon for the application
 
 * Bug fixes
     - Fixed a bug where the tabs and icons of items on the detailview of a matchup weren't reset properly
