@@ -1,5 +1,6 @@
 package de.phyberapex.diaryoflegends.view;
 
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -7,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -329,6 +332,7 @@ public class MatchupView extends JPanel implements View {
 				JLabel color = new JLabel(" ");
 				color.setOpaque(true);
 				color.setBackground(res.getColor());
+				color.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 				legendPanel.add(color, constraints);
 
 				constraints = new GridBagConstraints();
