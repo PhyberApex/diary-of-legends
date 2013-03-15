@@ -15,6 +15,7 @@ To fix this you have to restart the application a few times.
 Version 0.3
 * New Features
     - Added an error dialog if the elophant api is not reachable
+    - Export path
 
 * Changes
     - Rearranged the layout for the match detail view

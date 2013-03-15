@@ -14,8 +14,13 @@ import de.phyberapex.diaryoflegends.view.MainView;
 
 public class ExportDolexAction implements Runnable {
 
+	private File file;
 	private static Logger logger = LogManager.getLogger(ExportDolexAction.class
 			.getName());
+
+	public ExportDolexAction(File file) {
+		this.file = file;
+	}
 
 	private void doExport() {
 		logger.trace("doExport() - Entering");
@@ -24,7 +29,7 @@ public class ExportDolexAction implements Runnable {
 		MainView.getInstance().setStatusText(
 				"Exporting " + games.size() + " games and matchups");
 		try {
-			File f = new File(System.getProperty("user.dir") + "\\backup.dolex");
+			File f = new File(file.getPath() + "\\backup.dolex");
 			logger.debug("Exporting into {}", f);
 			FileWriter fw = new FileWriter(f, false);
 			JSONWriter jw = new JSONWriter(fw);
