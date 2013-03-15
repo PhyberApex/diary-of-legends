@@ -722,6 +722,7 @@ public class DefaultStatsPanel extends JPanel {
 			constraints = new GridBagConstraints();
 			constraints.gridx = 1;
 			constraints.gridy = 9;
+			constraints.anchor = GridBagConstraints.WEST;
 			totalStatsPanel.add(getKdaTotalValueLabel(), constraints);
 		}
 		logger.trace("getTotalStatsPanel() - Returning");
