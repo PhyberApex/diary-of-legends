@@ -21,6 +21,7 @@ Version 0.3
     - Changed the Look and Feel of the application to "SystemLookAndFeel" should be more appealing to linux/mac users now
     - Champions/items/summonerspells are now ordered alphabetically
     - Internet connectivity is now checked before importing latest matches
+    - Made length of the game optional
 
 * Bug fixes
     - Fixed a bug where the tabs and icons of items on the detailview of a matchup weren't reset properly
