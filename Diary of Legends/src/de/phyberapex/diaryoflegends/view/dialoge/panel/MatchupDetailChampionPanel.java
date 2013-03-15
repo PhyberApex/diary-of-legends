@@ -24,27 +24,27 @@ public class MatchupDetailChampionPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private JLabel champIconLabel;
 	private JLabel champNameLabel;
-	private JTabbedPane champItemsPanel;
-	private JPanel champStartingItemsPanel;
+	private JTabbedPane itemsPanel;
+	private JPanel startingItemsPanel;
 	private JLabel startingItemsLabel;
-	private JLabel champItem1Label;
-	private JLabel champItem2Label;
-	private JLabel champItem3Label;
-	private JLabel champItem4Label;
-	private JLabel champItem5Label;
-	private JLabel champItem6Label;
-	private JPanel champEndingItemsPanel;
+	private JLabel startingItem1Label;
+	private JLabel startingItem2Label;
+	private JLabel startingItem3Label;
+	private JLabel startingItem4Label;
+	private JLabel startingItem5Label;
+	private JLabel startingItem6Label;
+	private JPanel endingItemsPanel;
 	private JLabel endingItemsLabel;
-	private JLabel champEndingItem1Label;
-	private JLabel champEndingItem2Label;
-	private JLabel champEndingItem3Label;
-	private JLabel champEndingItem4Label;
-	private JLabel champEndingItem5Label;
-	private JLabel champEndingItem6Label;
-	private JPanel champSpellsPanel;
-	private JLabel champSpellsLabel;
-	private JLabel champSpell1Label;
-	private JLabel champSpell2Label;
+	private JLabel endingItem1Label;
+	private JLabel endingItem2Label;
+	private JLabel endingItem3Label;
+	private JLabel endingItem4Label;
+	private JLabel endingItem5Label;
+	private JLabel endingItem6Label;
+	private JPanel spellsPanel;
+	private JLabel spellsLabel;
+	private JLabel spell1Label;
+	private JLabel spell2Label;
 	private static Logger logger = LogManager
 			.getLogger(MatchupDetailChampionPanel.class.getName());
 	private ImageIcon defaultImg = ImageIconFactory.resizeImageIcon(
@@ -85,7 +85,7 @@ public class MatchupDetailChampionPanel extends JPanel {
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.weightx = 1;
 		constraints.weighty = 1;
-		this.add(getChampItemsPanel(), constraints);
+		this.add(getItemsPanel(), constraints);
 		logger.trace("createGUI() - Leaving");
 	}
 
@@ -111,71 +111,71 @@ public class MatchupDetailChampionPanel extends JPanel {
 		return champNameLabel;
 	}
 
-	private JTabbedPane getChampItemsPanel() {
-		logger.trace("getChampItemsPanel() - Entering");
-		if (champItemsPanel == null) {
-			champItemsPanel = new JTabbedPane();
-			champItemsPanel.setTabPlacement(JTabbedPane.BOTTOM);
-			champItemsPanel.addTab("1", getChampStartingItemsPanel());
-			champItemsPanel.addTab("2", getChampEndingItemsPanel());
-			champItemsPanel.addTab("3", getChampSpellsPanel());
+	private JTabbedPane getItemsPanel() {
+		logger.trace("getItemsPanel() - Entering");
+		if (itemsPanel == null) {
+			itemsPanel = new JTabbedPane();
+			itemsPanel.setTabPlacement(JTabbedPane.BOTTOM);
+			itemsPanel.addTab("1", getStartingItemsPanel());
+			itemsPanel.addTab("2", getEndingItemsPanel());
+			itemsPanel.addTab("3", getSpellsPanel());
 		}
-		logger.trace("getChampItemsPanel() - Returning");
-		logger.debug("getChampItemsPanel() - Returning: {}", champItemsPanel);
-		return champItemsPanel;
+		logger.trace("getItemsPanel() - Returning");
+		logger.debug("getItemsPanel() - Returning: {}", itemsPanel);
+		return itemsPanel;
 	}
 
-	private JPanel getChampStartingItemsPanel() {
-		logger.trace("getChampStartingItemsPanel() - Entering");
-		if (champStartingItemsPanel == null) {
-			champStartingItemsPanel = new JPanel(new GridBagLayout());
+	private JPanel getStartingItemsPanel() {
+		logger.trace("getStartingItemsPanel() - Entering");
+		if (startingItemsPanel == null) {
+			startingItemsPanel = new JPanel(new GridBagLayout());
 
 			GridBagConstraints constraints = new GridBagConstraints();
 			constraints.gridx = 0;
 			constraints.gridy = 0;
 			constraints.gridwidth = 3;
-			champStartingItemsPanel.add(getStartingItemsLabel(), constraints);
+			startingItemsPanel.add(getStartingItemsLabel(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 0;
 			constraints.gridy = 1;
 			constraints.insets = new Insets(2, 1, 1, 1);
-			champStartingItemsPanel.add(getChampItem1Label(), constraints);
+			startingItemsPanel.add(getStartingItem1Label(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 1;
 			constraints.gridy = 1;
 			constraints.insets = new Insets(2, 1, 1, 1);
-			champStartingItemsPanel.add(getChampItem2Label(), constraints);
+			startingItemsPanel.add(getStartingItem2Label(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 2;
 			constraints.gridy = 1;
 			constraints.insets = new Insets(2, 1, 1, 1);
-			champStartingItemsPanel.add(getChampItem3Label(), constraints);
+			startingItemsPanel.add(getStartingItem3Label(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 0;
 			constraints.gridy = 2;
 			constraints.insets = new Insets(1, 1, 5, 1);
-			champStartingItemsPanel.add(getChampItem4Label(), constraints);
+			startingItemsPanel.add(getStartingItem4Label(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 1;
 			constraints.gridy = 2;
 			constraints.insets = new Insets(1, 1, 5, 1);
-			champStartingItemsPanel.add(getChampItem5Label(), constraints);
+			startingItemsPanel.add(getStartingItem5Label(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 2;
 			constraints.gridy = 2;
 			constraints.insets = new Insets(1, 1, 5, 1);
-			champStartingItemsPanel.add(getChampItem6Label(), constraints);
+			startingItemsPanel.add(getStartingItem6Label(), constraints);
 		}
-		logger.trace("getChampStartingItemsPanel() - Returning");
-		logger.debug("getChampStartingItemsPanel() - Returning: {}",
-				champStartingItemsPanel);
-		return champStartingItemsPanel;
+		logger.trace("getStartingItemsPanel() - Returning");
+		logger.debug("getStartingItemsPanel() - Returning: {}",
+				startingItemsPanel);
+		return startingItemsPanel;
 	}
 
 	private JLabel getStartingItemsLabel() {
@@ -189,117 +189,122 @@ public class MatchupDetailChampionPanel extends JPanel {
 		return startingItemsLabel;
 	}
 
-	private JLabel getChampItem1Label() {
-		logger.trace("getChampItem1Label() - Entering");
-		if (champItem1Label == null) {
-			champItem1Label = new JLabel(defaultImg);
+	private JLabel getStartingItem1Label() {
+		logger.trace("getStartingItem1Label() - Entering");
+		if (startingItem1Label == null) {
+			startingItem1Label = new JLabel(defaultImg);
 		}
-		logger.trace("getChampItem1Label() - Returning");
-		logger.debug("getChampItem1Label() - Returning: {}", champItem1Label);
-		return champItem1Label;
+		logger.trace("getStartingItem1Label() - Returning");
+		logger.debug("getStartingItem1Label() - Returning: {}",
+				startingItem1Label);
+		return startingItem1Label;
 	}
 
-	private JLabel getChampItem2Label() {
-		logger.trace("getChampItem2Label() - Entering");
-		if (champItem2Label == null) {
-			champItem2Label = new JLabel(defaultImg);
+	private JLabel getStartingItem2Label() {
+		logger.trace("getStartingItem2Label() - Entering");
+		if (startingItem2Label == null) {
+			startingItem2Label = new JLabel(defaultImg);
 		}
-		logger.trace("getChampItem2Label() - Returning");
-		logger.debug("getChampItem2Label() - Returning: {}", champItem2Label);
-		return champItem2Label;
+		logger.trace("getStartingItem2Label() - Returning");
+		logger.debug("getStartingItem2Label() - Returning: {}",
+				startingItem2Label);
+		return startingItem2Label;
 	}
 
-	private JLabel getChampItem3Label() {
-		logger.trace("getChampItem3Label() - Entering");
-		if (champItem3Label == null) {
-			champItem3Label = new JLabel(defaultImg);
+	private JLabel getStartingItem3Label() {
+		logger.trace("getStartingItem3Label() - Entering");
+		if (startingItem3Label == null) {
+			startingItem3Label = new JLabel(defaultImg);
 		}
-		logger.trace("getChampItem3Label() - Returning");
-		logger.debug("getChampItem3Label() - Returning: {}", champItem3Label);
-		return champItem3Label;
+		logger.trace("getStartingItem3Label() - Returning");
+		logger.debug("getStartingItem3Label() - Returning: {}",
+				startingItem3Label);
+		return startingItem3Label;
 	}
 
-	private JLabel getChampItem4Label() {
-		logger.trace("getChampItem4Label() - Entering");
-		if (champItem4Label == null) {
-			champItem4Label = new JLabel(defaultImg);
+	private JLabel getStartingItem4Label() {
+		logger.trace("getStartingItem4Label() - Entering");
+		if (startingItem4Label == null) {
+			startingItem4Label = new JLabel(defaultImg);
 		}
-		logger.trace("getChampItem4Label() - Returning");
-		logger.debug("getChampItem4Label() - Returning: {}", champItem4Label);
-		return champItem4Label;
+		logger.trace("getStartingItem4Label() - Returning");
+		logger.debug("getStartingItem4Label() - Returning: {}",
+				startingItem4Label);
+		return startingItem4Label;
 	}
 
-	private JLabel getChampItem5Label() {
-		logger.trace("getChampItem5Label() - Entering");
-		if (champItem5Label == null) {
-			champItem5Label = new JLabel(defaultImg);
+	private JLabel getStartingItem5Label() {
+		logger.trace("getStartingItem5Label() - Entering");
+		if (startingItem5Label == null) {
+			startingItem5Label = new JLabel(defaultImg);
 		}
-		logger.trace("getChampItem5Label() - Returning");
-		logger.debug("getChampItem5Label() - Returning: {}", champItem5Label);
-		return champItem5Label;
+		logger.trace("getStartingItem5Label() - Returning");
+		logger.debug("getStartingItem5Label() - Returning: {}",
+				startingItem5Label);
+		return startingItem5Label;
 	}
 
-	private JLabel getChampItem6Label() {
-		logger.trace("getChampItem6Label() - Entering");
-		if (champItem6Label == null) {
-			champItem6Label = new JLabel(defaultImg);
+	private JLabel getStartingItem6Label() {
+		logger.trace("getStartingItem6Label() - Entering");
+		if (startingItem6Label == null) {
+			startingItem6Label = new JLabel(defaultImg);
 		}
-		logger.trace("getChampItem6Label() - Returning");
-		logger.debug("getChampItem6Label() - Returning: {}", champItem6Label);
-		return champItem6Label;
+		logger.trace("getStartingItem6Label() - Returning");
+		logger.debug("getStartingItem6Label() - Returning: {}",
+				startingItem6Label);
+		return startingItem6Label;
 	}
 
-	private JPanel getChampEndingItemsPanel() {
-		logger.trace("getChampEndingItemsPanel() - Entering");
-		if (champEndingItemsPanel == null) {
-			champEndingItemsPanel = new JPanel(new GridBagLayout());
+	private JPanel getEndingItemsPanel() {
+		logger.trace("getEndingItemsPanel() - Entering");
+		if (endingItemsPanel == null) {
+			endingItemsPanel = new JPanel(new GridBagLayout());
 
 			GridBagConstraints constraints = new GridBagConstraints();
 			constraints.gridx = 0;
 			constraints.gridy = 0;
 			constraints.gridwidth = 3;
-			champEndingItemsPanel.add(getEndingItemsLabel(), constraints);
+			endingItemsPanel.add(getEndingItemsLabel(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 0;
 			constraints.gridy = 1;
 			constraints.insets = new Insets(2, 1, 1, 1);
-			champEndingItemsPanel.add(getChampEndingItem1Label(), constraints);
+			endingItemsPanel.add(getEndingItem1Label(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 1;
 			constraints.gridy = 1;
 			constraints.insets = new Insets(2, 1, 1, 1);
-			champEndingItemsPanel.add(getChampEndingItem2Label(), constraints);
+			endingItemsPanel.add(getEndingItem2Label(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 2;
 			constraints.gridy = 1;
 			constraints.insets = new Insets(2, 1, 1, 1);
-			champEndingItemsPanel.add(getChampEndingItem3Label(), constraints);
+			endingItemsPanel.add(getEndingItem3Label(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 0;
 			constraints.gridy = 2;
 			constraints.insets = new Insets(1, 1, 5, 1);
-			champEndingItemsPanel.add(getChampEndingItem4Label(), constraints);
+			endingItemsPanel.add(getEndingItem4Label(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 1;
 			constraints.gridy = 2;
 			constraints.insets = new Insets(1, 1, 5, 1);
-			champEndingItemsPanel.add(getChampEndingItem5Label(), constraints);
+			endingItemsPanel.add(getEndingItem5Label(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 2;
 			constraints.gridy = 2;
 			constraints.insets = new Insets(1, 1, 5, 1);
-			champEndingItemsPanel.add(getChampEndingItem6Label(), constraints);
+			endingItemsPanel.add(getEndingItem6Label(), constraints);
 		}
-		logger.trace("getChampEndingItemsPanel() - Returning");
-		logger.debug("getChampEndingItemsPanel() - Returning: {}",
-				champEndingItemsPanel);
-		return champEndingItemsPanel;
+		logger.trace("getEndingItemsPanel() - Returning");
+		logger.debug("getEndingItemsPanel() - Returning: {}", endingItemsPanel);
+		return endingItemsPanel;
 	}
 
 	private JLabel getEndingItemsLabel() {
@@ -312,127 +317,121 @@ public class MatchupDetailChampionPanel extends JPanel {
 		return endingItemsLabel;
 	}
 
-	private JLabel getChampEndingItem1Label() {
-		logger.trace("getChampEndingItem1Label() - Entering");
-		if (champEndingItem1Label == null) {
-			champEndingItem1Label = new JLabel(defaultImg);
+	private JLabel getEndingItem1Label() {
+		logger.trace("getEndingItem1Label() - Entering");
+		if (endingItem1Label == null) {
+			endingItem1Label = new JLabel(defaultImg);
 		}
-		logger.trace("getChampEndingItem1Label() - Returning");
-		logger.debug("getChampEndingItem1Label() - Returning: {}",
-				champEndingItem1Label);
-		return champEndingItem1Label;
+		logger.trace("getEndingItem1Label() - Returning");
+		logger.debug("getEndingItem1Label() - Returning: {}", endingItem1Label);
+		return endingItem1Label;
 	}
 
-	private JLabel getChampEndingItem2Label() {
-		logger.trace("getChampEndingItem2Label() - Entering");
-		if (champEndingItem2Label == null) {
-			champEndingItem2Label = new JLabel(defaultImg);
+	private JLabel getEndingItem2Label() {
+		logger.trace("getEndingItem2Label() - Entering");
+		if (endingItem2Label == null) {
+			endingItem2Label = new JLabel(defaultImg);
 		}
-		logger.trace("getChampEndingItem2Label() - Returning");
-		logger.debug("getChampEndingItem2Label() - Returning: {}",
-				champEndingItem2Label);
-		return champEndingItem2Label;
+		logger.trace("getEndingItem2Label() - Returning");
+		logger.debug("getEndingItem2Label() - Returning: {}", endingItem2Label);
+		return endingItem2Label;
 	}
 
-	private JLabel getChampEndingItem3Label() {
-		logger.trace("getChampEndingItem3Label() - Entering");
-		if (champEndingItem3Label == null) {
-			champEndingItem3Label = new JLabel(defaultImg);
+	private JLabel getEndingItem3Label() {
+		logger.trace("getEndingItem3Label() - Entering");
+		if (endingItem3Label == null) {
+			endingItem3Label = new JLabel(defaultImg);
 		}
-		logger.trace("getChampEndingItem3Label() - Returning");
-		logger.debug("getChampEndingItem3Label() - Returning: {}",
-				champEndingItem3Label);
-		return champEndingItem3Label;
+		logger.trace("getEndingItem3Label() - Returning");
+		logger.debug("getEndingItem3Label() - Returning: {}", endingItem3Label);
+		return endingItem3Label;
 	}
 
-	private JLabel getChampEndingItem4Label() {
-		logger.trace("getChampEndingItem4Label() - Entering");
-		if (champEndingItem4Label == null) {
-			champEndingItem4Label = new JLabel(defaultImg);
+	private JLabel getEndingItem4Label() {
+		logger.trace("getEndingItem4Label() - Entering");
+		if (endingItem4Label == null) {
+			endingItem4Label = new JLabel(defaultImg);
 		}
-		logger.trace("getChampEndingItem4Label() - Returning");
-		logger.debug("getChampEndingItem4Label() - Returning: {}",
-				champEndingItem4Label);
-		return champEndingItem4Label;
+		logger.trace("getEndingItem4Label() - Returning");
+		logger.debug("getEndingItem4Label() - Returning: {}", endingItem4Label);
+		return endingItem4Label;
 	}
 
-	private JLabel getChampEndingItem5Label() {
-		logger.trace("getChampEndingItem5Label() - Entering");
-		if (champEndingItem5Label == null) {
-			champEndingItem5Label = new JLabel(defaultImg);
+	private JLabel getEndingItem5Label() {
+		logger.trace("getEndingItem5Label() - Entering");
+		if (endingItem5Label == null) {
+			endingItem5Label = new JLabel(defaultImg);
 		}
-		logger.trace("getChampEndingItem5Label() - Returning");
-		logger.debug("getChampEndingItem5Label() - Returning: {}",
-				champEndingItem5Label);
-		return champEndingItem5Label;
+		logger.trace("getEndingItem5Label() - Returning");
+		logger.debug("getEndingItem5Label() - Returning: {}", endingItem5Label);
+		return endingItem5Label;
 	}
 
-	private JLabel getChampEndingItem6Label() {
-		logger.trace("getChampEndingItem6Label() - Entering");
-		if (champEndingItem6Label == null) {
-			champEndingItem6Label = new JLabel(defaultImg);
+	private JLabel getEndingItem6Label() {
+		logger.trace("getEndingItem6Label() - Entering");
+		if (endingItem6Label == null) {
+			endingItem6Label = new JLabel(defaultImg);
 		}
-		logger.trace("getChampEndingItem6Label() - Returning");
-		logger.debug("getChampEndingItem6Label() - Returning: {}",
-				champEndingItem6Label);
-		return champEndingItem6Label;
+		logger.trace("getEndingItem6Label() - Returning");
+		logger.debug("getEndingItem6Label() - Returning: {}", endingItem6Label);
+		return endingItem6Label;
 	}
 
-	private JPanel getChampSpellsPanel() {
-		logger.trace("getChampSpellsPanel() - Entering");
-		if (champSpellsPanel == null) {
-			champSpellsPanel = new JPanel(new GridBagLayout());
+	private JPanel getSpellsPanel() {
+		logger.trace("getSpellsPanel() - Entering");
+		if (spellsPanel == null) {
+			spellsPanel = new JPanel(new GridBagLayout());
 			GridBagConstraints constraints = new GridBagConstraints();
 			constraints.gridx = 0;
 			constraints.gridy = 0;
 			constraints.gridwidth = 2;
-			champSpellsPanel.add(getChampSpellsLabel(), constraints);
+			spellsPanel.add(getSpellsLabel(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 0;
 			constraints.gridy = 1;
 			constraints.insets = new Insets(2, 2, 2, 3);
-			champSpellsPanel.add(getChampSpell1Label(), constraints);
+			spellsPanel.add(getSpell1Label(), constraints);
 
 			constraints = new GridBagConstraints();
 			constraints.gridx = 1;
 			constraints.gridy = 1;
 			constraints.insets = new Insets(3, 2, 2, 2);
-			champSpellsPanel.add(getChampSpell2Label(), constraints);
+			spellsPanel.add(getSpell2Label(), constraints);
 		}
-		logger.trace("getChampSpellsPanel() - Returning");
-		logger.debug("getChampSpellsPanel() - Returning: {}", champSpellsPanel);
-		return champSpellsPanel;
+		logger.trace("getSpellsPanel() - Returning");
+		logger.debug("getSpellsPanel() - Returning: {}", spellsPanel);
+		return spellsPanel;
 	}
 
-	private JLabel getChampSpellsLabel() {
-		logger.trace("getChampSpellsLabel() - Entering");
-		if (champSpellsLabel == null) {
-			champSpellsLabel = new JLabel("Summoner spells");
+	private JLabel getSpellsLabel() {
+		logger.trace("getSpellsLabel() - Entering");
+		if (spellsLabel == null) {
+			spellsLabel = new JLabel("Summoner spells");
 		}
-		logger.trace("getChampSpellsLabel() - Returning");
-		logger.debug("getChampSpellsLabel() - Returning: {}", champSpellsLabel);
-		return champSpellsLabel;
+		logger.trace("getSpellsLabel() - Returning");
+		logger.debug("getSpellsLabel() - Returning: {}", spellsLabel);
+		return spellsLabel;
 	}
 
-	private JLabel getChampSpell1Label() {
-		logger.trace("getChampSpell1Label() - Entering");
-		if (champSpell1Label == null) {
-			champSpell1Label = new JLabel(defaultImgBig);
+	private JLabel getSpell1Label() {
+		logger.trace("getSpell1Label() - Entering");
+		if (spell1Label == null) {
+			spell1Label = new JLabel(defaultImgBig);
 		}
-		logger.trace("getChampSpell1Label() - Returning");
-		logger.debug("getChampSpell1Label() - Returning: {}", champSpell1Label);
-		return champSpell1Label;
+		logger.trace("getSpell1Label() - Returning");
+		logger.debug("getSpell1Label() - Returning: {}", spell1Label);
+		return spell1Label;
 	}
 
-	private JLabel getChampSpell2Label() {
-		logger.trace("getChampSpell2Label() - Entering");
-		if (champSpell2Label == null) {
-			champSpell2Label = new JLabel(defaultImgBig);
+	private JLabel getSpell2Label() {
+		logger.trace("getSpell2Label() - Entering");
+		if (spell2Label == null) {
+			spell2Label = new JLabel(defaultImgBig);
 		}
-		logger.trace("getChampSpell2Label() - Returning");
-		logger.debug("getChampSpell2Label() - Returning: {}", champSpell2Label);
-		return champSpell2Label;
+		logger.trace("getSpell2Label() - Returning");
+		logger.debug("getSpell2Label() - Returning: {}", spell2Label);
+		return spell2Label;
 	}
 
 	public void setChampionAndItems(Champion champ,
@@ -454,22 +453,22 @@ public class MatchupDetailChampionPanel extends JPanel {
 			JLabel l = null;
 			switch (x) {
 			case 1:
-				l = this.getChampItem1Label();
+				l = this.getStartingItem1Label();
 				break;
 			case 2:
-				l = this.getChampItem2Label();
+				l = this.getStartingItem2Label();
 				break;
 			case 3:
-				l = this.getChampItem3Label();
+				l = this.getStartingItem3Label();
 				break;
 			case 4:
-				l = this.getChampItem4Label();
+				l = this.getStartingItem4Label();
 				break;
 			case 5:
-				l = this.getChampItem5Label();
+				l = this.getStartingItem5Label();
 				break;
 			case 6:
-				l = this.getChampItem6Label();
+				l = this.getStartingItem6Label();
 				break;
 			}
 			l.setIcon(ImageIconFactory.resizeImageIcon(mi.getItem().getIcon(),
@@ -482,22 +481,22 @@ public class MatchupDetailChampionPanel extends JPanel {
 			JLabel l = null;
 			switch (x) {
 			case 1:
-				l = this.getChampEndingItem1Label();
+				l = this.getEndingItem1Label();
 				break;
 			case 2:
-				l = this.getChampEndingItem2Label();
+				l = this.getEndingItem2Label();
 				break;
 			case 3:
-				l = this.getChampEndingItem3Label();
+				l = this.getEndingItem3Label();
 				break;
 			case 4:
-				l = this.getChampEndingItem4Label();
+				l = this.getEndingItem4Label();
 				break;
 			case 5:
-				l = this.getChampEndingItem5Label();
+				l = this.getEndingItem5Label();
 				break;
 			case 6:
-				l = this.getChampEndingItem6Label();
+				l = this.getEndingItem6Label();
 				break;
 			}
 			l.setIcon(ImageIconFactory.resizeImageIcon(mi.getItem().getIcon(),
@@ -505,9 +504,9 @@ public class MatchupDetailChampionPanel extends JPanel {
 			l.setToolTipText(mi.getAmount() + "x " + mi.getItem().getName());
 		}
 		if (spell1 != null) {
-			getChampSpell1Label().setIcon(
+			getSpell1Label().setIcon(
 					ImageIconFactory.resizeImageIcon(spell1.getIcon(), 40, 40));
-			getChampSpell2Label().setIcon(
+			getSpell2Label().setIcon(
 					ImageIconFactory.resizeImageIcon(spell2.getIcon(), 40, 40));
 		}
 		logger.trace("setChampionAndItems() - Leaving");
@@ -515,20 +514,32 @@ public class MatchupDetailChampionPanel extends JPanel {
 
 	public void clear() {
 		// Clearing Icons of starting items
-		champItem1Label.setIcon(defaultImg);
-		champItem2Label.setIcon(defaultImg);
-		champItem3Label.setIcon(defaultImg);
-		champItem4Label.setIcon(defaultImg);
-		champItem5Label.setIcon(defaultImg);
-		champItem6Label.setIcon(defaultImg);
+		startingItem1Label.setIcon(defaultImg);
+		startingItem1Label.setToolTipText("");
+		startingItem2Label.setIcon(defaultImg);
+		startingItem2Label.setToolTipText("");
+		startingItem3Label.setIcon(defaultImg);
+		startingItem3Label.setToolTipText("");
+		startingItem4Label.setIcon(defaultImg);
+		startingItem4Label.setToolTipText("");
+		startingItem5Label.setIcon(defaultImg);
+		startingItem5Label.setToolTipText("");
+		startingItem6Label.setIcon(defaultImg);
+		startingItem6Label.setToolTipText("");
 		// Clearing Icons of end items
-		champEndingItem1Label.setIcon(defaultImg);
-		champEndingItem2Label.setIcon(defaultImg);
-		champEndingItem3Label.setIcon(defaultImg);
-		champEndingItem4Label.setIcon(defaultImg);
-		champEndingItem5Label.setIcon(defaultImg);
-		champEndingItem6Label.setIcon(defaultImg);
+		endingItem1Label.setIcon(defaultImg);
+		endingItem1Label.setToolTipText("");
+		endingItem2Label.setIcon(defaultImg);
+		endingItem2Label.setToolTipText("");
+		endingItem3Label.setIcon(defaultImg);
+		endingItem3Label.setToolTipText("");
+		endingItem4Label.setIcon(defaultImg);
+		endingItem4Label.setToolTipText("");
+		endingItem5Label.setIcon(defaultImg);
+		endingItem5Label.setToolTipText("");
+		endingItem6Label.setIcon(defaultImg);
+		endingItem6Label.setToolTipText("");
 
-		getChampItemsPanel().setSelectedIndex(0);
+		getItemsPanel().setSelectedIndex(0);
 	}
 }
