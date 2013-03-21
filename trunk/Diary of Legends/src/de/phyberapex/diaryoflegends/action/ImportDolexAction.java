@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+
+import javax.swing.JOptionPane;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
@@ -34,6 +37,7 @@ import de.phyberapex.diaryoflegends.view.MainView;
 public class ImportDolexAction implements Runnable {
 
 	private File file;
+	private ImportDolexDouble doWithDouble = ImportDolexDouble.NONE;
 	private static Logger logger = LogManager.getLogger(ImportDolexAction.class
 			.getName());
 
@@ -291,9 +295,38 @@ public class ImportDolexAction implements Runnable {
 				game.setOwnCS(gJo.getInt("ownCS"));
 				game.setResult(GameResult.valueOf(gJo.getString("gameResult")));
 				game.setLength(gJo.getLong("length"));
-				MatchupUtil.saveMatchup(matchup);
-				GameUtil.saveGame(game);
-				MainView.getInstance().getMatchupPanel().addMatchup(matchup);
+				boolean reallyImport = true;
+				if (checkDouble(matchup)) {
+					if (doWithDouble == ImportDolexDouble.NO_TO_ALL) {
+						reallyImport = false;
+					} else if (doWithDouble == ImportDolexDouble.NONE) {
+						String[] options = { "Yes to all", "Yes", "No",
+								"No to all" };
+						int ok = JOptionPane
+								.showOptionDialog(
+										MainView.getInstance(),
+										"There is already a match like this. Do you want to import it anyway?",
+										"Enter your Summoner name",
+										JOptionPane.WARNING_MESSAGE,
+										JOptionPane.INFORMATION_MESSAGE, null,
+										options, "No");
+						if (ok == JOptionPane.CLOSED_OPTION || ok == 2) {
+							reallyImport = false;
+						} else if (ok == 0) {
+							reallyImport = true;
+							doWithDouble = ImportDolexDouble.YES_TO_ALL;
+						} else if (ok == 3) {
+							reallyImport = false;
+							doWithDouble = ImportDolexDouble.NO_TO_ALL;
+						}
+					}
+				}
+				if (reallyImport) {
+					MatchupUtil.saveMatchup(matchup);
+					GameUtil.saveGame(game);
+					MainView.getInstance().getMatchupPanel()
+							.addMatchup(matchup);
+				}
 			}
 			MainView.getInstance().setStatusText("Import complete");
 		} catch (Exception e) {
@@ -302,6 +335,27 @@ public class ImportDolexAction implements Runnable {
 					"Import failed. Please read the logfile.");
 		}
 		logger.trace("doImport() - Leaving");
+	}
+
+	/**
+	 * @param matchup
+	 * @return
+	 */
+	private boolean checkDouble(Matchup matchup) {
+		logger.trace("checkDouble() - Entering");
+		logger.debug("checkDouble() - Parameter: {}", matchup);
+		boolean returnValue = false;
+		for (Matchup m : MatchupUtil.getAllMatchups()) {
+			if (m.getGame().getDate().equals(matchup.getGame().getDate())) {
+				if (m.getMyChamp() == matchup.getMyChamp()) {
+					returnValue = true;
+					break;
+				}
+			}
+		}
+		logger.trace("checkDouble() - Returning");
+		logger.debug("checkDouble() - Returning: {}", returnValue);
+		return returnValue;
 	}
 
 	/*

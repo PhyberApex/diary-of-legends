@@ -7,7 +7,7 @@ Requirements: Java Runtime Environment 1.7 or above
 =====     Known issues      =====
 
 * Even if all icons are present(Items/Champions/Summoner Spells) they may not show correctly.
-To fix this you have to restart the application a few times.
+To fix this you have to restart the application once or twice times.
 
 
 =====   Version history     =====
@@ -15,7 +15,8 @@ To fix this you have to restart the application a few times.
 Version 0.3
 * New Features
     - Added an error dialog if the elophant api is not reachable
-    - Export path
+    - You are now able to choose the location for the export file
+    - Added a check for double entries at the import of *.dolex files
 
 * Changes
     - Rearranged the layout for the match detail view
@@ -29,6 +30,8 @@ Version 0.3
     - Fixed a bug where the tabs and icons of items on the detailview of a matchup weren't reset properly
     - Fixed a bug where the application wouldn't start if the "AUTO_UPDATE" entry wasn't set in the diary.cfg
     - Fixed a bug where the internet connection was not checked on updating at startup
+    - Fixed a bug where the application wasn't able to fetch the icons if the folger "img" was deleted
+    - Fixed a bug where the icons for champions/spells/items were created but empty
 
 
 Version 0.2 - 2013-03-12
