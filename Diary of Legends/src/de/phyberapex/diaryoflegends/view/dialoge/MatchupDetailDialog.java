@@ -7,6 +7,9 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -18,6 +21,7 @@ import javax.swing.JTextArea;
 import javax.swing.border.BevelBorder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import de.phyberapex.diaryoflegends.extra.ImageIconFactory;
 import de.phyberapex.diaryoflegends.model.Champion;
 import de.phyberapex.diaryoflegends.model.Game;
@@ -71,6 +75,12 @@ public class MatchupDetailDialog extends JDialog implements Runnable {
 
 	private MatchupDetailDialog() {
 		super();
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				dispose();
+			}
+		});
 		createGUI();
 	}
 
@@ -82,10 +92,9 @@ public class MatchupDetailDialog extends JDialog implements Runnable {
 	}
 
 	private void createGUI() {
-		this.setIconImage(ImageIconFactory
-				.createImageIconFromResourePath("img/icon_128.png").getImage());
+		this.setIconImage(ImageIconFactory.createImageIconFromResourePath(
+				"img/icon_128.png").getImage());
 		this.setContentPane(getMatchupContentPanel());
-		this.setUndecorated(true);
 		this.setResizable(false);
 		this.setModal(true);
 	}
@@ -607,9 +616,6 @@ public class MatchupDetailDialog extends JDialog implements Runnable {
 
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
-					getNotesPane().setSelectedIndex(0);
-					myChampPanel.clear();
-					enemyChampPanel.clear();
 					dispose();
 				}
 			});
@@ -622,6 +628,7 @@ public class MatchupDetailDialog extends JDialog implements Runnable {
 	private void fillFields() {
 		if (matchup != null) {
 			Matchup m = this.matchup;
+			setTitle(m.getMyChamp() + " vs. " + m.getEnemyChamp());
 			setLane(m.getLane());
 			setDifficulty(m.getDifficulty());
 			setLane(m.getLane());
@@ -750,5 +757,14 @@ public class MatchupDetailDialog extends JDialog implements Runnable {
 				m.getEnemyStartItems(), m.getEnemyEndItems(),
 				m.getEnemySpell1(), m.getEnemySpell2(), r);
 		logger.trace("setEnemyChampionAndItems() - Leaving");
+	}
+
+	@Override
+	public void dispose() {
+		super.dispose();
+		getNotesPane().setSelectedIndex(0);
+		myChampPanel.clear();
+		enemyChampPanel.clear();
+		setTitle("");
 	}
 }

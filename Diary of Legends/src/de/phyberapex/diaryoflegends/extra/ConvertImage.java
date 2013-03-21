@@ -10,7 +10,13 @@ import java.net.URLConnection;
 
 import javax.swing.ImageIcon;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class ConvertImage {
+
+	private static Logger logger = LogManager.getLogger(ConvertImage.class
+			.getName());
 
 	public static byte[] convertFileToByteArray(File file) {
 		byte[] bytes = null;
@@ -43,14 +49,19 @@ public class ConvertImage {
 		try {
 			URLConnection conn = url.openConnection();
 			int length = conn.getContentLength();
-			InputStream in = conn.getInputStream();
-			ByteArrayOutputStream bos = new ByteArrayOutputStream(length);
-			byte[] buf = new byte[1024];
-			for (int readNum; (readNum = in.read(buf)) != -1;) {
-				bos.write(buf, 0, readNum);
+			if (length != -1) {
+				InputStream in = conn.getInputStream();
+				ByteArrayOutputStream bos = new ByteArrayOutputStream(length);
+				byte[] buf = new byte[1024];
+				for (int readNum; (readNum = in.read(buf)) != -1;) {
+					bos.write(buf, 0, readNum);
+				}
+				bytes = bos.toByteArray();
+				in.close();
+			} else {
+				logger.error("Couldn't open the icon file at: {}",
+						url.toString());
 			}
-			bytes = bos.toByteArray();
-			in.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -2,7 +2,6 @@ package de.phyberapex.diaryoflegends.model;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.net.URL;
 
 import javax.swing.Icon;
@@ -105,12 +104,15 @@ public class SummonerSpell extends Model {
 					byte[] tmp = ConvertImage.convertUrlToByteArray(new URL(
 							"http://img.lolking.net/images/spells/" + getId()
 									+ ".png"));
-					File f = new File(System.getProperty("user.dir")
-							+ "/img/summonerspells/" + getId() + ".png");
-					FileOutputStream fou = new FileOutputStream(f);
-					fou.write(tmp);
-					fou.close();
-				} catch (IOException e) {
+					if (tmp != null) {
+						File f = new File(System.getProperty("user.dir")
+								+ "/img/summonerspells/" + getId() + ".png");
+						f.getParentFile().mkdirs();
+						FileOutputStream fou = new FileOutputStream(f);
+						fou.write(tmp);
+						fou.close();
+					}
+				} catch (Exception e) {
 					logger.error("Couln't write icon:" + e.getMessage());
 				}
 				img = ImageIconFactory.createImageIcon(System
@@ -144,11 +146,12 @@ public class SummonerSpell extends Model {
 			byte[] tmp = ConvertImage.convertUrlToByteArray(url);
 			File f = new File(System.getProperty("user.dir")
 					+ "/img/summonerspells/" + getId() + ".png");
+			f.getParentFile().mkdirs();
 			try {
 				FileOutputStream fou = new FileOutputStream(f);
 				fou.write(tmp);
 				fou.close();
-			} catch (IOException e) {
+			} catch (Exception e) {
 				logger.error("Couln't write icon:" + e.getMessage());
 			}
 		}
