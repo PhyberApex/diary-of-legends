@@ -122,6 +122,8 @@ public class Champion extends Model {
 				if (img.getIconHeight() <= 0) {
 					img = ImageIconFactory
 							.createImageIconFromResourePath("img/empty_104x104.png");
+				}else{
+					icon = img;
 				}
 			}
 		} else {

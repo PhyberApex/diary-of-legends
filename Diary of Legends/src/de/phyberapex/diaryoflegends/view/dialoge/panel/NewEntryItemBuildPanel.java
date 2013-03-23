@@ -63,7 +63,11 @@ public class NewEntryItemBuildPanel extends JPanel {
 		logger.trace("getItems() - Entering");
 		List<MatchupItem> returnValue = new ArrayList<>();
 		for (NewEntryItemPanel panel : getItemPanelList()) {
-			returnValue.add(panel.getMatchupItem());
+			MatchupItem mi = panel.getMatchupItem();
+			if (mi != null) {
+				returnValue.add(mi);
+			}
+
 		}
 		logger.trace("getItems() - Returning");
 		logger.debug("getItems() - Returning: {}", returnValue);

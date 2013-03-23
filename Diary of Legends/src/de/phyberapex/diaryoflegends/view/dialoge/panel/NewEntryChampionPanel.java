@@ -257,9 +257,6 @@ public class NewEntryChampionPanel extends JPanel {
 		logger.trace("getSpell1() - Entering");
 		SummonerSpell returnValue = getSpell1Box().getItemAt(
 				getSpell1Box().getSelectedIndex());
-		if (returnValue.getId() == 0) {
-			returnValue = null;
-		}
 		logger.trace("getSpell1() - Returning");
 		logger.debug("getSpell1() - Returning: {}", returnValue);
 		return returnValue;
@@ -269,9 +266,6 @@ public class NewEntryChampionPanel extends JPanel {
 		logger.trace("getSpell2() - Entering");
 		SummonerSpell returnValue = getSpell2Box().getItemAt(
 				getSpell2Box().getSelectedIndex());
-		if (returnValue.getId() == 0) {
-			returnValue = null;
-		}
 		logger.trace("getSpell2() - Returning");
 		logger.debug("getSpell2() - Returning: {}", returnValue);
 		return returnValue;
