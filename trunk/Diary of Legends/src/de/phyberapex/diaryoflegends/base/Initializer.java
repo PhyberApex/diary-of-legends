@@ -8,6 +8,12 @@ import org.apache.logging.log4j.Logger;
 import com.db4o.ext.DatabaseFileLockedException;
 import de.phyberapex.diaryoflegends.controller.MainController;
 import de.phyberapex.diaryoflegends.exception.InitializeException;
+import de.phyberapex.diaryoflegends.model.Champion;
+import de.phyberapex.diaryoflegends.model.Item;
+import de.phyberapex.diaryoflegends.model.SummonerSpell;
+import de.phyberapex.diaryoflegends.model.util.ChampionUtil;
+import de.phyberapex.diaryoflegends.model.util.ItemUtil;
+import de.phyberapex.diaryoflegends.model.util.SummonerSpellUtil;
 import de.phyberapex.diaryoflegends.view.panel.SummonerNamePanel;
 
 /**
@@ -79,9 +85,27 @@ public class Initializer {
 			throw new InitializeException(
 					"Can't open database. Databasefile is locked.");
 		}
+		getAllIcons();
 		logger.trace("initializeApp() - Returning");
 		logger.debug("initializeApp() - Returning {}", returnValue);
 		return returnValue;
+	}
+
+	/**
+	 * 
+	 */
+	private void getAllIcons() {
+		logger.trace("getAllIcons() - Entering");
+		for (Champion c : ChampionUtil.getAllChampions()) {
+			c.getIcon();
+		}
+		for (Item i : ItemUtil.getAllItems()) {
+			i.getIcon();
+		}
+		for (SummonerSpell s : SummonerSpellUtil.getAllSpells()) {
+			s.getIcon();
+		}
+		logger.trace("getAllIcons() - Leaving");
 	}
 
 	/**
@@ -111,8 +135,7 @@ public class Initializer {
 	private void changeLaF() {
 		logger.trace("changeLaF() - Entering");
 		try {
-			 UIManager.setLookAndFeel(
-			 UIManager.getSystemLookAndFeelClassName());
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			logger.debug("Iterating through LaFs");
 		} catch (Exception e) {
 			logger.info("Unable to find look and feel nimbus. Using default.");
