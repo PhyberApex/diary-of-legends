@@ -7,7 +7,7 @@ Requirements: Java Runtime Environment 1.7 or above
 =====     Known issues      =====
 
 * Even if all icons are present(Items/Champions/Summoner Spells) they may not show correctly.
-To fix this you have to restart the application once or twice times.
+To fix this you have to restart the application once.
 
 
 =====   Version history     =====
