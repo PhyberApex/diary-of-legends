@@ -183,7 +183,7 @@ public class Config {
 				returnValue = internetAvailable;
 			} else {
 				// make a URL to a known source
-				URL url = new URL("http://api.elophant.com/v2/");
+				URL url = new URL("http://api.elophant.com/v2/champions?key="+Config.getInstance().getProperty("API_KEY"));
 				// open a connection to that source
 				HttpURLConnection urlConnect = (HttpURLConnection) url
 						.openConnection();
