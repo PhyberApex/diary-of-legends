@@ -1,7 +1,7 @@
 *********************************
 *       Diary of Legends        *
 *********************************
-Version: 0.3dev
+Version: 0.3
 Requirements: Java Runtime Environment 1.7 or above
 
 =====     Known issues      =====
@@ -12,7 +12,7 @@ To fix this you have to restart the application once.
 
 =====   Version history     =====
 
-Version 0.3
+Version 0.3 - 2013-03-30
 * New Features
     - Added an error dialog if the elophant api is not reachable
     - You are now able to choose the location for the export file
