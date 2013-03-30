@@ -296,7 +296,7 @@ public class ImportDolexAction implements Runnable {
 				game.setResult(GameResult.valueOf(gJo.getString("gameResult")));
 				game.setLength(gJo.getLong("length"));
 				boolean reallyImport = true;
-				if (checkDouble(matchup)) {
+				if (doWithDouble != ImportDolexDouble.YES_TO_ALL && checkDouble(matchup)) {
 					if (doWithDouble == ImportDolexDouble.NO_TO_ALL) {
 						reallyImport = false;
 					} else if (doWithDouble == ImportDolexDouble.NONE) {
