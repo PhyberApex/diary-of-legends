@@ -3,14 +3,14 @@ package de.phyberapex.diaryoflegends.model;
 import java.awt.Color;
 
 public enum MatchupResult {
-	WIN("Won the lane", Color.GREEN), LOSS("Lost the lane", Color.RED), DRAW(
-			"Equal", Color.WHITE);
+	WIN("Won the lane", new Color(0, 204, 51)), LOSS("Lost the lane",
+			new Color(204, 0, 0)), DRAW("Equal", Color.ORANGE);
 
 	/**
 	 * String representation of the result
 	 */
-	private String description;
-	private Color color;
+	transient private String description;
+	transient private Color color;
 
 	private MatchupResult(String desc, Color col) {
 		this.description = desc;

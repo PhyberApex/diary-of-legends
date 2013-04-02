@@ -27,10 +27,16 @@ public class MatchupTableRenderer extends JLabel implements TableCellRenderer {
 		Matchup m = (Matchup) table.getValueAt(row, 0);
 		setHorizontalAlignment(JLabel.CENTER);
 		setOpaque(true);
+		setForeground(Color.BLACK);
 		if (isSelected || hasFocus) {
-			setBackground(Color.ORANGE);
-		} else {
+			setBackground(Color.BLUE);
+			setForeground(Color.WHITE);
+		} else if (column == 1) {
 			setBackground(m.getResult().getColor());
+		} else if (row % 2 == 0 && column != 1) {
+			setBackground(new Color(200, 200, 200));
+		} else if (row % 2 == 1 && column != 1) {
+			setBackground(new Color(255, 255, 255));
 		}
 		setText(value.toString());
 		return this;
