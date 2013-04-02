@@ -269,7 +269,7 @@ public class Matchup extends Model {
 	public String toString() {
 		logger.trace("toString() - Entering");
 		Date d = getGame().getDate();
-		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		String str = df.format(d);
 		logger.trace("toString() - Returning");
 		logger.debug("toString() - Returning: {}", str);
