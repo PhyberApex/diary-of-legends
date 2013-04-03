@@ -53,7 +53,7 @@ public class AboutDialog extends JDialog {
 			panel.setLayout(gbl_panel);
 			{
 				JLabel lblNewLabel = new JLabel("");
-				lblNewLabel.setIcon(ImageIconFactory.resizeImageIcon(ImageIconFactory.createImageIconFromResourePath("/img/icon_128.png"), 60, 60));
+				lblNewLabel.setIcon(ImageIconFactory.resizeImageIcon(ImageIconFactory.createImageIconFromResourePath("img/icon_128.png"), 60, 60));
 				GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 				gbc_lblNewLabel.gridheight = 5;
 				gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
