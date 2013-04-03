@@ -18,9 +18,10 @@ Version 0.3 - 2013-03-30
 * Changes
     - Changed date format in the table to be without time(allowing filtering by date)
     - Changed color of row(only lane cell is colored and not as bright and every 2nd row is grey now)
+    - Changed colors of the lanes to be more unique
 
 * Bug fixes
-
+    - Fixed a bug where the about page was not displayed
 
 Version 0.3 - 2013-03-30
 * New Features
