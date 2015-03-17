@@ -1,0 +1,2 @@
+# Import of backup.dolex #
+This will simply add all the matches you exported from the application back in. It will not check for duplicates. It will simply add all matches found in the file to the current database.
